@@ -8,7 +8,6 @@ import { config } from './app.config.server';
   imports: [
     ServerModule,
   ],
-  bootstrap: [AppComponent],
 })
 export class AppServerModule {
   static bootstrap() {
