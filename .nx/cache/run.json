@@ -1,0 +1,21 @@
+{
+  "run": {
+    "command": "nx serve helm-front",
+    "startTime": "2025-03-21T11:33:32.207Z",
+    "endTime": "2025-03-21T11:33:33.249Z",
+    "inner": false
+  },
+  "tasks": [
+    {
+      "taskId": "helm-front:serve:development",
+      "target": "serve",
+      "projectName": "helm-front",
+      "hash": "4965301890769072863",
+      "startTime": "2025-03-21T11:33:32.215Z",
+      "endTime": "2025-03-21T11:33:33.248Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 1
+    }
+  ]
+}
