@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "@nx/angular": "^20.6.2",
+    "@nx/express": "^20.6.2"
+  }
+}

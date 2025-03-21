@@ -1,0 +1,17 @@
+{
+  "name": "api-shared-helm-e2e",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "implicitDependencies": ["api-shared-helm"],
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
+      "options": {
+        "jestConfig": "api-shared-helm-e2e/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "dependsOn": ["api-shared-helm:build"]
+    }
+  }
+}
