@@ -1,48 +1,43 @@
-const { error } = require('console');
-const mysql = require ('mysql2');
-require('dontev').config();
+const mysql = require('mysql2');
+require('dotenv').config();
 
-// Creacion de la conexion con la base de datos
-
-const pool = mysql.createPool(
-    {
-        host: 'localhost',
-        port: 3306,
-        user: 'root',
-        password: 'root',
-        database: 'helm.inicie.es',
-        waitForConnections: true,
-        connectionLimit: 10,
-        queueLimit: 0    
+// Creación del pool de conexiones
+const pool = mysql.createPool({
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT || 3306,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0    
 });
 
-pool.getConnection((error, connection) => {
-    if (error) 
+// Verificar conexión
+pool.getConnection((error, connection) => 
+{
+    if (error)
     {
-        console.log('Error al conectar la base de datos ', error);
-        if (error.code === 'PROTOCOLO_CONNECTION_LOST') 
+        console.error('Error al conectar la base de datos:', error);
+        if (error.code === 'PROTOCOL_CONNECTION_LOST') 
         {
-            console.log('La conexion con la base de datos fue cerrada');
+            console.error('La conexión con la base de datos fue cerrada');
         } 
         else if (error.code === 'ER_CON_COUNT_ERROR') 
         {
-            console.log('La base de datos tiene muchas conexciones')            
-        }
-        else if (error.code === 'ECONNREFUSED')
+            console.error('La base de datos tiene muchas conexiones');
+        } 
+        else if (error.code === 'ECONNREFUSED') 
         {
-            console.log('La conexión fue rechazada');
+            console.error('La conexión fue rechazada');
         }
-        else
-        {
-            return;
-        }
-    }
-    else
+    } 
+    else 
     {
-        console.log('Conexion a la base de datos exitosa')
+        console.log('Conexión a la base de datos exitosa');
         connection.release();
     }
-})
+});
 
-module.exports = pool;
-module.exports.promise = pool.promise();
+// Exportación del pool y su versión con promesas
+module.exports = pool.promise();
