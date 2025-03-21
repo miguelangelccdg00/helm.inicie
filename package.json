@@ -2,5 +2,9 @@
   "devDependencies": {
     "@nx/angular": "^20.6.2",
     "@nx/express": "^20.6.2"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "morgan": "^1.10.0"
   }
 }
