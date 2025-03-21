@@ -1,4 +1,4 @@
-import {pool} from '../database/conexion.js';
+import {pool} from '../../../api-shared-helm/src/database/conexion.js';
 import { Request, Response } from 'express';
 import { usuario } from '../models/usuario.js';
 
@@ -22,5 +22,5 @@ class loginController
             res.status(500).json({message:'Error al loguear el usuario '});
         }
     }
-
 }
+module.exports = new loginController();
