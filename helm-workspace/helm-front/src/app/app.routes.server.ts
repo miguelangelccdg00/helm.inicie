@@ -1,8 +1,10 @@
-import { RenderMode, ServerRoute } from '@angular/ssr';
+import { ApplicationConfig } from '@angular/core';
+import { provideServerRendering } from '@angular/platform-server';
 
-export const serverRoutes: ServerRoute[] = [
-  {
-    path: '**',
-    renderMode: RenderMode.Prerender,
-  },
-];
+const serverConfig: ApplicationConfig = {
+  providers: [
+    provideServerRendering(),
+  ]
+};
+
+export default serverConfig;
