@@ -1,44 +1,17 @@
-helm-workspace
-├── apps
-│   ├── helm-front
-│   │   ├── src
-│   │   │   ├── app
-│   │   │   │   ├── app.component.ts
-│   │   │   │   ├── app.module.ts
-│   │   │   │   └── app.routing.ts
-│   │   │   ├── assets
-│   │   │   └── environments
-│   │   │       ├── environment.prod.ts
-│   │   │       └── environment.ts
-│   │   ├── project.json
-│   │   └── tsconfig.json
-│   ├── api-shared-help
-│   │   ├── src
-│   │   │   ├── app
-│   │   │   │   ├── controllers
-│   │   │   │   ├── routes
-│   │   │   │   └── services
-│   │   │   ├── main.ts
-│   │   │   └── environments
-│   │   ├── project.json
-│   │   └── tsconfig.json
-│   └── api-auth-helm
-│       ├── src
-│       │   ├── app
-│       │   │   ├── controllers
-│       │   │   ├── routes
-│       │   │   └── services
-│       │   ├── main.ts
-│       │   └── environments
-│       ├── project.json
-│       └── tsconfig.json
-├── libs
-│   └── shared
-│       ├── src
-│       │   └── index.ts
-│       ├── project.json
-│       └── tsconfig.json
-├── nx.json
-├── package.json
-├── tsconfig.base.json
-└── README.md
+{
+  "name": "api-auth-helm",
+  "root": "apps/api-auth-helm",
+  "sourceRoot": "apps/api-auth-helm/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/api-auth-helm",
+        "main": "apps/api-auth-helm/src/main.ts",
+        "tsConfig": "apps/api-auth-helm/tsconfig.json"
+      }
+    }
+  }
+}
