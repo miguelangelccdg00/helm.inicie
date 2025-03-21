@@ -1,0 +1,81 @@
+Sure, here's the content for the file `/helm-workspace/helm-workspace/apps/helm-front/project.json`:
+
+{
+  "name": "helm-front",
+  "root": "apps/helm-front",
+  "sourceRoot": "apps/helm-front/src",
+  "projectType": "application",
+  "architect": {
+    "build": {
+      "builder": "@nrwl/angular:browser",
+      "options": {
+        "outputPath": "dist/apps/helm-front",
+        "index": "apps/helm-front/src/index.html",
+        "main": "apps/helm-front/src/main.ts",
+        "polyfills": "apps/helm-front/src/polyfills.ts",
+        "tsConfig": "apps/helm-front/tsconfig.app.json",
+        "assets": [
+          "apps/helm-front/src/favicon.ico",
+          "apps/helm-front/src/assets"
+        ],
+        "styles": [
+          "apps/helm-front/src/styles.css"
+        ],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/helm-front/src/environments/environment.ts",
+              "with": "apps/helm-front/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "extractCss": true,
+          "namedChunks": false,
+          "aot": true,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": true,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2kb",
+              "maximumError": "5kb"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "builder": "@nrwl/angular:dev-server",
+      "options": {
+        "browserTarget": "helm-front:build"
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "helm-front:build:production"
+        }
+      }
+    },
+    "test": {
+      "builder": "@nrwl/jest:jest",
+      "options": {
+        "jestConfig": "apps/helm-front/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "builder": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/helm-front/**/*.ts",
+          "apps/helm-front/**/*.html"
+        ]
+      }
+    }
+  }
+}
