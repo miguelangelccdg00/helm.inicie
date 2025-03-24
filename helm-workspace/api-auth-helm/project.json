@@ -1,16 +1,24 @@
 {
   "name": "api-auth-helm",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "api-auth-helm/src",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/api-auth-helm/src",
   "projectType": "application",
   "targets": {
-    "serve": {
-      "executor": "@nx/js:node",
-      "defaultConfiguration": "development",
-      "dependsOn": ["build"],
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
       "options": {
-        "buildTarget": "api-auth-helm:build",
-        "runBuildTargetDependencies": false
+        "outputPath": "dist/apps/api-auth-helm",
+        "main": "apps/api-auth-helm/src/main.ts",
+        "tsConfig": "apps/api-auth-helm/tsconfig.app.json",
+        "assets": []
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "api-auth-helm:build"
       },
       "configurations": {
         "development": {

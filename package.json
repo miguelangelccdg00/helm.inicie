@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@nrwl/node": "^19.8.4",
     "@nx/angular": "^20.6.2",
     "@nx/express": "^20.6.2"
   },

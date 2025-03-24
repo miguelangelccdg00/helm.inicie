@@ -1,0 +1,19 @@
+
+[0m[7m[1m[33m NX [39m[22m[27m[0m  [33mNx Daemon is not enabled. Assets and package.json files will not be updated when files change.[39m
+
+[2J[3J[H10:37:37 - Starting compilation in watch mode...
+
+
+10:37:37 - Found 0 errors. Watching for file changes.
+C:\Users\juana\helm.inicie.es\node_modules\@nrwl\js\node_modules\@nx\js\src\executors\node\node.impl.js:313
+    throw new Error(`Could not find ${fileToRun}. Make sure your build succeeded.`);
+          ^
+
+Error: Could not find C:\Users\juana\helm.inicie.es\dist\apps\api-auth-helm\main.js. Make sure your build succeeded.
+    at fileToRunCorrectPath [90m(C:\Users\juana\helm.inicie.es\[39mnode_modules\[4m@nrwl[24m\js\node_modules\[4m@nx[24m\js\src\executors\node\node.impl.js:313:11[90m)[39m
+    at [90mC:\Users\juana\helm.inicie.es\[39mnode_modules\[4m@nrwl[24m\js\node_modules\[4m@nx[24m\js\src\executors\node\node.impl.js:99:49
+    at new Promise (<anonymous>)
+    at Object.start [90m(C:\Users\juana\helm.inicie.es\[39mnode_modules\[4m@nrwl[24m\js\node_modules\[4m@nx[24m\js\src\executors\node\node.impl.js:93:36[90m)[39m
+    at async Timeout.processQueue [as _onTimeout] [90m(C:\Users\juana\helm.inicie.es\[39mnode_modules\[4m@nrwl[24m\js\node_modules\[4m@nx[24m\js\src\executors\node\node.impl.js:64:13[90m)[39m
+
+Node.js v18.20.7

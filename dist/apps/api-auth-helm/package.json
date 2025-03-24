@@ -1,0 +1,7 @@
+{
+  "name": "api-auth-helm",
+  "version": "0.0.1",
+  "main": "./../../apps/api-auth-helm/src/main.js",
+  "type": "commonjs",
+  "types": "./../../apps/api-auth-helm/src/main.d.ts"
+}

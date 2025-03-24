@@ -1,0 +1,5 @@
+
+[0m[7m[1m[31m NX [39m[22m[27m[0m  [31mCannot find build target [1mapi-auth-helm:build:development[22m for project [1mapi-auth-helm[22m[39m
+
+Pass --verbose to see the stacktrace.
+
