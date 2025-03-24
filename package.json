@@ -9,7 +9,9 @@
     "tslib": "^2.8.1"
   },
   "devDependencies": {
+    "@nrwl/nx": "^7.8.7",
     "@types/express": "^5.0.1",
-    "@types/node": "^22.13.13"
+    "@types/node": "^22.13.13",
+    "nx": "20.6.2"
   }
 }
