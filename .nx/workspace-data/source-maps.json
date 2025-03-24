@@ -28,6 +28,38 @@
       "helm-workspace/api-auth-helm/project.json",
       "nx/core/project-json"
     ],
+    "targets.build": [
+      "helm-workspace/api-auth-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.executor": [
+      "helm-workspace/api-auth-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.outputs": [
+      "helm-workspace/api-auth-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options": [
+      "helm-workspace/api-auth-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.outputPath": [
+      "helm-workspace/api-auth-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.main": [
+      "helm-workspace/api-auth-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.tsConfig": [
+      "helm-workspace/api-auth-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.assets": [
+      "helm-workspace/api-auth-helm/project.json",
+      "nx/core/project-json"
+    ],
     "targets.serve": [
       "helm-workspace/api-auth-helm/project.json",
       "nx/core/project-json"
@@ -40,10 +72,6 @@
       "helm-workspace/api-auth-helm/project.json",
       "nx/core/project-json"
     ],
-    "targets.serve.dependsOn": [
-      "helm-workspace/api-auth-helm/project.json",
-      "nx/core/project-json"
-    ],
     "targets.serve.options": [
       "helm-workspace/api-auth-helm/project.json",
       "nx/core/project-json"
@@ -53,10 +81,6 @@
       "nx/core/project-json"
     ],
     "targets.serve.options.buildTarget": [
-      "helm-workspace/api-auth-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.serve.options.runBuildTargetDependencies": [
       "helm-workspace/api-auth-helm/project.json",
       "nx/core/project-json"
     ],
@@ -425,6 +449,10 @@
       "nx/core/project-json"
     ],
     "targets.serve.options.buildTarget": [
+      "helm-workspace/helm-front/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.options.open": [
       "helm-workspace/helm-front/project.json",
       "nx/core/project-json"
     ],

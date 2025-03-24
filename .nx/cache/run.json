@@ -1,18 +1,18 @@
 {
   "run": {
-    "command": "nx serve helm-front",
-    "startTime": "2025-03-21T11:33:32.207Z",
-    "endTime": "2025-03-21T11:33:33.249Z",
+    "command": "nx serve api-auth-helm",
+    "startTime": "2025-03-24T09:37:34.105Z",
+    "endTime": "2025-03-24T09:37:38.513Z",
     "inner": false
   },
   "tasks": [
     {
-      "taskId": "helm-front:serve:development",
+      "taskId": "api-auth-helm:serve:development",
       "target": "serve",
-      "projectName": "helm-front",
-      "hash": "4965301890769072863",
-      "startTime": "2025-03-21T11:33:32.215Z",
-      "endTime": "2025-03-21T11:33:33.248Z",
+      "projectName": "api-auth-helm",
+      "hash": "602775264004729887",
+      "startTime": "2025-03-24T09:37:34.208Z",
+      "endTime": "2025-03-24T09:37:38.510Z",
       "params": "",
       "cacheStatus": "cache-miss",
       "status": 1

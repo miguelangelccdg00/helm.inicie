@@ -2,25 +2,21 @@ import { pool } from '../../../api-shared-helm/src/database/conexion.js';
 import { Request, Response } from 'express';
 import { usuario } from '../models/usuario.js';
 
-class registrarController
+class RegistrarController 
 {
-    constructor(){}
-
-    registrarUsuario = async (req: Request, res: Response): Promise<void> =>
+    async registrarUsuario(req: Request, res: Response): Promise<void> 
     {
         try 
         {
             const nuevoUsuario: usuario = req.body;
-            const [result] = await pool.promise().query('INSERT INTO usuario SET ?', [nuevoUsuario]);
-            res.status(201).json({message:'Usuario creado', id: nuevoUsuario.nombreUsuario})
-            return;
+            const [result]: any = await pool.promise().query('INSERT INTO usuario SET ?', [nuevoUsuario]);
+            res.status(201).json({ message: 'Usuario creado', id: result.insertId });
         } 
         catch (error) 
         {
-            console.error('Ha ocurrido un error al crear el usuario: ', error);
-            res.status(500).json({message:'Error al crear el usuario'});
+            console.error('Error al registrar usuario: ', error);
+            res.status(500).json({ message: 'Error interno en el servidor' });
         }
     }
 }
-
-module.exports = new registrarController();
+export default new RegistrarController();
