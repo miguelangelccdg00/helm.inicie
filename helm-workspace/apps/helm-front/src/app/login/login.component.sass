@@ -1,1 +1,154 @@
+#login {
+    width: 550px;
+    height: 840px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 1px 1px 100px rgb(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 50px;
+    margin-left: 60px;
+}
 
+#formulario {
+    background: linear-gradient(to right, #dbeff8, #f3edf7);
+    border-radius: 15px;
+    width: 390px;
+    padding: 25px 0px 40px 0px;
+    font-weight: 350;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 80px;
+    font-size: 14px;
+}
+
+input {
+    border-radius: 7px;
+    border: none;
+    padding: 9px;
+    margin-top: 10px;
+}
+
+#usuario, #contrasena{
+    width: 280px;
+}
+
+#botonEntrar {
+    background-color: rgb(0, 0, 62);
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 650;
+    font-family: "Raleway", sans-serif;
+    width: 290px;
+    border: none;
+}
+
+#botonEntrar:hover {
+    background-color: rgb(0, 0, 62,0.8);
+}
+
+a {
+    color: rgb(0, 0, 62);
+    font-weight: 470;
+    margin-top: 25px;
+}
+
+@media (min-width: 1441px) {
+    #login {
+        height: 650px;
+        margin-top: 135px;
+        width: 490px;
+    }
+
+    #formulario {
+        width: 360px;
+    }
+    
+}
+
+@media(max-width: 1440px) {
+    #login {
+        height: 720px;
+        margin-top: 38px;
+        width: 510px;
+    }
+
+    #formulario {
+        width: 360px;
+        margin-top: 110px;
+    }
+}
+
+@media (max-width: 500px) {
+    #login {
+        margin-top: -8px;
+        width: 485px;
+        margin-left: -8px;
+        border-radius: 0;
+        height: 600px;
+    }
+
+    #formulario {
+        width: 430px;
+        height: 225px;
+        font-size: 17px;
+    }
+
+    #usuario, #contrasena{
+        width: 340px;
+    }
+
+    input {
+        padding: 11px;
+    }
+
+    a {
+        margin-top: 35px;
+    }
+
+    #botonEntrar {
+        width: 364px;
+        padding: 13px;
+        font-size: 16px;
+        margin-top: 13px;
+    }
+
+    #botonDescubre {
+        background-color: white;
+        color: rgb(0, 0, 62);
+        border-radius: 10px;
+        padding: 13px;
+        font-size: 16px;
+        font-weight: 750;
+        font-family: "Raleway", sans-serif;
+        width: 364px;
+        border: none;
+        margin-top: 20px;
+    }
+
+    #descubrir{
+        text-align: center;
+    }
+
+    #descubrir h1{
+        color: black;
+        font-size: 27px;
+        margin-top: 50px;
+        font-weight: 500;
+    }
+
+    #descubrir p{
+        color: rgb(0, 0, 62, 0.6);
+        font-size: 20px;
+        font-weight: 650;
+    }
+
+    #descubrir p:nth-of-type(2) {
+        margin-top: -18px;
+    }
+
+}

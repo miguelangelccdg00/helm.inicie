@@ -1,1 +1,46 @@
-<p>login works!</p>
+<div id="login">
+
+    <div id="formulario">
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+            <label for="usuario">Usuario</label>
+
+            <br>
+
+            <input type="text" id="usuario" name="usuario" [placeholder]="usuarioPlaceholder" formControlName="usuario" required>
+
+
+            <br><br>
+
+            <label for="contraseña">Contraseña</label>
+
+            <br>
+
+            <input type="password" id="contrasena" name="contrasena" [placeholder]="contrasenaPlaceholder" formControlName="contrasena" required>
+
+            <br><br>
+
+            @if (mostrarRecordar) {
+                <input type="checkbox" id="recordar" name="recordar" formControlName="recordar">
+                <label for="recordar">Recordar en este equipo</label>
+                <br><br>
+            }
+
+            <button id="botonEntrar" type="submit" [disabled]="loginForm.invalid">Entrar</button>
+
+        </form>
+    </div>
+
+    <a href="#">¿Has olvidado tu contraseña?</a>
+
+</div>
+
+@if (mostrarDescubrir) {
+    <div id="descubrir">
+        <h1>¿Aún no conoces NormaPro?</h1>
+        <p>La solución para llevar tu</p>
+        <p>negocio al siguiente nivel</p>
+        <button id="botonDescubre">Descubre NormaPro</button>
+    </div>
+}
