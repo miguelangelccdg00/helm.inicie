@@ -8,7 +8,7 @@ import { CarruselComponent } from '../carrusel/carrusel.component';
   standalone: true,
   imports: [CommonModule, LoginComponent, CarruselComponent],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
+  styleUrl: './home.component.sass',
 })
 export class HomeComponent {
   
