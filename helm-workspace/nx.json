@@ -50,6 +50,9 @@
       "linter": "eslint",
       "style": "sass",
       "unitTestRunner": "jest"
+    },
+    "@nx/angular:component": {
+      "style": "css"
     }
   },
   "plugins": [
