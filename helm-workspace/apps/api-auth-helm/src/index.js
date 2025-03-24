@@ -1,8 +1,8 @@
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import registroRoutes from '../src/routes/registroRoutes';
-import loginRoutes from '../src/routes/loginRoutes';
+import registroRoutes from './routes/RegistroRoute';
+import loginRoutes from './routes/LoginRoute';
 import path from 'path';
  
 const app = express();
@@ -36,3 +36,5 @@ app.get('/', (req, res) =>
         }]
     })
 })
+
+export default app;

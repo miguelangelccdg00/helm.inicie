@@ -1,4 +1,4 @@
-import { pool } from '../../../api-shared-helm/src/database/conexion.js';
+import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
 import { Request, Response } from 'express';
 import { usuario } from '../models/usuario.js';
 
