@@ -1,26 +1,19 @@
 <div id="carrusel">
-    <div id="bloque1">
-        <p id="titulo">dawdaw</p>
-        <p id="descripcion">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea dicta quis dolorem voluptates mollitia rerum impedit nihil magni quibusdam blanditiis ut, itaque enim unde! Ut quis sed tenetur. Placeat, rerum.</p>
-    </div>
-    <div id="bloque2">
-        <p id="titulo">dawdaw</p>
-        <p id="descripcion">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea dicta quis dolorem voluptates mollitia rerum impedit nihil magni quibusdam blanditiis ut, itaque enim unde! Ut quis sed tenetur. Placeat, rerum.</p>
-    </div>
-    <div id="bloque3">
-        <p id="titulo">dawdaw</p>
-        <p id="descripcion">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea dicta quis dolorem voluptates mollitia rerum impedit nihil magni quibusdam blanditiis ut, itaque enim unde! Ut quis sed tenetur. Placeat, rerum.</p>
-    </div>
-    <div id="bloque4">
-        <p id="titulo">dawdaw</p>
-        <p id="descripcion">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea dicta quis dolorem voluptates mollitia rerum impedit nihil magni quibusdam blanditiis ut, itaque enim unde! Ut quis sed tenetur. Placeat, rerum.</p>
-    </div>
-    <div id="bloque5">
-        <p id="titulo">dawdaw</p>
-        <p id="descripcion">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea dicta quis dolorem voluptates mollitia rerum impedit nihil magni quibusdam blanditiis ut, itaque enim unde! Ut quis sed tenetur. Placeat, rerum.</p>
-    </div>
-    <div id="bloque6">
-        <p id="titulo">dawdaw</p>
-        <p id="descripcion">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea dicta quis dolorem voluptates mollitia rerum impedit nihil magni quibusdam blanditiis ut, itaque enim unde! Ut quis sed tenetur. Placeat, rerum.</p>
+    <div class="bloque" *ngFor="let bloque of bloquesVisibles">
+        <img [src]="bloque.imagen" alt="Imagen del bloque">
+        <p class="titulo">{{ bloque.titulo }}</p>
+        <p class="descripcion">{{ bloque.descripcion }}</p>
     </div>
 </div>
+
+<div id="botones">
+    @for (bloque of bloques; let i = $index; track i) {
+        @if (i === botonSeleccionado) {
+            <button (click)="cambiarBloques(i)" class="seleccionado"></button>
+        } @else {
+            <button (click)="cambiarBloques(i)"></button>
+        }
+    }
+</div>
+
+<button id="botonDescubre">Descubre más sobre NormaPro</button>
