@@ -15,7 +15,7 @@
       }
     },
     "serve": {
-      "executor": "@nx/node:node",
+      "executor": "@nx/webpack:dev-server",
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "api-auth-helm:build"
