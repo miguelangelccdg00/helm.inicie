@@ -1,6 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { LoginService } from '../login.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,7 @@ export class LoginComponent {
   mostrarRecordar: boolean = true;
   mostrarDescubrir: boolean = false;
 
-  constructor() {
+  constructor(private loginService: LoginService) {
     this.updatePlaceholders(window.innerWidth);
   }
 
@@ -47,11 +48,26 @@ export class LoginComponent {
   }
 
   onSubmit() {
+    
     if (this.loginForm.valid) {
-      console.log('Inicio de sesión exitoso', this.loginForm.value);
+
+      const { usuario, contrasena } = this.loginForm.value;
+
+      const usuarioFinal = usuario ?? '';
+      const contrasenaFinal = contrasena ?? '';
+  
+      this.loginService.login(usuarioFinal, contrasenaFinal).subscribe({
+        next: (response) => {
+          console.log('Inicio de sesión exitoso', response.message);
+        },
+        error: (err) => {
+          console.log('Error al iniciar sesión', err);
+        }
+      });
     } else {
       console.log('El usuario o la contraseña no son válidos');
     }
+    
   }
   
 }
