@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './carrusel.component.html',
   styleUrl: './carrusel.component.sass',
 })
+
 export class CarruselComponent {
 
   bloques = [

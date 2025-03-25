@@ -1,18 +1,25 @@
+<div id="encabezado">
+    <h1>¿Aún no conoces NormaPro?</h1>
+    <p>La solución para llevar tu negocio al siguiente nivel</p>
+</div>
+
 <div id="carrusel">
-    <div class="bloque" *ngFor="let bloque of bloquesVisibles">
-        <img [src]="bloque.imagen" alt="Imagen del bloque">
-        <p class="titulo">{{ bloque.titulo }}</p>
-        <p class="descripcion">{{ bloque.descripcion }}</p>
-    </div>
+    @for (bloque of bloquesVisibles; track bloque) {
+        <div class="bloque">
+            <img [src]="bloque.imagen" alt="Imagen del bloque">
+            <p class="titulo">{{ bloque.titulo }}</p>
+            <p class="descripcion">{{ bloque.descripcion }}</p>
+        </div>
+    }
 </div>
 
 <div id="botones">
     @for (bloque of bloques; let i = $index; track i) {
-        @if (i === botonSeleccionado) {
-            <button (click)="cambiarBloques(i)" class="seleccionado"></button>
-        } @else {
-            <button (click)="cambiarBloques(i)"></button>
-        }
+    @if (i === botonSeleccionado) {
+    <button (click)="cambiarBloques(i)" class="seleccionado"></button>
+    } @else {
+    <button (click)="cambiarBloques(i)"></button>
+    }
     }
 </div>
 
