@@ -12,7 +12,7 @@ export interface LoginResponse {
 
 export class LoginService {
 
-  private apiUrl = 'http://localhost:3009/login/loginUsuario'; // URL del endpoint backend
+  private apiUrl = 'http://localhost:3009/login/loginUsuario';
 
   constructor(private http: HttpClient) { }
 
