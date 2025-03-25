@@ -21,7 +21,7 @@ app.get('/', (req, res) =>
         endpoints: [{
             login:
             {
-                base: '/login',
+                base: 'login',
                 operations:[
                     { method: 'POST', path: '/loginUsuario' }
                 ]                        
