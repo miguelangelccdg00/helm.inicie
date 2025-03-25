@@ -6,56 +6,20 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": "helm-workspace/.prettierrc",
-        "hash": "6820402234827505055"
-      },
-      {
-        "file": "helm-workspace/nx.json",
-        "hash": "3453317360593059249"
-      },
-      {
-        "file": "helm-workspace/package-lock.json",
-        "hash": "10026596024861244129"
-      },
-      {
-        "file": "helm-workspace/jest.preset.js",
-        "hash": "7473220183190921152"
-      },
-      {
-        "file": ".gitignore",
-        "hash": "15973767930627758727"
-      },
-      {
-        "file": "helm-workspace/README.md",
-        "hash": "3178231761494475781"
+        "file": "helm-workspace/.vscode/extensions.json",
+        "hash": "60901680939730831"
       },
       {
         "file": "nx.json",
         "hash": "17085942476707415972"
       },
       {
-        "file": "helm-workspace/.eslintrc.json",
-        "hash": "4566917484430375526"
+        "file": "helm-workspace/README.md",
+        "hash": "3178231761494475781"
       },
       {
-        "file": "helm-workspace/jest.config.ts",
-        "hash": "7544409015863045561"
-      },
-      {
-        "file": "helm-workspace/package.json",
-        "hash": "7439904019017725703"
-      },
-      {
-        "file": "helm-workspace/.eslintignore",
-        "hash": "13404745306227114823"
-      },
-      {
-        "file": "package.json",
-        "hash": "1261271663194543339"
-      },
-      {
-        "file": "helm-workspace/.vscode/extensions.json",
-        "hash": "60901680939730831"
+        "file": "helm-workspace/package-lock.json",
+        "hash": "16833639339522354520"
       },
       {
         "file": "helm-workspace/.editorconfig",
@@ -66,16 +30,52 @@
         "hash": "12269743867629339573"
       },
       {
-        "file": "package-lock.json",
-        "hash": "8354428608899706325"
+        "file": "helm-workspace/package.json",
+        "hash": "18013386189784235418"
+      },
+      {
+        "file": "helm-workspace/.eslintignore",
+        "hash": "13404745306227114823"
+      },
+      {
+        "file": "helm-workspace/nx.json",
+        "hash": "3453317360593059249"
+      },
+      {
+        "file": "helm-workspace/.prettierrc",
+        "hash": "6820402234827505055"
+      },
+      {
+        "file": "package.json",
+        "hash": "1261271663194543339"
+      },
+      {
+        "file": "helm-workspace/jest.preset.js",
+        "hash": "7473220183190921152"
+      },
+      {
+        "file": "helm-workspace/jest.config.ts",
+        "hash": "7544409015863045561"
       },
       {
         "file": "helm-workspace/.gitignore",
         "hash": "4018768683067489858"
       },
       {
+        "file": "package-lock.json",
+        "hash": "8354428608899706325"
+      },
+      {
         "file": "helm-workspace/tsconfig.base.json",
         "hash": "12471885200579325840"
+      },
+      {
+        "file": "helm-workspace/.eslintrc.json",
+        "hash": "4566917484430375526"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "15973767930627758727"
       }
     ],
     "projectFileMap": {
@@ -110,23 +110,31 @@
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/app.component.ts",
-          "hash": "1538888858622055658"
+          "hash": "535571344859681698"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/app.config.ts",
-          "hash": "2061310302555965946"
+          "hash": "9744413009049053409"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/app.routes.ts",
           "hash": "12809181021481640644"
         },
         {
+          "file": "helm-workspace/apps/helm-front/src/app/auth.guard.spec.ts",
+          "hash": "8826885499913990525"
+        },
+        {
+          "file": "helm-workspace/apps/helm-front/src/app/auth.guard.ts",
+          "hash": "11726489368362468046"
+        },
+        {
           "file": "helm-workspace/apps/helm-front/src/app/carrusel/carrusel.component.html",
-          "hash": "3973263926097439600"
+          "hash": "15557728877537250757"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/carrusel/carrusel.component.sass",
-          "hash": "4803749745738433864"
+          "hash": "18269187438005651451"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/carrusel/carrusel.component.spec.ts",
@@ -134,7 +142,7 @@
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/carrusel/carrusel.component.ts",
-          "hash": "6932835344454047778"
+          "hash": "18219708804926265446"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/home/home.component.html",
@@ -153,12 +161,20 @@
           "hash": "6028739298823416288"
         },
         {
+          "file": "helm-workspace/apps/helm-front/src/app/login.service.spec.ts",
+          "hash": "9236179103519150672"
+        },
+        {
+          "file": "helm-workspace/apps/helm-front/src/app/login.service.ts",
+          "hash": "3480773530932802982"
+        },
+        {
           "file": "helm-workspace/apps/helm-front/src/app/login/login.component.html",
           "hash": "12759170744576206955"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/login/login.component.sass",
-          "hash": "9371015624382912215"
+          "hash": "1640991707002926176"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/login/login.component.spec.ts",
@@ -166,7 +182,7 @@
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/login/login.component.ts",
-          "hash": "366334563279320148"
+          "hash": "18366546187925142171"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/nx-welcome.component.ts",
@@ -308,11 +324,11 @@
         },
         {
           "file": "helm-workspace/apps/api-auth-helm/src/controllers/LoginControllers.ts",
-          "hash": "13014428834431446657"
+          "hash": "17876419025330266770"
         },
         {
           "file": "helm-workspace/apps/api-auth-helm/src/controllers/RegistroControllers.ts",
-          "hash": "18100890914146934054"
+          "hash": "10918583613479841153"
         },
         {
           "file": "helm-workspace/apps/api-auth-helm/src/index.js",

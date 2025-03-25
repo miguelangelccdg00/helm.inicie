@@ -16,6 +16,7 @@
     "@nrwl/express": "^19.8.4",
     "@nx/angular": "19.6.0",
     "axios": "^1.6.0",
+    "bcryptjs": "^3.0.2",
     "express": "^4.18.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
