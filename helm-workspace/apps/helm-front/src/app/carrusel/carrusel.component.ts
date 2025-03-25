@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -6,10 +6,10 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './carrusel.component.html',
-  styleUrl: './carrusel.component.sass',
+  styleUrls: ['./carrusel.component.sass'],
 })
 
-export class CarruselComponent {
+export class CarruselComponent implements OnInit, OnDestroy {
 
   bloques = [
     { titulo: 'BPM Suite', descripcion: 'Si buscas mejorar la eficiencia, el control y la agilidad de tus procesos operativos.', imagen: 'assets/img1.jpg' },
@@ -19,12 +19,24 @@ export class CarruselComponent {
     { titulo: 'Ticketing', descripcion: 'Eficiencia y rapidez en la atención de clientes, solicitudes o incidencias de tu empresa.', imagen: 'assets/img5.jpg' },
     { titulo: 'Canal interno de comunicación', descripcion: 'Seguridad, Confidencialidad y Protección.', imagen: 'assets/img6.jpg' },
   ];
-  
+
   bloquesVisibles = this.bloques.slice(0, 3);
   botonSeleccionado: number | null = null;
+  private intervaloId: any;
+
+  ngOnInit() {
+    this.intervaloId = setInterval(() => {
+      this.avanzarBloques();
+    }, 4000);
+  }
+
+  ngOnDestroy() {
+    if (this.intervaloId) {
+      clearInterval(this.intervaloId);
+    }
+  }
 
   cambiarBloques(indice: number) {
-
     let bloquesVisibles = [];
 
     if (indice - 1 >= 0) {
@@ -39,7 +51,15 @@ export class CarruselComponent {
 
     this.bloquesVisibles = bloquesVisibles;
     this.botonSeleccionado = indice;
-
   }
-  
+
+  avanzarBloques() {
+    const siguienteIndice = (this.botonSeleccionado !== null ? this.botonSeleccionado : 0) + 1;
+    if (siguienteIndice >= this.bloques.length) {
+      this.cambiarBloques(0);
+    } else {
+      this.cambiarBloques(siguienteIndice);
+    }
+  }
+
 }
