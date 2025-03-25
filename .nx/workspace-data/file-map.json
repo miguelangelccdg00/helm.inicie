@@ -6,637 +6,91 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": ".git/objects/42/e43ca0c98ef4f014782b6906a2eb9c5da7de14",
-        "hash": "11534620451169216521"
-      },
-      {
-        "file": ".git/objects/4c/07ca56541c68bd6b6ab7876ca18b2197629bb0",
-        "hash": "5140936897159188726"
-      },
-      {
-        "file": ".git/objects/91/f98f4ee37b67b66bbb5acef79ec0cc49f7be59",
-        "hash": "3486332481024717680"
-      },
-      {
-        "file": "helm-workspace/package.json",
-        "hash": "711701088127603509"
-      },
-      {
-        "file": ".nx/workspace-data/project-graph.json~6ce9daa7",
-        "hash": "2765114322543504520"
-      },
-      {
-        "file": ".git/objects/fe/20600c78e1b8f76393e63fde085e6fcd5ec231",
-        "hash": "2513932826314928629"
-      },
-      {
-        "file": ".git/objects/f3/a71d4a402f5ba3de0ffd446fee5b594df3e9c6",
-        "hash": "16623545723991102190"
-      },
-      {
-        "file": "helm-workspace/.eslintignore",
-        "hash": "7663861978715868291"
-      },
-      {
-        "file": ".git/objects/6c/dc75f5b25c0e0c591f62b9eaa7664116405641",
-        "hash": "12568275907904989579"
-      },
-      {
-        "file": ".git/COMMIT_EDITMSG",
-        "hash": "5827546465861443292"
-      },
-      {
-        "file": ".git/objects/db/78f5ffcbc554d32315847ed0bb80e0fe9c2a88",
-        "hash": "15633858997580662139"
-      },
-      {
-        "file": ".git/objects/f6/67c0b84c3cf8b490557e47f93b1d76af7d0ab1",
-        "hash": "14337492000580940206"
-      },
-      {
-        "file": ".git/objects/68/0d5922f3d4d4e116a67804669cd838102384ca",
-        "hash": "16882170907015505260"
-      },
-      {
-        "file": "helm-workspace/.vscode/extensions.json",
-        "hash": "4934098906304722861"
-      },
-      {
-        "file": ".git/objects/9d/2388b685d35f648064c64ee1271d564b7eb669",
-        "hash": "16439100351566881928"
-      },
-      {
-        "file": ".git/objects/db/e42a5211534e3f29a8dce6ecad5e90de3cfc27",
-        "hash": "11583762629148154244"
-      },
-      {
-        "file": ".git/objects/d1/4d465fcf421f31b603ac7b456d346475a807f4",
-        "hash": "11169631170283643111"
-      },
-      {
-        "file": ".git/objects/4b/71628bc6d9e727eacf2e3627d3c1f4dc10d9e7",
-        "hash": "2486409036731987810"
-      },
-      {
-        "file": ".git/objects/d7/9754bbb4e6f4cc2f9c76e8b7ecabab801d89a7",
-        "hash": "14256244751241942729"
-      },
-      {
-        "file": "helm-workspace/jest.config.ts",
-        "hash": "3494843969422251966"
-      },
-      {
-        "file": ".git/objects/11/dcd552d606758d773b12faaa05cf496bad132b",
-        "hash": "15057826823579034694"
-      },
-      {
-        "file": ".nx/workspace-data/file-map.json~a9137847",
-        "hash": "11762347681191443125"
-      },
-      {
-        "file": "helm-workspace/.prettierignore",
-        "hash": "5407418692668764289"
+        "file": "helm-workspace/jest.preset.js",
+        "hash": "7473220183190921152"
       },
       {
         "file": "helm-workspace/README.md",
-        "hash": "9292715324176960195"
+        "hash": "3178231761494475781"
       },
       {
-        "file": ".git/refs/heads/main",
-        "hash": "9481374838406195926"
+        "file": "helm-workspace/.prettierignore",
+        "hash": "12269743867629339573"
       },
       {
-        "file": ".git/objects/fd/aa93505084f07339f30e8a40964de88afc3071",
-        "hash": "10402704585199140784"
+        "file": ".gitignore",
+        "hash": "15973767930627758727"
       },
       {
-        "file": ".git/objects/6d/25107e2baa58683af05d2386cfc114965c2117",
-        "hash": "988327372325105863"
+        "file": "helm-workspace/nx.json",
+        "hash": "3453317360593059249"
       },
       {
-        "file": ".git/objects/d7/a0f9f65e7dc66103b635dcd9c804e3f0282ccb",
-        "hash": "12450761215741306411"
+        "file": "helm-workspace/tsconfig.base.json",
+        "hash": "12471885200579325840"
       },
       {
-        "file": ".git/objects/54/23c101710942a0be6e68899d462749eed76f9d",
-        "hash": "17101491110142120643"
+        "file": "helm-workspace/.vscode/extensions.json",
+        "hash": "60901680939730831"
       },
       {
-        "file": ".git/objects/07/978a9cc5ddee25a68b9f28e474e674cf994222",
-        "hash": "16768520284084739362"
+        "file": "helm-workspace/.eslintignore",
+        "hash": "13404745306227114823"
+      },
+      {
+        "file": "helm-workspace/.gitignore",
+        "hash": "4018768683067489858"
+      },
+      {
+        "file": "helm-workspace/.editorconfig",
+        "hash": "11532813898455409296"
+      },
+      {
+        "file": "helm-workspace/jest.config.ts",
+        "hash": "7544409015863045561"
+      },
+      {
+        "file": "helm-workspace/.eslintrc.json",
+        "hash": "4566917484430375526"
+      },
+      {
+        "file": "helm-workspace/package-lock.json",
+        "hash": "10026596024861244129"
       },
       {
         "file": "package.json",
         "hash": "1261271663194543339"
       },
       {
-        "file": ".git/objects/cb/46ba9a530b5fbdec261b8a102fa57468c04362",
-        "hash": "16072342469441833006"
-      },
-      {
-        "file": ".nx/workspace-data/project-graph.json~30b6f2ce",
-        "hash": "1667972911415182078"
-      },
-      {
-        "file": ".git/objects/71/c1769e1a8b0712ffe30d10e90f095a821dd9a4",
-        "hash": "14204953739950782248"
-      },
-      {
-        "file": ".git/objects/b9/6b2860936d37dcca98a39d8d96fd8d028265bd",
-        "hash": "9501915840412050409"
-      },
-      {
-        "file": ".nx/workspace-data/project-graph.json~db78ac7d",
-        "hash": "17546768475105687462"
-      },
-      {
-        "file": ".nx/workspace-data/source-maps.json~0ce9ab89",
-        "hash": "14946179712944594905"
-      },
-      {
-        "file": ".git/objects/c9/3c54111b00099c6b643c7402496d3816e27bd6",
-        "hash": "2482569513058547226"
-      },
-      {
-        "file": ".git/objects/b0/24538727573188a62e0a4f0e72af33014a6962",
-        "hash": "14671827542088587163"
-      },
-      {
-        "file": ".git/refs/remotes/origin/HEAD",
-        "hash": "14337113598980590668"
-      },
-      {
-        "file": ".git/objects/0b/911459cb5ca8e8600a9450daa77ecb844d35b2",
-        "hash": "7492988519186662515"
-      },
-      {
-        "file": ".nx/workspace-data/source-maps.json~dfa1f14f",
-        "hash": "14946179712944594905"
-      },
-      {
-        "file": ".git/objects/pack/pack-07152d4a220d85bdb759bf98a6e43cf83fc5ba43.pack",
-        "hash": "1402222681354678961"
-      },
-      {
-        "file": ".git/objects/32/05f2f3c4d3331729e92accea935ebb6aa01b56",
-        "hash": "2645577397273194667"
-      },
-      {
-        "file": ".git/objects/53/4ab25baaa4a5e913965ada6c502912e474104c",
-        "hash": "2426857101598606489"
-      },
-      {
-        "file": ".git/objects/7e/4744e206daf8a0dd6d693f07603760183521d9",
-        "hash": "3288538111580791936"
-      },
-      {
-        "file": ".nx/workspace-data/file-map.json~296ae755",
-        "hash": "17750449145922788284"
-      },
-      {
-        "file": ".git/objects/8c/cc211ec75c28294bb463123ae697792bd7df56",
-        "hash": "7744058196802338791"
-      },
-      {
-        "file": ".nx/workspace-data/project-graph.json",
-        "hash": "13946624045133612358"
-      },
-      {
-        "file": ".git/objects/7f/e22dab7615b94b3d68acb883c1eba858f7d6e3",
-        "hash": "8692980321450073841"
-      },
-      {
-        "file": ".git/objects/f4/f546b113aab0c7fd4ea73293a3e8ff2a26ee95",
-        "hash": "17910398849069821613"
-      },
-      {
-        "file": ".nx/workspace-data/project-graph.json~224814e7",
-        "hash": "7154842525900922433"
-      },
-      {
-        "file": "helm-workspace/jest.preset.js",
-        "hash": "9430166341120122740"
-      },
-      {
-        "file": ".nx/workspace-data/project-graph.json~1ad41ec8",
-        "hash": "10668120020566523886"
-      },
-      {
-        "file": ".git/FETCH_HEAD",
-        "hash": "734149119690046260"
-      },
-      {
-        "file": ".git/objects/7c/dbcf753a1a463180a2ba54650883d74865449b",
-        "hash": "8226515781555700506"
-      },
-      {
-        "file": ".nx/workspace-data/project-graph.json~2381d417",
-        "hash": "4598728054553051295"
-      },
-      {
-        "file": ".nx/workspace-data/source-maps.json~5710577d",
-        "hash": "14946179712944594905"
-      },
-      {
-        "file": ".nx/workspace-data/source-maps.json~1ba66656",
-        "hash": "14946179712944594905"
-      },
-      {
-        "file": "helm-workspace/nx.json",
-        "hash": "13650618500498750701"
-      },
-      {
-        "file": ".git/objects/ba/c104b021a367e9c2156edc1ad56d19bb2ce165",
-        "hash": "11739236492266972832"
-      },
-      {
-        "file": ".git/objects/98/ea65f19845d48b4593537b5534f0357f54c041",
-        "hash": "7199053507141192689"
-      },
-      {
-        "file": ".git/objects/02/08043ac72ea1d82e42fe0cb2f957e21d7882e8",
-        "hash": "8364695420159398033"
-      },
-      {
         "file": "package-lock.json",
         "hash": "8354428608899706325"
       },
       {
-        "file": "helm-workspace/package-lock.json",
-        "hash": "1558627963834093502"
-      },
-      {
-        "file": ".git/objects/2a/9a0d15951c8f23d7d89f876373da5016ff35db",
-        "hash": "17533780103667879405"
-      },
-      {
-        "file": ".nx/workspace-data/file-map.json~5af88266",
-        "hash": "689274437773847842"
-      },
-      {
-        "file": ".git/objects/54/4c498b56dc04d769d8598be5323c5ff8f38630",
-        "hash": "18387016722773603797"
-      },
-      {
-        "file": ".nx/workspace-data/source-maps.json~b14726bf",
-        "hash": "14946179712944594905"
-      },
-      {
-        "file": ".git/objects/36/8a83ffe834e0a987d45e95c1c3c8bf436e980b",
-        "hash": "15084597593783852651"
-      },
-      {
-        "file": ".nx/workspace-data/project-graph.json~2fd37206",
-        "hash": "4539439635469600973"
-      },
-      {
-        "file": ".git/objects/47/9bf07f3147afde266c2f62f733eb2caafecd64",
-        "hash": "3665549538149458628"
-      },
-      {
-        "file": ".git/objects/b7/89fa3913a7f3a4a65fdedcf99690e5fba60d0e",
-        "hash": "4316205961249081850"
-      },
-      {
-        "file": ".git/objects/ee/94b8d68cc6dbf0531639f583209606b803b83f",
-        "hash": "326838296211240276"
-      },
-      {
-        "file": ".nx/workspace-data/project-graph.json~ac80a1b9",
-        "hash": "5248055604739092457"
-      },
-      {
-        "file": ".git/objects/8a/fea63cd4413245171f947d81a6c344dc93c30e",
-        "hash": "397147192012106004"
-      },
-      {
-        "file": ".git/objects/80/f98acc34ea23499da0c4ec893e4e170726485f",
-        "hash": "17799443350271768092"
-      },
-      {
-        "file": ".git/objects/b1/d54d9bb12341d0090d2d0940e0c5ec6b05ba2b",
-        "hash": "12866322213743650711"
-      },
-      {
-        "file": ".nx/workspace-data/source-maps.json",
-        "hash": "14946179712944594905"
-      },
-      {
-        "file": ".git/objects/bf/b90a7f564a5ab7898098985f36cab2fe72fdcc",
-        "hash": "16961416806360621044"
-      },
-      {
-        "file": "helm-workspace/.editorconfig",
-        "hash": "5443105041930014821"
-      },
-      {
-        "file": ".git/logs/refs/remotes/origin/main",
-        "hash": "1362200074993154815"
-      },
-      {
-        "file": ".git/objects/26/eb73a1f716d94e80e79af645a5dbb7808a5a8b",
-        "hash": "7011622445004675456"
-      },
-      {
-        "file": ".git/objects/cf/a729433ca2fa5c4b5ce4fa28cb03c872e5116a",
-        "hash": "12475893310546399559"
-      },
-      {
-        "file": ".git/objects/b2/d54f0989d8d2d6e51bc6f532abb722a761a25c",
-        "hash": "18282712375632070848"
-      },
-      {
-        "file": ".git/objects/b2/d9d7b64162594b1bb8b687e1d66976a13e01b6",
-        "hash": "11006182276051970243"
-      },
-      {
-        "file": ".git/objects/64/4bb0da7c415be42907be002ba74433cef23736",
-        "hash": "3654017788930855958"
-      },
-      {
-        "file": ".nx/workspace-data/project-graph.json~759db144",
-        "hash": "9813730982852451764"
-      },
-      {
-        "file": ".nx/workspace-data/project-graph.json~e4326c74",
-        "hash": "6273309845885633995"
+        "file": "helm-workspace/package.json",
+        "hash": "7439904019017725703"
       },
       {
         "file": "nx.json",
         "hash": "17085942476707415972"
       },
       {
-        "file": ".git/objects/7a/cf0f26ab657c66da7eccec76314e443d0987cb",
-        "hash": "17804451567682198220"
-      },
-      {
-        "file": ".git/objects/dd/0a3f9f06ddbb053e2baf1c1e78f24c4e9254dc",
-        "hash": "3510469230397486730"
-      },
-      {
-        "file": ".nx/workspace-data/project-graph.json~018848de",
-        "hash": "15087906273422088532"
-      },
-      {
-        "file": ".git/objects/19/0c326c7422db0fbdf90e58c81d19778d8828c0",
-        "hash": "7323733000008309012"
-      },
-      {
-        "file": ".git/objects/8c/43fae56e8f6e28cf82fb949d75d09f909c44af",
-        "hash": "13476335139248133864"
-      },
-      {
-        "file": ".git/index",
-        "hash": "18277903847736947600"
-      },
-      {
-        "file": ".nx/workspace-data/file-map.json~d9f9a4ae",
-        "hash": "14873701838543367356"
-      },
-      {
-        "file": "helm-workspace/tsconfig.base.json",
-        "hash": "16936441711144470533"
-      },
-      {
-        "file": ".git/objects/f8/c7cb61fd721ceeae507ee7a41be652fbbf8e73",
-        "hash": "15946667575100151931"
-      },
-      {
-        "file": ".git/objects/05/fd8f1903cdc4f77d35b41284fefba168155073",
-        "hash": "16328695685302183628"
-      },
-      {
-        "file": ".nx/workspace-data/project-graph.json~0f280bd0",
-        "hash": "12176707147789435907"
-      },
-      {
-        "file": ".git/objects/1e/abd9e6c6f6525e5006d7ddd283a2f2422e0f82",
-        "hash": "2647837371169638476"
-      },
-      {
-        "file": ".nx/workspace-data/file-map.json",
-        "hash": "15814406966478592324"
-      },
-      {
-        "file": ".git/objects/6b/8fd5712f0b454e96cd58cc6db7a66b914efb04",
-        "hash": "10802395851049459532"
-      },
-      {
-        "file": ".nx/workspace-data/file-map.json~44416245",
-        "hash": "18383498089419292363"
-      },
-      {
-        "file": ".git/objects/7e/1a37e76f3bc814e6a24fb636cf8b75698ada4e",
-        "hash": "6747282379012228030"
-      },
-      {
-        "file": ".git/objects/ee/4db1e0b64936bb94cb7f8a8c5984ed4dc3978a",
-        "hash": "1979600406906672057"
-      },
-      {
-        "file": ".git/objects/36/45d4b8cb9aa4718647dafc1956ca5f0adf6696",
-        "hash": "16901863584445333245"
-      },
-      {
-        "file": ".git/logs/refs/remotes/origin/HEAD",
-        "hash": "3779152391043095642"
-      },
-      {
-        "file": ".git/objects/5e/303707b8a0b6a76ab19ee7ae2ebf64d86968bd",
-        "hash": "16897024179492881610"
-      },
-      {
-        "file": ".git/objects/b3/3f226fc6e7064acd62dddbfd278c7e069773af",
-        "hash": "11160836502294560776"
-      },
-      {
-        "file": ".git/objects/2a/012fe6d4cba56c6e806d6a51e2106cde65fdad",
-        "hash": "16048260587463516274"
-      },
-      {
-        "file": ".nx/workspace-data/file-map.json~ddc0ff65",
-        "hash": "14815900884036841104"
-      },
-      {
-        "file": ".nx/workspace-data/source-maps.json~e076422f",
-        "hash": "14946179712944594905"
-      },
-      {
-        "file": ".git/objects/83/f1fc8fbdfb9469a3ac7c8863a5539d14dd14dd",
-        "hash": "4053656830694360097"
-      },
-      {
-        "file": ".git/objects/67/dd19a3b1551ebd9afcde1edcad04f924498340",
-        "hash": "18096055797889915986"
-      },
-      {
-        "file": ".nx/workspace-data/source-maps.json~27420041",
-        "hash": "14946179712944594905"
-      },
-      {
-        "file": ".git/objects/46/79efa3a8af73fe822a5b053cc391605416cde2",
-        "hash": "1510955892086904655"
-      },
-      {
-        "file": "helm-workspace/.eslintrc.json",
-        "hash": "18315524891129148814"
-      },
-      {
-        "file": ".git/objects/f2/a89437d8184e69b4e15ba44ce88ec9bb20baf2",
-        "hash": "14819778250050960997"
-      },
-      {
-        "file": ".git/objects/5d/56089e15eced3420071f452d2df7064aa7ff89",
-        "hash": "7513966255885558495"
-      },
-      {
-        "file": ".git/objects/45/6d5c153f3fe8cbd2f597a887ef906e645c19dc",
-        "hash": "8434194524625248401"
-      },
-      {
-        "file": ".git/logs/refs/heads/main",
-        "hash": "6567091890784575683"
-      },
-      {
-        "file": ".git/objects/1e/798028ddda850d9d352ae6ccabaa432e528c1b",
-        "hash": "18405909115781007939"
-      },
-      {
-        "file": ".git/objects/e5/34aa476b59a0e3b6bd51b0a5cade450a80bad3",
-        "hash": "13992604836238258211"
-      },
-      {
-        "file": ".git/objects/25/abcda6c6ce7baf47c9dbcf406cb63559a29d59",
-        "hash": "13103434227481531326"
-      },
-      {
-        "file": ".git/logs/HEAD",
-        "hash": "6567091890784575683"
-      },
-      {
-        "file": ".git/objects/c9/82b2167cd3920fac5893b7c64269ac544c6185",
-        "hash": "7903413811913070234"
-      },
-      {
-        "file": ".git/objects/ef/a0953e1ddc7b88fabbb51c468b3ac09b6efae3",
-        "hash": "5966271054215964630"
-      },
-      {
-        "file": ".git/objects/2e/43953aa751872304801da75994106d47f45819",
-        "hash": "13025731582015572011"
-      },
-      {
-        "file": ".git/objects/0c/e29387a1a3d87a6c54149feb91c5eb372f1188",
-        "hash": "2071022422659501144"
-      },
-      {
-        "file": ".nx/workspace-data/project-graph.json~6ad9a204",
-        "hash": "16620941705431571752"
-      },
-      {
-        "file": ".nx/workspace-data/source-maps.json~283a91d4",
-        "hash": "14946179712944594905"
-      },
-      {
-        "file": ".nx/workspace-data/project-graph.json~ad8ff7d1",
-        "hash": "7172727160414823579"
-      },
-      {
-        "file": ".git/objects/0e/5411209c595575cb5fab812f2e82ff79ce0b98",
-        "hash": "4659347160528908505"
-      },
-      {
         "file": "helm-workspace/.prettierrc",
-        "hash": "16267754514737964994"
-      },
-      {
-        "file": ".git/objects/fd/d7d7f96db5c5666f1a451df39f6c61caee374b",
-        "hash": "12589550274044275160"
-      },
-      {
-        "file": ".nx/workspace-data/project-graph.json~2f96e21e",
-        "hash": "8350092099612465133"
-      },
-      {
-        "file": "helm-workspace/.gitignore",
-        "hash": "16399683567307215337"
-      },
-      {
-        "file": ".git/refs/remotes/origin/main",
-        "hash": "9481374838406195926"
-      },
-      {
-        "file": ".git/objects/43/0ec66df27d43c41ad462bc9bb0fa1829a1fee4",
-        "hash": "14431159082488291963"
-      },
-      {
-        "file": ".git/objects/2f/a457ae5f4e504e1576f960874ee2951af641b9",
-        "hash": "12121773758784050164"
-      },
-      {
-        "file": ".nx/workspace-data/project-graph.json~1400a07f",
-        "hash": "9240964187591234680"
-      },
-      {
-        "file": ".git/objects/7e/8ca1ec116c3ee4aefe7945747eeef1361ec409",
-        "hash": "8320899748089802889"
-      },
-      {
-        "file": ".nx/workspace-data/file-map.json~6a1499a2",
-        "hash": "7915010850286918308"
+        "hash": "6820402234827505055"
       }
     ],
     "projectFileMap": {
-      "api-auth-helm-e2e": [
-        {
-          "file": "helm-workspace/apps/api-auth-helm-e2e/.eslintrc.json",
-          "hash": "13800677001662881425"
-        },
-        {
-          "file": "helm-workspace/apps/api-auth-helm-e2e/jest.config.ts",
-          "hash": "7287538447582046478"
-        },
-        {
-          "file": "helm-workspace/apps/api-auth-helm-e2e/project.json",
-          "hash": "3504705279534901744"
-        },
-        {
-          "file": "helm-workspace/apps/api-auth-helm-e2e/src/api-auth-helm/api-auth-helm.spec.ts",
-          "hash": "4579662685003779048"
-        },
-        {
-          "file": "helm-workspace/apps/api-auth-helm-e2e/src/support/global-setup.ts",
-          "hash": "2568409276037275290"
-        },
-        {
-          "file": "helm-workspace/apps/api-auth-helm-e2e/src/support/global-teardown.ts",
-          "hash": "5275447082211835490"
-        },
-        {
-          "file": "helm-workspace/apps/api-auth-helm-e2e/src/support/test-setup.ts",
-          "hash": "10984585515912236441"
-        },
-        {
-          "file": "helm-workspace/apps/api-auth-helm-e2e/tsconfig.json",
-          "hash": "15443990093475294480"
-        },
-        {
-          "file": "helm-workspace/apps/api-auth-helm-e2e/tsconfig.spec.json",
-          "hash": "14954872453723519891"
-        }
-      ],
       "helm-front": [
         {
           "file": "helm-workspace/apps/helm-front/.eslintrc.json",
-          "hash": "3322449398258820698"
+          "hash": "9841770291056711405"
         },
         {
           "file": "helm-workspace/apps/helm-front/jest.config.ts",
-          "hash": "7771757522035285373"
+          "hash": "11646924216496433445"
         },
         {
           "file": "helm-workspace/apps/helm-front/project.json",
-          "hash": "8414281296035544013"
+          "hash": "3672998317503086922"
         },
         {
           "file": "helm-workspace/apps/helm-front/public/favicon.ico",
@@ -652,35 +106,35 @@
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/app.component.spec.ts",
-          "hash": "5691406196768596169"
+          "hash": "6682986673666817458"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/app.component.ts",
-          "hash": "11179784340415493592"
+          "hash": "1538888858622055658"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/app.config.ts",
-          "hash": "6137170128205633588"
+          "hash": "2061310302555965946"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/app.routes.ts",
-          "hash": "6185150965714414910"
+          "hash": "12809181021481640644"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/carrusel/carrusel.component.html",
-          "hash": "6134129161829979941"
+          "hash": "3973263926097439600"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/carrusel/carrusel.component.sass",
-          "hash": "4694909678543821186"
+          "hash": "4803749745738433864"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/carrusel/carrusel.component.spec.ts",
-          "hash": "12574926594794076924"
+          "hash": "18348911352143955340"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/carrusel/carrusel.component.ts",
-          "hash": "2058050100429861272"
+          "hash": "6932835344454047778"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/home/home.component.html",
@@ -692,7 +146,7 @@
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/home/home.component.spec.ts",
-          "hash": "2620641819347346630"
+          "hash": "15618241637266539250"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/home/home.component.ts",
@@ -708,7 +162,7 @@
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/login/login.component.spec.ts",
-          "hash": "15200146559264946551"
+          "hash": "14286510909486102227"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/login/login.component.ts",
@@ -716,7 +170,7 @@
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/nx-welcome.component.ts",
-          "hash": "15957028768120078090"
+          "hash": "2901732782033964228"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/index.html",
@@ -724,7 +178,7 @@
         },
         {
           "file": "helm-workspace/apps/helm-front/src/main.ts",
-          "hash": "16635586463787978962"
+          "hash": "875041330523952236"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/styles.sass",
@@ -732,79 +186,79 @@
         },
         {
           "file": "helm-workspace/apps/helm-front/src/test-setup.ts",
-          "hash": "12935735732682149507"
+          "hash": "10765977267162271731"
         },
         {
           "file": "helm-workspace/apps/helm-front/tsconfig.app.json",
-          "hash": "8365644956319658761"
+          "hash": "15840844869456775012"
         },
         {
           "file": "helm-workspace/apps/helm-front/tsconfig.editor.json",
-          "hash": "1055794200401717100"
+          "hash": "17575078801745175164"
         },
         {
           "file": "helm-workspace/apps/helm-front/tsconfig.json",
-          "hash": "13754717195043702669"
+          "hash": "5798422190385800407"
         },
         {
           "file": "helm-workspace/apps/helm-front/tsconfig.spec.json",
-          "hash": "2927375835638640771"
+          "hash": "1930986853382524452"
         }
       ],
       "api-shared-helm-e2e": [
         {
           "file": "helm-workspace/apps/api-shared-helm-e2e/.eslintrc.json",
-          "hash": "13800677001662881425"
+          "hash": "14921153827776288937"
         },
         {
           "file": "helm-workspace/apps/api-shared-helm-e2e/jest.config.ts",
-          "hash": "9551264003827475380"
+          "hash": "8213563291583207161"
         },
         {
           "file": "helm-workspace/apps/api-shared-helm-e2e/project.json",
-          "hash": "6177492637824108375"
+          "hash": "15120234326363576114"
         },
         {
           "file": "helm-workspace/apps/api-shared-helm-e2e/src/api-shared-helm/api-shared-helm.spec.ts",
-          "hash": "4579662685003779048"
+          "hash": "3026045886657059088"
         },
         {
           "file": "helm-workspace/apps/api-shared-helm-e2e/src/support/global-setup.ts",
-          "hash": "2568409276037275290"
+          "hash": "18221119270488052961"
         },
         {
           "file": "helm-workspace/apps/api-shared-helm-e2e/src/support/global-teardown.ts",
-          "hash": "5275447082211835490"
+          "hash": "17927034305001160425"
         },
         {
           "file": "helm-workspace/apps/api-shared-helm-e2e/src/support/test-setup.ts",
-          "hash": "10984585515912236441"
+          "hash": "4165311015569872896"
         },
         {
           "file": "helm-workspace/apps/api-shared-helm-e2e/tsconfig.json",
-          "hash": "15443990093475294480"
+          "hash": "1422418700492434985"
         },
         {
           "file": "helm-workspace/apps/api-shared-helm-e2e/tsconfig.spec.json",
-          "hash": "14954872453723519891"
+          "hash": "5623794208198348967"
         }
       ],
       "api-shared-helm": [
         {
           "file": "helm-workspace/apps/api-shared-helm/.eslintrc.json",
-          "hash": "13800677001662881425"
+          "hash": "14921153827776288937"
         },
         {
           "file": "helm-workspace/apps/api-shared-helm/claves.env",
-          "hash": "2988496074798869331"
+          "hash": "7322343519379031998"
         },
         {
           "file": "helm-workspace/apps/api-shared-helm/jest.config.ts",
-          "hash": "2256681550214272962"
+          "hash": "8792252225178354387"
         },
         {
           "file": "helm-workspace/apps/api-shared-helm/project.json",
-          "hash": "2778806896849735683"
+          "hash": "12768880834750335808"
         },
         {
           "file": "helm-workspace/apps/api-shared-helm/src/assets/.gitkeep",
@@ -816,37 +270,37 @@
         },
         {
           "file": "helm-workspace/apps/api-shared-helm/src/main.ts",
-          "hash": "17935984042828776960"
+          "hash": "3880420627946631086"
         },
         {
           "file": "helm-workspace/apps/api-shared-helm/tsconfig.app.json",
-          "hash": "6758816428596401805"
+          "hash": "1238813864883096580"
         },
         {
           "file": "helm-workspace/apps/api-shared-helm/tsconfig.json",
-          "hash": "3490524966360018312"
+          "hash": "7462419380158041776"
         },
         {
           "file": "helm-workspace/apps/api-shared-helm/tsconfig.spec.json",
-          "hash": "11550347367511341917"
+          "hash": "11194536110028348959"
         },
         {
           "file": "helm-workspace/apps/api-shared-helm/webpack.config.js",
-          "hash": "10215383192180376114"
+          "hash": "2378297863213883372"
         }
       ],
       "api-auth-helm": [
         {
           "file": "helm-workspace/apps/api-auth-helm/.eslintrc.json",
-          "hash": "13800677001662881425"
+          "hash": "14921153827776288937"
         },
         {
           "file": "helm-workspace/apps/api-auth-helm/jest.config.ts",
-          "hash": "13055157282926326938"
+          "hash": "14947152871132422037"
         },
         {
           "file": "helm-workspace/apps/api-auth-helm/project.json",
-          "hash": "12051337048000844873"
+          "hash": "4203464109987352446"
         },
         {
           "file": "helm-workspace/apps/api-auth-helm/src/assets/.gitkeep",
@@ -882,7 +336,7 @@
         },
         {
           "file": "helm-workspace/apps/api-auth-helm/tsconfig.app.json",
-          "hash": "6758816428596401805"
+          "hash": "1238813864883096580"
         },
         {
           "file": "helm-workspace/apps/api-auth-helm/tsconfig.json",
@@ -890,11 +344,49 @@
         },
         {
           "file": "helm-workspace/apps/api-auth-helm/tsconfig.spec.json",
-          "hash": "11550347367511341917"
+          "hash": "11194536110028348959"
         },
         {
           "file": "helm-workspace/apps/api-auth-helm/webpack.config.js",
-          "hash": "10252436531762746196"
+          "hash": "5075283067474956046"
+        }
+      ],
+      "api-auth-helm-e2e": [
+        {
+          "file": "helm-workspace/apps/api-auth-helm-e2e/.eslintrc.json",
+          "hash": "14921153827776288937"
+        },
+        {
+          "file": "helm-workspace/apps/api-auth-helm-e2e/jest.config.ts",
+          "hash": "17440848152916156896"
+        },
+        {
+          "file": "helm-workspace/apps/api-auth-helm-e2e/project.json",
+          "hash": "16978931054316213432"
+        },
+        {
+          "file": "helm-workspace/apps/api-auth-helm-e2e/src/api-auth-helm/api-auth-helm.spec.ts",
+          "hash": "3026045886657059088"
+        },
+        {
+          "file": "helm-workspace/apps/api-auth-helm-e2e/src/support/global-setup.ts",
+          "hash": "18221119270488052961"
+        },
+        {
+          "file": "helm-workspace/apps/api-auth-helm-e2e/src/support/global-teardown.ts",
+          "hash": "17927034305001160425"
+        },
+        {
+          "file": "helm-workspace/apps/api-auth-helm-e2e/src/support/test-setup.ts",
+          "hash": "4165311015569872896"
+        },
+        {
+          "file": "helm-workspace/apps/api-auth-helm-e2e/tsconfig.json",
+          "hash": "1422418700492434985"
+        },
+        {
+          "file": "helm-workspace/apps/api-auth-helm-e2e/tsconfig.spec.json",
+          "hash": "5623794208198348967"
         }
       ]
     }

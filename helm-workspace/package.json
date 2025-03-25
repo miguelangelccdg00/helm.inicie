@@ -38,7 +38,7 @@
     "@nx/js": "19.8.4",
     "@nx/node": "19.8.4",
     "@nx/web": "19.8.4",
-    "@nx/webpack": "19.8.4",
+    "@nx/webpack": "^19.8.4",
     "@nx/workspace": "19.6.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
     "@schematics/angular": "~18.2.0",
