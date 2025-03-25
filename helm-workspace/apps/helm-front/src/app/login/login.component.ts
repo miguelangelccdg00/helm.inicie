@@ -48,26 +48,30 @@ export class LoginComponent {
   }
 
   onSubmit() {
+    console.log('Formulario enviado', this.loginForm.value);
     
     if (this.loginForm.valid) {
-
       const { usuario, contrasena } = this.loginForm.value;
 
       const usuarioFinal = usuario ?? '';
       const contrasenaFinal = contrasena ?? '';
+      
+      console.log('Enviando datos al servidor:', { nombreUsuario: usuarioFinal, contraseña: contrasenaFinal });
   
       this.loginService.login(usuarioFinal, contrasenaFinal).subscribe({
         next: (response) => {
-          console.log('Inicio de sesión exitoso', response.message);
+          console.log('Inicio de sesión exitoso', response);
+          alert('Inicio de sesión exitoso');
         },
         error: (err) => {
-          console.log('Error al iniciar sesión', err);
+          console.error('Error al iniciar sesión', err);
+          alert('Error al iniciar sesión: ' + (err.error?.message || 'Credenciales incorrectas'));
         }
       });
     } else {
-      console.log('El usuario o la contraseña no son válidos');
+      console.log('El formulario no es válido');
+      this.loginForm.markAllAsTouched();
     }
-    
   }
   
 }
