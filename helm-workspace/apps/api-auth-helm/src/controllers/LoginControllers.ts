@@ -8,21 +8,27 @@ class LoginController
     async loginUsuario(req: Request, res: Response): Promise<void> 
     {
         try {
+            console.log('Login attempt with body:', req.body);
             const { nombreUsuario, contraseña } = req.body;
+            console.log('Attempting to find user with username:', nombreUsuario);
 
             // Buscar usuario en la base de datos
-            const [rows]: any = await pool.promise().query('SELECT * FROM usuario WHERE nombreUsuario = ?', [nombreUsuario]);
+            const [rows]: any = await pool.promise().query('SELECT * FROM store_users WHERE username = ?', [nombreUsuario]);
+            console.log('Query result rows:', rows.length);
 
             if (rows.length === 0) 
             {
+                console.log('No user found with username:', nombreUsuario);
                 res.status(401).json({ message: 'Usuario no encontrado' });
-                return ;
+                return;
             }
 
             const usuario = rows[0];
+            console.log('User found:', { id: usuario.id_user, username: usuario.username });
 
             // Comparar la contraseña ingresada con la hasheada en la base de datos
-            const contraseñaValida = await bcrypt.compare(contraseña, usuario.contraseña);
+            const contraseñaValida = await bcrypt.compare(contraseña, usuario.pass);
+            console.log('Password valid:', contraseñaValida);
 
             if (!contraseñaValida) 
             {
@@ -30,7 +36,14 @@ class LoginController
                 return;
             }
 
-            res.status(200).json({ message: 'Usuario logueado con éxito' });
+            res.status(200).json({ 
+                message: 'Usuario logueado con éxito',
+                user: {
+                    id: usuario.id_user,
+                    username: usuario.username,
+                    email: usuario.email
+                }
+            });
         } 
         catch (error) 
         {
