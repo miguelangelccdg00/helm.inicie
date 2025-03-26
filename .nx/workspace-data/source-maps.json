@@ -520,5 +520,79 @@
       "helm-workspace/apps/helm-front/project.json",
       "nx/core/project-json"
     ]
+  },
+  "helm-workspace/libs/feature-auth": {
+    "root": [
+      "helm-workspace/libs/feature-auth/project.json",
+      "nx/core/project-json"
+    ],
+    "name": [
+      "helm-workspace/libs/feature-auth/project.json",
+      "nx/core/project-json"
+    ],
+    "$schema": [
+      "helm-workspace/libs/feature-auth/project.json",
+      "nx/core/project-json"
+    ],
+    "sourceRoot": [
+      "helm-workspace/libs/feature-auth/project.json",
+      "nx/core/project-json"
+    ],
+    "prefix": [
+      "helm-workspace/libs/feature-auth/project.json",
+      "nx/core/project-json"
+    ],
+    "projectType": [
+      "helm-workspace/libs/feature-auth/project.json",
+      "nx/core/project-json"
+    ],
+    "tags": [
+      "helm-workspace/libs/feature-auth/project.json",
+      "nx/core/project-json"
+    ],
+    "targets": [
+      "helm-workspace/libs/feature-auth/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test": [
+      "helm-workspace/libs/feature-auth/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.executor": [
+      "helm-workspace/libs/feature-auth/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.outputs": [
+      "helm-workspace/libs/feature-auth/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.options": [
+      "helm-workspace/libs/feature-auth/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.options.jestConfig": [
+      "helm-workspace/libs/feature-auth/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint": [
+      "helm-workspace/libs/feature-auth/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint.executor": [
+      "helm-workspace/libs/feature-auth/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint.outputs": [
+      "helm-workspace/libs/feature-auth/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint.options": [
+      "helm-workspace/libs/feature-auth/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint.options.lintFilePatterns": [
+      "helm-workspace/libs/feature-auth/project.json",
+      "nx/core/project-json"
+    ]
   }
 }

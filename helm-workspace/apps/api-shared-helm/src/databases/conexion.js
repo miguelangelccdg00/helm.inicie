@@ -2,13 +2,12 @@ const mysql = require('mysql2');
 const path = require('path');
 require('dotenv').config({ path: path.join(process.cwd(), 'apps', 'api-shared-helm', 'claves.env') });
 
-// Creación del pool de conexiones
 const pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT || 3306,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    host: 'localhost',  // Ahora usas localhost en lugar de la IP remota
+    port: 3307,         // Puerto del túnel SSH
+    user: 'practicas',
+    password: 'Normapro2025',
+    database: 'store',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0    

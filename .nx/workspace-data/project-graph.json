@@ -154,6 +154,47 @@
         "implicitDependencies": []
       }
     },
+    "feature-auth": {
+      "name": "feature-auth",
+      "type": "lib",
+      "data": {
+        "root": "helm-workspace/libs/feature-auth",
+        "name": "feature-auth",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/feature-auth/src",
+        "prefix": "helm-workspace",
+        "projectType": "library",
+        "tags": [],
+        "targets": {
+          "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+              "jestConfig": "libs/feature-auth/jest.config.ts"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "lint": {
+            "executor": "@nx/eslint:lint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "libs/feature-auth/**/*.ts",
+                "libs/feature-auth/**/*.html"
+              ]
+            },
+            "configurations": {},
+            "parallelism": true
+          }
+        },
+        "implicitDependencies": []
+      }
+    },
     "helm-front": {
       "name": "helm-front",
       "type": "app",
@@ -2298,6 +2339,7 @@
     ],
     "api-shared-helm": [],
     "api-auth-helm": [],
+    "feature-auth": [],
     "helm-front": [],
     "npm:@emnapi/core": [
       {
@@ -4078,5 +4120,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1742895898461
+  "computedAt": 1742992334673
 }
