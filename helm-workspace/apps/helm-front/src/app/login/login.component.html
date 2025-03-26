@@ -8,7 +8,7 @@
 
             <br>
 
-            <input type="text" id="usuario" name="usuario" [placeholder]="usuarioPlaceholder" formControlName="usuario" required>
+            <input type="text" id="usuario" name="usuario" [ngClass]="{'input-error': loginForm.get('usuario')?.hasError('required') && loginForm.get('usuario')?.touched}" [placeholder]="usuarioPlaceholder" formControlName="usuario" required>
 
 
             <br><br>
@@ -17,7 +17,7 @@
 
             <br>
 
-            <input type="password" id="contrasena" name="contrasena" [placeholder]="contrasenaPlaceholder" formControlName="contrasena" required>
+            <input type="password" id="contrasena" name="contrasena" [ngClass]="{'input-error': loginForm.get('contrasena')?.hasError('required') && loginForm.get('contrasena')?.touched}" [placeholder]="contrasenaPlaceholder" formControlName="contrasena" required>
 
             <br><br>
 
