@@ -21,24 +21,29 @@ class RegistrarController
                 return;
             }
             
-            const { email, nombreUsuario, contraseña } = req.body;
+            // Extraer campos usando los nombres de columnas de la tabla
+            const { email, username, pass } = req.body;
 
             // Validate required fields
-            if (!email || !nombreUsuario || !contraseña) 
+            if (!email || !username || !pass) 
             {
-                res.status(400).json({ message: 'Nombre de usuario y contraseña son requeridos' });
+                res.status(400).json({ message: 'Email, nombre de usuario y contraseña son requeridos' });
                 return;
             }
 
             // Hasheo de la contraseña antes de guardarla 
             const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(contraseña, salt);
+            const hashedPassword = await bcrypt.hash(pass, salt);
 
             // Guarda usuario con la contraseña hasheada
-            const nuevoUsuario: usuario = { email, nombreUsuario, contraseña: hashedPassword};
+            const nuevoUsuario = { 
+                email, 
+                username, 
+                pass: hashedPassword
+            };
             console.log('Attempting to save user:', nuevoUsuario);
             
-            const [result]: any = await pool.promise().query('INSERT INTO usuario SET ?', [nuevoUsuario]);
+            const [result]: any = await pool.promise().query('INSERT INTO store_users SET ?', [nuevoUsuario]);
             
             res.status(201).json({ message: 'Usuario creado', id: result.insertId });
         } 

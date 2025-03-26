@@ -2,11 +2,12 @@ const mysql = require('mysql2');
 const path = require('path');
 require('dotenv').config({ path: path.join(process.cwd(), 'apps', 'api-shared-helm', 'claves.env') });
 
+// Creación del pool de conexiones
 const pool = mysql.createPool({
-    host: 'localhost',  // Ahora usas localhost en lugar de la IP remota
+    host: '127.0.0.1',  // Usar IP explícita en lugar de localhost para evitar problemas con IPv6
     port: 3307,         // Puerto del túnel SSH
     user: 'practicas',
-    password: 'Normapro2025',
+    password: 'Normapro2025@',  // Contraseña correcta con el símbolo @
     database: 'store',
     waitForConnections: true,
     connectionLimit: 10,
@@ -39,5 +40,5 @@ pool.getConnection((error, connection) =>
     }
 });
 
-// Exportación del pool y su versión con promesas
+// Exportación del pool con promesas
 module.exports = pool.promise();
