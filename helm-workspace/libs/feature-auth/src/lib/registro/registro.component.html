@@ -1,0 +1,80 @@
+<div class="registro-container">
+  <h2 class="registro-title">Crear cuenta</h2>
+  
+  <form [formGroup]="registroForm" (ngSubmit)="onSubmit()" class="registro-form">
+    <div class="form-group">
+      <label for="usuario">Usuario</label>
+      <input 
+        type="text" 
+        id="usuario" 
+        formControlName="usuario" 
+        [placeholder]="usuarioPlaceholder"
+        class="form-control"
+        [ngClass]="{'is-invalid': registroForm.get('usuario')?.invalid && registroForm.get('usuario')?.touched}"
+      >
+      <div *ngIf="registroForm.get('usuario')?.invalid && registroForm.get('usuario')?.touched" class="error-message">
+        <span *ngIf="registroForm.get('usuario')?.errors?.['required']">El nombre de usuario es requerido</span>
+        <span *ngIf="registroForm.get('usuario')?.errors?.['minlength']">El nombre de usuario debe tener al menos 4 caracteres</span>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="contrasena">Contraseña</label>
+      <input 
+        type="password" 
+        id="contrasena" 
+        formControlName="contrasena" 
+        [placeholder]="contrasenaPlaceholder"
+        class="form-control"
+        [ngClass]="{'is-invalid': registroForm.get('contrasena')?.invalid && registroForm.get('contrasena')?.touched}"
+      >
+      <div *ngIf="registroForm.get('contrasena')?.invalid && registroForm.get('contrasena')?.touched" class="error-message">
+        <span *ngIf="registroForm.get('contrasena')?.errors?.['required']">La contraseña es requerida</span>
+        <span *ngIf="registroForm.get('contrasena')?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</span>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="confirmarContrasena">Confirmar contraseña</label>
+      <input 
+        type="password" 
+        id="confirmarContrasena" 
+        formControlName="confirmarContrasena" 
+        [placeholder]="confirmarContrasenaPlaceholder"
+        class="form-control"
+        [ngClass]="{'is-invalid': registroForm.get('confirmarContrasena')?.invalid && registroForm.get('confirmarContrasena')?.touched}"
+      >
+      <div *ngIf="registroForm.get('confirmarContrasena')?.invalid && registroForm.get('confirmarContrasena')?.touched" class="error-message">
+        La confirmación de contraseña es requerida
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="email">Email (opcional)</label>
+      <input 
+        type="email" 
+        id="email" 
+        formControlName="email" 
+        [placeholder]="emailPlaceholder"
+        class="form-control"
+        [ngClass]="{'is-invalid': registroForm.get('email')?.invalid && registroForm.get('email')?.touched}"
+      >
+      <div *ngIf="registroForm.get('email')?.invalid && registroForm.get('email')?.touched" class="error-message">
+        El formato del email no es válido
+      </div>
+    </div>
+    
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+    
+    <button type="submit" class="btn-registro" [disabled]="registroForm.invalid || isLoading">
+      <span *ngIf="!isLoading">Registrarse</span>
+      <span *ngIf="isLoading">Cargando...</span>
+    </button>
+  </form>
+  
+  <div class="registro-footer">
+    <p>¿Ya tienes una cuenta? <a href="#" class="login-link">Iniciar sesión</a></p>
+  </div>
+</div>

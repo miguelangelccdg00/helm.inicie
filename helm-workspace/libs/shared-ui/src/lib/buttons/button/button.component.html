@@ -1,0 +1,22 @@
+<button 
+  [ngClass]="buttonClasses" 
+  [disabled]="disabled || loading"
+  (click)="onClick($event)">
+  
+  <ng-container *ngIf="icon && iconPosition === 'left'">
+    <i class="icon" [ngClass]="icon"></i>
+  </ng-container>
+  
+  <ng-container *ngIf="loading; else content">
+    <span class="loading-spinner"></span>
+    <span>Cargando...</span>
+  </ng-container>
+  
+  <ng-template #content>
+    <ng-content></ng-content>
+  </ng-template>
+  
+  <ng-container *ngIf="icon && iconPosition === 'right'">
+    <i class="icon" [ngClass]="icon"></i>
+  </ng-container>
+</button>

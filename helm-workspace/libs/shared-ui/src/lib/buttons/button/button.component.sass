@@ -1,0 +1,79 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  gap: 8px;
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+  }
+}
+
+// Tipos de botón
+.button-primary {
+  background-color: #4a90e2;
+  color: white;
+  
+  &:hover:not(:disabled) {
+    background-color: #3a7bc8;
+  }
+  
+  &:active:not(:disabled) {
+    background-color: #2a66b0;
+  }
+}
+
+.button-secondary {
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+  
+  &:hover:not(:disabled) {
+    background-color: #e8e8e8;
+  }
+  
+  &:active:not(:disabled) {
+    background-color: #d8d8d8;
+  }
+}
+
+.button-danger {
+  background-color: #e74c3c;
+  color: white;
+  
+  &:hover:not(:disabled) {
+    background-color: #d43c2b;
+  }
+  
+  &:active:not(:disabled) {
+    background-color: #c0392b;
+  }
+}
+
+// Tamaños
+.button-small {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.button-medium {
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+.button-large {
+  padding: 10px 20px;
+  font-size: 16px;
+}
