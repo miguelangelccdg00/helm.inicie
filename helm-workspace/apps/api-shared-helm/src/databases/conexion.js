@@ -1,4 +1,4 @@
-const mysql = require('mysql2');
+const mysql = require('mysql2'); 
 const path = require('path');
 require('dotenv').config({ path: path.join(process.cwd(), 'apps', 'api-shared-helm', 'claves.env') });
 

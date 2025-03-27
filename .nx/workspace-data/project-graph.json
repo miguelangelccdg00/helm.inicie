@@ -302,6 +302,47 @@
         },
         "implicitDependencies": []
       }
+    },
+    "shared-ui": {
+      "name": "shared-ui",
+      "type": "lib",
+      "data": {
+        "root": "helm-workspace/libs/shared-ui",
+        "name": "shared-ui",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/shared-ui/src",
+        "prefix": "helm-workspace",
+        "projectType": "library",
+        "tags": [],
+        "targets": {
+          "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+              "jestConfig": "libs/shared-ui/jest.config.ts"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "lint": {
+            "executor": "@nx/eslint:lint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "libs/shared-ui/**/*.ts",
+                "libs/shared-ui/**/*.html"
+              ]
+            },
+            "configurations": {},
+            "parallelism": true
+          }
+        },
+        "implicitDependencies": []
+      }
     }
   },
   "externalNodes": {
@@ -2341,6 +2382,7 @@
     "api-auth-helm": [],
     "feature-auth": [],
     "helm-front": [],
+    "shared-ui": [],
     "npm:@emnapi/core": [
       {
         "source": "npm:@emnapi/core",
@@ -4120,5 +4162,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1742992334673
+  "computedAt": 1743066676735
 }

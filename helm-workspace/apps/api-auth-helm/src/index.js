@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import registroRoutes from './routes/RegistroRoute';
 import loginRoutes from './routes/LoginRoute';
+import storeSolucionesRoute from './routes/StoreSolucionesRoute';
 import path from 'path';
  
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
  
 app.use('/login',loginRoutes);
 app.use('/registro',registroRoutes);
+app.use('/storeSolucion',storeSolucionesRoute)
  
 app.get('/', (req, res) =>
 {
@@ -32,7 +34,14 @@ app.get('/', (req, res) =>
                 operations:[
                     { method: 'POST', path: '/registrarUsuario' }
                 ]
-            }
+            },
+            storeSolucion:
+            {
+                base: 'storeSolucion',
+                operations:[
+                    { method: 'GET', path: '/listStoreSoluciones' }
+                ]
+            }            
         }]
     })
 })
