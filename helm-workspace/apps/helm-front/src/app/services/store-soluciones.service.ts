@@ -50,4 +50,10 @@ export class StoreSolucionesService {
     return this.https.get<StoreSoluciones[]>(this.apiUrl, { headers });
   }
 
+  getStoreSolucionById(id: number): Observable<StoreSoluciones> {
+    const url = `http://localhost:3009/storeSolucion/listIdStoreSoluciones/${id}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.get<StoreSoluciones>(url, { headers });
+  }
+
 }

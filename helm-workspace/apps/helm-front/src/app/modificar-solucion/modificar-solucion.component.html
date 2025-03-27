@@ -1,1 +1,35 @@
-<p>modificar-solucion works!</p>
+<div *ngIf="solucion; else loading">
+    <h1>Detalles de la Solución</h1>
+  
+    <div>
+      <h2>{{ solucion.title || 'Sin título' }}</h2>
+      <p><strong>Descripción:</strong> {{ solucion.description }}</p>
+      <p><strong>Subtítulo:</strong> {{ solucion.subtitle || 'Sin subtítulo' }}</p>
+      <p><strong>Título Web:</strong> {{ solucion.titleweb || 'Sin título web' }}</p>
+      <p><strong>Problema:</strong> {{ solucion.problemaTitle || 'Sin problema' }}</p>
+      <p><strong>Solución:</strong> {{ solucion.solucionTitle || 'Sin solución' }}</p>
+  
+      <p><strong>Icono:</strong> <i class="{{ solucion.icon }}"></i></p>
+      <p><strong>Slug:</strong> {{ solucion.slug }}</p>
+  
+      <p><strong>Características:</strong> {{ solucion.caracteristicasTitle || 'No disponibles' }}</p>
+      <p><strong>Casos de uso:</strong> {{ solucion.casosdeusoTitle || 'No disponibles' }}</p>
+  
+      <p><strong>Beneficios:</strong> {{ solucion.beneficiosTitle || 'No disponibles' }}</p>
+  
+      <p><strong>Multimedia:</strong> 
+        <span *ngIf="solucion.multimediaUri">
+          <a [href]="solucion.multimediaUri" target="_blank">Ver multimedia</a>
+        </span>
+        <span *ngIf="!solucion.multimediaUri">No hay multimedia disponible</span>
+      </p>
+    </div>
+  
+    <!-- Botón para guardar cambios o ir a otra parte -->
+    <button (click)="guardarCambios()">Guardar cambios</button>
+  </div>
+  
+  <ng-template #loading>
+    <p>Cargando detalles de la solución...</p>
+  </ng-template>
+  

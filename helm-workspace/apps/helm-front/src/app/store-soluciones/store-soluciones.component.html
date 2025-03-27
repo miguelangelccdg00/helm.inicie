@@ -20,7 +20,7 @@
         </thead>
         <tbody>
           @for(solucion of storeSoluciones; track solucion.id_solucion) {
-          <tr>
+          <tr (click)="irAModificarSolucion(solucion.id_solucion)">
             <td><i class="{{solucion.icon}}"></i></td>
             <td class="descripcion-cell">
               <div [innerHTML]="solucion.description"></div>
