@@ -7,7 +7,7 @@
     
     <div class="elementos-menu">
       <ul>
-        <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(0)" (click)="seleccionarItem(0, $event)">
+        <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(0)" (click)="seleccionarItem(0, $event); toggleMenu('escritorio', $event)">
           <i class="fa-regular fa-calendar icono"></i>
           <span class="tooltip">Mi escritorio</span>
         </a></li>
@@ -15,7 +15,7 @@
           <i class="fa-regular fa-building icono"></i>
           <span class="tooltip">Empresas y centros</span>
         </a></li>
-        <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(2)" (click)="seleccionarItem(2, $event)">
+        <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(2)" (click)="seleccionarItem(2, $event); toggleMenu('empleado', $event)">
           <i class="fa-regular fa-user icono"></i>
           <span class="tooltip">Portal del empleado</span>
         </a></li>
@@ -31,7 +31,7 @@
   <!-- Sección central (tienda) -->
   <div class="seccion-central">
     <a href="#" class="boton-tienda" [class.seleccionado]="estaSeleccionado(4)" (click)="seleccionarItem(4, $event)">
-      <i class="fa-solid fa-store icono"></i>
+      <i class="fa-solid fa-shop icono"></i>
     </a>
   </div>
   
@@ -63,19 +63,26 @@
   </div>
 </div>
 
-<!-- Menú desplegable para Portal del empleado -->
-<div class="menu-desplegable">
+<!-- Menú desplegable para Mi escritorio -->
+<div class="menu-desplegable" [class.visible]="menuActivo === 'escritorio'" [style.top.px]="posicionMenu">
   <ul>
-    <li><a href="#">Noticias</a></li>
-    <li><a href="#">Mis datos</a></li>
-    <li><a href="#">Documentos y solicitudes</a></li>
-    <li><a href="#">Documentos personales</a></li>
-    <li><a href="#">Documentos generales</a></li>
-    <li><a href="#">Solicitud de personal</a></li>
-    <li><a href="#" class="seleccionado">Sistema integrado</a></li>
-    <li><a href="#">Permisos y vacaciones</a></li>
-    <li><a href="#">Formación</a></li>
-    <li><a href="#">Canal de denuncias</a></li>
+    <li><a href="javascript:void(0)" (click)="irAStoreSoluciones(); $event.preventDefault()">Soluciones</a></li>
+  </ul>
+</div>
+
+<!-- Menú desplegable para Portal del empleado -->
+<div class="menu-desplegable" [class.visible]="menuActivo === 'empleado'" [style.top.px]="posicionMenu">
+  <ul>
+    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Noticias</a></li>
+    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Mis datos</a></li>
+    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Documentos y solicitudes</a></li>
+    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Documentos personales</a></li>
+    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Documentos generales</a></li>
+    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Solicitud de personal</a></li>
+    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Sistema integrado</a></li>
+    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Permisos y vacaciones</a></li>
+    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Formación</a></li>
+    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Canal de denuncias</a></li>
   </ul>
 </div>
 

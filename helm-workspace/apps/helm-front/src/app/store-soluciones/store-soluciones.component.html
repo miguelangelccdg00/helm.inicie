@@ -1,29 +1,29 @@
 <h1>Store soluciones</h1>
 
-<table>
+<table class="soluciones-table">
     <thead>
         <tr>
             <th>ID</th>
-            <th>Sector</th>
-            <th>ID</th>
+            <th>Título</th>
+            <th>Subtítulo</th>
+            <th>Descripción</th>
+            <th>Título Web</th>
+            <th>Problema</th>
             <th>Solución</th>
-            <th>ID</th>
-            <th>Ámbito</th>
-            <th>Response chat</th>
-            <th>Data</th>
-            <th>Deleted</th>
         </tr>
     </thead>
     <tbody>
         @for(solucion of storeSoluciones; track solucion.idSolucion) {
         <tr>
             <td>{{solucion.idSolucion}}</td>
-            <td>{{solucion.sector}}</td>
-            <td>{{ solucion.solucionTitle }}</td>
-            <td>{{ solucion.ambito }}</td>
-            <td>{{ solucion.responseChat }}</td>
-            <td>{{ solucion.data }}</td>
-            <td>{{ solucion.deleted }}</td>
+            <td>{{solucion.title}}</td>
+            <td>{{solucion.subtitle}}</td>
+            <td class="descripcion-cell">
+                <div [innerHTML]="solucion.description"></div>
+            </td>
+            <td>{{solucion.titleweb}}</td>
+            <td>{{solucion.problemaTitle}}</td>
+            <td>{{solucion.solucionTitle}}</td>
         </tr>
         }
     </tbody>
