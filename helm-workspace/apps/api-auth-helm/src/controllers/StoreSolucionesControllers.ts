@@ -4,7 +4,9 @@ import { StoreSoluciones } from '../models/storeSoluciones';
 
 class StoreSolucionesControllers
 {
-    async listStoreSoluciones(req: Request, res:Response): Promise<void>
+    constructor() {}
+
+    listStoreSoluciones = async (req: Request, res:Response): Promise<void> =>
     {
         try 
         {
@@ -13,9 +15,39 @@ class StoreSolucionesControllers
         } 
         catch (error) 
         {
-            console.error('Error al al listar soluciones: ', error);
+            console.error('Error al listar storeSoluciones: ', error);
             console.error('Error details:', error instanceof Error ? error.message : 'Unknown error');
             res.status(500).json({ message: 'Error interno en el servidor' });
+        }
+    }
+
+    modifyStoreSoluciones = async (req: Request, res: Response): Promise<void> => 
+    {
+        try 
+        {
+            const { id } = req.params;
+            const updateStoreSoluciones: Partial<StoreSoluciones> = req.body;
+
+            if (!id) 
+            {
+                res.status(400).json({ message: 'ID de solución no proporcionado' });
+                return;
+            }
+
+            if (Object.keys(updateStoreSoluciones).length === 0) 
+            {
+                res.status(400).json({ message: 'No se proporcionaron campos para actualizar' });
+                return;
+            }
+
+            await pool.promise().query('UPDATE storeSoluciones SET ? WHERE id_solucion = ?', [updateStoreSoluciones, id]);
+            res.json({ message: 'StoreSoluciones actualizado'})
+        } 
+        catch (error)
+        {
+            console.log('Error al modificar storeSoluciones ', error);
+            console.log('Error details: ', error instanceof Error ? error.message : 'Unknown error');  
+            res.status(500).json({ message: 'Error interno en el servidor' });         
         }
     }
 }
