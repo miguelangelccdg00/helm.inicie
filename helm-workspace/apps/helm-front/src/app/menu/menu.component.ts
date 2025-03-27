@@ -20,24 +20,24 @@ export class MenuComponent {
   posicionMenu: number = 0;
   
   // Método para seleccionar un elemento del menú
-  seleccionarItem(index: number, event: Event): void {
-    event.preventDefault();
-    this.itemSeleccionado = index;
+  seleccionarItem(indice: number, evento: Event): void {
+    evento.preventDefault();
+    this.itemSeleccionado = indice;
   }
   
   // Método para verificar si un elemento está seleccionado
-  estaSeleccionado(index: number): boolean {
-    return this.itemSeleccionado === index;
+  estaSeleccionado(indice: number): boolean {
+    return this.itemSeleccionado === indice;
   }
   
   // Método para mostrar/ocultar menús desplegables
-  toggleMenu(menu: string, event?: MouseEvent): void {
-    if (event) {
-      const element = event.currentTarget as HTMLElement;
-      const rect = element.getBoundingClientRect();
+  toggleMenu(menu: string, evento?: MouseEvent): void {
+    if (evento) {
+      const elemento = evento.currentTarget as HTMLElement;
+      const rect = elemento.getBoundingClientRect();
       this.posicionMenu = rect.top;
-      event.preventDefault();
-      event.stopPropagation();
+      evento.preventDefault();
+      evento.stopPropagation();
     }
     
     this.menuActivo = this.menuActivo === menu ? null : menu;
@@ -45,22 +45,24 @@ export class MenuComponent {
   
   // Cerrar menús al hacer clic fuera de ellos
   @HostListener('document:click')
-  closeMenus(): void {
+  cerrarMenus(): void {
     this.menuActivo = null;
   }
   
-  // Método para llevar a store soluciones
-  irAStoreSoluciones(): void {
-    this.closeMenus();
-    this.router.navigate(['store-soluciones']);
-  }
-  
-  // Método para navegar a otras rutas
-  navegarA(ruta: string, event: Event): void {
-    event.preventDefault();
-    this.closeMenus();
+  // Método para navegar a una ruta específica
+  navegarA(ruta: string, evento?: Event): void {
+    if (evento) {
+      evento.preventDefault();
+    }
+    this.cerrarMenus();
     this.router.navigate([ruta]);
   }
 
-  
+  // Método para llevar a store soluciones
+  irAStoreSoluciones(): void {
+    this.cerrarMenus();
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/store-soluciones']);
+    });
+  }
 }
