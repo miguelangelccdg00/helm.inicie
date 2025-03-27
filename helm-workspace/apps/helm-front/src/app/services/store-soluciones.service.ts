@@ -56,4 +56,10 @@ export class StoreSolucionesService {
     return this.https.get<StoreSoluciones>(url, { headers });
   }
 
+  updateStoreSolucion(id: number, solucion: StoreSoluciones): Observable<any> {
+    const url = `http://localhost:3009/storeSolucion/modifyStoreSoluciones/${id}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.put(url, solucion, { headers });
+  }
+
 }
