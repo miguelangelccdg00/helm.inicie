@@ -12,12 +12,12 @@ import { CommonModule } from '@angular/common';
 export class CarruselComponent implements OnInit, OnDestroy {
 
   bloques = [
-    { titulo: 'BPM Suite', descripcion: 'Si buscas mejorar la eficiencia, el control y la agilidad de tus procesos operativos.', imagen: 'assets/img1.jpg' },
-    { titulo: 'FormaPro', descripcion: 'Un LMS avanzado para mejorar el rendimiento y las habilidades de tus empleados.', imagen: 'assets/img2.jpg' },
-    { titulo: 'Portal del empleado', descripcion: 'Si buscas aumentar la productividad y satisfacción de tus empleados.', imagen: 'assets/img3.jpg' },
-    { titulo: 'Gestor documental', descripcion: 'Diseñados para controlar tu normativa de sistemas de gestión. Compliance Penal y Compliance Técnico con seguridad y agilidad.', imagen: 'assets/img4.jpg' },
-    { titulo: 'Ticketing', descripcion: 'Eficiencia y rapidez en la atención de clientes, solicitudes o incidencias de tu empresa.', imagen: 'assets/img5.jpg' },
-    { titulo: 'Canal interno de comunicación', descripcion: 'Seguridad, Confidencialidad y Protección.', imagen: 'assets/img6.jpg' },
+    { titulo: 'BPM Suite', descripcion: 'Si buscas mejorar la eficiencia, el control y la agilidad de tus procesos operativos.', imagen: 'assets/img1.png' },
+    { titulo: 'FormaPro', descripcion: 'Un LMS avanzado para mejorar el rendimiento y las habilidades de tus empleados.', imagen: 'assets/img2.png' },
+    { titulo: 'Portal del empleado', descripcion: 'Si buscas aumentar la productividad y satisfacción de tus empleados.', imagen: 'assets/img3.png' },
+    { titulo: 'Gestor documental', descripcion: 'Diseñados para controlar tu normativa de sistemas de gestión. Compliance Penal y Compliance Técnico con seguridad y agilidad.', imagen: 'assets/img4.png' },
+    { titulo: 'Ticketing', descripcion: 'Eficiencia y rapidez en la atención de clientes, solicitudes o incidencias de tu empresa.', imagen: 'assets/img5.png' },
+    { titulo: 'Canal interno de comunicación', descripcion: 'Seguridad, Confidencialidad y Protección.', imagen: 'assets/img6.png' },
   ];
 
   bloquesVisibles = this.bloques.slice(0, 3);
