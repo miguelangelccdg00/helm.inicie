@@ -1,17 +1,55 @@
+// Utilizamos las mismas variables de colores del menú
+$color-azul-principal: #001B41
+$color-azul-claro: rgba(0, 27, 65, 0.1)
+$color-azul-hover: rgba(0, 27, 65, 0.8)
+$color-gris-claro: #f5f5f5
+$color-gris-divisor: #eeeeee
+
+h1
+  font-size: 24px
+  margin-bottom: 20px
+  color: $color-azul-principal
+  font-weight: 500
+
 table 
-    width: 100%
-    border-collapse: collapse
-    background-color: white
+  width: 100%
+  border-collapse: collapse
+  background-color: white
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05)
+  border-radius: 8px
+  overflow: hidden
+  margin-bottom: 30px
 
 thead
-    border-bottom: 2px solid #010d3d
-    color: #010d3d
-    
-thead
-    th
-        font-weight: 500
-
+  border-bottom: 2px solid $color-azul-principal
+  color: $color-azul-principal
+  background-color: $color-gris-claro
+  
+  th
+    font-weight: 500
+    padding: 12px 16px
+    text-align: left
+    font-size: 14px
         
 tbody
-    tr:hover
-        background-color: #d2e5f9
+  td
+    padding: 12px 16px
+    border-bottom: 1px solid $color-gris-divisor
+    font-size: 14px
+    color: $color-azul-principal
+    
+  tr:last-child
+    td
+      border-bottom: none
+      
+  tr:hover
+    background-color: rgba(0, 27, 65, 0.05)
+
+// Estilos para celdas específicas
+.descripcion-cell
+  max-width: 300px
+  
+  div
+    max-height: 150px
+    overflow-y: auto
+    white-space: pre-line

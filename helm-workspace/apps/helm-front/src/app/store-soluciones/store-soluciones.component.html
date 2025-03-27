@@ -1,6 +1,6 @@
 <h1>Store soluciones</h1>
 
-<table>
+<table class="soluciones-table">
     <thead>
         <tr>
             <th>ID</th>
@@ -18,7 +18,9 @@
             <td>{{solucion.idSolucion}}</td>
             <td>{{solucion.title}}</td>
             <td>{{solucion.subtitle}}</td>
-            <td>{{solucion.description}}</td>
+            <td class="descripcion-cell">
+                <div [innerHTML]="solucion.description"></div>
+            </td>
             <td>{{solucion.titleweb}}</td>
             <td>{{solucion.problemaTitle}}</td>
             <td>{{solucion.solucionTitle}}</td>
