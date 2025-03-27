@@ -10,14 +10,8 @@ import { Router } from '@angular/router';
   styleUrl: './menu.component.sass',
 })
 export class MenuComponent {
-<<<<<<< HEAD
-
-  constructor(private router: Router) {}
-
-=======
   constructor(private router: Router) {}
   
->>>>>>> 1ab833105d4382fe2c9b09d6d8aaab473168e25a
   // Propiedad para controlar el elemento seleccionado
   itemSeleccionado: number = -1;
   
@@ -35,14 +29,6 @@ export class MenuComponent {
   estaSeleccionado(index: number): boolean {
     return this.itemSeleccionado === index;
   }
-<<<<<<< HEAD
-
-  // Método para llevar a store soluciones
-  irAStoreSoluciones() {
-    this.router.navigate(['store-soluciones']);
-  }
-
-=======
   
   // Método para mostrar/ocultar menús desplegables
   toggleMenu(menu: string, event?: MouseEvent): void {
@@ -68,5 +54,4 @@ export class MenuComponent {
     this.closeMenus();
     this.router.navigate(['store-soluciones']);
   }
->>>>>>> 1ab833105d4382fe2c9b09d6d8aaab473168e25a
 }

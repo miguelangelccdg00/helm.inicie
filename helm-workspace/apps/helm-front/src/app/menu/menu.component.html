@@ -23,7 +23,10 @@
           <i class="fa-solid fa-ellipsis icono"></i>
           <span class="tooltip">Más opciones</span>
         </a></li>
-        <li (click)="irAStoreSoluciones()">Soluciones</li>
+        <li><a href="#" class="boton-menu" (click)="irAStoreSoluciones(); $event.preventDefault()">
+          <i class="fa-solid fa-store icono"></i>
+          <span class="tooltip">Soluciones</span>
+        </a></li>
       </ul>
     </div>
   </div>
