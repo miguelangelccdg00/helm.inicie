@@ -49,7 +49,6 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    console.log('Formulario enviado', this.loginForm.value);
     
     if (this.loginForm.valid) {
       const { usuario, contrasena } = this.loginForm.value;
