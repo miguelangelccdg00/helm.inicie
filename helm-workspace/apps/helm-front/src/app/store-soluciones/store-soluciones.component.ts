@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ngOnInit, ngOnDestroy } from '@angular/core';
-import { StoreSolucionesService } from '../services/store-soluciones.service'
+import { StoreSolucionesService, StoreSoluciones } from '../services/store-soluciones.service';
 
 @Component({
   selector: 'app-store-soluciones',
@@ -10,15 +9,13 @@ import { StoreSolucionesService } from '../services/store-soluciones.service'
   templateUrl: './store-soluciones.component.html',
   styleUrl: './store-soluciones.component.sass',
 })
-
-export class StoreSolucionesComponent {
+export class StoreSolucionesComponent implements OnInit {
 
   storeSoluciones: StoreSoluciones[] = [];
 
-  constructor(private: storeSolucionesService: StoreSolucionesService) {}
+  constructor(private storeSolucionesService: StoreSolucionesService) {}
 
   ngOnInit() {
-    
     this.storeSolucionesService.getStoreSoluciones().subscribe({
       next: (response) => {
         console.log('StoreSoluciones obtenidos: ', response);
@@ -29,5 +26,4 @@ export class StoreSolucionesComponent {
       }
     });
   }
-
 }
