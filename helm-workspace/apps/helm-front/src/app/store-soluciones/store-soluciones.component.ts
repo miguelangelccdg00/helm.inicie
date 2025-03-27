@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreSolucionesService, StoreSoluciones } from '../services/store-soluciones.service';
+import { MenuComponent } from '../menu/menu.component';
 
 @Component({
   selector: 'app-store-soluciones',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MenuComponent],
   templateUrl: './store-soluciones.component.html',
   styleUrl: './store-soluciones.component.sass',
 })

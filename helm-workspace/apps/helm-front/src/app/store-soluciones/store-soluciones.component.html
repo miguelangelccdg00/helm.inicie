@@ -1,9 +1,14 @@
-<h1>Store soluciones</h1>
-
-<table class="soluciones-table">
-    <thead>
-        <tr>
-            <th>ID</th>
+<div class="layout-container">
+    <!-- Menú lateral -->
+    <app-menu class="menu-lateral"></app-menu>
+    
+    <!-- Contenido principal -->
+    <div class="contenido-principal">
+      <h1>Store soluciones</h1>
+  
+      <table>
+        <thead>
+          <tr>
             <th>Icono</th>
             <th>Descripción</th>
             <th>Título</th>
@@ -11,27 +16,28 @@
             <th>Título Web</th>
             <th>Problema</th>
             <th>Solución</th>
-        </tr>
-    </thead>
-    <tbody>
-        @for(solucion of storeSoluciones; track solucion.id_solucion) {
-        <tr>
-            <td>{{solucion.id_solucion}}</td>
+          </tr>
+        </thead>
+        <tbody>
+          @for(solucion of storeSoluciones; track solucion.id_solucion) {
+          <tr>
             <td><i class="{{solucion.icon}}"></i></td>
             <td class="descripcion-cell">
-                <div [innerHTML]="solucion.description"></div>
+              <div [innerHTML]="solucion.description"></div>
             </td>
             <td>{{solucion.title}}</td>
             <td>{{solucion.subtitle}}</td>
             <td>{{solucion.titleweb}}</td>
             <td>{{solucion.problemaTitle}}</td>
             <td>{{solucion.solucionTitle}}</td>
-        </tr>
-        }
-    </tbody>
-</table>
-
-<!-- Mensaje cuando no hay datos -->
-<div class="no-data-message" *ngIf="storeSoluciones.length === 0">
-    No se encontraron soluciones disponibles.
-</div>
+          </tr>
+          }
+        </tbody>
+      </table>
+  
+      <!-- Mensaje cuando no hay datos -->
+      <div class="no-data-message" *ngIf="storeSoluciones.length === 0">
+        No se encontraron soluciones disponibles.
+      </div>
+    </div>
+  </div>
