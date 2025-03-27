@@ -5,22 +5,30 @@
   
   <nav class="elementos-menu">
     <ul>
-      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(0)" (click)="seleccionarItem(0, $event)"><i class="fa-regular fa-file-lines icono"></i><span>Mi escritorio</span></a></li>
-      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(1)" (click)="seleccionarItem(1, $event)"><i class="fa-regular fa-building icono"></i><span>Empresas y centros</span></a></li>
-      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(2)" (click)="seleccionarItem(2, $event)"><i class="fa-regular fa-user icono"></i><span>Portal del empleado</span></a></li>
-      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(3)" (click)="seleccionarItem(3, $event)"><i class="fa-regular fa-bell icono"></i><span>Noticias</span><div class="notificacion">2</div></a></li>
+      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(0)" (click)="seleccionarItem(0, $event)"><i class="fa-regular fa-file icono"></i><span>Mi escritorio</span></a></li>
+      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(1)" (click)="seleccionarItem(1, $event)"><i class="fa-regular fa-calculator icono"></i><span>Empresas y centros</span></a></li>
+      <li><a href="#" class="boton-menu seleccionado" [class.seleccionado]="estaSeleccionado(2)" (click)="seleccionarItem(2, $event)"><i class="fa-regular fa-user icono"></i><span>Portal del empleado</span></a></li>
+      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(3)" (click)="seleccionarItem(3, $event)">
+        <i class="fa-regular fa-bell icono"></i>
+        <span>Noticias</span>
+        <div class="notificacion">2</div>
+      </a></li>
     </ul>
   </nav>
   
-  <div class="divisor-menu"></div>
+  <!-- Botón de tienda en el medio -->
+  <div class="tienda-central">
+    <a href="#" class="boton-tienda" [class.seleccionado]="estaSeleccionado(8)" (click)="seleccionarItem(8, $event)">
+      <i class="fa-solid fa-store icono"></i>
+    </a>
+  </div>
   
   <div class="menu-secundario">
     <ul>
       <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(4)" (click)="seleccionarItem(4, $event)"><i class="fa-regular fa-circle-check icono"></i><span>Bitácora</span></a></li>
-      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(5)" (click)="seleccionarItem(5, $event)"><i class="fa-regular fa-graduation-cap icono"></i><span>FormaPro</span></a></li>
+      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(5)" (click)="seleccionarItem(5, $event)"><i class="fa-solid fa-graduation-cap icono"></i><span>FormaPro</span></a></li>
       <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(6)" (click)="seleccionarItem(6, $event)"><i class="fa-regular fa-circle-question icono"></i><span>Ayuda</span></a></li>
       <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(7)" (click)="seleccionarItem(7, $event)"><i class="fa-regular fa-circle-user icono"></i><span>Usuario</span></a></li>
-      <li><a href="#" class="boton-tienda" [class.seleccionado]="estaSeleccionado(8)" (click)="seleccionarItem(8, $event)"><i class="fa-regular fa-store icono"></i></a></li>
     </ul>
   </div>
 </div>

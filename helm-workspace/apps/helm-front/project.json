@@ -20,6 +20,11 @@
           {
             "glob": "**/*",
             "input": "apps/helm-front/public"
+          },
+          {
+            "glob": "**/*",
+            "input": "apps/helm-front/src/app/menu/assets",
+            "output": "assets"
           }
         ],
         "styles": ["apps/helm-front/src/styles.sass"],

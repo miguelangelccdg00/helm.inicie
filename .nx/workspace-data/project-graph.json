@@ -225,6 +225,11 @@
                 {
                   "glob": "**/*",
                   "input": "apps/helm-front/public"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "apps/helm-front/src/app/menu/assets",
+                  "output": "assets"
                 }
               ],
               "styles": [
@@ -4162,5 +4167,9 @@
   },
   "version": "6.0",
   "errors": [],
+<<<<<<< Updated upstream
   "computedAt": 1743068686003
+=======
+  "computedAt": 1743069467342
+>>>>>>> Stashed changes
 }

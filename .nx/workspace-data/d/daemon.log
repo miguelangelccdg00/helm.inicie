@@ -13549,6 +13549,7 @@ SyntaxError: Unexpected end of JSON input
 [NX v20.6.2 Daemon Server] - 2025-03-26T16:31:01.608Z - [WATCHER]: Processing file changes in outputs
 [NX v20.6.2 Daemon Server] - 2025-03-26T16:31:01.730Z - [WATCHER]: Processing file changes in outputs
 [NX v20.6.2 Daemon Server] - 2025-03-26T16:31:01.922Z - [WATCHER]: Processing file changes in outputs
+<<<<<<< Updated upstream
 [NX v20.6.2 Daemon Server] - 2025-03-27T07:06:17.444Z - Started listening on: \\.\pipe\nx\C:\Users\juana\AppData\Local\Temp\6ac6f0d2c7b0077ed933\d.sock
 [NX v20.6.2 Daemon Server] - 2025-03-27T07:06:17.458Z - [WATCHER]: Subscribed to changes within: c:\Users\juana\helm.inicie.es (native)
 [NX v20.6.2 Daemon Server] - 2025-03-27T07:06:17.493Z - Established a connection. Number of open connections: 1
@@ -14366,3 +14367,244 @@ SyntaxError: Unexpected end of JSON input
 [NX v20.6.2 Daemon Server] - 2025-03-27T09:11:17.435Z - Done responding to the client handleContextFileData
 [NX v20.6.2 Daemon Server] - 2025-03-27T09:11:17.435Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 1. Response time: 3.
 [NX v20.6.2 Daemon Server] - 2025-03-27T09:11:17.440Z - Closed a connection. Number of open connections: 0
+=======
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:44.835Z - Started listening on: \\.\pipe\nx\C:\Users\fumop\AppData\Local\Temp\92907246b0df21ae3a31\d.sock
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:44.840Z - [WATCHER]: Subscribed to changes within: C:\Users\fumop\Documents\GitHub\helm.inicie.es (native)
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:44.845Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:44.847Z - Established a connection. Number of open connections: 2
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:44.850Z - Closed a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:44.854Z - [REQUEST]: Client Request for Project Graph Received
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:44.884Z - Time taken for 'loadSpecifiedNxPlugins' 2.352700024843216ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:45.575Z - Time taken for 'Load Nx Plugin: C:\Users\fumop\Documents\GitHub\helm.inicie.es\node_modules\nx\src\plugins\package-json' 717.6902000010014ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:45.591Z - Time taken for 'Load Nx Plugin: C:\Users\fumop\Documents\GitHub\helm.inicie.es\node_modules\nx\src\plugins\project-json\build-nodes\project-json' 733.684199988842ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:45.636Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:45.636Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:45.636Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:45.654Z - Time taken for 'loadDefaultNxPlugins' 780.0664999783039ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:45.693Z - Time taken for 'build-project-configs' 22.720400005578995ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:45.720Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:45.721Z - [REQUEST]: Responding to the client. project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:45.722Z - Time taken for 'total for creating and serializing project graph' 867.5022000074387ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:45.723Z - Done responding to the client project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:45.723Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 868. Response time: 2.
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:45.732Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:45.732Z - Time taken for 'preTasksExecution' 1.5792999863624573ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:45.733Z - Done responding to the client handleRunPreTasksExecution
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:45.733Z - Handled PRE_TASKS_EXECUTION. Handling time: 2. Response time: 1.
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:39:45.789Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:30.424Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:30.427Z - [WATCHER]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html was modified
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:30.536Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:30.536Z - [REQUEST]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:30.536Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:30.541Z - Time taken for 'hash changed files from watcher' 0.38679999113082886ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:30.552Z - Time taken for 'build-project-configs' 10.006000012159348ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:30.574Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:30.576Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:30.576Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:30.576Z - Time taken for 'total execution time for createProjectGraph()' 13.852699995040894ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:30.796Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:51.488Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:51.489Z - [WATCHER]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html was modified
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:51.706Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:51.706Z - [REQUEST]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:51.706Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:51.713Z - Time taken for 'hash changed files from watcher' 0.33570000529289246ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:51.725Z - Time taken for 'build-project-configs' 11.042400002479553ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:51.747Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:51.747Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:51.748Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:51.748Z - Time taken for 'total execution time for createProjectGraph()' 13.331399977207184ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:40:51.815Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:10.027Z - [WATCHER]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html was modified
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:10.028Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:10.227Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:10.428Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:10.428Z - [REQUEST]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:10.429Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:10.432Z - Time taken for 'hash changed files from watcher' 0.26660001277923584ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:10.439Z - Time taken for 'build-project-configs' 5.492799997329712ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:10.453Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:10.454Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:10.454Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:10.454Z - Time taken for 'total execution time for createProjectGraph()' 7.781499981880188ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:19.243Z - [WATCHER]: helm-workspace/apps/helm-front/src/app/menu/helm-workspace/apps/helm-front/src/images/logo.png was modified
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:19.244Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:20.057Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:20.057Z - [REQUEST]: helm-workspace/apps/helm-front/src/app/menu/helm-workspace/apps/helm-front/src/images/logo.png
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:20.057Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:20.062Z - Time taken for 'hash changed files from watcher' 0.439300000667572ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:20.071Z - Time taken for 'build-project-configs' 7.9435000121593475ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:20.090Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:20.091Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:20.091Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:20.091Z - Time taken for 'total execution time for createProjectGraph()' 11.2674999833107ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:30.508Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:30.510Z - [WATCHER]: helm-workspace/apps/helm-front/src/app/menu/helm-workspace/apps/helm-front/src/images/logo.png was deleted
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:30.866Z - [WATCHER]: 0 file(s) created or restored, 1 file(s) modified, 1 file(s) deleted
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:30.867Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:32.119Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:32.119Z - [REQUEST]: helm-workspace/apps/helm-front/src/app/menu/helm-workspace/apps/helm-front/src/images/logo.png
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:32.119Z - [REQUEST]: helm-workspace/apps/helm-front/src/app/menu/assets/images/logo.png
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:32.134Z - Time taken for 'hash changed files from watcher' 0.6148999929428101ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:32.143Z - Time taken for 'build-project-configs' 6.712599992752075ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:32.159Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:32.160Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:32.160Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:32.160Z - Time taken for 'total execution time for createProjectGraph()' 9.334800004959106ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:44.431Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:44.432Z - [WATCHER]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html was modified
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:44.755Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:47.634Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:47.634Z - [REQUEST]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:47.634Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:47.638Z - Time taken for 'hash changed files from watcher' 0.4431000053882599ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:47.649Z - Time taken for 'build-project-configs' 8.171800017356873ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:47.676Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:47.676Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:47.676Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:47.676Z - Time taken for 'total execution time for createProjectGraph()' 11.151800006628036ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:52.440Z - [WATCHER]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html was modified
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:52.441Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:52.733Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:58.850Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:58.850Z - [REQUEST]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:58.850Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:58.855Z - Time taken for 'hash changed files from watcher' 0.5250999927520752ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:58.865Z - Time taken for 'build-project-configs' 9.129200011491776ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:58.896Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:58.897Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:58.897Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:58.897Z - Time taken for 'total execution time for createProjectGraph()' 10.08610001206398ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:58.940Z - [WATCHER]: helm-workspace/apps/helm-front/src/app/menu/helm-workspace was deleted
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:41:58.940Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:05.344Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:05.344Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:05.345Z - [REQUEST]: helm-workspace/apps/helm-front/src/app/menu/helm-workspace
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:05.349Z - Time taken for 'hash changed files from watcher' 0.2775000035762787ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:05.361Z - Time taken for 'build-project-configs' 9.15929999947548ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:05.383Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:05.383Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:05.384Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:05.384Z - Time taken for 'total execution time for createProjectGraph()' 13.43299999833107ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:11.737Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:11.739Z - [WATCHER]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html was deleted
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:11.962Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:11.964Z - [WATCHER]: helm-workspace/apps/helm-front/src/images was deleted
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:12.206Z - [WATCHER]: helm-workspace/apps/helm-front/src/assets was deleted
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:12.206Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:14.348Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:14.349Z - [WATCHER]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html was modified
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:18.152Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:18.152Z - [REQUEST]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:18.152Z - [REQUEST]: helm-workspace/apps/helm-front/src/images,helm-workspace/apps/helm-front/src/assets
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:18.157Z - Time taken for 'hash changed files from watcher' 0.5862999856472015ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:18.166Z - Time taken for 'build-project-configs' 6.2329999804496765ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:18.183Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:18.184Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:18.184Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:42:18.184Z - Time taken for 'total execution time for createProjectGraph()' 10.341399997472763ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:43:12.169Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:44:00.635Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:44:00.713Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:46:59.594Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:46:59.595Z - [WATCHER]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html was modified
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:00.869Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:05.189Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:05.190Z - [WATCHER]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html was modified
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:05.998Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:05.998Z - [REQUEST]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:05.998Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:06.002Z - Time taken for 'hash changed files from watcher' 0.32339999079704285ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:06.017Z - Time taken for 'build-project-configs' 7.603200018405914ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:06.041Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:06.042Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:06.042Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:06.042Z - Time taken for 'total execution time for createProjectGraph()' 15.907000005245209ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:45.924Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:45.928Z - [WATCHER]: helm-workspace/apps/helm-front/src/app/menu/assets/images/logo.png was modified
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:52.343Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:52.344Z - [REQUEST]: helm-workspace/apps/helm-front/src/app/menu/assets/images/logo.png
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:52.344Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:52.351Z - Time taken for 'hash changed files from watcher' 1.3082000017166138ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:52.362Z - Time taken for 'build-project-configs' 10.364799976348877ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:52.391Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:52.393Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:52.394Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:52.394Z - Time taken for 'total execution time for createProjectGraph()' 12.810699999332428ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:58.757Z - [WATCHER]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html was modified
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:47:58.757Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:48:05.171Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:48:05.171Z - [REQUEST]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:48:05.171Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:48:05.176Z - Time taken for 'hash changed files from watcher' 0.413100004196167ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:48:05.188Z - Time taken for 'build-project-configs' 7.0374999940395355ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:48:05.219Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:48:05.220Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:48:05.221Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:48:05.221Z - Time taken for 'total execution time for createProjectGraph()' 16.759200006723404ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:49:00.062Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:49:00.155Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:50:15.690Z - [WATCHER]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html was modified
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:50:15.691Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:50:22.101Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:50:22.101Z - [REQUEST]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:50:22.101Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:50:22.105Z - Time taken for 'hash changed files from watcher' 0.29109999537467957ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:50:22.113Z - Time taken for 'build-project-configs' 6.335400015115738ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:50:22.132Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:50:22.132Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:50:22.133Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:50:22.133Z - Time taken for 'total execution time for createProjectGraph()' 8.84630000591278ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:51:16.415Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:54:49.690Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:54:49.691Z - [WATCHER]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html was modified
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:54:50.097Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:54:56.101Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:54:56.101Z - [REQUEST]: helm-workspace/apps/helm-front/src/app/menu/menu.component.html
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:54:56.101Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:54:56.108Z - Time taken for 'hash changed files from watcher' 0.8691000044345856ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:54:56.119Z - Time taken for 'build-project-configs' 9.738299995660782ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:54:56.145Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:54:56.146Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:54:56.146Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:54:56.147Z - Time taken for 'total execution time for createProjectGraph()' 15.531599998474121ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:55:37.972Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:55:37.973Z - [WATCHER]: helm-workspace/apps/helm-front/src/app/menu/menu.component.sass was modified
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:55:38.782Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:55:44.386Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:55:44.386Z - [REQUEST]: helm-workspace/apps/helm-front/src/app/menu/menu.component.sass
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:55:44.386Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:55:44.391Z - Time taken for 'hash changed files from watcher' 0.47269999980926514ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:55:44.401Z - Time taken for 'build-project-configs' 6.440299987792969ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:55:44.419Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:55:44.420Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:55:44.420Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:55:44.420Z - Time taken for 'total execution time for createProjectGraph()' 10.847799986600876ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:56:04.026Z - [WATCHER]: helm-workspace/apps/helm-front/src/app/menu/menu.component.sass was modified
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:56:04.027Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:56:04.508Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:56:10.430Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:56:10.431Z - [REQUEST]: helm-workspace/apps/helm-front/src/app/menu/menu.component.sass
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:56:10.431Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:56:10.438Z - Time taken for 'hash changed files from watcher' 1.280900001525879ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:56:10.449Z - Time taken for 'build-project-configs' 9.931699991226196ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:56:10.473Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:56:10.475Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:56:10.475Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:56:10.475Z - Time taken for 'total execution time for createProjectGraph()' 13.950699985027313ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:57:04.861Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:57:04.923Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:57:05.032Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:57:40.905Z - [WATCHER]: 0 file(s) created or restored, 2 file(s) modified, 0 file(s) deleted
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:57:40.906Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:57:47.320Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:57:47.320Z - [REQUEST]: helm-workspace/apps/helm-front/src/app/services/store-soluciones.service.ts,helm-workspace/apps/helm-front/src/app/services/store-soluciones.service.spec.ts
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:57:47.320Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:57:47.324Z - Time taken for 'hash changed files from watcher' 7.767599999904633ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:57:47.333Z - Time taken for 'build-project-configs' 7.12610000371933ms
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:57:47.351Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:57:47.352Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:57:47.352Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-27T09:57:47.352Z - Time taken for 'total execution time for createProjectGraph()' 10.275099992752075ms
+>>>>>>> Stashed changes

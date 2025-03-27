@@ -6,6 +6,18 @@ $color-rosa-notificacion: #FF4081
 $color-verde: #26C6DA
 $color-amarillo: #FFCA28
 $color-rosa: #EC407A
+$color-gris-claro: #f5f5f5
+$color-gris-divisor: #eeeeee
+$color-sombra: rgba(0, 27, 65, 0.05)
+
+// Mixins
+@mixin flex-center
+  display: flex
+  justify-content: center
+  align-items: center
+
+@mixin transition-suave
+  transition: all 0.3s ease
 
 .contenedor-menu
   width: 76px
@@ -15,8 +27,12 @@ $color-rosa: #EC407A
   flex-direction: column
   align-items: center
   padding: 15px 0
-  box-shadow: none
-  position: relative
+  box-shadow: 0 0 15px $color-sombra
+  position: fixed
+  left: 0
+  top: 0
+  z-index: 1000
+  justify-content: space-between
 
   &::after
     content: ""
@@ -25,23 +41,22 @@ $color-rosa: #EC407A
     right: 0
     height: 100%
     width: 20px
-    box-shadow: 20px 0 20px rgba(0, 27, 65, 0.05)
+    box-shadow: 20px 0 20px $color-sombra
     pointer-events: none
 
 .logo-menu
   width: 46px
   height: 46px
-  margin-bottom: 30px
-  background-color: rgba(0, 27, 65, 0.1)
+  margin-bottom: 15px
+  background-color: $color-azul-claro
   border-radius: 8px
-  display: flex
-  justify-content: center
-  align-items: center
+  @include flex-center
   
   .imagen-logo
     width: 100%
     height: 100%
     object-fit: contain
+    padding: 8px
 
 .elementos-menu, .menu-secundario
   width: 100%
@@ -57,18 +72,34 @@ $color-rosa: #EC407A
     li
       margin-bottom: 15px
       position: relative
+      width: 100%
+      @include flex-center
+
+// Contenedor para la parte superior (logo + elementos principales)
+.elementos-menu
+  margin-bottom: auto
+  padding-top: 15px
+
+// Contenedor para la parte inferior
+.menu-secundario
+  margin-top: auto
+  padding-bottom: 15px
+
+// Botón de tienda en el centro
+.tienda-central
+  margin: 20px 0
+  @include flex-center
+  width: 100%
 
 .boton-menu
-  display: flex
-  justify-content: center
-  align-items: center
+  @include flex-center
   width: 46px
   height: 46px
   border-radius: 8px
   color: $color-azul-principal
   text-decoration: none
   position: relative
-  transition: background-color 0.3s, color 0.3s
+  @include transition-suave
   
   span
     display: none
@@ -77,24 +108,41 @@ $color-rosa: #EC407A
     left: 56px
     background-color: $color-azul-principal
     color: white
-    padding: 5px 10px
+    padding: 6px 12px
     border-radius: 4px
     font-size: 12px
+    font-weight: 500
     z-index: 10
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15)
+    opacity: 0
+    transform: translateX(-10px)
+    @include transition-suave
   
   &:hover
     background-color: $color-azul-claro
     
     span
       display: block
+      opacity: 1
+      transform: translateX(0)
   
   &:active, &.presionado
     background-color: $color-azul-hover
     color: white
+    transform: scale(0.95)
   
   &.seleccionado
     background-color: $color-azul-principal
     color: white
+    
+    &::before
+      content: ""
+      position: absolute
+      left: -15px
+      width: 4px
+      height: 24px
+      background-color: $color-azul-principal
+      border-radius: 0 2px 2px 0
 
 .notificacion
   position: absolute
@@ -106,35 +154,38 @@ $color-rosa: #EC407A
   width: 16px
   height: 16px
   border-radius: 50%
-  display: flex
-  justify-content: center
-  align-items: center
+  @include flex-center
+  box-shadow: 0 2px 4px rgba(255, 64, 129, 0.3)
+  animation: pulse 2s infinite
 
-.divisor-menu
-  width: 46px
-  height: 1px
-  background-color: #eee
-  margin: 15px 0 30px 0
+@keyframes pulse
+  0%
+    box-shadow: 0 0 0 0 rgba(255, 64, 129, 0.4)
+  70%
+    box-shadow: 0 0 0 6px rgba(255, 64, 129, 0)
+  100%
+    box-shadow: 0 0 0 0 rgba(255, 64, 129, 0)
 
 .boton-tienda
-  display: flex
-  justify-content: center
-  align-items: center
+  @include flex-center
   width: 63px
   height: 46px
   border-radius: 8px
   background-color: $color-azul-claro
   color: $color-azul-principal
   text-decoration: none
-  transition: background-color 0.3s, color 0.3s
+  @include transition-suave
   
   &:hover
     background-color: $color-azul-principal
     color: white
+    transform: translateY(-2px)
+    box-shadow: 0 4px 8px rgba(0, 27, 65, 0.2)
   
   &:active, &.presionado
     background-color: $color-azul-hover
     color: white
+    transform: translateY(0)
   
   &.seleccionado
     background-color: $color-azul-principal
@@ -142,8 +193,8 @@ $color-rosa: #EC407A
 
 .icono
   font-size: 20px
-  // Color del icono: 20% azul principal
   color: rgba(0, 27, 65, 0.2)
+  @include transition-suave
   
   .boton-menu:hover &,
   .boton-tienda:hover &
@@ -157,6 +208,7 @@ $color-rosa: #EC407A
   .boton-tienda.seleccionado &
     color: white
 
+
 // Estilos específicos para el menú desplegable
 .menu-desplegable
   position: absolute
@@ -164,14 +216,24 @@ $color-rosa: #EC407A
   top: 0
   background-color: white
   border-radius: 8px
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1)
-  padding: 10px
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1)
+  padding: 12px
   z-index: 100
   display: none
+  min-width: 180px
   
   .boton-menu:hover + &,
   &:hover
     display: block
+    animation: fadeIn 0.3s ease
+
+@keyframes fadeIn
+  from
+    opacity: 0
+    transform: translateY(-10px)
+  to
+    opacity: 1
+    transform: translateY(0)
 
 // Estilos para Tags
 .tag
@@ -182,14 +244,18 @@ $color-rosa: #EC407A
   border-radius: 16px
   font-size: 12px
   color: $color-azul-principal
+  font-weight: 500
+  @include transition-suave
   
   &:hover
     background-color: darken($color-azul-claro, 5%)
+    transform: translateY(-1px)
 
 // Estilos para botones secundarios
 .botones-secundarios
   display: flex
   gap: 10px
+  flex-wrap: wrap
   
 .boton-secundario
   width: 40px
@@ -198,22 +264,22 @@ $color-rosa: #EC407A
   border: none
   background-color: transparent
   color: $color-azul-principal
-  display: flex
-  justify-content: center
-  align-items: center
+  @include flex-center
   position: relative
   cursor: pointer
-  transition: background-color 0.3s
+  @include transition-suave
   
   i
     font-size: 18px
   
   &:hover
     background-color: $color-azul-claro
+    transform: translateY(-2px)
   
   &:active, &.presionado
     background-color: $color-azul-hover
     color: white
+    transform: translateY(0)
   
   &.seleccionado
     background-color: $color-azul-principal
@@ -265,6 +331,7 @@ $color-rosa: #EC407A
       background-color: white
       transition: .4s
       border-radius: 50%
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
 
 // Switches con colores
 .switch-verde
@@ -278,3 +345,31 @@ $color-rosa: #EC407A
 .switch-rosa
   input:checked + .slider
     background-color: $color-rosa
+
+// Media queries para responsividad
+@media (max-height: 700px)
+  .elementos-menu, .menu-secundario
+    ul
+      li
+        margin-bottom: 10px
+  
+  .divisor-menu
+    margin: 10px 0 20px 0
+
+@media (max-width: 768px)
+  .contenedor-menu
+    width: 60px
+    
+  .boton-menu
+    width: 40px
+    height: 40px
+    
+    span
+      left: 50px
+      
+  .boton-tienda
+    width: 54px
+    height: 40px
+    
+  .divisor-menu
+    width: 40px
