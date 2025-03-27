@@ -1,1 +1,280 @@
+// Variables de color
+$color-azul-principal: #001B41
+$color-azul-claro: rgba(0, 27, 65, 0.1)
+$color-azul-hover: rgba(0, 27, 65, 0.8)
+$color-rosa-notificacion: #FF4081
+$color-verde: #26C6DA
+$color-amarillo: #FFCA28
+$color-rosa: #EC407A
 
+.contenedor-menu
+  width: 76px
+  height: 100vh
+  background-color: white
+  display: flex
+  flex-direction: column
+  align-items: center
+  padding: 15px 0
+  box-shadow: none
+  position: relative
+
+  &::after
+    content: ""
+    position: absolute
+    top: 0
+    right: 0
+    height: 100%
+    width: 20px
+    box-shadow: 20px 0 20px rgba(0, 27, 65, 0.05)
+    pointer-events: none
+
+.logo-menu
+  width: 46px
+  height: 46px
+  margin-bottom: 30px
+  background-color: rgba(0, 27, 65, 0.1)
+  border-radius: 8px
+  display: flex
+  justify-content: center
+  align-items: center
+  
+  .imagen-logo
+    width: 100%
+    height: 100%
+    object-fit: contain
+
+.elementos-menu, .menu-secundario
+  width: 100%
+  
+  ul
+    list-style: none
+    padding: 0
+    margin: 0
+    display: flex
+    flex-direction: column
+    align-items: center
+    
+    li
+      margin-bottom: 15px
+      position: relative
+
+.boton-menu
+  display: flex
+  justify-content: center
+  align-items: center
+  width: 46px
+  height: 46px
+  border-radius: 8px
+  color: $color-azul-principal
+  text-decoration: none
+  position: relative
+  transition: background-color 0.3s, color 0.3s
+  
+  span
+    display: none
+    white-space: nowrap
+    position: absolute
+    left: 56px
+    background-color: $color-azul-principal
+    color: white
+    padding: 5px 10px
+    border-radius: 4px
+    font-size: 12px
+    z-index: 10
+  
+  &:hover
+    background-color: $color-azul-claro
+    
+    span
+      display: block
+  
+  &:active, &.presionado
+    background-color: $color-azul-hover
+    color: white
+  
+  &.seleccionado
+    background-color: $color-azul-principal
+    color: white
+
+.notificacion
+  position: absolute
+  top: -5px
+  right: -5px
+  background-color: $color-rosa-notificacion
+  color: white
+  font-size: 10px
+  width: 16px
+  height: 16px
+  border-radius: 50%
+  display: flex
+  justify-content: center
+  align-items: center
+
+.divisor-menu
+  width: 46px
+  height: 1px
+  background-color: #eee
+  margin: 15px 0 30px 0
+
+.boton-tienda
+  display: flex
+  justify-content: center
+  align-items: center
+  width: 63px
+  height: 46px
+  border-radius: 8px
+  background-color: $color-azul-claro
+  color: $color-azul-principal
+  text-decoration: none
+  transition: background-color 0.3s, color 0.3s
+  
+  &:hover
+    background-color: $color-azul-principal
+    color: white
+  
+  &:active, &.presionado
+    background-color: $color-azul-hover
+    color: white
+  
+  &.seleccionado
+    background-color: $color-azul-principal
+    color: white
+
+.icono
+  font-size: 20px
+  // Color del icono: 20% azul principal
+  color: rgba(0, 27, 65, 0.2)
+  
+  .boton-menu:hover &,
+  .boton-tienda:hover &
+    color: $color-azul-principal
+  
+  .boton-menu:active &,
+  .boton-tienda:active &,
+  .boton-menu.presionado &,
+  .boton-tienda.presionado &,
+  .boton-menu.seleccionado &,
+  .boton-tienda.seleccionado &
+    color: white
+
+// Estilos específicos para el menú desplegable
+.menu-desplegable
+  position: absolute
+  left: 76px
+  top: 0
+  background-color: white
+  border-radius: 8px
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1)
+  padding: 10px
+  z-index: 100
+  display: none
+  
+  .boton-menu:hover + &,
+  &:hover
+    display: block
+
+// Estilos para Tags
+.tag
+  display: inline-flex
+  align-items: center
+  padding: 4px 12px
+  background-color: $color-azul-claro
+  border-radius: 16px
+  font-size: 12px
+  color: $color-azul-principal
+  
+  &:hover
+    background-color: darken($color-azul-claro, 5%)
+
+// Estilos para botones secundarios
+.botones-secundarios
+  display: flex
+  gap: 10px
+  
+.boton-secundario
+  width: 40px
+  height: 40px
+  border-radius: 8px
+  border: none
+  background-color: transparent
+  color: $color-azul-principal
+  display: flex
+  justify-content: center
+  align-items: center
+  position: relative
+  cursor: pointer
+  transition: background-color 0.3s
+  
+  i
+    font-size: 18px
+  
+  &:hover
+    background-color: $color-azul-claro
+  
+  &:active, &.presionado
+    background-color: $color-azul-hover
+    color: white
+  
+  &.seleccionado
+    background-color: $color-azul-principal
+    color: white
+  
+  .notificacion
+    top: -5px
+    right: -5px
+
+// Estilos para switches
+.switch
+  position: relative
+  display: inline-block
+  width: 40px
+  height: 24px
+  
+  input
+    opacity: 0
+    width: 0
+    height: 0
+    
+    &:checked + .slider
+      background-color: $color-azul-principal
+      
+      &:before
+        transform: translateX(16px)
+    
+    &:focus + .slider
+      box-shadow: 0 0 1px $color-azul-principal
+  
+  .slider
+    position: absolute
+    cursor: pointer
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    background-color: #ccc
+    transition: .4s
+    border-radius: 34px
+    
+    &:before
+      position: absolute
+      content: ""
+      height: 16px
+      width: 16px
+      left: 4px
+      bottom: 4px
+      background-color: white
+      transition: .4s
+      border-radius: 50%
+
+// Switches con colores
+.switch-verde
+  input:checked + .slider
+    background-color: $color-verde
+
+.switch-amarillo
+  input:checked + .slider
+    background-color: $color-amarillo
+
+.switch-rosa
+  input:checked + .slider
+    background-color: $color-rosa

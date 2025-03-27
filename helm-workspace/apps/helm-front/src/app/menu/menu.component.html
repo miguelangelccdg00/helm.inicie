@@ -1,1 +1,78 @@
-<p>menu works!</p>
+<div class="contenedor-menu">
+  <div class="logo-menu">
+    <img src="assets/images/logo.png" alt="Logo" class="imagen-logo">
+  </div>
+  
+  <nav class="elementos-menu">
+    <ul>
+      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(0)" (click)="seleccionarItem(0, $event)"><i class="fa-regular fa-file-lines icono"></i><span>Mi escritorio</span></a></li>
+      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(1)" (click)="seleccionarItem(1, $event)"><i class="fa-regular fa-building icono"></i><span>Empresas y centros</span></a></li>
+      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(2)" (click)="seleccionarItem(2, $event)"><i class="fa-regular fa-user icono"></i><span>Portal del empleado</span></a></li>
+      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(3)" (click)="seleccionarItem(3, $event)"><i class="fa-regular fa-bell icono"></i><span>Noticias</span><div class="notificacion">2</div></a></li>
+    </ul>
+  </nav>
+  
+  <div class="divisor-menu"></div>
+  
+  <div class="menu-secundario">
+    <ul>
+      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(4)" (click)="seleccionarItem(4, $event)"><i class="fa-regular fa-circle-check icono"></i><span>Bitácora</span></a></li>
+      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(5)" (click)="seleccionarItem(5, $event)"><i class="fa-regular fa-graduation-cap icono"></i><span>FormaPro</span></a></li>
+      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(6)" (click)="seleccionarItem(6, $event)"><i class="fa-regular fa-circle-question icono"></i><span>Ayuda</span></a></li>
+      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(7)" (click)="seleccionarItem(7, $event)"><i class="fa-regular fa-circle-user icono"></i><span>Usuario</span></a></li>
+      <li><a href="#" class="boton-tienda" [class.seleccionado]="estaSeleccionado(8)" (click)="seleccionarItem(8, $event)"><i class="fa-regular fa-store icono"></i></a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- Ejemplos de otros elementos de la interfaz -->
+<div class="ejemplos-ui" style="display: none;">
+  <!-- Tags -->
+  <div class="tag">
+    <span>Información importante</span>
+  </div>
+  
+  <!-- Botones de menú secundario -->
+  <div class="botones-secundarios">
+    <button class="boton-secundario"><i class="fa-regular fa-envelope"></i></button>
+    <button class="boton-secundario"><i class="fa-regular fa-bell"></i></button>
+    <button class="boton-secundario"><i class="fa-regular fa-star"></i></button>
+    <button class="boton-secundario"><i class="fa-regular fa-bookmark"></i></button>
+    <button class="boton-secundario"><i class="fa-regular fa-magnifying-glass"></i></button>
+    
+    <!-- Con notificaciones -->
+    <button class="boton-secundario">
+      <i class="fa-regular fa-envelope"></i>
+      <div class="notificacion">3</div>
+    </button>
+    <button class="boton-secundario">
+      <i class="fa-regular fa-bell"></i>
+      <div class="notificacion">2</div>
+    </button>
+  </div>
+  
+  <!-- Switches -->
+  <div class="switches">
+    <!-- Switch básico -->
+    <label class="switch">
+      <input type="checkbox">
+      <span class="slider"></span>
+    </label>
+    
+    <!-- Switches con color -->
+    <label class="switch switch-verde">
+      <input type="checkbox">
+      <span class="slider"></span>
+    </label>
+    
+    <label class="switch switch-amarillo">
+      <input type="checkbox">
+      <span class="slider"></span>
+    </label>
+    
+    <label class="switch switch-rosa">
+      <input type="checkbox">
+      <span class="slider"></span>
+    </label>
+  </div>
+</div>
