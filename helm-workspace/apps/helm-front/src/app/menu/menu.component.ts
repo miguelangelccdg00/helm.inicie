@@ -54,4 +54,13 @@ export class MenuComponent {
     this.closeMenus();
     this.router.navigate(['store-soluciones']);
   }
+  
+  // Método para navegar a otras rutas
+  navegarA(ruta: string, event: Event): void {
+    event.preventDefault();
+    this.closeMenus();
+    this.router.navigate([ruta]);
+  }
+
+  
 }

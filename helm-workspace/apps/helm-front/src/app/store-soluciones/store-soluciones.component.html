@@ -25,11 +25,11 @@
             <td class="descripcion-cell">
               <div [innerHTML]="solucion.description"></div>
             </td>
-            <td>{{solucion.title}}</td>
-            <td>{{solucion.subtitle}}</td>
-            <td>{{solucion.titleweb}}</td>
-            <td>{{solucion.problemaTitle}}</td>
-            <td>{{solucion.solucionTitle}}</td>
+            <td>{{solucion.title || '-'}}</td>
+            <td>{{solucion.subtitle || '-'}}</td>
+            <td>{{solucion.titleweb || '-'}}</td>
+            <td>{{solucion.problemaTitle || '-'}}</td>
+            <td>{{solucion.solucionTitle || '-'}}</td>
           </tr>
           }
         </tbody>

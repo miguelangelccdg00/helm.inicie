@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreSolucionesService, StoreSoluciones } from '../services/store-soluciones.service';
 import { MenuComponent } from '../menu/menu.component';
@@ -9,6 +9,7 @@ import { MenuComponent } from '../menu/menu.component';
   imports: [CommonModule, MenuComponent],
   templateUrl: './store-soluciones.component.html',
   styleUrl: './store-soluciones.component.sass',
+  encapsulation: ViewEncapsulation.None 
 })
 export class StoreSolucionesComponent implements OnInit {
 

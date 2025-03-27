@@ -10,6 +10,7 @@ $color-gris-divisor: #eeeeee
   display: flex
   width: 100%
   height: 100vh
+  position: relative
   
   .menu-lateral
     flex-shrink: 0
@@ -18,16 +19,16 @@ $color-gris-divisor: #eeeeee
     top: 0
     height: 100vh
     z-index: 10
-    overflow: hidden
+    overflow: visible // Permite que los menús desplegables sean visibles
   
   .contenido-principal
     flex-grow: 1
     padding: 30px
-    padding-left: 80px // Añadimos margen izquierdo para evitar que el menú tape el contenido
+    padding-left: 80px
     overflow-y: auto
     background-color: #f9f9f9
-    margin-left: 60px // Espacio para el menú lateral
-    width: calc(100% - 60px) // Ajustamos el ancho para considerar el menú
+    margin-left: 60px
+    width: calc(100% - 60px)
     height: 100vh
     box-sizing: border-box
 
@@ -45,7 +46,7 @@ table
   border-radius: 8px
   overflow: hidden
   margin-bottom: 30px
-  table-layout: fixed // Mejora el control del ancho de las columnas
+  table-layout: fixed
 
 thead
   border-bottom: 2px solid $color-azul-principal
@@ -94,3 +95,9 @@ td i
   background-color: white
   border-radius: 8px
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05)
+
+// Aseguramos que los menús desplegables del componente menu aparezcan correctamente
+:host ::ng-deep
+  .menu-desplegable
+    z-index: 100
+    position: absolute
