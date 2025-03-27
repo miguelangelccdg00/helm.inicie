@@ -40,7 +40,8 @@ app.get('/', (req, res) =>
                 base: 'storeSolucion',
                 operations:[
                     { method: 'GET', path: '/listStoreSoluciones' },
-                    { method: 'PUT', path: '/modifyStoreSoluciones' }
+                    { method: 'GET', path: '/listIdStoreSoluciones/:id' },
+                    { method: 'PUT', path: '/modifyStoreSoluciones/:id' }
                 ]
             }            
         }]
