@@ -4,29 +4,36 @@ import { Observable } from 'rxjs';
 
 export interface StoreSoluciones 
 {
-    idSolucion?: number;
+    id_solucion: number;
     description: string;
-    title: string;
-    subtitle: string;
+    title: string | null;
+    subtitle: string | null;
     icon: string;
     slug: string;
-    titleweb: string;
-    multimediaUri: string;
-    multimediaTypeId: number;
-    problemaTitle: string;
-    problemaPragma: string;
-    solucionTitle: string;
-    solucionPragma: string;
-    caracteristicasTitle: string;
-    caracteristicasPragma: string;
-    casosdeusoTitle: string;
-    casosdeusoPragma: string;
-    firstCtaTitle: string;
-    firstCtaPragma: string;
-    secondCtaTitle: string;
-    secondCtaPragma: string;
-    beneficiosTitle: string;
-    beneficiosPragma: string;
+    titleweb: string | null;
+    multimediaUri: string | null;
+    multimediaTypeId: number | null;
+    problemaTitle: string | null;
+    problemaPragma: string | null;
+    solucionTitle: string | null;
+    solucionPragma: string | null;
+    caracteristicasTitle: string | null;
+    caracteristicasPragma: string | null;
+    casosdeusoTitle: string | null;
+    casosdeusoPragma: string | null;
+    firstCtaTitle: string | null;
+    firstCtaPragma: string | null;
+    secondCtaTitle: string | null;
+    secondCtaPragma: string | null;
+    beneficiosTitle: string | null;
+    beneficiosPragma: string | null;
+    // Campos adicionales que podrían estar en la respuesta
+    sector?: string;
+    ambito?: string;
+    id_ambito?: number;
+    responseChat?: string;
+    data?: string;
+    deleted?: boolean;
 }
 
 @Injectable({

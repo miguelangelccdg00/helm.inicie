@@ -4,23 +4,25 @@
     <thead>
         <tr>
             <th>ID</th>
+            <th>Icono</th>
+            <th>Descripción</th>
             <th>Título</th>
             <th>Subtítulo</th>
-            <th>Descripción</th>
             <th>Título Web</th>
             <th>Problema</th>
             <th>Solución</th>
         </tr>
     </thead>
     <tbody>
-        @for(solucion of storeSoluciones; track solucion.idSolucion) {
+        @for(solucion of storeSoluciones; track solucion.id_solucion) {
         <tr>
-            <td>{{solucion.idSolucion}}</td>
-            <td>{{solucion.title}}</td>
-            <td>{{solucion.subtitle}}</td>
+            <td>{{solucion.id_solucion}}</td>
+            <td><i class="{{solucion.icon}}"></i></td>
             <td class="descripcion-cell">
                 <div [innerHTML]="solucion.description"></div>
             </td>
+            <td>{{solucion.title}}</td>
+            <td>{{solucion.subtitle}}</td>
             <td>{{solucion.titleweb}}</td>
             <td>{{solucion.problemaTitle}}</td>
             <td>{{solucion.solucionTitle}}</td>
@@ -28,3 +30,8 @@
         }
     </tbody>
 </table>
+
+<!-- Mensaje cuando no hay datos -->
+<div class="no-data-message" *ngIf="storeSoluciones.length === 0">
+    No se encontraron soluciones disponibles.
+</div>
