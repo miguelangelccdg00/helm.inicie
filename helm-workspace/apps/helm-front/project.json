@@ -25,6 +25,11 @@
             "glob": "**/*",
             "input": "apps/helm-front/src/app/menu/assets",
             "output": "assets"
+          },
+          {
+            "glob": "**/*",
+            "input": "apps/helm-front/src/app/carrusel/assets",
+            "output": "assets"
           }
         ],
         "styles": ["apps/helm-front/src/styles.sass"],

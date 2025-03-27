@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 export class CarruselComponent implements OnInit, OnDestroy {
 
   bloques = [
-    { titulo: 'BPM Suite', descripcion: 'Si buscas mejorar la eficiencia, el control y la agilidad de tus procesos operativos.', imagen: 'assets/img1.png' },
+    { titulo: 'BPM Suite', descripcion: 'Si buscas mejorar la eficiencia, el control y la agilidad de tus procesos operativos.', imagen: 'assets/images/img1.png' },
     { titulo: 'FormaPro', descripcion: 'Un LMS avanzado para mejorar el rendimiento y las habilidades de tus empleados.', imagen: 'assets/img2.png' },
     { titulo: 'Portal del empleado', descripcion: 'Si buscas aumentar la productividad y satisfacción de tus empleados.', imagen: 'assets/img3.png' },
     { titulo: 'Gestor documental', descripcion: 'Diseñados para controlar tu normativa de sistemas de gestión. Compliance Penal y Compliance Técnico con seguridad y agilidad.', imagen: 'assets/img4.png' },
