@@ -23,18 +23,17 @@
           <i class="fa-solid fa-ellipsis icono"></i>
           <span class="tooltip">Más opciones</span>
         </a></li>
-        <li><a href="#" class="boton-menu" (click)="irAStoreSoluciones(); $event.preventDefault()">
-          <i class="fa-solid fa-store icono"></i>
-          <span class="tooltip">Soluciones</span>
-        </a></li>
       </ul>
     </div>
   </div>
   
+  <!-- Contenedor flexible para mantener espacio entre secciones -->
+  <div class="espacio-flexible"></div>
+  
   <!-- Sección central (tienda) -->
   <div class="seccion-central">
     <a href="#" class="boton-tienda" [class.seleccionado]="estaSeleccionado(4)" (click)="seleccionarItem(4, $event)">
-      <i class="fa-solid fa-shop icono"></i>
+      <i class="fa-solid fa-store icono"></i>
     </a>
   </div>
   

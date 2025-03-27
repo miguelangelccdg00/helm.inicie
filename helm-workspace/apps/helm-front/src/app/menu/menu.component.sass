@@ -90,9 +90,14 @@ $color-tienda-bg: #f0f2f5
       width: 100%
       @include flex-center
 
+// Espacio flexible para controlar la posición
+.espacio-flexible
+  flex-grow: 1
+  min-height: 5px
+
 // Sección central (tienda)
 .seccion-central
-  margin: auto 0
+  margin: 100px
   width: 100%
   padding: 15px 0
   background-color: $color-tienda-bg
