@@ -9,6 +9,7 @@ $color-rosa: #EC407A
 $color-gris-claro: #f5f5f5
 $color-gris-divisor: #eeeeee
 $color-sombra: rgba(0, 27, 65, 0.05)
+$color-tienda-bg: #f0f2f5
 
 // Mixins
 @mixin flex-center
@@ -27,12 +28,11 @@ $color-sombra: rgba(0, 27, 65, 0.05)
   flex-direction: column
   align-items: center
   padding: 15px 0
-  box-shadow: 0 0 15px $color-sombra
+  box-shadow: 0 20px 20px $color-sombra
   position: fixed
   left: 0
   top: 0
   z-index: 1000
-  justify-content: space-between
 
   &::after
     content: ""
@@ -40,15 +40,22 @@ $color-sombra: rgba(0, 27, 65, 0.05)
     top: 0
     right: 0
     height: 100%
-    width: 20px
-    box-shadow: 20px 0 20px $color-sombra
+    width: 1px
+    background-color: $color-gris-divisor
     pointer-events: none
+
+// Sección superior
+.seccion-superior
+  display: flex
+  flex-direction: column
+  align-items: center
+  width: 100%
 
 .logo-menu
   width: 46px
   height: 46px
-  margin-bottom: 15px
-  background-color: $color-azul-claro
+  margin-bottom: 30px
+  background: linear-gradient(135deg, #26C6DA 0%, #EC407A 100%)
   border-radius: 8px
   @include flex-center
   
@@ -58,7 +65,15 @@ $color-sombra: rgba(0, 27, 65, 0.05)
     object-fit: contain
     padding: 8px
 
-.elementos-menu, .menu-secundario
+// Separador invisible (mantiene el espacio pero no es visible)
+.separador
+  width: 100%
+  height: 0
+  margin: 15px 0
+  opacity: 0
+
+// Elementos del menú
+.elementos-menu
   width: 100%
   
   ul
@@ -75,21 +90,62 @@ $color-sombra: rgba(0, 27, 65, 0.05)
       width: 100%
       @include flex-center
 
-// Contenedor para la parte superior (logo + elementos principales)
-.elementos-menu
-  margin-bottom: auto
-  padding-top: 15px
-
-// Contenedor para la parte inferior
-.menu-secundario
-  margin-top: auto
-  padding-bottom: 15px
-
-// Botón de tienda en el centro
-.tienda-central
-  margin: 20px 0
-  @include flex-center
+// Sección central (tienda)
+.seccion-central
+  margin: auto 0
   width: 100%
+  padding: 15px 0
+  background-color: $color-tienda-bg
+  @include flex-center
+
+.boton-tienda
+  @include flex-center
+  width: 63px
+  height: 46px
+  border-radius: 8px
+  background-color: $color-tienda-bg
+  color: $color-azul-principal
+  text-decoration: none
+  @include transition-suave
+  
+  &:hover
+    background-color: darken($color-tienda-bg, 5%)
+    transform: translateY(-2px)
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1)
+  
+  &:active, &.presionado
+    background-color: darken($color-tienda-bg, 10%)
+    transform: translateY(0)
+  
+  &.seleccionado
+    background-color: $color-azul-principal
+    color: white
+
+  .icono
+    font-size: 22px
+
+// Sección inferior
+.seccion-inferior
+  margin-top: auto
+  width: 100%
+  padding-bottom: 15px
+  
+  ul
+    list-style: none
+    padding: 0
+    margin: 0
+    display: flex
+    flex-direction: column
+    align-items: center
+    
+    li
+      margin-bottom: 15px
+      position: relative
+      width: 100%
+      @include flex-center
+      
+      &:last-child
+        margin-bottom: 0
 
 .boton-menu
   @include flex-center
@@ -101,11 +157,11 @@ $color-sombra: rgba(0, 27, 65, 0.05)
   position: relative
   @include transition-suave
   
-  span
+  .tooltip
     display: none
     white-space: nowrap
     position: absolute
-    left: 56px
+    left: 76px
     background-color: $color-azul-principal
     color: white
     padding: 6px 12px
@@ -121,7 +177,7 @@ $color-sombra: rgba(0, 27, 65, 0.05)
   &:hover
     background-color: $color-azul-claro
     
-    span
+    .tooltip
       display: block
       opacity: 1
       transform: translateX(0)
@@ -171,20 +227,17 @@ $color-sombra: rgba(0, 27, 65, 0.05)
   width: 63px
   height: 46px
   border-radius: 8px
-  background-color: $color-azul-claro
+  background-color: $color-tienda-bg
   color: $color-azul-principal
   text-decoration: none
   @include transition-suave
   
   &:hover
-    background-color: $color-azul-principal
-    color: white
+    background-color: darken($color-tienda-bg, 5%)
     transform: translateY(-2px)
-    box-shadow: 0 4px 8px rgba(0, 27, 65, 0.2)
   
   &:active, &.presionado
-    background-color: $color-azul-hover
-    color: white
+    background-color: darken($color-tienda-bg, 10%)
     transform: translateY(0)
   
   &.seleccionado
@@ -193,7 +246,7 @@ $color-sombra: rgba(0, 27, 65, 0.05)
 
 .icono
   font-size: 20px
-  color: rgba(0, 27, 65, 0.2)
+  color: rgba(0, 27, 65, 0.15)
   @include transition-suave
   
   .boton-menu:hover &,
@@ -207,7 +260,6 @@ $color-sombra: rgba(0, 27, 65, 0.05)
   .boton-menu.seleccionado &,
   .boton-tienda.seleccionado &
     color: white
-
 
 // Estilos específicos para el menú desplegable
 .menu-desplegable
@@ -346,15 +398,20 @@ $color-sombra: rgba(0, 27, 65, 0.05)
   input:checked + .slider
     background-color: $color-rosa
 
+// Estilos específicos para el icono de ellipsis
+.fa-ellipsis
+  font-size: 22px
+  letter-spacing: 1px
+
 // Media queries para responsividad
 @media (max-height: 700px)
-  .elementos-menu, .menu-secundario
+  .elementos-menu, .seccion-inferior
     ul
       li
         margin-bottom: 10px
   
-  .divisor-menu
-    margin: 10px 0 20px 0
+  .separador
+    margin: 10px 0
 
 @media (max-width: 768px)
   .contenedor-menu
@@ -364,12 +421,9 @@ $color-sombra: rgba(0, 27, 65, 0.05)
     width: 40px
     height: 40px
     
-    span
+    .tooltip
       left: 50px
       
   .boton-tienda
     width: 54px
     height: 40px
-    
-  .divisor-menu
-    width: 40px

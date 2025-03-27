@@ -1,39 +1,84 @@
 <div class="contenedor-menu">
-  <div class="logo-menu">
-    <img src="assets/images/logo.png" alt="Logo" class="imagen-logo">
+  <!-- Sección superior -->
+  <div class="seccion-superior">
+    <div class="logo-menu">
+      <img src="assets/images/logo.png" alt="Logo" class="imagen-logo">
+    </div>
+    
+    <div class="elementos-menu">
+      <ul>
+        <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(0)" (click)="seleccionarItem(0, $event)">
+          <i class="fa-regular fa-calendar icono"></i>
+          <span class="tooltip">Mi escritorio</span>
+        </a></li>
+        <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(1)" (click)="seleccionarItem(1, $event)">
+          <i class="fa-regular fa-building icono"></i>
+          <span class="tooltip">Empresas y centros</span>
+        </a></li>
+        <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(2)" (click)="seleccionarItem(2, $event)">
+          <i class="fa-regular fa-user icono"></i>
+          <span class="tooltip">Portal del empleado</span>
+        </a></li>
+        <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(3)" (click)="seleccionarItem(3, $event)">
+          <i class="fa-solid fa-ellipsis icono"></i>
+          <span class="tooltip">Más opciones</span>
+        </a></li>
+      </ul>
+    </div>
   </div>
   
-  <nav class="elementos-menu">
-    <ul>
-      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(0)" (click)="seleccionarItem(0, $event)"><i class="fa-regular fa-file icono"></i><span>Mi escritorio</span></a></li>
-      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(1)" (click)="seleccionarItem(1, $event)"><i class="fa-regular fa-calculator icono"></i><span>Empresas y centros</span></a></li>
-      <li><a href="#" class="boton-menu seleccionado" [class.seleccionado]="estaSeleccionado(2)" (click)="seleccionarItem(2, $event)"><i class="fa-regular fa-user icono"></i><span>Portal del empleado</span></a></li>
-      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(3)" (click)="seleccionarItem(3, $event)">
-        <i class="fa-regular fa-bell icono"></i>
-        <span>Noticias</span>
-        <div class="notificacion">2</div>
-      </a></li>
-    </ul>
-  </nav>
-  
-  <!-- Botón de tienda en el medio -->
-  <div class="tienda-central">
-    <a href="#" class="boton-tienda" [class.seleccionado]="estaSeleccionado(8)" (click)="seleccionarItem(8, $event)">
+  <!-- Sección central (tienda) -->
+  <div class="seccion-central">
+    <a href="#" class="boton-tienda" [class.seleccionado]="estaSeleccionado(4)" (click)="seleccionarItem(4, $event)">
       <i class="fa-solid fa-store icono"></i>
     </a>
   </div>
   
-  <div class="menu-secundario">
+  <!-- Sección inferior -->
+  <div class="seccion-inferior">
     <ul>
-      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(4)" (click)="seleccionarItem(4, $event)"><i class="fa-regular fa-circle-check icono"></i><span>Bitácora</span></a></li>
-      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(5)" (click)="seleccionarItem(5, $event)"><i class="fa-solid fa-graduation-cap icono"></i><span>FormaPro</span></a></li>
-      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(6)" (click)="seleccionarItem(6, $event)"><i class="fa-regular fa-circle-question icono"></i><span>Ayuda</span></a></li>
-      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(7)" (click)="seleccionarItem(7, $event)"><i class="fa-regular fa-circle-user icono"></i><span>Usuario</span></a></li>
+      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(5)" (click)="seleccionarItem(5, $event)">
+        <i class="fa-regular fa-newspaper icono"></i>
+        <span class="tooltip">Noticias</span>
+        <div class="notificacion">2</div>
+      </a></li>
+      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(6)" (click)="seleccionarItem(6, $event)">
+        <i class="fa-regular fa-compass icono"></i>
+        <span class="tooltip">Bitácora</span>
+      </a></li>
+      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(7)" (click)="seleccionarItem(7, $event)">
+        <i class="fa-solid fa-graduation-cap icono"></i>
+        <span class="tooltip">FormaPro</span>
+      </a></li>
+      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(8)" (click)="seleccionarItem(8, $event)">
+        <i class="fa-regular fa-circle-question icono"></i>
+        <span class="tooltip">Ayuda</span>
+      </a></li>
+      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(9)" (click)="seleccionarItem(9, $event)">
+        <i class="fa-regular fa-circle-user icono"></i>
+        <span class="tooltip">Usuario</span>
+      </a></li>
     </ul>
   </div>
 </div>
 
-<!-- Ejemplos de otros elementos de la interfaz -->
+<!-- Menú desplegable para Portal del empleado -->
+<div class="menu-desplegable">
+  <ul>
+    <li><a href="#">Noticias</a></li>
+    <li><a href="#">Mis datos</a></li>
+    <li><a href="#">Documentos y solicitudes</a></li>
+    <li><a href="#">Documentos personales</a></li>
+    <li><a href="#">Documentos generales</a></li>
+    <li><a href="#">Solicitud de personal</a></li>
+    <li><a href="#" class="seleccionado">Sistema integrado</a></li>
+    <li><a href="#">Permisos y vacaciones</a></li>
+    <li><a href="#">Formación</a></li>
+    <li><a href="#">Canal de denuncias</a></li>
+  </ul>
+</div>
+
+<!-- Ejemplos de otros elementos de la interfaz (ocultos) -->
 <div class="ejemplos-ui" style="display: none;">
   <!-- Tags -->
   <div class="tag">
