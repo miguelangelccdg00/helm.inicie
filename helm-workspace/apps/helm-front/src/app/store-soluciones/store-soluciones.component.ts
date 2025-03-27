@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreSolucionesService, StoreSoluciones } from '../services/store-soluciones.service';
 import { MenuComponent } from '../menu/menu.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-store-soluciones',
@@ -15,7 +16,7 @@ export class StoreSolucionesComponent implements OnInit {
 
   storeSoluciones: StoreSoluciones[] = [];
 
-  constructor(private storeSolucionesService: StoreSolucionesService) {}
+  constructor(private storeSolucionesService: StoreSolucionesService, private router: Router) {}
 
   ngOnInit() {
     this.storeSolucionesService.getStoreSoluciones().subscribe({
@@ -28,4 +29,10 @@ export class StoreSolucionesComponent implements OnInit {
       }
     });
   }
+
+  irAModificarSolucion(idSolucion: number) {
+    this.router.navigate(['modificar-solucion', idSolucion]);
+  }
+
+  
 }
