@@ -2,6 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginService } from '../login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,7 @@ export class LoginComponent {
   mostrarRecordar: boolean = true;
   mostrarDescubrir: boolean = false;
 
-  constructor(private loginService: LoginService) {
+  constructor(private loginService: LoginService, private router: Router) {
     this.updatePlaceholders(window.innerWidth);
   }
 
@@ -55,16 +56,18 @@ export class LoginComponent {
 
       const usuarioFinal = usuario ?? '';
       const contrasenaFinal = contrasena ?? '';
-      
-      console.log('Enviando datos al servidor:', { nombreUsuario: usuarioFinal, contraseña: contrasenaFinal });
-  
+        
       this.loginService.login(usuarioFinal, contrasenaFinal).subscribe({
         next: (response) => {
-          console.log('Inicio de sesión exitoso', response);
-          alert('Inicio de sesión exitoso');
+          if (response.user) {
+            localStorage.setItem('user', JSON.stringify(response.user));
+            alert('Inicio de sesión exitoso');
+            this.router.navigate(['/menu']);
+          } else {
+            alert('Usuario o contraseña incorrectos');
+          }
         },
         error: (err) => {
-          console.error('Error al iniciar sesión', err);
           alert('Error al iniciar sesión: ' + (err.error?.message || 'Credenciales incorrectas'));
         }
       });

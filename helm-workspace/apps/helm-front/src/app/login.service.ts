@@ -4,6 +4,11 @@ import { Observable } from 'rxjs';
 
 export interface LoginResponse {
   message: string;
+  user?: {
+    id: number;
+    username: string;
+    email: string;
+  };
 }
 
 @Injectable({
@@ -21,6 +26,14 @@ export class LoginService {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     return this.http.post<LoginResponse>(this.apiUrl, body, { headers });
+  }
+
+  isAuth(): boolean {
+    return localStorage.getItem('user') !== null;
+  }
+
+  logout() {
+    localStorage.removeItem('user');
   }
   
 }
