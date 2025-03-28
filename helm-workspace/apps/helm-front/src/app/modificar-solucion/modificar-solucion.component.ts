@@ -54,4 +54,8 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
   
+  // Método para cancelar la edición y volver a la lista de soluciones
+  cancelar() {
+    this.router.navigate(['/store-soluciones']);
+  }
 }
