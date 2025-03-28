@@ -1,35 +1,260 @@
-<div *ngIf="solucion; else loading">
-    <h1>Detalles de la Solución</h1>
+<h1>Solución sin modificar</h1>
+
+<div id="solucion">
+    <p>ID: {{ solucion?.id_solucion }}</p>
+    <p>Descripción: {{ solucion?.description }}</p>
+    <p>Título: {{ solucion?.title || '-' }}</p>
+    <p>Subtítulo: {{ solucion?.subtitle || '-' }}</p>
+    <p>Ícono: {{ solucion?.icon }}</p>
+    <p>Slug: {{ solucion?.slug }}</p>
+    <p>Título Web: {{ solucion?.titleweb || '-' }}</p>
+    <p>Multimedia URI: {{ solucion?.multimediaUri || '-' }}</p>
+    <p>Multimedia Type ID: {{ solucion?.multimediaTypeId || '-' }}</p>
+    <p>Problema Título: {{ solucion?.problemaTitle || '-' }}</p>
+    <p>Problema Pragma: {{ solucion?.problemaPragma || '-' }}</p>
+    <p>Solución Título: {{ solucion?.solucionTitle || '-' }}</p>
+    <p>Solución Pragma: {{ solucion?.solucionPragma || '-' }}</p>
+    <p>Características Título: {{ solucion?.caracteristicasTitle || '-' }}</p>
+    <p>Características Pragma: {{ solucion?.caracteristicasPragma || '-' }}</p>
+    <p>Casos de Uso Título: {{ solucion?.casosdeusoTitle || '-' }}</p>
+    <p>Casos de Uso Pragma: {{ solucion?.casosdeusoPragma || '-' }}</p>
+    <p>Primera CTA Título: {{ solucion?.firstCtaTitle || '-' }}</p>
+    <p>Primera CTA Pragma: {{ solucion?.firstCtaPragma || '-' }}</p>
+    <p>Segunda CTA Título: {{ solucion?.secondCtaTitle || '-' }}</p>
+    <p>Segunda CTA Pragma: {{ solucion?.secondCtaPragma || '-' }}</p>
+    <p>Beneficios Título: {{ solucion?.beneficiosTitle || '-' }}</p>
+    <p>Beneficios Pragma: {{ solucion?.beneficiosPragma || '-' }}</p>
+    <p>Sector: {{ solucion?.sector || '-' }}</p>
+    <p>Ámbito: {{ solucion?.ambito || '-' }}</p>
+    <p>ID Ámbito: {{ solucion?.id_ambito || '-' }}</p>
+    <p>Response Chat: {{ solucion?.responseChat || '-' }}</p>
+    <p>Data: {{ solucion?.data || '-' }}</p>
+    <p>Eliminado: {{ solucion?.deleted ? 'Sí' : 'No' }}</p>
+</div>
+
+<h1>Formulario para modificar la solución</h1>
+
+<div id="formulario-modificar">
+  <form *ngIf="solucion" (ngSubmit)="guardarCambios()">
+    
+    <label for="title">Título: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.title" name="title" id="title"/>
+
+    <br><br>
   
-    <div>
-      <h2>{{ solucion.title || 'Sin título' }}</h2>
-      <p><strong>Descripción:</strong> {{ solucion.description }}</p>
-      <p><strong>Subtítulo:</strong> {{ solucion.subtitle || 'Sin subtítulo' }}</p>
-      <p><strong>Título Web:</strong> {{ solucion.titleweb || 'Sin título web' }}</p>
-      <p><strong>Problema:</strong> {{ solucion.problemaTitle || 'Sin problema' }}</p>
-      <p><strong>Solución:</strong> {{ solucion.solucionTitle || 'Sin solución' }}</p>
+    <label for="subtitle">Subtítulo: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.subtitle" name="subtitle" id="subtitle"/>
   
-      <p><strong>Icono:</strong> <i class="{{ solucion.icon }}"></i></p>
-      <p><strong>Slug:</strong> {{ solucion.slug }}</p>
+    <br><br>
+
+    <label for="icon">Icono: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.icon" name="icon" id="icon"/>
+
+    <br><br>
   
-      <p><strong>Características:</strong> {{ solucion.caracteristicasTitle || 'No disponibles' }}</p>
-      <p><strong>Casos de uso:</strong> {{ solucion.casosdeusoTitle || 'No disponibles' }}</p>
+    <label for="slug">Slug: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.slug" name="slug" id="slug"/>
+
+    <br><br>
   
-      <p><strong>Beneficios:</strong> {{ solucion.beneficiosTitle || 'No disponibles' }}</p>
+    <label for="titleweb">Título Web: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.titleweb" name="titleweb" id="titleweb"/>
+
+    <br><br>
+
+    <label for="multimediaUri">Multimedia URI: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.multimediaUri" name="multimediaUri" id="multimediaUri"/>
   
-      <p><strong>Multimedia:</strong> 
-        <span *ngIf="solucion.multimediaUri">
-          <a [href]="solucion.multimediaUri" target="_blank">Ver multimedia</a>
-        </span>
-        <span *ngIf="!solucion.multimediaUri">No hay multimedia disponible</span>
-      </p>
-    </div>
+    <br><br>
+
+    <label for="multimediaTypeId">Multimedia Type ID: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.multimediaTypeId" name="multimediaTypeId" id="multimediaTypeId" type="number" />
   
-    <!-- Botón para guardar cambios o ir a otra parte -->
-    <button (click)="guardarCambios()">Guardar cambios</button>
-  </div>
+    <br><br>
+
+    <label for="problemaTitle">Problema Título: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.problemaTitle" name="problemaTitle" id="problemaTitle"/>
   
-  <ng-template #loading>
-    <p>Cargando detalles de la solución...</p>
-  </ng-template>
+    <br><br>
+
+    <label for="problemaPragma">Problema Pragma: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.problemaPragma" name="problemaPragma" id="problemaPragma"/>
   
+    <br><br>
+
+    <label for="solucionTitle">Solución Título: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.solucionTitle" name="solucionTitle" id="solucionTitle"/>
+  
+    <br><br>
+
+    <label for="solucionPragma">Solución Pragma: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.solucionPragma" name="solucionPragma" id="solucionPragma"/>
+  
+    <br><br>
+
+    <label for="caracteristicasTitle">Características Título: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.caracteristicasTitle" name="caracteristicasTitle" id="caracteristicasTitle"/>
+  
+    <br><br>
+
+    <label for="caracteristicasPragma">Características Pragma: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.caracteristicasPragma" name="caracteristicasPragma" id="caracteristicasPragma"/>
+  
+    <br><br>
+
+    <label for="casosdeusoTitle">Casos de Uso Título: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.casosdeusoTitle" name="casosdeusoTitle" id="casosdeusoTitle"/>
+  
+    <br><br>
+
+    <label for="casosdeusoPragma">Casos de Uso Pragma: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.casosdeusoPragma" name="casosdeusoPragma" id="casosdeusoPragma"/>
+
+    <br><br>
+
+    <label for="firstCtaTitle">Primer CTA Título: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.firstCtaTitle" name="firstCtaTitle" id="firstCtaTitle"/>
+  
+    <br><br>
+
+    <label for="firstCtaPragma">Primer CTA Pragma: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.firstCtaPragma" name="firstCtaPragma" id="firstCtaPragma"/>
+  
+    <br><br>
+
+    <label for="secondCtaTitle">Segundo CTA Título: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.secondCtaTitle" name="secondCtaTitle" id="secondCtaTitle"/>
+  
+    <br><br>
+
+    <label for="secondCtaPragma">Segundo CTA Pragma: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.secondCtaPragma" name="secondCtaPragma" id="secondCtaPragma"/>
+  
+    <br><br>
+
+    <label for="beneficiosTitle">Beneficios Título: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.beneficiosTitle" name="beneficiosTitle" id="beneficiosTitle"/>
+  
+    <br><br>
+
+    <label for="beneficiosPragma">Beneficios Pragma: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.beneficiosPragma" name="beneficiosPragma" id="beneficiosPragma"/>
+  
+    <br><br>
+
+    <label for="sector">Sector: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.sector" name="sector" id="sector"/>
+  
+    <br><br>
+
+    <label for="ambito">Ámbito: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.ambito" name="ambito" id="ambito"/>
+  
+    <br><br>
+
+    <label for="id_ambito">ID Ámbito: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.id_ambito" name="id_ambito" id="id_ambito"type="number" />
+  
+    <br><br>
+
+    <label for="responseChat">Response Chat: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.responseChat" name="responseChat" id="responseChat"/>
+  
+    <br><br>
+
+    <label for="data">Data: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.data" name="data" id="data"/>
+  
+    <br><br>
+
+    <label for="deleted">Eliminado: </label>
+
+    <br>
+
+    <input [(ngModel)]="solucion.deleted" name="deleted" id="deleted" type="checkbox" />
+
+    <br><br>
+
+    <button type="submit">Guardar Cambios</button>
+
+  </form>
+</div>
+

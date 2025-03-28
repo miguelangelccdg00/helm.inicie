@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StoreSoluciones } from '../services/store-soluciones.service';
-import { StoreSolucionesService } from '../services/store-soluciones.service';
+import { StoreSolucionesService, StoreSoluciones } from '../services/store-soluciones.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-modificar-solucion',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './modificar-solucion.component.html',
-  styleUrl: './modificar-solucion.component.sass',
+  styleUrls: ['./modificar-solucion.component.sass']
 })
-export class ModificarSolucionComponent {
+
+export class ModificarSolucionComponent implements OnInit {
+
   solucion: StoreSoluciones | null = null;
 
   constructor(
@@ -20,11 +22,12 @@ export class ModificarSolucionComponent {
     private storeSolucionesService: StoreSolucionesService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     const idSolucion = this.route.snapshot.paramMap.get('id');
     if (idSolucion) {
       this.storeSolucionesService.getStoreSolucionById(+idSolucion).subscribe({
         next: (solucion) => {
+          console.log('Solución obtenida: ', solucion);
           this.solucion = solucion;
         },
         error: (error) => {
@@ -34,7 +37,7 @@ export class ModificarSolucionComponent {
     }
   }
 
-  guardarCambios(): void {
+  guardarCambios() {
     if (this.solucion) {
       this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
         next: () => {
@@ -45,6 +48,9 @@ export class ModificarSolucionComponent {
           console.error('Error al actualizar la solución:', error);
         }
       });
+    } else {
+      console.error('La solución no está definida');
     }
   }
+  
 }

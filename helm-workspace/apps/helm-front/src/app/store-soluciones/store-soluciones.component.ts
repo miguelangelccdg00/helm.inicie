@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
   styleUrl: './store-soluciones.component.sass',
   encapsulation: ViewEncapsulation.None 
 })
+
 export class StoreSolucionesComponent implements OnInit {
 
   storeSoluciones: StoreSoluciones[] = [];
@@ -34,5 +35,4 @@ export class StoreSolucionesComponent implements OnInit {
     this.router.navigate(['modificar-solucion', idSolucion]);
   }
 
-  
 }
