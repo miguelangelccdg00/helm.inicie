@@ -8,7 +8,7 @@ class StoreSolucionesService
      */
     async getAll() 
     {
-        const [rows] = await pool.query('SELECT * FROM storeSoluciones');
+        const [rows] = await pool.promise().query('SELECT * FROM storeSoluciones');
         return rows;
     }
 
@@ -17,7 +17,7 @@ class StoreSolucionesService
      */
     async getById(id: number) 
     {
-        const [rows] = await pool.query('SELECT * FROM storeSoluciones WHERE id_solucion = ?', [id]);
+        const [rows] = await pool.promise().query('SELECT * FROM storeSoluciones WHERE id_solucion = ?', [id]);
         return rows.length ? rows[0] : null;
     }
 
@@ -26,7 +26,7 @@ class StoreSolucionesService
      */
     async update(id: number, updateData: Partial<StoreSoluciones>) 
     {
-        await pool.query('UPDATE storeSoluciones SET ? WHERE id_solucion = ?', [updateData, id]);
+        await pool.promise().query('UPDATE storeSoluciones SET ? WHERE id_solucion = ?', [updateData, id]);
         return { message: 'StoreSoluciones actualizado' };
     }
 }
