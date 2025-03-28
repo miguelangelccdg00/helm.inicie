@@ -4,6 +4,7 @@ import cors from 'cors';
 import registroRoutes from './routes/RegistroRoute';
 import loginRoutes from './routes/LoginRoute';
 import storeSolucionesRoute from './routes/StoreSolucionesRoute';
+import menuRoutes from './routes/MenuRoute';
 import path from 'path';
  
 const app = express();
@@ -15,7 +16,8 @@ app.use(express.urlencoded({ extended: true }));
  
 app.use('/login',loginRoutes);
 app.use('/registro',registroRoutes);
-app.use('/storeSolucion',storeSolucionesRoute)
+app.use('/storeSolucion',storeSolucionesRoute);
+app.use('/menu', menuRoutes);
  
 app.get('/', (req, res) =>
 {
@@ -42,6 +44,14 @@ app.get('/', (req, res) =>
                     { method: 'GET', path: '/listStoreSoluciones' },
                     { method: 'GET', path: '/listIdStoreSoluciones/id' },
                     { method: 'PUT', path: '/modifyStoreSoluciones/id' }
+                ]
+            },
+            menu:
+            {
+                base: 'menu',
+                operations:[
+                    { method: 'GET', path: '/items' },
+                    { method: 'GET', path: '/submenus' }
                 ]
             }            
         }]

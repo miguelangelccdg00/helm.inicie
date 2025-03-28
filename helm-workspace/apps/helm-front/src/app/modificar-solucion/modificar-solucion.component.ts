@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { StoreSolucionesService, StoreSoluciones } from '../services/store-soluciones.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { MenuComponent } from '../menu/menu.component';
 
 @Component({
   selector: 'app-modificar-solucion',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MenuComponent],
   templateUrl: './modificar-solucion.component.html',
   styleUrls: ['./modificar-solucion.component.sass']
 })

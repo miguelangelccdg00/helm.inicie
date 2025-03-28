@@ -1,4 +1,4 @@
-<div class="contenedor-menu">
+<div class="contenedor-menu" *ngIf="isLoggedIn">
   <!-- Sección superior -->
   <div class="seccion-superior">
     <div class="logo-menu">
@@ -7,22 +7,16 @@
     
     <div class="elementos-menu">
       <ul>
-        <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(0)" (click)="seleccionarItem(0, $event); toggleMenu('escritorio', $event)">
-          <i class="fa-regular fa-calendar icono"></i>
-          <span class="tooltip">Mi escritorio</span>
-        </a></li>
-        <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(1)" (click)="seleccionarItem(1, $event)">
-          <i class="fa-regular fa-building icono"></i>
-          <span class="tooltip">Empresas y centros</span>
-        </a></li>
-        <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(2)" (click)="seleccionarItem(2, $event); toggleMenu('empleado', $event)">
-          <i class="fa-regular fa-user icono"></i>
-          <span class="tooltip">Portal del empleado</span>
-        </a></li>
-        <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(3)" (click)="seleccionarItem(3, $event)">
-          <i class="fa-solid fa-ellipsis icono"></i>
-          <span class="tooltip">Más opciones</span>
-        </a></li>
+        <li *ngFor="let item of menuItemsSuperior; let i = index">
+          <a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(i)" 
+             (click)="seleccionarItem(i, $event); item.categoria_submenu && toggleMenu(item.categoria_submenu, $event)">
+            <i class="{{item.icono}} icono"></i>
+            <span class="tooltip">{{item.titulo}}</span>
+            <div class="notificacion" *ngIf="item.contador_notificaciones && item.contador_notificaciones > 0">
+              {{item.contador_notificaciones}}
+            </div>
+          </a>
+        </li>
       </ul>
     </div>
   </div>
@@ -32,110 +26,49 @@
   
   <!-- Sección central (tienda) -->
   <div class="seccion-central">
-    <a href="#" class="boton-tienda" [class.seleccionado]="estaSeleccionado(4)" (click)="seleccionarItem(4, $event)">
-      <i class="fa-solid fa-store icono"></i>
+    <a *ngFor="let item of menuItemsCentral; let i = index" 
+       href="#" class="boton-tienda" 
+       [class.seleccionado]="estaSeleccionado(menuItemsSuperior.length + i)" 
+       (click)="seleccionarItem(menuItemsSuperior.length + i, $event); item.titulo === 'Soluciones' && irAStoreSoluciones($event)">
+      <i class="{{item.icono}} icono"></i>
     </a>
   </div>
   
   <!-- Sección inferior -->
   <div class="seccion-inferior">
     <ul>
-      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(5)" (click)="seleccionarItem(5, $event)">
-        <i class="fa-regular fa-newspaper icono"></i>
-        <span class="tooltip">Noticias</span>
-        <div class="notificacion">2</div>
-      </a></li>
-      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(6)" (click)="seleccionarItem(6, $event)">
-        <i class="fa-regular fa-compass icono"></i>
-        <span class="tooltip">Bitácora</span>
-      </a></li>
-      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(7)" (click)="seleccionarItem(7, $event)">
-        <i class="fa-solid fa-graduation-cap icono"></i>
-        <span class="tooltip">FormaPro</span>
-      </a></li>
-      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(8)" (click)="seleccionarItem(8, $event)">
-        <i class="fa-regular fa-circle-question icono"></i>
-        <span class="tooltip">Ayuda</span>
-      </a></li>
-      <li><a href="#" class="boton-menu" [class.seleccionado]="estaSeleccionado(9)" (click)="seleccionarItem(9, $event)">
-        <i class="fa-regular fa-circle-user icono"></i>
-        <span class="tooltip">Usuario</span>
-      </a></li>
+      <li *ngFor="let item of menuItemsInferior; let i = index">
+        <a href="#" class="boton-menu" 
+           [class.seleccionado]="estaSeleccionado(menuItemsSuperior.length + menuItemsCentral.length + i)" 
+           (click)="seleccionarItem(menuItemsSuperior.length + menuItemsCentral.length + i, $event); 
+                   item.categoria_submenu && toggleMenu(item.categoria_submenu, $event)">
+          <i class="{{item.icono}} icono"></i>
+          <span class="tooltip">{{item.titulo}}</span>
+          <div class="notificacion" *ngIf="item.contador_notificaciones && item.contador_notificaciones > 0">
+            {{item.contador_notificaciones}}
+          </div>
+        </a>
+      </li>
     </ul>
   </div>
 </div>
 
-<!-- Menú desplegable para Mi escritorio -->
-<div class="menu-desplegable" [class.visible]="menuActivo === 'escritorio'" [style.top.px]="posicionMenu">
+<!-- Menús desplegables dinámicos -->
+<div *ngFor="let category of subMenuItems | keyvalue" 
+     class="menu-desplegable" 
+     [class.visible]="menuActivo === category.key" 
+     [style.top.px]="posicionMenu">
   <ul>
-    <li><a href="javascript:void(0)" (click)="irAStoreSoluciones(); $event.preventDefault()">Soluciones</a></li>
+    <li *ngFor="let item of category.value">
+      <a href="javascript:void(0)" (click)="navegarA(item.ruta); $event.preventDefault()">
+        {{item.titulo}}
+      </a>
+    </li>
   </ul>
 </div>
 
-<!-- Menú desplegable para Portal del empleado -->
-<div class="menu-desplegable" [class.visible]="menuActivo === 'empleado'" [style.top.px]="posicionMenu">
-  <ul>
-    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Noticias</a></li>
-    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Mis datos</a></li>
-    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Documentos y solicitudes</a></li>
-    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Documentos personales</a></li>
-    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Documentos generales</a></li>
-    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Solicitud de personal</a></li>
-    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Sistema integrado</a></li>
-    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Permisos y vacaciones</a></li>
-    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Formación</a></li>
-    <li><a href="javascript:void(0)" (click)="$event.preventDefault()">Canal de denuncias</a></li>
-  </ul>
-</div>
-
-<!-- Ejemplos de otros elementos de la interfaz (ocultos) -->
-<div class="ejemplos-ui" style="display: none;">
-  <!-- Tags -->
-  <div class="tag">
-    <span>Información importante</span>
-  </div>
-  
-  <!-- Botones de menú secundario -->
-  <div class="botones-secundarios">
-    <button class="boton-secundario"><i class="fa-regular fa-envelope"></i></button>
-    <button class="boton-secundario"><i class="fa-regular fa-bell"></i></button>
-    <button class="boton-secundario"><i class="fa-regular fa-star"></i></button>
-    <button class="boton-secundario"><i class="fa-regular fa-bookmark"></i></button>
-    <button class="boton-secundario"><i class="fa-regular fa-magnifying-glass"></i></button>
-    
-    <!-- Con notificaciones -->
-    <button class="boton-secundario">
-      <i class="fa-regular fa-envelope"></i>
-      <div class="notificacion">3</div>
-    </button>
-    <button class="boton-secundario">
-      <i class="fa-regular fa-bell"></i>
-      <div class="notificacion">2</div>
-    </button>
-  </div>
-  
-  <!-- Switches -->
-  <div class="switches">
-    <!-- Switch básico -->
-    <label class="switch">
-      <input type="checkbox">
-      <span class="slider"></span>
-    </label>
-    
-    <!-- Switches con color -->
-    <label class="switch switch-verde">
-      <input type="checkbox">
-      <span class="slider"></span>
-    </label>
-    
-    <label class="switch switch-amarillo">
-      <input type="checkbox">
-      <span class="slider"></span>
-    </label>
-    
-    <label class="switch switch-rosa">
-      <input type="checkbox">
-      <span class="slider"></span>
-    </label>
-  </div>
+<!-- Mensaje cuando el usuario no está autenticado -->
+<div *ngIf="!isLoggedIn" class="mensaje-login">
+  <p>Debe iniciar sesión para acceder al menú</p>
+  <button (click)="irALogin()">Iniciar sesión</button>
 </div>
