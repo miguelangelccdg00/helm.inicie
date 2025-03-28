@@ -1,34 +1,33 @@
-import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
 import { Request, Response } from 'express';
-import bcrypt from 'bcryptjs';
-import { usuario } from '../models/usuario';
+import AuthService from '../services/AuthService';
 
 class LoginController 
 {
     async loginUsuario(req: Request, res: Response): Promise<void> 
     {
-        try {
+        try 
+        {
             console.log('Login attempt with body:', req.body);
             const { nombreUsuario, contraseña } = req.body;
+
+            if (!nombreUsuario || !contraseña) 
+            {
+                res.status(400).json({ message: 'Usuario y contraseña son requeridos' });
+                return;
+            }
+
             console.log('Attempting to find user with username:', nombreUsuario);
+            const usuario = await AuthService.findUserByUsername(nombreUsuario);
 
-            // Buscar usuario en la base de datos
-            const [rows]: any = await pool.promise().query('SELECT * FROM store_users WHERE username = ?', [nombreUsuario]);
-            console.log('Query result rows:', rows.length);
-
-            if (rows.length === 0) 
+            if (!usuario) 
             {
                 console.log('No user found with username:', nombreUsuario);
                 res.status(401).json({ message: 'Usuario no encontrado' });
                 return;
             }
 
-            const usuario = rows[0];
             console.log('User found:', { id: usuario.id_user, username: usuario.username });
-
-            // Comparar la contraseña ingresada con la hasheada en la base de datos
-            const contraseñaValida = await bcrypt.compare(contraseña, usuario.pass);
-            console.log('Password valid:', contraseñaValida);
+            const contraseñaValida = await AuthService.validatePassword(contraseña, usuario.pass);
 
             if (!contraseñaValida) 
             {
@@ -38,11 +37,7 @@ class LoginController
 
             res.status(200).json({ 
                 message: 'Usuario logueado con éxito',
-                user: {
-                    id: usuario.id_user,
-                    username: usuario.username,
-                    email: usuario.email
-                }
+                user: { id: usuario.id_user, username: usuario.username, email: usuario.email }
             });
         } 
         catch (error) 
@@ -52,4 +47,5 @@ class LoginController
         }
     }
 }
+
 export default new LoginController();
