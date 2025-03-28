@@ -7,7 +7,6 @@ class LoginController
     {
         try 
         {
-            console.log('Login attempt with body:', req.body);
             const { nombreUsuario, contraseña } = req.body;
 
             if (!nombreUsuario || !contraseña) 
@@ -16,7 +15,6 @@ class LoginController
                 return;
             }
 
-            console.log('Attempting to find user with username:', nombreUsuario);
             const usuario = await AuthService.findUserByUsername(nombreUsuario);
 
             if (!usuario) 
@@ -26,7 +24,6 @@ class LoginController
                 return;
             }
 
-            console.log('User found:', { id: usuario.id_user, username: usuario.username });
             const contraseñaValida = await AuthService.validatePassword(contraseña, usuario.pass);
 
             if (!contraseñaValida) 

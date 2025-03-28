@@ -1,15 +1,14 @@
-import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
+import { Request, Response } from 'express';
+import MenuService from '../services/MenuService';
 
 class MenuController 
 {
-    constructor() {}
-
-    getMenuItems = async (req, res) => 
+    async getMenuItems(req: Request, res: Response): Promise<void> 
     {
         try 
         {
-            const [rows] = await pool.promise().query('SELECT * FROM menu_items');
-            res.json(rows);
+            const menuItems = await MenuService.getMenuItems();
+            res.json(menuItems);
         } 
         catch (error) 
         {
@@ -18,12 +17,12 @@ class MenuController
         }
     }
 
-    getSubMenuItems = async (req, res) => 
+    async getSubMenuItems(req: Request, res: Response): Promise<void> 
     {
         try 
         {
-            const [rows] = await pool.promise().query('SELECT * FROM menu_submenus');
-            res.json(rows);
+            const subMenuItems = await MenuService.getSubMenuItems();
+            res.json(subMenuItems);
         } 
         catch (error) 
         {

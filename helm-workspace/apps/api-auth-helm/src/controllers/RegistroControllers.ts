@@ -7,7 +7,13 @@ class RegistrarController
     {
         try 
         {
-            console.log('Request body received:', req.body);
+            const { email, username, pass } = req.body;
+
+            if (!email || !username || !pass) 
+            {
+                res.status(400).json({ message: 'Email, usuario y contraseña son requeridos' });
+                return;
+            }
 
             if (!req.body || Object.keys(req.body).length === 0) 
             {
@@ -17,14 +23,6 @@ class RegistrarController
                 return;
             }
 
-            const { email, username, pass } = req.body;
-            if (!email || !username || !pass) 
-            {
-                res.status(400).json({ message: 'Email, usuario y contraseña son requeridos' });
-                return;
-            }
-
-            console.log('Attempting to save user:', { email, username });
             const newUser = await AuthService.createUser(email, username, pass);
 
             res.status(201).json({ message: 'Usuario creado', id: newUser.id });

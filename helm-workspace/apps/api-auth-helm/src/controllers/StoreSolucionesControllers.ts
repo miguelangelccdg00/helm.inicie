@@ -22,6 +22,7 @@ class StoreSolucionesController
         try 
         {
             const { id } = req.params;
+
             if (!id) 
             {
                 res.status(400).json({ message: 'ID no proporcionado' });
@@ -29,6 +30,7 @@ class StoreSolucionesController
             }
 
             const solucion = await StoreSolucionesService.getById(Number(id));
+            
             if (!solucion) 
             {
                 res.status(404).json({ message: 'Solución no encontrada' });
