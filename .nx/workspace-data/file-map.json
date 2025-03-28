@@ -6,48 +6,12 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": "helm-workspace/.vscode/extensions.json",
-        "hash": "60901680939730831"
+        "file": "helm-workspace/README.md",
+        "hash": "3178231761494475781"
       },
       {
-        "file": "helm-workspace/.prettierrc",
-        "hash": "6820402234827505055"
-      },
-      {
-        "file": "nx.json",
-        "hash": "17085942476707415972"
-      },
-      {
-        "file": "helm-workspace/.eslintrc.json",
-        "hash": "4566917484430375526"
-      },
-      {
-        "file": "helm-workspace/.eslintignore",
-        "hash": "13404745306227114823"
-      },
-      {
-        "file": "package.json",
-        "hash": "1261271663194543339"
-      },
-      {
-        "file": "package-lock.json",
-        "hash": "8354428608899706325"
-      },
-      {
-        "file": "helm-workspace/tsconfig.base.json",
-        "hash": "12471885200579325840"
-      },
-      {
-        "file": "helm-workspace/.gitignore",
-        "hash": "4018768683067489858"
-      },
-      {
-        "file": ".gitignore",
-        "hash": "15973767930627758727"
-      },
-      {
-        "file": "helm-workspace/.editorconfig",
-        "hash": "11532813898455409296"
+        "file": "helm-workspace/nx.json",
+        "hash": "13650618500498750701"
       },
       {
         "file": "helm-workspace/.prettierignore",
@@ -58,24 +22,60 @@
         "hash": "7473220183190921152"
       },
       {
-        "file": "helm-workspace/README.md",
-        "hash": "3178231761494475781"
+        "file": "helm-workspace/.eslintrc.json",
+        "hash": "4566917484430375526"
       },
       {
-        "file": "helm-workspace/nx.json",
-        "hash": "3453317360593059249"
-      },
-      {
-        "file": "helm-workspace/package.json",
-        "hash": "17133847886381139617"
+        "file": "helm-workspace/package-lock.json",
+        "hash": "597001771968376519"
       },
       {
         "file": "helm-workspace/jest.config.ts",
         "hash": "7544409015863045561"
       },
       {
-        "file": "helm-workspace/package-lock.json",
-        "hash": "597001771968376519"
+        "file": "helm-workspace/package.json",
+        "hash": "17133847886381139617"
+      },
+      {
+        "file": "helm-workspace/.gitignore",
+        "hash": "4018768683067489858"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "15973767930627758727"
+      },
+      {
+        "file": "helm-workspace/tsconfig.base.json",
+        "hash": "16936441711144470533"
+      },
+      {
+        "file": "package.json",
+        "hash": "1261271663194543339"
+      },
+      {
+        "file": "helm-workspace/.prettierrc",
+        "hash": "6820402234827505055"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "8354428608899706325"
+      },
+      {
+        "file": "nx.json",
+        "hash": "17085942476707415972"
+      },
+      {
+        "file": "helm-workspace/.eslintignore",
+        "hash": "13404745306227114823"
+      },
+      {
+        "file": "helm-workspace/.vscode/extensions.json",
+        "hash": "60901680939730831"
+      },
+      {
+        "file": "helm-workspace/.editorconfig",
+        "hash": "11532813898455409296"
       }
     ],
     "projectFileMap": {
@@ -218,7 +218,7 @@
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/menu/menu.component.spec.ts",
-          "hash": "12072209709503659510"
+          "hash": "16352832585833982840"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/menu/menu.component.ts",
@@ -234,7 +234,7 @@
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/modificar-solucion/modificar-solucion.component.spec.ts",
-          "hash": "11655884490598973180"
+          "hash": "1581210438455277562"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/modificar-solucion/modificar-solucion.component.ts",
@@ -278,7 +278,7 @@
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/store-soluciones/store-soluciones.component.spec.ts",
-          "hash": "13180379835170957166"
+          "hash": "7383008375717021023"
         },
         {
           "file": "helm-workspace/apps/helm-front/src/app/store-soluciones/store-soluciones.component.ts",
@@ -315,6 +315,128 @@
         {
           "file": "helm-workspace/apps/helm-front/tsconfig.spec.json",
           "hash": "1930986853382524452"
+        }
+      ],
+      "api-shared-helm-e2e": [
+        {
+          "file": "helm-workspace/apps/api-shared-helm-e2e/.eslintrc.json",
+          "hash": "14921153827776288937"
+        },
+        {
+          "file": "helm-workspace/apps/api-shared-helm-e2e/jest.config.ts",
+          "hash": "8213563291583207161"
+        },
+        {
+          "file": "helm-workspace/apps/api-shared-helm-e2e/project.json",
+          "hash": "15120234326363576114"
+        },
+        {
+          "file": "helm-workspace/apps/api-shared-helm-e2e/src/api-shared-helm/api-shared-helm.spec.ts",
+          "hash": "3026045886657059088"
+        },
+        {
+          "file": "helm-workspace/apps/api-shared-helm-e2e/src/support/global-setup.ts",
+          "hash": "18221119270488052961"
+        },
+        {
+          "file": "helm-workspace/apps/api-shared-helm-e2e/src/support/global-teardown.ts",
+          "hash": "17927034305001160425"
+        },
+        {
+          "file": "helm-workspace/apps/api-shared-helm-e2e/src/support/test-setup.ts",
+          "hash": "4165311015569872896"
+        },
+        {
+          "file": "helm-workspace/apps/api-shared-helm-e2e/tsconfig.json",
+          "hash": "1422418700492434985"
+        },
+        {
+          "file": "helm-workspace/apps/api-shared-helm-e2e/tsconfig.spec.json",
+          "hash": "5623794208198348967"
+        }
+      ],
+      "api-shared-helm": [
+        {
+          "file": "helm-workspace/apps/api-shared-helm/.eslintrc.json",
+          "hash": "14921153827776288937"
+        },
+        {
+          "file": "helm-workspace/apps/api-shared-helm/claves.env",
+          "hash": "9325660654709884902"
+        },
+        {
+          "file": "helm-workspace/apps/api-shared-helm/jest.config.ts",
+          "hash": "8792252225178354387"
+        },
+        {
+          "file": "helm-workspace/apps/api-shared-helm/project.json",
+          "hash": "12768880834750335808"
+        },
+        {
+          "file": "helm-workspace/apps/api-shared-helm/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "helm-workspace/apps/api-shared-helm/src/databases/conexion.js",
+          "hash": "10788336214873794563"
+        },
+        {
+          "file": "helm-workspace/apps/api-shared-helm/src/main.ts",
+          "hash": "3880420627946631086"
+        },
+        {
+          "file": "helm-workspace/apps/api-shared-helm/tsconfig.app.json",
+          "hash": "1238813864883096580"
+        },
+        {
+          "file": "helm-workspace/apps/api-shared-helm/tsconfig.json",
+          "hash": "7462419380158041776"
+        },
+        {
+          "file": "helm-workspace/apps/api-shared-helm/tsconfig.spec.json",
+          "hash": "11194536110028348959"
+        },
+        {
+          "file": "helm-workspace/apps/api-shared-helm/webpack.config.js",
+          "hash": "2378297863213883372"
+        }
+      ],
+      "api-auth-helm-e2e": [
+        {
+          "file": "helm-workspace/apps/api-auth-helm-e2e/.eslintrc.json",
+          "hash": "14921153827776288937"
+        },
+        {
+          "file": "helm-workspace/apps/api-auth-helm-e2e/jest.config.ts",
+          "hash": "17440848152916156896"
+        },
+        {
+          "file": "helm-workspace/apps/api-auth-helm-e2e/project.json",
+          "hash": "16978931054316213432"
+        },
+        {
+          "file": "helm-workspace/apps/api-auth-helm-e2e/src/api-auth-helm/api-auth-helm.spec.ts",
+          "hash": "3026045886657059088"
+        },
+        {
+          "file": "helm-workspace/apps/api-auth-helm-e2e/src/support/global-setup.ts",
+          "hash": "18221119270488052961"
+        },
+        {
+          "file": "helm-workspace/apps/api-auth-helm-e2e/src/support/global-teardown.ts",
+          "hash": "17927034305001160425"
+        },
+        {
+          "file": "helm-workspace/apps/api-auth-helm-e2e/src/support/test-setup.ts",
+          "hash": "4165311015569872896"
+        },
+        {
+          "file": "helm-workspace/apps/api-auth-helm-e2e/tsconfig.json",
+          "hash": "1422418700492434985"
+        },
+        {
+          "file": "helm-workspace/apps/api-auth-helm-e2e/tsconfig.spec.json",
+          "hash": "5623794208198348967"
         }
       ],
       "feature-auth": [
@@ -391,128 +513,6 @@
           "hash": "5394510377830819329"
         }
       ],
-      "api-shared-helm-e2e": [
-        {
-          "file": "helm-workspace/apps/api-shared-helm-e2e/.eslintrc.json",
-          "hash": "14921153827776288937"
-        },
-        {
-          "file": "helm-workspace/apps/api-shared-helm-e2e/jest.config.ts",
-          "hash": "8213563291583207161"
-        },
-        {
-          "file": "helm-workspace/apps/api-shared-helm-e2e/project.json",
-          "hash": "15120234326363576114"
-        },
-        {
-          "file": "helm-workspace/apps/api-shared-helm-e2e/src/api-shared-helm/api-shared-helm.spec.ts",
-          "hash": "3026045886657059088"
-        },
-        {
-          "file": "helm-workspace/apps/api-shared-helm-e2e/src/support/global-setup.ts",
-          "hash": "18221119270488052961"
-        },
-        {
-          "file": "helm-workspace/apps/api-shared-helm-e2e/src/support/global-teardown.ts",
-          "hash": "17927034305001160425"
-        },
-        {
-          "file": "helm-workspace/apps/api-shared-helm-e2e/src/support/test-setup.ts",
-          "hash": "4165311015569872896"
-        },
-        {
-          "file": "helm-workspace/apps/api-shared-helm-e2e/tsconfig.json",
-          "hash": "1422418700492434985"
-        },
-        {
-          "file": "helm-workspace/apps/api-shared-helm-e2e/tsconfig.spec.json",
-          "hash": "5623794208198348967"
-        }
-      ],
-      "api-shared-helm": [
-        {
-          "file": "helm-workspace/apps/api-shared-helm/.eslintrc.json",
-          "hash": "14921153827776288937"
-        },
-        {
-          "file": "helm-workspace/apps/api-shared-helm/claves.env",
-          "hash": "9325660654709884902"
-        },
-        {
-          "file": "helm-workspace/apps/api-shared-helm/jest.config.ts",
-          "hash": "8792252225178354387"
-        },
-        {
-          "file": "helm-workspace/apps/api-shared-helm/project.json",
-          "hash": "12768880834750335808"
-        },
-        {
-          "file": "helm-workspace/apps/api-shared-helm/src/assets/.gitkeep",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "helm-workspace/apps/api-shared-helm/src/databases/conexion.js",
-          "hash": "7685119839909847265"
-        },
-        {
-          "file": "helm-workspace/apps/api-shared-helm/src/main.ts",
-          "hash": "3880420627946631086"
-        },
-        {
-          "file": "helm-workspace/apps/api-shared-helm/tsconfig.app.json",
-          "hash": "1238813864883096580"
-        },
-        {
-          "file": "helm-workspace/apps/api-shared-helm/tsconfig.json",
-          "hash": "7462419380158041776"
-        },
-        {
-          "file": "helm-workspace/apps/api-shared-helm/tsconfig.spec.json",
-          "hash": "11194536110028348959"
-        },
-        {
-          "file": "helm-workspace/apps/api-shared-helm/webpack.config.js",
-          "hash": "2378297863213883372"
-        }
-      ],
-      "api-auth-helm-e2e": [
-        {
-          "file": "helm-workspace/apps/api-auth-helm-e2e/.eslintrc.json",
-          "hash": "14921153827776288937"
-        },
-        {
-          "file": "helm-workspace/apps/api-auth-helm-e2e/jest.config.ts",
-          "hash": "17440848152916156896"
-        },
-        {
-          "file": "helm-workspace/apps/api-auth-helm-e2e/project.json",
-          "hash": "16978931054316213432"
-        },
-        {
-          "file": "helm-workspace/apps/api-auth-helm-e2e/src/api-auth-helm/api-auth-helm.spec.ts",
-          "hash": "3026045886657059088"
-        },
-        {
-          "file": "helm-workspace/apps/api-auth-helm-e2e/src/support/global-setup.ts",
-          "hash": "18221119270488052961"
-        },
-        {
-          "file": "helm-workspace/apps/api-auth-helm-e2e/src/support/global-teardown.ts",
-          "hash": "17927034305001160425"
-        },
-        {
-          "file": "helm-workspace/apps/api-auth-helm-e2e/src/support/test-setup.ts",
-          "hash": "4165311015569872896"
-        },
-        {
-          "file": "helm-workspace/apps/api-auth-helm-e2e/tsconfig.json",
-          "hash": "1422418700492434985"
-        },
-        {
-          "file": "helm-workspace/apps/api-auth-helm-e2e/tsconfig.spec.json",
-          "hash": "5623794208198348967"
-        }
-      ],
       "api-auth-helm": [
         {
           "file": "helm-workspace/apps/api-auth-helm/.eslintrc.json",
@@ -584,11 +584,11 @@
         },
         {
           "file": "helm-workspace/apps/api-auth-helm/src/services/MenuService.ts",
-          "hash": "11806083375069606956"
+          "hash": "9196544984299135488"
         },
         {
           "file": "helm-workspace/apps/api-auth-helm/src/services/StoreSolucionesService.ts",
-          "hash": "7913696650803405784"
+          "hash": "6992492692737116898"
         },
         {
           "file": "helm-workspace/apps/api-auth-helm/tsconfig.app.json",
