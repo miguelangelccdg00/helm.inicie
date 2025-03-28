@@ -3,18 +3,23 @@ import AuthService from '../services/AuthService';
 
 class LoginController 
 {
+    /**
+     * Maneja el inicio de sesión del usuario.
+     */
     async loginUsuario(req: Request, res: Response): Promise<void> 
     {
         try 
         {
             const { nombreUsuario, contraseña } = req.body;
 
+            // Valida que los datos requeridos estén presentes
             if (!nombreUsuario || !contraseña) 
             {
                 res.status(400).json({ message: 'Usuario y contraseña son requeridos' });
                 return;
             }
 
+            // Busca el usuario por nombre de usuario
             const usuario = await AuthService.findUserByUsername(nombreUsuario);
 
             if (!usuario) 
@@ -24,6 +29,7 @@ class LoginController
                 return;
             }
 
+            // Valida la contraseña ingresada
             const contraseñaValida = await AuthService.validatePassword(contraseña, usuario.pass);
 
             if (!contraseñaValida) 
@@ -32,6 +38,7 @@ class LoginController
                 return;
             }
 
+            // Devuelve la información del usuario autenticado
             res.status(200).json({ 
                 message: 'Usuario logueado con éxito',
                 user: { id: usuario.id_user, username: usuario.username, email: usuario.email }

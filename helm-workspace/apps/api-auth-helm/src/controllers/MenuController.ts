@@ -3,6 +3,9 @@ import MenuService from '../services/MenuService';
 
 class MenuController 
 {
+    /**
+     * Obtiene todos los elementos del menú principal.
+     */
     async getMenuItems(req: Request, res: Response): Promise<void> 
     {
         try 
@@ -17,6 +20,9 @@ class MenuController
         }
     }
 
+    /**
+     * Obtiene los submenús disponibles.
+     */
     async getSubMenuItems(req: Request, res: Response): Promise<void> 
     {
         try 

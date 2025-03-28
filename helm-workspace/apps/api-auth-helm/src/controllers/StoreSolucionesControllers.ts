@@ -3,6 +3,9 @@ import StoreSolucionesService from '../services/StoreSolucionesService';
 
 class StoreSolucionesController 
 {
+    /**
+     * Obtiene todas las soluciones almacenadas en la base de datos.
+     */
     async listStoreSoluciones(req: Request, res: Response): Promise<void> 
     {
         try 
@@ -17,6 +20,9 @@ class StoreSolucionesController
         }
     }
 
+    /**
+     * Obtiene una solución específica por su ID.
+     */
     async listIdStoreSoluciones(req: Request, res: Response): Promise<void> 
     {
         try 
@@ -46,6 +52,9 @@ class StoreSolucionesController
         }
     }
 
+    /**
+     * Modifica una solución almacenada en la base de datos.
+     */
     async modifyStoreSoluciones(req: Request, res: Response): Promise<void> 
     {
         try 
