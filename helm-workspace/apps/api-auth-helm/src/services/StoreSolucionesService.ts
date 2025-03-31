@@ -3,6 +3,19 @@ import { StoreSoluciones } from '../models/storeSoluciones';
 
 class StoreSolucionesService 
 {
+    /** Obtiene los beneficios de una solución por su ID */
+    async getByIdBeneficio(idSolucion: number) {
+        const [rows] = await pool.promise().query(
+            `SELECT b.*
+            FROM storeBeneficios b
+            JOIN storeSolucionesBeneficios sb ON b.id_beneficio = sb.id_beneficio
+            JOIN storeSoluciones s ON sb.id_solucion = s.id_solucion
+            WHERE s.id_solucion = ?`, [idSolucion]
+        );
+
+        return rows;
+    }
+
     /**
      * Obtiene todas las soluciones almacenadas en la base de datos
      */
