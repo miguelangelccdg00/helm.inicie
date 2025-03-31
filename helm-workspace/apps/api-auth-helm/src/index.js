@@ -4,6 +4,7 @@ import cors from 'cors';
 import registroRoutes from './routes/RegistroRoute';
 import loginRoutes from './routes/LoginRoute';
 import storeSolucionesRoute from './routes/StoreSolucionesRoute';
+import storeBeneficiosRoute from './routes/StoreBeneficiosRoute';
 import menuRoutes from './routes/MenuRoute';
 import path from 'path';
 
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/login', loginRoutes);
 app.use('/registro', registroRoutes);
 app.use('/storeSolucion', storeSolucionesRoute);
+app.use('/storeBeneficios', storeBeneficiosRoute);
 app.use('/menu', menuRoutes);
 
 /** 
@@ -30,25 +32,36 @@ app.get('/', (req, res) =>
         message: 'Bienvenido a la API de Tickets',
         endpoints: [
             {
-                login: {
+                login:
+                {
                     base: 'login',
                     operations: [{ method: 'POST', path: '/loginUsuario' }]
                 }
             },
             {
-                registro: {
+                registro: 
+                {
                     base: 'registro',
                     operations: [{ method: 'POST', path: '/registrarUsuario' }]
                 }
             },
             {
-                storeSolucion: {
+                storeSolucion: 
+                {
                     base: 'storeSolucion',
                     operations: [
                         { method: 'GET', path: '/listStoreSoluciones' },
                         { method: 'GET', path: '/listIdStoreSoluciones/:id' },
                         { method: 'PUT', path: '/modifyStoreSoluciones/:id' },
-                        { method: 'DELETE', path: '/deleteSolucion/:id' },
+                        { method: 'DELETE', path: '/deleteSolucion/:id' }                        
+                    ]
+                }
+            },
+            {
+                storeBeneficios:
+                {
+                    base: 'storeBeneficios',
+                    operations: [
                         {method: 'GET', path: '/listBeneficios/:id'},
                         {method:'POST', path: '/createBeneficio/:id' },
                         {method:'DELETE', path:'/deleteBeneficio/:idBeneficio'}

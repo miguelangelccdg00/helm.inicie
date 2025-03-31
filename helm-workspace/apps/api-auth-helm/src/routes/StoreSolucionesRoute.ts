@@ -23,19 +23,4 @@ router.put('/modifyStoreSoluciones/:id', storeSolucionesController.modifyStoreSo
  */
 router.delete('/deleteSolucion/:id', storeSolucionesController.deleteSolucion);
 
-/**
- * @description Obtencion de beneficios por solución específica de su ID
- */
-router.get('/listBeneficios/:idSolucion', storeSolucionesController.listBeneficios);
-
-/**
- * @description Insercion de beneficios por solución específica de su ID
- */
-router.post('/createBeneficio/:idSolucion', storeSolucionesController.createBeneficio);
-
-/**
- * @description Eliminacion de un beneficio específica por su ID
- */
-router.delete('/deleteBeneficio/:idBeneficio', storeSolucionesController.deleteBeneficio);
-
 export default router;
