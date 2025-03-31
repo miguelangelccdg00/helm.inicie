@@ -30,6 +30,11 @@
             "glob": "**/*",
             "input": "apps/helm-front/src/app/carrusel/assets",
             "output": "assets"
+          },
+          {
+            "glob": "**/*",
+            "input": "apps/helm-front/src/app/store-soluciones/assets",
+            "output": "assets"
           }
         ],
         "styles": ["apps/helm-front/src/styles.sass"],

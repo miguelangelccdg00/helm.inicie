@@ -34,6 +34,7 @@ export interface StoreSoluciones
     responseChat?: string;
     data?: string;
     deleted?: boolean;
+    beneficios: StoreBeneficios[];
 }
 
 export interface StoreBeneficios{
@@ -68,4 +69,9 @@ export class StoreSolucionesService {
     return this.https.put(url, solucion, { headers });
   }
 
+  deleteStoreSolucion(id: number): Observable<any> {
+    const url = `http://localhost:3009/storeSolucion/deleteStoreSolucion/${id}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.delete(url, { headers });
+  }
 }

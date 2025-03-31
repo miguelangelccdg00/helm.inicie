@@ -91,4 +91,17 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  eliminarSolucion() {
+    if (this.solucion && confirm('¿Estás seguro de que deseas eliminar esta solución? Esta acción no se puede deshacer.')) {
+      this.storeSolucionesService.deleteStoreSolucion(this.solucion.id_solucion).subscribe({
+        next: () => {
+          console.log('Solución eliminada correctamente');
+          this.router.navigate(['/store-soluciones']);
+        },
+        error: (error) => {
+          console.error('Error al eliminar la solución:', error);
+        }
+      });
+    }
+  }
 }
