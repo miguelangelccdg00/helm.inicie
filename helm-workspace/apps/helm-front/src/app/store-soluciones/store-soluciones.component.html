@@ -15,13 +15,11 @@
         </tr>
       </thead>
       <tbody>
-        @for(solucion of storeSoluciones; track solucion.id_solucion) {
-        <tr (click)="irAModificarSolucion(solucion.id_solucion)">
+        <tr *ngFor="let solucion of storeSoluciones; trackBy: trackBySolucionId" (click)="irAModificarSolucion(solucion.id_solucion)">
           <td><i class="{{solucion.icon}}"></i></td>
           <td>{{solucion.description}}</td>
           <td><img src="assets/papelera.png" alt="papelera" width="25px" height="25px" (click)="eliminarSolucion(solucion.id_solucion)"></td>
         </tr>
-        }
       </tbody>
     </table>
 

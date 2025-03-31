@@ -16,23 +16,31 @@
             <label for="title">Título:</label>
             <input [(ngModel)]="solucion.title" name="title" id="title" placeholder="Ingrese el título" />
           </div>
+          
+          <br>
 
           <div class="form-group col-6">
             <label for="subtitle">Subtítulo:</label>
             <input [(ngModel)]="solucion.subtitle" name="subtitle" id="subtitle" placeholder="Ingrese el subtítulo" />
           </div>
 
-          <div class="form-group col-4">
+          <br>
+
+          <div class="form-group col-6">
             <label for="icon">Icono:</label>
             <input [(ngModel)]="solucion.icon" name="icon" id="icon" placeholder="Nombre del icono" />
           </div>
 
-          <div class="form-group col-4">
+          <br>
+
+          <div class="form-group col-6">
             <label for="slug">Slug:</label>
             <input [(ngModel)]="solucion.slug" name="slug" id="slug" placeholder="URL amigable" />
           </div>
 
-          <div class="form-group col-4">
+          <br>
+
+          <div class="form-group col-6">
             <label for="titleweb">Título Web:</label>
             <input [(ngModel)]="solucion.titleweb" name="titleweb" id="titleweb" placeholder="Título para la web" />
           </div>
@@ -49,6 +57,8 @@
             <input [(ngModel)]="solucion.multimediaUri" name="multimediaUri" id="multimediaUri"
               placeholder="URL del recurso multimedia" />
           </div>
+
+          <br>
 
           <div class="form-group col-4">
             <label for="multimediaTypeId">Tipo de Multimedia:</label>
@@ -71,6 +81,8 @@
                 placeholder="Título del problema" />
             </div>
 
+            <br>
+
             <div class="form-group col-6">
               <label for="problemaPragma">Descripción del Problema:</label>
               <textarea [(ngModel)]="solucion.problemaPragma" name="problemaPragma" id="problemaPragma"
@@ -87,6 +99,8 @@
               <input [(ngModel)]="solucion.solucionTitle" name="solucionTitle" id="solucionTitle"
                 placeholder="Título de la solución" />
             </div>
+
+            <br>
 
             <div class="form-group col-6">
               <label for="solucionPragma">Descripción de la Solución:</label>
@@ -110,6 +124,8 @@
                 placeholder="Título de características" />
             </div>
 
+            <br>
+
             <div class="form-group col-6">
               <label for="caracteristicasPragma">Descripción de Características:</label>
               <textarea [(ngModel)]="solucion.caracteristicasPragma" name="caracteristicasPragma"
@@ -126,6 +142,8 @@
               <input [(ngModel)]="solucion.casosdeusoTitle" name="casosdeusoTitle" id="casosdeusoTitle"
                 placeholder="Título de casos de uso" />
             </div>
+
+            <br>
 
             <div class="form-group col-6">
               <label for="casosdeusoPragma">Descripción de Casos de Uso:</label>
@@ -149,6 +167,8 @@
                 placeholder="Título del primer CTA" />
             </div>
 
+            <br>
+
             <div class="form-group col-6">
               <label for="firstCtaPragma">Descripción del Primer CTA:</label>
               <textarea [(ngModel)]="solucion.firstCtaPragma" name="firstCtaPragma" id="firstCtaPragma"
@@ -165,6 +185,8 @@
               <input [(ngModel)]="solucion.secondCtaTitle" name="secondCtaTitle" id="secondCtaTitle"
                 placeholder="Título del segundo CTA" />
             </div>
+
+            <br>
 
             <div class="form-group col-6">
               <label for="secondCtaPragma">Descripción del Segundo CTA:</label>
@@ -187,6 +209,8 @@
               <input [(ngModel)]="nuevoBeneficioTitulo" name="nuevoBeneficioTitulo" id="nuevoBeneficioTitulo"
                 placeholder="Ingrese el título del beneficio" />
             </div>
+
+            <br>
 
             <div class="form-group col-6">
               <label for="nuevoBeneficioDescripcion">Descripción del Beneficio:</label>
@@ -222,17 +246,21 @@
         <h2 class="titulo-seccion">Clasificación</h2>
 
         <div class="grid-container">
-          <div class="form-group col-4">
+          <div class="form-group col-6">
             <label for="sector">Sector:</label>
             <input [(ngModel)]="solucion.sector" name="sector" id="sector" placeholder="Sector" />
           </div>
 
-          <div class="form-group col-4">
+          <br>
+
+          <div class="form-group col-6">
             <label for="ambito">Ámbito:</label>
             <input [(ngModel)]="solucion.ambito" name="ambito" id="ambito" placeholder="Ámbito" />
           </div>
 
-          <div class="form-group col-4">
+          <br>
+
+          <div class="form-group col-6">
             <label for="id_ambito">ID Ámbito:</label>
             <input [(ngModel)]="solucion.id_ambito" name="id_ambito" id="id_ambito" type="number"
               placeholder="ID del ámbito" />
@@ -251,6 +279,8 @@
               placeholder="Respuesta del chat" />
           </div>
 
+          <br>
+
           <div class="form-group col-6">
             <label for="data">Data:</label>
             <input [(ngModel)]="solucion.data" name="data" id="data" placeholder="Datos adicionales" />
@@ -261,7 +291,6 @@
       <div class="botones-container">
         <button type="submit">Guardar Cambios</button>
         <button type="button" class="btn-secondary" (click)="cancelar()">Cancelar</button>
-        <button type="button" class="btn-danger" (click)="eliminarSolucion()">Eliminar Solución</button>
       </div>
     </form>
   </div>

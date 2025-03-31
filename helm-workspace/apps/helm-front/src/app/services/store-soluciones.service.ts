@@ -70,7 +70,7 @@ export class StoreSolucionesService {
   }
 
   deleteStoreSolucion(id: number): Observable<any> {
-    const url = `http://localhost:3009/storeSolucion/deleteStoreSolucion/${id}`;
+    const url = `http://localhost:3009/storeSolucion/deleteSolucion/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete(url, { headers });
   }

@@ -9,10 +9,9 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, MenuComponent],
   templateUrl: './store-soluciones.component.html',
-  styleUrl: './store-soluciones.component.sass',
+  styleUrls: ['./store-soluciones.component.sass'],
   encapsulation: ViewEncapsulation.None 
 })
-
 export class StoreSolucionesComponent implements OnInit {
 
   storeSoluciones: StoreSoluciones[] = [];
@@ -36,7 +35,21 @@ export class StoreSolucionesComponent implements OnInit {
   }
 
   eliminarSolucion(idSolucion: number) {
-    console.log("daw")
+    if (confirm(`¿Está seguro de que desea eliminar la solución con id ${idSolucion}?`)) {
+      this.storeSolucionesService.deleteStoreSolucion(idSolucion).subscribe({
+        next: () => {
+          this.storeSoluciones = this.storeSoluciones.filter(solucion => solucion.id_solucion !== idSolucion);
+          console.log(`Solución con id ${idSolucion} eliminada correctamente`);
+        },
+        error: (error) => {
+          console.error('Error al eliminar solución: ', error);
+        }
+      });
+    }
+  }
+
+  trackBySolucionId(index: number, solucion: StoreSoluciones): number {
+    return solucion.id_solucion;
   }
 
 }
