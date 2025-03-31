@@ -18,4 +18,9 @@ router.get('/listIdStoreSoluciones/:id', storeSolucionesController.listIdStoreSo
  */
 router.put('/modifyStoreSoluciones/:id', storeSolucionesController.modifyStoreSoluciones);
 
+/**
+ * @description Eliminacion de una solución específica por su ID
+ */
+router.delete('/deleteSolucion/:id', storeSolucionesController.deleteSolucion);
+
 export default router;
