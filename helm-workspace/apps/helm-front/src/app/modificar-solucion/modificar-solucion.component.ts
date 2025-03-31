@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StoreSolucionesService, StoreSoluciones } from '../services/store-soluciones.service';
+import { StoreSolucionesService, StoreSoluciones, StoreBeneficios } from '../services/store-soluciones.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MenuComponent } from '../menu/menu.component';
@@ -15,13 +15,19 @@ import { MenuComponent } from '../menu/menu.component';
 
 export class ModificarSolucionComponent implements OnInit {
 
+  beneficios: StoreBeneficios[] = [];
+
   solucion: StoreSoluciones | null = null;
+
+  mostrarFormularioBeneficio = false;
+  nuevoBeneficioTitulo = '';
+  nuevoBeneficioDescripcion = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private storeSolucionesService: StoreSolucionesService
-  ) {}
+  ) { }
 
   ngOnInit() {
     const idSolucion = this.route.snapshot.paramMap.get('id');
@@ -30,6 +36,12 @@ export class ModificarSolucionComponent implements OnInit {
         next: (solucion) => {
           console.log('Solución obtenida: ', solucion);
           this.solucion = solucion;
+
+          if (!this.solucion.beneficios) {
+            this.solucion.beneficios = [];
+          }
+
+          this.beneficios = this.solucion.beneficios;
         },
         error: (error) => {
           console.error('Error al obtener la solución: ', error);
@@ -53,9 +65,30 @@ export class ModificarSolucionComponent implements OnInit {
       console.error('La solución no está definida');
     }
   }
-  
-  // Método para cancelar la edición y volver a la lista de soluciones
+
   cancelar() {
     this.router.navigate(['/store-soluciones']);
   }
+
+  agregarBeneficio() {
+    if (this.nuevoBeneficioTitulo && this.nuevoBeneficioDescripcion && this.solucion) {
+      const nuevoBeneficio: StoreBeneficios = {
+        titulo: this.nuevoBeneficioTitulo,
+        descripcion: this.nuevoBeneficioDescripcion
+      };
+
+      this.solucion.beneficios.push(nuevoBeneficio);
+
+      this.nuevoBeneficioTitulo = '';
+      this.nuevoBeneficioDescripcion = '';
+      this.mostrarFormularioBeneficio = false;
+    }
+  }
+
+  eliminarBeneficio(index: number) {
+    if (this.solucion) {
+      this.solucion.beneficios.splice(index, 1);
+    }
+  }
+
 }

@@ -35,4 +35,8 @@ export class StoreSolucionesComponent implements OnInit {
     this.router.navigate(['modificar-solucion', idSolucion]);
   }
 
+  eliminarSolucion(idSolucion: number) {
+    console.log("daw")
+  }
+
 }

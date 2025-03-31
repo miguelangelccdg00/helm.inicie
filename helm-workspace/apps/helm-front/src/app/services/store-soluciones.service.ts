@@ -36,9 +36,15 @@ export interface StoreSoluciones
     deleted?: boolean;
 }
 
+export interface StoreBeneficios{
+  titulo: string;
+  descripcion: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class StoreSolucionesService {
 
   private apiUrl = 'http://localhost:3009/storeSolucion/listStoreSoluciones';

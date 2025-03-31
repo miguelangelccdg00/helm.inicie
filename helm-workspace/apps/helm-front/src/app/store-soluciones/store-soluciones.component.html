@@ -1,42 +1,32 @@
 <div class="layout-container">
-    <!-- Menú lateral -->
-    <app-menu class="menu-lateral"></app-menu>
-    
-    <!-- Contenido principal -->
-    <div class="contenido-principal">
-      <h1>Store soluciones</h1>
+  <!-- Menú lateral -->
+  <app-menu class="menu-lateral"></app-menu>
   
-      <table>
-        <thead>
-          <tr>
-            <th>Icono</th>
-            <th>Descripción</th>
-            <th>Título</th>
-            <th>Subtítulo</th>
-            <th>Título Web</th>
-            <th>Problema</th>
-            <th>Solución</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for(solucion of storeSoluciones; track solucion.id_solucion) {
-          <tr (click)="irAModificarSolucion(solucion.id_solucion)">
-            <td><i class="{{solucion.icon}}"></i></td>
-            <td class="descripcion-cell">
-              <div [innerHTML]="solucion.description"></div>
-            </td>
-            <td>{{solucion.title || '-'}}</td>
-            <td>{{solucion.subtitle || '-'}}</td>
-            <td>{{solucion.titleweb || '-'}}</td>
-            <td>{{solucion.problemaTitle || '-'}}</td>
-            <td>{{solucion.solucionTitle || '-'}}</td>
-          </tr>
-          }
-        </tbody>
-      </table>
-  
-      <div class="no-data-message" *ngIf="storeSoluciones.length === 0">
-        No se encontraron soluciones disponibles.
-      </div>
+  <!-- Contenido principal -->
+  <div class="contenido-principal">
+    <h1>Store soluciones</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Icono</th>
+          <th>Descripción</th>
+          <th>Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(solucion of storeSoluciones; track solucion.id_solucion) {
+        <tr (click)="irAModificarSolucion(solucion.id_solucion)">
+          <td><i class="{{solucion.icon}}"></i></td>
+          <td>{{solucion.description}}</td>
+          <td><img src="assets/papelera.png" alt="papelera" (click)="eliminarSolucion(solucion.id_solucion)"></td>
+        </tr>
+        }
+      </tbody>
+    </table>
+
+    <div class="no-data-message" *ngIf="storeSoluciones.length === 0">
+      No se encontraron soluciones disponibles.
     </div>
   </div>
+</div>
