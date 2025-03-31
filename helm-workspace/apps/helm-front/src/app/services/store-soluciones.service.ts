@@ -52,25 +52,46 @@ export class StoreSolucionesService {
 
   constructor(private https: HttpClient) { }
 
+  /**
+   * Obtiene todas las soluciones almacenadas
+   */
   getStoreSoluciones(): Observable<StoreSoluciones[]> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<StoreSoluciones[]>(this.apiUrl, { headers });
   }
 
+  /**
+   * Obtiene una solución específica por su ID
+   * @param id ID de la solución a obtener
+   */
   getStoreSolucionById(id: number): Observable<StoreSoluciones> {
     const url = `http://localhost:3009/storeSolucion/listIdStoreSoluciones/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<StoreSoluciones>(url, { headers });
   }
 
+  /**
+   * Actualiza una solución existente
+   * @param id ID de la solución a actualizar
+   * @param solucion Datos de la solución a actualizar
+   */
   updateStoreSolucion(id: number, solucion: StoreSoluciones): Observable<any> {
     const url = `http://localhost:3009/storeSolucion/modifyStoreSoluciones/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.put(url, solucion, { headers });
+    
+    // Crear una copia de la solución sin el array de beneficios
+    const solucionToUpdate = { ...solucion } as Partial<StoreSoluciones>;
+    delete solucionToUpdate.beneficios;
+    
+    return this.https.put(url, solucionToUpdate, { headers });
   }
 
+  /**
+   * Elimina una solución por su ID
+   * @param id ID de la solución a eliminar
+   */
   deleteStoreSolucion(id: number): Observable<any> {
-    const url = `http://localhost:3009/storeSolucion/deleteSolucion/${id}`;
+    const url = `http://localhost:3009/storeSolucion/deleteStoreSolucion/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete(url, { headers });
   }
