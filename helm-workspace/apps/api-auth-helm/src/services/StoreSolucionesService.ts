@@ -31,9 +31,10 @@ class StoreSolucionesService
     }
 
     /** Obtiene los beneficios de una solución por su ID */
-    async getByIdBeneficio(idSolucion: number) {
+    async getByIdBeneficio(idSolucion: number)
+    {
         const [rows] = await pool.promise().query(
-            `SELECT b.*
+            `SELECT b.* 
             FROM storeBeneficios b
             JOIN storeSolucionesBeneficios sb ON b.id_beneficio = sb.id_beneficio
             JOIN storeSoluciones s ON sb.id_solucion = s.id_solucion
@@ -51,10 +52,10 @@ class StoreSolucionesService
         {
             await conn.beginTransaction(); // Inicia transacción
 
-            // Eliminar referencias en `storePacksSoluciones`
+            // Elimina referencias en `storePacksSoluciones`
             await conn.query('DELETE FROM storePacksSoluciones WHERE id_solucion = ?', [id]);
 
-            // Ahora sí, eliminar la solución
+            // Eliminacion la solución
             await conn.query('DELETE FROM storeSoluciones WHERE id_solucion = ?', [id]);
 
             await conn.commit(); // Confirmar cambios

@@ -5,6 +5,7 @@ import registroRoutes from './routes/RegistroRoute';
 import loginRoutes from './routes/LoginRoute';
 import storeSolucionesRoute from './routes/StoreSolucionesRoute';
 import menuRoutes from './routes/MenuRoute';
+import path from 'path';
 
 const app = express();
 app.use(morgan('dev'));
@@ -47,7 +48,8 @@ app.get('/', (req, res) =>
                         { method: 'GET', path: '/listStoreSoluciones' },
                         { method: 'GET', path: '/listIdStoreSoluciones/:id' },
                         { method: 'PUT', path: '/modifyStoreSoluciones/:id' },
-                        { method: 'DELETE', path: '/deleteSolucion/:id' }
+                        { method: 'DELETE', path: '/deleteSolucion/:id' },
+                        {method: 'GET', path: '/listBeneficios/:id'}
                     ]
                 }
             },
