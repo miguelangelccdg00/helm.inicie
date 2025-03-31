@@ -79,9 +79,32 @@ export class StoreSolucionesService {
     const url = `http://localhost:3009/storeSolucion/modifyStoreSoluciones/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     
-    // Crear una copia de la solución sin el array de beneficios
-    const solucionToUpdate = { ...solucion } as Partial<StoreSoluciones>;
-    delete solucionToUpdate.beneficios;
+    // Crear un objeto con solo los campos que existen en la base de datos
+    const solucionToUpdate = {
+      id_solucion: solucion.id_solucion,
+      description: solucion.description,
+      title: solucion.title,
+      subtitle: solucion.subtitle,
+      icon: solucion.icon,
+      slug: solucion.slug,
+      titleweb: solucion.titleweb,
+      multimediaUri: solucion.multimediaUri,
+      multimediaTypeId: solucion.multimediaTypeId,
+      problemaTitle: solucion.problemaTitle,
+      problemaPragma: solucion.problemaPragma,
+      solucionTitle: solucion.solucionTitle,
+      solucionPragma: solucion.solucionPragma,
+      caracteristicasTitle: solucion.caracteristicasTitle,
+      caracteristicasPragma: solucion.caracteristicasPragma,
+      casosdeusoTitle: solucion.casosdeusoTitle,
+      casosdeusoPragma: solucion.casosdeusoPragma,
+      firstCtaTitle: solucion.firstCtaTitle,
+      firstCtaPragma: solucion.firstCtaPragma,
+      secondCtaTitle: solucion.secondCtaTitle,
+      secondCtaPragma: solucion.secondCtaPragma,
+      beneficiosTitle: solucion.beneficiosTitle,
+      beneficiosPragma: solucion.beneficiosPragma
+    };
     
     return this.https.put(url, solucionToUpdate, { headers });
   }
