@@ -33,4 +33,9 @@ router.get('/listBeneficios/:idSolucion', storeSolucionesController.listBenefici
  */
 router.post('/createBeneficio/:idSolucion', storeSolucionesController.createBeneficio);
 
+/**
+ * @description Eliminacion de un beneficio específica por su ID
+ */
+router.delete('/deleteBeneficio/:idBeneficio', storeSolucionesController.deleteBeneficio);
+
 export default router;

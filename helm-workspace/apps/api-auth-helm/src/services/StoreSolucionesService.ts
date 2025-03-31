@@ -106,8 +106,35 @@ class StoreSolucionesService
         return rows;
     }
 
-    
-    
+    async deleteBeneficio(idBeneficio: number): Promise<boolean> 
+    {
+        const conn = await pool.promise().getConnection();
+        try 
+        {
+            await conn.beginTransaction();
+
+            // Eliminar relaciones en storeSolucionesBeneficios
+            await conn.query('DELETE FROM storeSolucionesBeneficios WHERE id_beneficio = ?', [idBeneficio]);
+
+            // Eliminar el beneficio de storeBeneficios
+            const [result]: any = await conn.query('DELETE FROM storeBeneficios WHERE id_beneficio = ?',[idBeneficio]);
+
+            await conn.commit();
+
+            // Verificar si se eliminó algún registro
+            return result.affectedRows > 0;
+        } 
+        catch (error) 
+        {
+            await conn.rollback();
+            console.error('Error al eliminar beneficio:', error);
+            throw error;
+        } 
+        finally 
+        {
+            conn.release();
+        }
+    }
 
 
 }

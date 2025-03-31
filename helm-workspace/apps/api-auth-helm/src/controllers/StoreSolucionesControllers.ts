@@ -117,7 +117,7 @@ class StoreSolucionesController
     {
         try 
         {
-            const { idSolucion } = req.params;  // ✅ Extrae idSolucion correctamente
+            const { idSolucion } = req.params;  
             const storeBeneficio = req.body;
 
             if (!storeBeneficio || !Object.keys(storeBeneficio).length) 
@@ -170,6 +170,36 @@ class StoreSolucionesController
             res.status(500).json({ message: 'Error interno del servidor' });
         }
     }
+
+    async deleteBeneficio(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
+            const { idBeneficio } = req.params;
+
+            if (!idBeneficio) 
+            {
+                res.status(400).json({ message: 'ID no proporcionado' });
+                return;
+            }
+
+            const wasDeleted = await StoreSolucionesService.deleteBeneficio(Number(idBeneficio));
+
+            if (!wasDeleted) 
+            {
+                res.status(404).json({ message: 'Beneficio no encontrado o ya eliminado' });
+                return;
+            }
+
+            res.status(200).json({ message: 'Beneficio eliminado correctamente' });
+        } 
+        catch (error) 
+        {
+            console.error('Error al eliminar el beneficio:', error);
+            res.status(500).json({ message: 'Error interno en el servidor' });
+        }
+    }
+
 
 }
 
