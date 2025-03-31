@@ -52,10 +52,14 @@ export class ModificarSolucionComponent implements OnInit {
 
   guardarCambios() {
     if (this.solucion) {
+      // Asegurarse de que los beneficios estén actualizados en la solución
+      this.solucion.beneficios = this.beneficios;
+      
       this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
         next: () => {
           console.log('Solución actualizada correctamente');
-          this.router.navigate(['/store-soluciones']);
+          // Guardar los beneficios asociados a esta solución
+          this.guardarBeneficios();
         },
         error: (error) => {
           console.error('Error al actualizar la solución:', error);
@@ -63,6 +67,17 @@ export class ModificarSolucionComponent implements OnInit {
       });
     } else {
       console.error('La solución no está definida');
+    }
+  }
+
+  guardarBeneficios() {
+    if (this.solucion && this.solucion.beneficios.length > 0) {
+      // Aquí podrías implementar la lógica para guardar los beneficios
+      // Por ejemplo, llamar a un servicio que guarde los beneficios asociados a la solución
+      console.log('Guardando beneficios:', this.solucion.beneficios);
+      this.router.navigate(['/store-soluciones']);
+    } else {
+      this.router.navigate(['/store-soluciones']);
     }
   }
 
@@ -74,34 +89,60 @@ export class ModificarSolucionComponent implements OnInit {
     if (this.nuevoBeneficioTitulo && this.nuevoBeneficioDescripcion && this.solucion) {
       const nuevoBeneficio: StoreBeneficios = {
         titulo: this.nuevoBeneficioTitulo,
-        descripcion: this.nuevoBeneficioDescripcion
+        descripcion: this.nuevoBeneficioDescripcion,
+        description: this.nuevoBeneficioDescripcion // Aseguramos que description también tenga el valor
       };
 
-      this.solucion.beneficios.push(nuevoBeneficio);
-
-      this.nuevoBeneficioTitulo = '';
-      this.nuevoBeneficioDescripcion = '';
-      this.mostrarFormularioBeneficio = false;
+      // Primero agregamos el beneficio a la base de datos
+      this.storeSolucionesService.createBeneficio(this.solucion.id_solucion, nuevoBeneficio).subscribe({
+        next: (response) => {
+          console.log('Beneficio creado correctamente:', response);
+          
+          // Si el backend devuelve el ID del beneficio creado, lo asignamos
+          if (response && response.id_beneficio) {
+            nuevoBeneficio.id_beneficio = response.id_beneficio;
+          }
+          
+          // Luego lo agregamos al array local
+          this.beneficios.push(nuevoBeneficio);
+          if (this.solucion) {
+            this.solucion.beneficios = this.beneficios;
+          }
+          
+          this.nuevoBeneficioTitulo = '';
+          this.nuevoBeneficioDescripcion = '';
+          this.mostrarFormularioBeneficio = false;
+        },
+        error: (error) => {
+          console.error('Error al crear el beneficio:', error);
+        }
+      });
     }
   }
 
   eliminarBeneficio(index: number) {
-    if (this.solucion) {
-      this.solucion.beneficios.splice(index, 1);
-    }
-  }
-
-  eliminarSolucion() {
-    if (this.solucion && confirm('¿Estás seguro de que deseas eliminar esta solución? Esta acción no se puede deshacer.')) {
-      this.storeSolucionesService.deleteStoreSolucion(this.solucion.id_solucion).subscribe({
-        next: () => {
-          console.log('Solución eliminada correctamente');
-          this.router.navigate(['/store-soluciones']);
-        },
-        error: (error) => {
-          console.error('Error al eliminar la solución:', error);
-        }
-      });
+    if (this.solucion && this.beneficios[index]) {
+      // Si el beneficio tiene ID, lo eliminamos de la base de datos
+      const beneficio = this.beneficios[index];
+      if (beneficio.id_beneficio) {
+        this.storeSolucionesService.deleteBeneficio(beneficio.id_beneficio).subscribe({
+          next: () => {
+            console.log('Beneficio eliminado correctamente de la base de datos');
+            // Eliminamos del array local después de confirmar la eliminación en la BD
+            this.beneficios.splice(index, 1);
+            if (this.solucion) {
+              this.solucion.beneficios = this.beneficios;
+            }
+          },
+          error: (error) => {
+            console.error('Error al eliminar el beneficio:', error);
+          }
+        });
+      } else {
+        // Si no tiene ID, solo lo eliminamos del array local
+        this.beneficios.splice(index, 1);
+        this.solucion.beneficios = this.beneficios;
+      }
     }
   }
 }

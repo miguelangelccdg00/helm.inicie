@@ -37,9 +37,24 @@ export interface StoreSoluciones
     beneficios: StoreBeneficios[];
 }
 
-export interface StoreBeneficios{
-  titulo: string;
-  descripcion: string;
+export interface StoreBeneficios {
+  id_beneficio?: number;
+  description?: string; // Campo real en la base de datos
+  titulo?: string;      // Campo para la interfaz de usuario
+  descripcion: string;  // Campo para la interfaz de usuario que se mapea a description
+}
+
+// Nueva interfaz para las peticiones
+export interface Peticion {
+  id_sector: number;
+  sector: string;
+  id_solucion: number;
+  solucion: string;
+  id_ambito: number;
+  ambito: string;
+  responsechat: string;
+  data: string;
+  deleted: boolean;
 }
 
 @Injectable({
@@ -49,6 +64,8 @@ export interface StoreBeneficios{
 export class StoreSolucionesService {
 
   private apiUrl = 'http://localhost:3009/storeSolucion/listStoreSoluciones';
+  private peticionesUrl = 'http://localhost:3009/peticiones';
+  private beneficiosUrl = 'http://localhost:3009/storeBeneficios';
 
   constructor(private https: HttpClient) { }
 
@@ -117,5 +134,88 @@ export class StoreSolucionesService {
     const url = `http://localhost:3009/storeSolucion/deleteStoreSolucion/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete(url, { headers });
+  }
+
+  /**
+   * Obtiene todos los beneficios de una solución
+   * @param idSolucion ID de la solución
+   */
+  getBeneficiosBySolucion(idSolucion: number): Observable<StoreBeneficios[]> {
+    const url = `${this.beneficiosUrl}/listBeneficios/${idSolucion}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.get<StoreBeneficios[]>(url, { headers });
+  }
+
+    /**
+   * Crea un nuevo beneficio para una solución
+   * @param idSolucion ID de la solución
+   * @param beneficio Datos del beneficio a crear
+   */
+    createBeneficio(idSolucion: number, beneficio: StoreBeneficios): Observable<any> {
+      const url = `${this.beneficiosUrl}/createBeneficio/${idSolucion}`;
+      const headers = new HttpHeaders().set('Content-Type', 'application/json');
+      
+      // Solo incluir el campo description que existe en la tabla storeBeneficios
+      const beneficioToCreate = {
+        description: beneficio.descripcion
+      };
+      
+      // El backend debe encargarse de crear la relación con id_solucion
+      return this.https.post(url, beneficioToCreate, { headers });
+    }
+
+  /**
+   * Elimina un beneficio por su ID
+   * @param idBeneficio ID del beneficio a eliminar
+   */
+  deleteBeneficio(idBeneficio: number): Observable<any> {
+    const url = `${this.beneficiosUrl}/deleteBeneficio/${idBeneficio}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.delete(url, { headers });
+  }
+
+  /**
+   * Obtiene todas las peticiones
+   */
+  getPeticiones(): Observable<Peticion[]> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.get<Peticion[]>(`${this.peticionesUrl}/listPeticiones`, { headers });
+  }
+
+  /**
+   * Obtiene una petición específica por su ID
+   * @param id ID de la petición a obtener
+   */
+  getPeticionById(id: number): Observable<Peticion> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.get<Peticion>(`${this.peticionesUrl}/listIdPeticion/${id}`, { headers });
+  }
+
+  /**
+   * Crea una nueva petición
+   * @param peticion Datos de la petición a crear
+   */
+  createPeticion(peticion: Peticion): Observable<any> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.post(`${this.peticionesUrl}/createPeticion`, peticion, { headers });
+  }
+
+  /**
+   * Actualiza una petición existente
+   * @param id ID de la petición a actualizar
+   * @param peticion Datos de la petición a actualizar
+   */
+  updatePeticion(id: number, peticion: Peticion): Observable<any> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.put(`${this.peticionesUrl}/modifyPeticion/${id}`, peticion, { headers });
+  }
+
+  /**
+   * Elimina una petición por su ID
+   * @param id ID de la petición a eliminar
+   */
+  deletePeticion(id: number): Observable<any> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.delete(`${this.peticionesUrl}/deletePeticion/${id}`, { headers });
   }
 }
