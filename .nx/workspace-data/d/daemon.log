@@ -18110,3 +18110,341 @@ Error: InvalidSymbol in c:\Users\juana\helm.inicie.es\.nx\workspace-data\file-ma
 [NX v20.6.2 Daemon Server] - 2025-03-31T09:49:54.723Z - Time taken for 'total execution time for createProjectGraph()' 46.48810005187988ms
 [NX v20.6.2 Daemon Server] - 2025-03-31T09:50:08.697Z - [WATCHER]: Processing file changes in outputs
 [NX v20.6.2 Daemon Server] - 2025-03-31T09:50:21.360Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:45.138Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:45.145Z - [WATCHER]: helm-workspace/apps/api-auth-helm/src/routes/StoreSolucionesRoute.ts was modified
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:45.349Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:45.349Z - [REQUEST]: helm-workspace/apps/api-auth-helm/src/routes/StoreSolucionesRoute.ts
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:45.349Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:45.365Z - Time taken for 'hash changed files from watcher' 0.7058999538421631ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:45.404Z - Time taken for 'build-project-configs' 35.885300040245056ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:45.535Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:45.549Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:45.549Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:45.549Z - Time taken for 'total execution time for createProjectGraph()' 27.194200038909912ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:46.166Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:46.167Z - Established a connection. Number of open connections: 2
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:46.167Z - Established a connection. Number of open connections: 3
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:46.168Z - Closed a connection. Number of open connections: 2
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:46.168Z - Closed a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:46.170Z - [REQUEST]: Client Request for Project Graph Received
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:46.173Z - [REQUEST]: Responding to the client. project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:46.177Z - Time taken for 'total for creating and serializing project graph' 2.273200035095215ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:46.182Z - Done responding to the client project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:46.182Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 3. Response time: 9.
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:46.188Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:46.218Z - Done responding to the client handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:46.218Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 4. Response time: 30.
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:53:46.218Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:02.731Z - [WATCHER]: helm-workspace/apps/api-auth-helm/src/routes/StoreSolucionesRoute.ts was modified
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:02.731Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:02.847Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:02.847Z - [REQUEST]: helm-workspace/apps/api-auth-helm/src/routes/StoreSolucionesRoute.ts
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:02.848Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:02.857Z - Time taken for 'hash changed files from watcher' 0.5458999872207642ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:02.868Z - Time taken for 'build-project-configs' 10.287099957466125ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:02.889Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:02.890Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:02.891Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:02.891Z - Time taken for 'total execution time for createProjectGraph()' 15.800599932670593ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:03.786Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:03.786Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:03.787Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:03.787Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:03.788Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:03.790Z - [REQUEST]: Client Request for Project Graph Received
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:03.791Z - [REQUEST]: Responding to the client. project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:03.792Z - Time taken for 'total for creating and serializing project graph' 0.8545999526977539ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:03.793Z - Done responding to the client project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:03.793Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 2.
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:03.796Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:03.797Z - Done responding to the client handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:03.797Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 1. Response time: 1.
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:03.798Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:32.940Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:32.942Z - [WATCHER]: helm-workspace/apps/api-auth-helm/src/routes/StoreSolucionesRoute.ts was modified
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.053Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.053Z - [REQUEST]: helm-workspace/apps/api-auth-helm/src/routes/StoreSolucionesRoute.ts
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.053Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.092Z - Time taken for 'hash changed files from watcher' 0.5855000019073486ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.142Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.143Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.143Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.143Z - Time taken for 'total execution time for createProjectGraph()' 18.847399950027466ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.958Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.958Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.959Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.959Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.960Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.962Z - [REQUEST]: Client Request for Project Graph Received
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.963Z - [REQUEST]: Responding to the client. project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.965Z - Time taken for 'total for creating and serializing project graph' 0.95169997215271ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.966Z - Done responding to the client project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.966Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 3.
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.969Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.970Z - Done responding to the client handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.971Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 1. Response time: 2.
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:33.972Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:48.039Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:48.053Z - [WATCHER]: helm-workspace/apps/api-auth-helm/src/services/StoreSolucionesService.ts was modified
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:48.166Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:48.166Z - [REQUEST]: helm-workspace/apps/api-auth-helm/src/services/StoreSolucionesService.ts
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:48.166Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:48.180Z - Time taken for 'hash changed files from watcher' 0.6426000595092773ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:48.192Z - Time taken for 'build-project-configs' 12.925999999046326ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:48.231Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:48.232Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:48.232Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:48.232Z - Time taken for 'total execution time for createProjectGraph()' 30.89429998397827ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:49.075Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:49.076Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:49.081Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:49.083Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:49.084Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:49.088Z - [REQUEST]: Client Request for Project Graph Received
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:49.089Z - [REQUEST]: Responding to the client. project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:49.090Z - Time taken for 'total for creating and serializing project graph' 1.0120999813079834ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:49.093Z - Done responding to the client project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:49.093Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 4.
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:49.096Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:49.098Z - Done responding to the client handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:49.098Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 1. Response time: 2.
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:54:49.099Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:05.100Z - [WATCHER]: helm-workspace/apps/api-auth-helm/src/services/StoreSolucionesService.ts was modified
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:05.101Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:05.214Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:05.214Z - [REQUEST]: helm-workspace/apps/api-auth-helm/src/services/StoreSolucionesService.ts
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:05.214Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:05.225Z - Time taken for 'hash changed files from watcher' 0.5562000274658203ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:05.235Z - Time taken for 'build-project-configs' 11.430299997329712ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:05.258Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:05.260Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:05.260Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:05.260Z - Time taken for 'total execution time for createProjectGraph()' 13.334399938583374ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:06.123Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:06.123Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:06.124Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:06.124Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:06.125Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:06.127Z - [REQUEST]: Client Request for Project Graph Received
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:06.128Z - [REQUEST]: Responding to the client. project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:06.129Z - Time taken for 'total for creating and serializing project graph' 0.8948999643325806ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:06.130Z - Done responding to the client project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:06.130Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 2.
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:06.133Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:06.134Z - Done responding to the client handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:06.134Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 1. Response time: 1.
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:06.135Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:31.155Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:31.158Z - [WATCHER]: helm-workspace/apps/api-auth-helm/src/services/StoreSolucionesService.ts was modified
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:31.271Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:31.271Z - [REQUEST]: helm-workspace/apps/api-auth-helm/src/services/StoreSolucionesService.ts
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:31.271Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:31.290Z - Time taken for 'hash changed files from watcher' 0.572700023651123ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:31.315Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:31.316Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:31.316Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:31.316Z - Time taken for 'total execution time for createProjectGraph()' 16.05999994277954ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:32.177Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:32.177Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:32.178Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:32.179Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:32.180Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:32.182Z - [REQUEST]: Client Request for Project Graph Received
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:32.183Z - [REQUEST]: Responding to the client. project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:32.185Z - Time taken for 'total for creating and serializing project graph' 1.1345000267028809ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:32.186Z - Done responding to the client project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:32.186Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 3.
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:32.189Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:32.191Z - Done responding to the client handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:32.192Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 1. Response time: 3.
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:55:32.196Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:34.201Z - [WATCHER]: helm-workspace/apps/api-auth-helm/src/index.js was modified
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:34.203Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:34.310Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:34.310Z - [REQUEST]: helm-workspace/apps/api-auth-helm/src/index.js
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:34.311Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:34.329Z - Time taken for 'hash changed files from watcher' 0.7299000024795532ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:34.350Z - Time taken for 'build-project-configs' 24.003699898719788ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:34.402Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:34.404Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:34.405Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:34.405Z - Time taken for 'total execution time for createProjectGraph()' 16.83959996700287ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:35.545Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:35.546Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:35.547Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:35.548Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:35.548Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:35.551Z - [REQUEST]: Client Request for Project Graph Received
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:35.552Z - [REQUEST]: Responding to the client. project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:35.553Z - Time taken for 'total for creating and serializing project graph' 1.0886000394821167ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:35.555Z - Done responding to the client project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:35.555Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 3.
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:35.560Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:35.561Z - Done responding to the client handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:35.561Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 1. Response time: 1.
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:56:35.562Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:57:14.770Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T09:57:27.537Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:32.122Z - [WATCHER]: helm-workspace/apps/api-auth-helm/src/controllers/StoreSolucionesControllers.ts was modified
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:32.123Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:32.417Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:32.417Z - [REQUEST]: helm-workspace/apps/api-auth-helm/src/controllers/StoreSolucionesControllers.ts
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:32.417Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:32.446Z - Time taken for 'hash changed files from watcher' 0.6347000598907471ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:32.461Z - Time taken for 'build-project-configs' 19.574699997901917ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:32.485Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:32.487Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:32.488Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:32.488Z - Time taken for 'total execution time for createProjectGraph()' 16.11590003967285ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:34.570Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:34.571Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:34.578Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:34.579Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:34.581Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:34.586Z - [REQUEST]: Client Request for Project Graph Received
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:34.588Z - [REQUEST]: Responding to the client. project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:34.590Z - Time taken for 'total for creating and serializing project graph' 1.609700083732605ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:34.591Z - Done responding to the client project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:34.591Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 2. Response time: 3.
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:34.594Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:34.595Z - Done responding to the client handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:34.595Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 1. Response time: 1.
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:34.596Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:00:45.346Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:01:04.735Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:37.951Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:37.959Z - [WATCHER]: helm-workspace/apps/api-auth-helm/src/routes/StoreSolucionesRoute.ts was modified
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:38.103Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:38.103Z - [REQUEST]: helm-workspace/apps/api-auth-helm/src/routes/StoreSolucionesRoute.ts
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:38.104Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:38.123Z - Time taken for 'hash changed files from watcher' 0.6575000286102295ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:38.136Z - Time taken for 'build-project-configs' 17.436699986457825ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:38.177Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:38.179Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:38.179Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:38.180Z - Time taken for 'total execution time for createProjectGraph()' 18.49839997291565ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:39.442Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:39.442Z - Established a connection. Number of open connections: 2
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:39.443Z - Established a connection. Number of open connections: 3
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:39.443Z - Closed a connection. Number of open connections: 2
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:39.443Z - Closed a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:39.455Z - [REQUEST]: Client Request for Project Graph Received
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:39.456Z - [REQUEST]: Responding to the client. project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:39.458Z - Time taken for 'total for creating and serializing project graph' 1.092400074005127ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:39.459Z - Done responding to the client project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:39.459Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 3.
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:39.472Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:39.479Z - Done responding to the client handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:39.480Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 9. Response time: 8.
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:39.486Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:41.212Z - [WATCHER]: helm-workspace/apps/api-auth-helm/src/routes/StoreSolucionesRoute.ts was modified
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:41.214Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:41.509Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:41.509Z - [REQUEST]: helm-workspace/apps/api-auth-helm/src/routes/StoreSolucionesRoute.ts
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:41.509Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:41.527Z - [WATCHER]: helm-workspace/apps/api-auth-helm/src/routes/StoreSolucionesRoute.ts was modified
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:41.529Z - Time taken for 'hash changed files from watcher' 62.26989996433258ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:41.953Z - Time taken for 'build-project-configs' 395.7517999410629ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:41.958Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:41.958Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:41.958Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:42.256Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:42.257Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:42.258Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:42.258Z - Time taken for 'total execution time for createProjectGraph()' 305.1708000898361ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:42.355Z - Time taken for 'build-project-configs' 50.12000000476837ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:42.383Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:42.384Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:42.384Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:42.385Z - Time taken for 'total execution time for createProjectGraph()' 96.42770004272461ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:03:59.838Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:04:09.557Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:04:09.620Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:10.468Z - [WATCHER]: helm-workspace/apps/api-auth-helm/src/services/StoreSolucionesService.ts was modified
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:10.496Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.115Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.115Z - [REQUEST]: helm-workspace/apps/api-auth-helm/src/services/StoreSolucionesService.ts
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.115Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.168Z - Time taken for 'hash changed files from watcher' 0.7242000102996826ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.192Z - Time taken for 'build-project-configs' 24.699599981307983ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.248Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.249Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.249Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.249Z - Time taken for 'total execution time for createProjectGraph()' 35.52390003204346ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.782Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.783Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.785Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.797Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.799Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.825Z - [REQUEST]: Client Request for Project Graph Received
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.826Z - [REQUEST]: Responding to the client. project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.828Z - Time taken for 'total for creating and serializing project graph' 1.1547999382019043ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.836Z - Done responding to the client project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.838Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 12.
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.864Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.865Z - Done responding to the client handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.866Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 1. Response time: 2.
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:11.873Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:19.913Z - [WATCHER]: helm-workspace/apps/api-auth-helm/src/services/StoreSolucionesService.ts was modified
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:19.914Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:20.075Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:20.075Z - [REQUEST]: helm-workspace/apps/api-auth-helm/src/services/StoreSolucionesService.ts
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:20.075Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:20.215Z - Time taken for 'hash changed files from watcher' 2.0633000135421753ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:20.246Z - Time taken for 'build-project-configs' 19.23140001296997ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:20.331Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:20.333Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:20.333Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:20.335Z - Time taken for 'total execution time for createProjectGraph()' 27.49090003967285ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:30.473Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:30.481Z - [WATCHER]: helm-workspace/apps/api-auth-helm/src/services/StoreSolucionesService.ts was modified
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:30.695Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:30.695Z - [REQUEST]: helm-workspace/apps/api-auth-helm/src/services/StoreSolucionesService.ts
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:30.695Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:30.714Z - Time taken for 'hash changed files from watcher' 0.5730999708175659ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:30.827Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:30.829Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:30.829Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:30.829Z - Time taken for 'total execution time for createProjectGraph()' 14.272600054740906ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:31.700Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:31.701Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:31.704Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:31.706Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:31.713Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:31.716Z - [REQUEST]: Client Request for Project Graph Received
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:31.717Z - [REQUEST]: Responding to the client. project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:31.719Z - Time taken for 'total for creating and serializing project graph' 1.409500002861023ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:31.720Z - Done responding to the client project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:31.720Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 2. Response time: 3.
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:31.724Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:31.725Z - Done responding to the client handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:31.726Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 1. Response time: 2.
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:31.727Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:05:47.058Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:00.562Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:00.900Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:53.546Z - [WATCHER]: helm-workspace/apps/api-auth-helm/src/controllers/StoreSolucionesControllers.ts was modified
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:53.553Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:53.653Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:53.653Z - [REQUEST]: helm-workspace/apps/api-auth-helm/src/controllers/StoreSolucionesControllers.ts
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:53.653Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:53.670Z - Time taken for 'hash changed files from watcher' 0.5960999727249146ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:53.708Z - Time taken for 'build-project-configs' 18.506399989128113ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:53.796Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:53.798Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:53.798Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:53.798Z - Time taken for 'total execution time for createProjectGraph()' 34.73740005493164ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:54.857Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:54.861Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:54.865Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:54.867Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:54.869Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:54.891Z - [REQUEST]: Client Request for Project Graph Received
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:54.893Z - [REQUEST]: Responding to the client. project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:54.901Z - Time taken for 'total for creating and serializing project graph' 1.5821000337600708ms
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:54.903Z - Done responding to the client project-graph
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:54.903Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 2. Response time: 10.
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:54.910Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:54.911Z - Done responding to the client handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:54.912Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 2. Response time: 2.
+[NX v20.6.2 Daemon Server] - 2025-03-31T10:06:54.940Z - Closed a connection. Number of open connections: 0

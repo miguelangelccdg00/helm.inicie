@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import StoreSolucionesService from '../services/StoreSolucionesService';
+import { promises } from 'dns';
 
 class StoreSolucionesController 
 {
@@ -111,6 +112,32 @@ class StoreSolucionesController
             res.status(500).json({ message: 'Error interno en el servidor' });
         }
     }
+
+    async createBeneficio(req: Request, res: Response): Promise<void>
+    {
+        try 
+        {
+            const { idSolucion } = req.params;  // ✅ Extrae idSolucion correctamente
+            const storeBeneficio = req.body;
+
+            if (!storeBeneficio || !Object.keys(storeBeneficio).length) 
+            {
+                res.status(400).json({ message: 'No se proporcionaron datos del beneficio' });
+                return;
+            }
+
+            const beneficioId = await StoreSolucionesService.createBeneficio(storeBeneficio, Number(idSolucion));
+
+            res.status(201).json({ message: 'Beneficio creado con éxito', id_beneficio: beneficioId });
+        
+        }
+        catch (error) 
+        {
+            console.error('Error creando el beneficio:', error);
+            res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    }
+
 
 
     /** Listado de beneficios de una solución */

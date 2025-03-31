@@ -49,7 +49,8 @@ app.get('/', (req, res) =>
                         { method: 'GET', path: '/listIdStoreSoluciones/:id' },
                         { method: 'PUT', path: '/modifyStoreSoluciones/:id' },
                         { method: 'DELETE', path: '/deleteSolucion/:id' },
-                        {method: 'GET', path: '/listBeneficios/:id'}
+                        {method: 'GET', path: '/listBeneficios/:id'},
+                        {method:'POST', path: '/createBeneficio/:id' }
                     ]
                 }
             },
