@@ -3,7 +3,7 @@ import { StoreBeneficios } from '../models/storeBeneficios';
 
 class StoreBeneficiosServices 
 {
-    async createBeneficio({ description, title, idSolucion }) 
+    async createBeneficio({ description, idSolucion }) 
     {
         const conn = await pool.promise().getConnection();
         try 
@@ -20,12 +20,12 @@ class StoreBeneficiosServices
             }
 
             const [beneficioResult]: any = await conn.query(
-                `INSERT INTO storeBeneficios (description, title) VALUES (?, ?)`,[description, title]);
+                `INSERT INTO storeBeneficios (description) VALUES (?)`, [description]);
 
             const idBeneficio = beneficioResult.insertId;
 
             await conn.query(
-                `INSERT INTO storeSolucionesBeneficios (id_solucion, id_beneficio) VALUES (?, ?)`,[idSolucion, idBeneficio]);
+                `INSERT INTO storeSolucionesBeneficios (id_solucion, id_beneficio) VALUES (?, ?)`, [idSolucion, idBeneficio]);
 
             await conn.commit();
 

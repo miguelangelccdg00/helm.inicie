@@ -10,16 +10,16 @@ class StoreBeneficiosControllers
         try 
         {
             const idSolucion = parseInt(req.params.idSolucion, 10);
-            const { description, title } = req.body;
+            const { description } = req.body;
     
-            if (!description || !title || !idSolucion) 
+            if (!description || !idSolucion) 
             {
                 res.status(400).json({ message: 'Faltan datos del beneficio' });
                 return;
             }
     
             // Insertar el beneficio y relacionarlo
-            const beneficio = await storeBeneficiosService.createBeneficio({ description, title, idSolucion });
+            const beneficio = await storeBeneficiosService.createBeneficio({ description, idSolucion });
     
             res.status(201).json({ 
                 message: 'Beneficio creado y relacionado con la solución con éxito',

@@ -25,6 +25,8 @@ export interface StoreSoluciones
     firstCtaPragma: string | null;
     secondCtaTitle: string | null;
     secondCtaPragma: string | null;
+    titleBeneficio: string | null;
+    beneficiosPragma: string | null;
     // Campos adicionales que podrían estar en la respuesta
     sector?: string;
     ambito?: string;
@@ -103,6 +105,8 @@ export class StoreSolucionesService {
       firstCtaPragma: solucion.firstCtaPragma,
       secondCtaTitle: solucion.secondCtaTitle,
       secondCtaPragma: solucion.secondCtaPragma,
+      titleBeneficio: solucion.titleBeneficio,
+      beneficiosPragma: solucion.beneficiosPragma
     };
     
     return this.https.put(url, solucionToUpdate, { headers });
@@ -125,6 +129,7 @@ export class StoreSolucionesService {
       const headers = new HttpHeaders().set('Content-Type', 'application/json');
       
       const beneficioToCreate = {
+        titulo: beneficio.titulo,
         description: beneficio.description
       };
       
