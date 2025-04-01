@@ -13,7 +13,6 @@ router.get('/listBeneficios/:idSolucion', storeBeneficiosController.listBenefici
  */
 router.post('/createBeneficio', storeBeneficiosController.createBeneficio);
 
-
 /**
  * @description Eliminacion de un beneficio específica por su ID
  */

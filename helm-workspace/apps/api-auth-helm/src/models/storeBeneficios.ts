@@ -1,5 +1,6 @@
 export interface StoreBeneficios
 {
     idBeneficio?: number;
-    description: string;
+    description: string;    
+    title: string;
 }

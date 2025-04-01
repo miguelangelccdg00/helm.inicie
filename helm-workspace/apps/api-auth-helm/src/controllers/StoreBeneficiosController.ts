@@ -1,34 +1,37 @@
 import { Request, Response } from 'express';
+import { StoreBeneficios } from "../models/storeBeneficios";
 import storeBeneficiosService from '../services/StoreBeneficiosService';
 
 class StoreBeneficiosControllers 
 {
     /** Creación de beneficios de una solución */
-    async createBeneficio(req: Request, res: Response): Promise<void> {
-        try {
-            const { title, description } = req.body;
+    async createBeneficio(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
+            const { description, title, idSolucion } = req.body;
     
-            if (!title || !description) {
-                res.status(400).json({ message: 'Faltan datos: título o descripción' });
+            if (!description || !title || !idSolucion) 
+            {
+                res.status(400).json({ message: 'Faltan datos del beneficio' });
                 return;
             }
     
-            // Aquí llamas a tu servicio para insertar los datos en la base
-            const solucionId = await storeBeneficiosService.createBeneficio(title, description);
+            // Insertar el beneficio y relacionarlo
+            const beneficio = await storeBeneficiosService.createBeneficio({ description, title, idSolucion });
     
             res.status(201).json({ 
-                message: 'Beneficio y solución creados con éxito', 
-                id_solucion: solucionId 
+                message: 'Beneficio creado y relacionado con la solución con éxito',
+                beneficio
             });
-        } catch (error) {
-            console.error('Error creando la solución y el beneficio:', error);
+        } 
+        catch (error)
+        {
+            console.error('Error creando el beneficio:', error);
             res.status(500).json({ message: 'Error interno del servidor' });
         }
     }
     
-    
-
-
     /** Listado de beneficios de una solución */
     async listBeneficios(req: Request, res: Response): Promise<void> 
     {

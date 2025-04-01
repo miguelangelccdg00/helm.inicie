@@ -1,55 +1,51 @@
 import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
 import { StoreBeneficios } from '../models/storeBeneficios';
 
-class StoreBeneficiosServices
+class StoreBeneficiosServices 
 {
-    async createBeneficio(title: string, description: string) {
-        const connection = await pool.promise().getConnection();
-    
-        try {
-            await connection.beginTransaction();
-    
-            // Insertar la solución
-            const [solucionResult]: any = await connection.query(
-                `INSERT INTO storeSoluciones (title) VALUES (?)`, 
-                [title]
-            );
-            const idSolucion = solucionResult.insertId;
-    
-            // Insertar el beneficio
-            const [beneficioResult]: any = await connection.query(
-                `INSERT INTO storeBeneficios (description) VALUES (?)`, 
-                [description]
-            );
+    async createBeneficio({description, title, idSolucion}) 
+    {
+        const conn = await pool.promise().getConnection();
+        try 
+        {
+            await conn.beginTransaction();
+
+            // Insertar el beneficio en storeBeneficios
+            const [beneficioResult]: any = await conn.query(
+                `INSERT INTO storeBeneficios (description, title) VALUES (?, ?)`,[description, title]);
+
             const idBeneficio = beneficioResult.insertId;
-    
-            // Relacionar el beneficio con la solución
-            await connection.query(
-                `INSERT INTO storeSolucionesBeneficios (id_solucion, id_beneficio) VALUES (?, ?)`, 
-                [idSolucion, idBeneficio]
-            );
-    
-            await connection.commit();
-            return idSolucion;
-        } catch (error) {
-            await connection.rollback();
-            console.error("Error al insertar beneficio y solución:", error);
+
+            // Relacionar el beneficio con la solución en storeSolucionesBeneficios
+            await conn.query(
+                `INSERT INTO storeSolucionesBeneficios (id_solucion, id_beneficio) VALUES (?, ?)`, [idSolucion, idBeneficio]);
+
+            // Confirmar la transacción
+            await conn.commit();
+
+            return { idBeneficio };
+        } 
+        catch (error) 
+        {
+            await conn.rollback();
+            console.error("Error al insertar beneficio:", error);
             throw error;
-        } finally {
-            connection.release();
+        } 
+        finally 
+        {
+            conn.release();
         }
     }
-    
 
     /** Obtiene los beneficios de una solución por su ID */
-    async getByIdBeneficio(idSolucion: number)
+    async getByIdBeneficio(idSolucion: number) 
     {
         const [rows] = await pool.promise().query(
             `SELECT b.* 
             FROM storeBeneficios b
             JOIN storeSolucionesBeneficios sb ON b.id_beneficio = sb.id_beneficio
-            JOIN storeSoluciones s ON sb.id_solucion = s.id_solucion
-            WHERE s.id_solucion = ?`, [idSolucion]
+            WHERE sb.id_solucion = ?`, 
+            [idSolucion]
         );
 
         return rows;
@@ -66,7 +62,7 @@ class StoreBeneficiosServices
             await conn.query('DELETE FROM storeSolucionesBeneficios WHERE id_beneficio = ?', [idBeneficio]);
 
             // Elimina el beneficio de storeBeneficios
-            const [result]: any = await conn.query('DELETE FROM storeBeneficios WHERE id_beneficio = ?',[idBeneficio]);
+            const [result]: any = await conn.query('DELETE FROM storeBeneficios WHERE id_beneficio = ?', [idBeneficio]);
 
             await conn.commit();
 
@@ -84,7 +80,6 @@ class StoreBeneficiosServices
             conn.release();
         }
     }
-
 }
 
 export default new StoreBeneficiosServices();

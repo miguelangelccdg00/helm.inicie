@@ -2143,6 +2143,15 @@
         "hash": "sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ=="
       }
     },
+    "npm:slugify": {
+      "type": "npm",
+      "name": "npm:slugify",
+      "data": {
+        "version": "1.6.6",
+        "packageName": "slugify",
+        "hash": "sha512-h+z7HKHYXj6wJU+AnS/+IH8Uh9fdcX1Lrhg1/VMdf9PwoBQXFcXiAdsy2tSK0P6gKwJLXp02r90ahUCqHk9rrw=="
+      }
+    },
     "npm:sprintf-js": {
       "type": "npm",
       "name": "npm:sprintf-js",
@@ -4177,5 +4186,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1743497263334
+  "computedAt": 1743501453569
 }
