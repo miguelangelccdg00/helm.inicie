@@ -3,37 +3,43 @@ import { StoreBeneficios } from '../models/storeBeneficios';
 
 class StoreBeneficiosServices
 {
-    async createBeneficio(storeBeneficio: any, idSolucion: number)
-    {
+    async createBeneficio(title: string, description: string) {
         const connection = await pool.promise().getConnection();
-
-        try 
-        {
+    
+        try {
             await connection.beginTransaction();
-
-            // Inserta el beneficio en storeBeneficios
-            const [beneficioResult]: any = await connection.query(`INSERT INTO storeBeneficios SET ?`, [storeBeneficio]);
-
+    
+            // Insertar la solución
+            const [solucionResult]: any = await connection.query(
+                `INSERT INTO storeSoluciones (title) VALUES (?)`, 
+                [title]
+            );
+            const idSolucion = solucionResult.insertId;
+    
+            // Insertar el beneficio
+            const [beneficioResult]: any = await connection.query(
+                `INSERT INTO storeBeneficios (description) VALUES (?)`, 
+                [description]
+            );
             const idBeneficio = beneficioResult.insertId;
-
-            // Inserta la relación en storeSolucionesBeneficios
-            await connection.query(`INSERT INTO storeSolucionesBeneficios (id_solucion, id_beneficio) VALUES (?, ?)`,[idSolucion, idBeneficio]);
-
+    
+            // Relacionar el beneficio con la solución
+            await connection.query(
+                `INSERT INTO storeSolucionesBeneficios (id_solucion, id_beneficio) VALUES (?, ?)`, 
+                [idSolucion, idBeneficio]
+            );
+    
             await connection.commit();
-            return idBeneficio;
-        }
-        catch (error)
-        {
+            return idSolucion;
+        } catch (error) {
             await connection.rollback();
-            console.error("Error al insertar beneficio:", error);
+            console.error("Error al insertar beneficio y solución:", error);
             throw error;
-        }
-        finally 
-        {
+        } finally {
             connection.release();
         }
     }
-
+    
 
     /** Obtiene los beneficios de una solución por su ID */
     async getByIdBeneficio(idSolucion: number)

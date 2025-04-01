@@ -11,7 +11,8 @@ router.get('/listBeneficios/:idSolucion', storeBeneficiosController.listBenefici
 /**
  * @description Insercion de beneficios por solución específica de su ID
  */
-router.post('/createBeneficio/:idSolucion', storeBeneficiosController.createBeneficio);
+router.post('/createBeneficio', storeBeneficiosController.createBeneficio);
+
 
 /**
  * @description Eliminacion de un beneficio específica por su ID

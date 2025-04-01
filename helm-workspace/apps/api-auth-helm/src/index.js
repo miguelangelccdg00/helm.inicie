@@ -63,7 +63,7 @@ app.get('/', (req, res) =>
                     base: 'storeBeneficios',
                     operations: [
                         {method: 'GET', path: '/listBeneficios/:id'},
-                        {method:'POST', path: '/createBeneficio/:id' },
+                        {method:'POST', path: '/createBeneficio' },
                         {method:'DELETE', path:'/deleteBeneficio/:idBeneficio'}
                     ]
                 }

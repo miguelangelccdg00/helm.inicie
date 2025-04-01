@@ -3,32 +3,30 @@ import storeBeneficiosService from '../services/StoreBeneficiosService';
 
 class StoreBeneficiosControllers 
 {
-    /** Creacion de beneficios de una solucion */
-    async createBeneficio(req: Request, res: Response): Promise<void>
-    {
-        try 
-        {
-            const { idSolucion } = req.params;  
-            const storeBeneficio = req.body;
-
-            if (!storeBeneficio || !Object.keys(storeBeneficio).length) 
-            {
-                res.status(400).json({ message: 'No se proporcionaron datos del beneficio' });
+    /** Creación de beneficios de una solución */
+    async createBeneficio(req: Request, res: Response): Promise<void> {
+        try {
+            const { title, description } = req.body;
+    
+            if (!title || !description) {
+                res.status(400).json({ message: 'Faltan datos: título o descripción' });
                 return;
             }
-
-            const beneficioId = await storeBeneficiosService.createBeneficio(storeBeneficio, Number(idSolucion));
-
-            res.status(201).json({ message: 'Beneficio creado con éxito', id_beneficio: beneficioId });
-        
-        }
-        catch (error) 
-        {
-            console.error('Error creando el beneficio:', error);
+    
+            // Aquí llamas a tu servicio para insertar los datos en la base
+            const solucionId = await storeBeneficiosService.createBeneficio(title, description);
+    
+            res.status(201).json({ 
+                message: 'Beneficio y solución creados con éxito', 
+                id_solucion: solucionId 
+            });
+        } catch (error) {
+            console.error('Error creando la solución y el beneficio:', error);
             res.status(500).json({ message: 'Error interno del servidor' });
         }
     }
-
+    
+    
 
 
     /** Listado de beneficios de una solución */
