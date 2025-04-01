@@ -9,7 +9,8 @@ class StoreBeneficiosControllers
     {
         try 
         {
-            const { description, title, idSolucion } = req.body;
+            const idSolucion = parseInt(req.params.idSolucion, 10);
+            const { description, title } = req.body;
     
             if (!description || !title || !idSolucion) 
             {

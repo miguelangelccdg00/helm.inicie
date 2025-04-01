@@ -3,27 +3,33 @@ import { StoreBeneficios } from '../models/storeBeneficios';
 
 class StoreBeneficiosServices 
 {
-    async createBeneficio({description, title, idSolucion}) 
+    async createBeneficio({ description, title, idSolucion }) 
     {
         const conn = await pool.promise().getConnection();
         try 
         {
             await conn.beginTransaction();
 
-            // Insertar el beneficio en storeBeneficios
+            // Verificar si la solución existe antes de relacionarla
+            const [solucionExiste]: any = await conn.query(
+                `SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?`, [idSolucion]);
+
+            if (solucionExiste.length === 0) 
+            {
+                throw new Error(`La solución con id ${idSolucion} no existe.`);
+            }
+
             const [beneficioResult]: any = await conn.query(
                 `INSERT INTO storeBeneficios (description, title) VALUES (?, ?)`,[description, title]);
 
             const idBeneficio = beneficioResult.insertId;
 
-            // Relacionar el beneficio con la solución en storeSolucionesBeneficios
             await conn.query(
-                `INSERT INTO storeSolucionesBeneficios (id_solucion, id_beneficio) VALUES (?, ?)`, [idSolucion, idBeneficio]);
+                `INSERT INTO storeSolucionesBeneficios (id_solucion, id_beneficio) VALUES (?, ?)`,[idSolucion, idBeneficio]);
 
-            // Confirmar la transacción
             await conn.commit();
 
-            return { idBeneficio };
+            return { idBeneficio, idSolucion };
         } 
         catch (error) 
         {
