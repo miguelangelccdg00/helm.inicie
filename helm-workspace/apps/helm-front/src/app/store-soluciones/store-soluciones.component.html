@@ -3,6 +3,8 @@
   
   <div class="contenido-principal">
     <h1>Store soluciones</h1>
+    
+    <input type="text" placeholder="Buscar solución por descripción..." class="buscador" [(ngModel)]="filtroDescripcion" (input)="filtrarSoluciones()">
 
     <table>
       <thead>
@@ -13,7 +15,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let solucion of storeSoluciones; trackBy: trackBySolucionId" (click)="irAModificarSolucion(solucion.id_solucion)">
+        <tr *ngFor="let solucion of solucionesFiltradas; trackBy: trackBySolucionId" (click)="irAModificarSolucion(solucion.id_solucion)">
           <td><i class="{{solucion.icon}}"></i></td>
           <td>{{solucion.description}}</td>
           <td><img src="assets/papelera.png" alt="papelera" width="25px" height="25px" (click)="eliminarSolucion(solucion.id_solucion, $event)"></td>
@@ -21,7 +23,7 @@
       </tbody>
     </table>
 
-    <div class="no-data-message" *ngIf="storeSoluciones.length === 0">
+    <div class="no-data-message" *ngIf="solucionesFiltradas.length === 0">
       No se encontraron soluciones disponibles.
     </div>
   </div>
