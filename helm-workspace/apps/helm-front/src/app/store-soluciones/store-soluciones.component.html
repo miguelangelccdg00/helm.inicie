@@ -11,14 +11,18 @@
         <tr>
           <th>Icono</th>
           <th>Descripción</th>
-          <th>Eliminar</th>
+          <th class="text-center">Eliminar</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let solucion of solucionesFiltradas; trackBy: trackBySolucionId" (click)="irAModificarSolucion(solucion.id_solucion)">
           <td><i class="{{solucion.icon}}"></i></td>
           <td>{{solucion.description}}</td>
-          <td><img src="assets/papelera.png" alt="papelera" width="25px" height="25px" (click)="eliminarSolucion(solucion.id_solucion, $event)"></td>
+          <td class="text-center">
+            <button class="delete-btn" (click)="eliminarSolucion(solucion.id_solucion, $event)" title="Eliminar solución">
+              <img src="assets/papelera.png" alt="papelera" width="25px" height="25px">
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
