@@ -36,12 +36,21 @@ export class ModificarSolucionComponent implements OnInit {
         next: (solucion) => {
           console.log('Solución obtenida: ', solucion);
           this.solucion = solucion;
-
+  
           if (!this.solucion.beneficios) {
             this.solucion.beneficios = [];
           }
-
-          this.beneficios = this.solucion.beneficios;
+  
+          this.storeSolucionesService.getBeneficiosBySolucion(this.solucion.id_solucion).subscribe({
+            next: (beneficios) => {
+              console.log('Beneficios obtenidos: ', beneficios);
+              this.beneficios = beneficios;
+              this.solucion!.beneficios = beneficios;
+            },
+            error: (error) => {
+              console.error('Error al obtener los beneficios: ', error);
+            }
+          });
         },
         error: (error) => {
           console.error('Error al obtener la solución: ', error);
@@ -49,6 +58,7 @@ export class ModificarSolucionComponent implements OnInit {
       });
     }
   }
+  
 
   guardarCambios() {
     if (this.solucion) {
@@ -89,8 +99,7 @@ export class ModificarSolucionComponent implements OnInit {
     if (this.nuevoBeneficioTitulo && this.nuevoBeneficioDescripcion && this.solucion) {
       const nuevoBeneficio: StoreBeneficios = {
         titulo: this.nuevoBeneficioTitulo,
-        descripcion: this.nuevoBeneficioDescripcion,
-        description: this.nuevoBeneficioDescripcion // Aseguramos que description también tenga el valor
+        description: this.nuevoBeneficioDescripcion
       };
 
       // Primero agregamos el beneficio a la base de datos

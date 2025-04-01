@@ -232,10 +232,10 @@
         <!-- Mostrar los beneficios existentes -->
         <div *ngIf="solucion?.beneficios && solucion.beneficios.length">
           <ul>
-            <li *ngFor="let beneficio of solucion.beneficios; let i = index">
-              <strong>{{ beneficio.titulo }}</strong>: {{ beneficio.descripcion }}
+            <p *ngFor="let beneficio of solucion.beneficios; let i = index">
+              <strong>{{ beneficio.titulo }}</strong>: {{ beneficio.description }}
               <button type="button" (click)="eliminarBeneficio(i)">Eliminar</button>
-            </li>
+            </p>
           </ul>
         </div>
       </div>

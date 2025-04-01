@@ -25,8 +25,6 @@ export interface StoreSoluciones
     firstCtaPragma: string | null;
     secondCtaTitle: string | null;
     secondCtaPragma: string | null;
-    beneficiosTitle: string | null;
-    beneficiosPragma: string | null;
     // Campos adicionales que podrían estar en la respuesta
     sector?: string;
     ambito?: string;
@@ -39,9 +37,8 @@ export interface StoreSoluciones
 
 export interface StoreBeneficios {
   id_beneficio?: number;
-  description?: string; // Campo real en la base de datos
-  titulo?: string;      // Campo para la interfaz de usuario
-  descripcion: string;  // Campo para la interfaz de usuario que se mapea a description
+  titulo?: string;
+  description: string;
 }
 
 // Nueva interfaz para las peticiones
@@ -69,34 +66,21 @@ export class StoreSolucionesService {
 
   constructor(private https: HttpClient) { }
 
-  /**
-   * Obtiene todas las soluciones almacenadas
-   */
   getStoreSoluciones(): Observable<StoreSoluciones[]> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<StoreSoluciones[]>(this.apiUrl, { headers });
   }
 
-  /**
-   * Obtiene una solución específica por su ID
-   * @param id ID de la solución a obtener
-   */
   getStoreSolucionById(id: number): Observable<StoreSoluciones> {
     const url = `http://localhost:3009/storeSolucion/listIdStoreSoluciones/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<StoreSoluciones>(url, { headers });
   }
 
-  /**
-   * Actualiza una solución existente
-   * @param id ID de la solución a actualizar
-   * @param solucion Datos de la solución a actualizar
-   */
   updateStoreSolucion(id: number, solucion: StoreSoluciones): Observable<any> {
     const url = `http://localhost:3009/storeSolucion/modifyStoreSoluciones/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     
-    // Crear un objeto con solo los campos que existen en la base de datos
     const solucionToUpdate = {
       id_solucion: solucion.id_solucion,
       description: solucion.description,
@@ -119,101 +103,60 @@ export class StoreSolucionesService {
       firstCtaPragma: solucion.firstCtaPragma,
       secondCtaTitle: solucion.secondCtaTitle,
       secondCtaPragma: solucion.secondCtaPragma,
-      beneficiosTitle: solucion.beneficiosTitle,
-      beneficiosPragma: solucion.beneficiosPragma
     };
     
     return this.https.put(url, solucionToUpdate, { headers });
   }
 
-  /**
-   * Elimina una solución por su ID
-   * @param id ID de la solución a eliminar
-   */
   deleteStoreSolucion(id: number): Observable<any> {
     const url = `http://localhost:3009/storeSolucion/deleteStoreSolucion/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete(url, { headers });
   }
 
-  /**
-   * Obtiene todos los beneficios de una solución
-   * @param idSolucion ID de la solución
-   */
   getBeneficiosBySolucion(idSolucion: number): Observable<StoreBeneficios[]> {
     const url = `${this.beneficiosUrl}/listBeneficios/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<StoreBeneficios[]>(url, { headers });
   }
 
-    /**
-   * Crea un nuevo beneficio para una solución
-   * @param idSolucion ID de la solución
-   * @param beneficio Datos del beneficio a crear
-   */
     createBeneficio(idSolucion: number, beneficio: StoreBeneficios): Observable<any> {
       const url = `${this.beneficiosUrl}/createBeneficio/${idSolucion}`;
       const headers = new HttpHeaders().set('Content-Type', 'application/json');
       
-      // Solo incluir el campo description que existe en la tabla storeBeneficios
       const beneficioToCreate = {
-        description: beneficio.descripcion
+        description: beneficio.description
       };
       
-      // El backend debe encargarse de crear la relación con id_solucion
       return this.https.post(url, beneficioToCreate, { headers });
     }
 
-  /**
-   * Elimina un beneficio por su ID
-   * @param idBeneficio ID del beneficio a eliminar
-   */
   deleteBeneficio(idBeneficio: number): Observable<any> {
     const url = `${this.beneficiosUrl}/deleteBeneficio/${idBeneficio}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete(url, { headers });
   }
 
-  /**
-   * Obtiene todas las peticiones
-   */
   getPeticiones(): Observable<Peticion[]> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<Peticion[]>(`${this.peticionesUrl}/listPeticiones`, { headers });
   }
 
-  /**
-   * Obtiene una petición específica por su ID
-   * @param id ID de la petición a obtener
-   */
   getPeticionById(id: number): Observable<Peticion> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<Peticion>(`${this.peticionesUrl}/listIdPeticion/${id}`, { headers });
   }
 
-  /**
-   * Crea una nueva petición
-   * @param peticion Datos de la petición a crear
-   */
   createPeticion(peticion: Peticion): Observable<any> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.post(`${this.peticionesUrl}/createPeticion`, peticion, { headers });
   }
 
-  /**
-   * Actualiza una petición existente
-   * @param id ID de la petición a actualizar
-   * @param peticion Datos de la petición a actualizar
-   */
   updatePeticion(id: number, peticion: Peticion): Observable<any> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.put(`${this.peticionesUrl}/modifyPeticion/${id}`, peticion, { headers });
   }
 
-  /**
-   * Elimina una petición por su ID
-   * @param id ID de la petición a eliminar
-   */
   deletePeticion(id: number): Observable<any> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete(`${this.peticionesUrl}/deletePeticion/${id}`, { headers });

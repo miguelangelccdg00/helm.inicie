@@ -34,7 +34,9 @@ export class StoreSolucionesComponent implements OnInit {
     this.router.navigate(['modificar-solucion', idSolucion]);
   }
 
-  eliminarSolucion(idSolucion: number) {
+  eliminarSolucion(idSolucion: number, event: MouseEvent) {
+    event.stopPropagation();
+  
     if (confirm(`¿Está seguro de que desea eliminar la solución con id ${idSolucion}?`)) {
       this.storeSolucionesService.deleteStoreSolucion(idSolucion).subscribe({
         next: () => {
@@ -47,7 +49,7 @@ export class StoreSolucionesComponent implements OnInit {
       });
     }
   }
-
+  
   trackBySolucionId(index: number, solucion: StoreSoluciones): number {
     return solucion.id_solucion;
   }
