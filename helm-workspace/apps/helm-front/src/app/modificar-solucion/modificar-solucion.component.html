@@ -233,8 +233,8 @@
         <div *ngIf="solucion?.beneficios && solucion.beneficios.length">
           <ul>
             <p *ngFor="let beneficio of solucion.beneficios; let i = index">
-              <strong>{{ beneficio.titulo }}</strong>: {{ beneficio.description }}
-              <button type="button" (click)="eliminarBeneficio(i)">Eliminar</button>
+              Descripción: {{ beneficio.description }}
+              <button class="botonDeleteBeneficio" type="button" (click)="eliminarBeneficio(i)">Eliminar beneficio</button>
             </p>
           </ul>
         </div>
