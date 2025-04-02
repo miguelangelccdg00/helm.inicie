@@ -27,6 +27,66 @@ h1
     text-align: center
     margin-bottom: $spacing-standard
 
+    // ... existing code ...
+
+.botonDeleteBeneficio
+    margin-left: 20px
+    padding: 6x
+
+// Estilos para el selector personalizado
+.custom-select
+    position: relative
+    width: 100%
+    
+    input
+        width: 100%
+        max-width: 300px
+        border-radius: 7px
+        border: 1px solid #ccced7
+        padding: 9px
+        
+        &:focus
+            border: 2px solid $azul-focus
+            outline: none
+    
+    .dropdown-menu
+        position: absolute
+        width: 100%
+        max-width: 300px
+        max-height: 200px
+        overflow-y: auto
+        background-color: $blanco
+        border: 1px solid $gris-borde
+        border-radius: 0 0 7px 7px
+        z-index: 1000
+        margin-top: -1px
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1)
+        
+        .dropdown-item
+            padding: 8px 12px
+            cursor: pointer
+            
+            &:hover
+                background-color: $azul-hover
+
+#buscadorBeneficio
+    width: 100%
+    max-width: 300px
+    border-radius: 7px
+    border: 1px solid #ccced7
+    padding: 9px
+
+#buscadorBeneficio:focus
+    border: 2px solid #a6cbf3
+    outline: none
+
+#selectorBeneficio
+    width: 100%
+    max-width: 300px
+    border-radius: 7px
+    border: 1px solid #ccced7
+    padding: 9px
+
 // Contenedor principal del formulario
 #formulario-modificar
     border-radius: 8px

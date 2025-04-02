@@ -89,7 +89,7 @@ class StoreBeneficiosControllers
     }
 
 
-     /** Eliminacion de beneficios de una solución */
+          /** Eliminacion de beneficios de una solución */
     async deleteBeneficio(req: Request, res: Response): Promise<void> 
     {
         try 
@@ -116,6 +116,34 @@ class StoreBeneficiosControllers
         {
             console.error('Error al eliminar el beneficio:', error);
             res.status(500).json({ message: 'Error interno en el servidor' });
+        }
+    }
+
+    /** Asociar un beneficio existente a una solución */
+    async asociarBeneficio(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
+            const { id_solucion, id_beneficio } = req.body;
+    
+            if (!id_solucion || !id_beneficio) 
+            {
+                res.status(400).json({ message: 'Faltan datos para la asociación (id_solucion o id_beneficio)' });
+                return;
+            }
+    
+            // Asociar el beneficio a la solución
+            const asociacion = await storeBeneficiosService.asociarBeneficio(id_solucion, id_beneficio);
+    
+            res.status(201).json({ 
+                message: 'Beneficio asociado a la solución con éxito',
+                asociacion
+            });
+        } 
+        catch (error)
+        {
+            console.error('Error asociando el beneficio:', error);
+            res.status(500).json({ message: 'Error interno del servidor' });
         }
     }
 }

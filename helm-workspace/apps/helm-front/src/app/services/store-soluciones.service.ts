@@ -166,6 +166,24 @@ export class StoreSolucionesService {
     return this.https.delete<DeleteBeneficioResponse>(url, { headers });
   }
 
+  // Método para asociar un beneficio a una solución
+  asociarBeneficioASolucion(idSolucion: number, idBeneficio: number): Observable<any> {
+    const url = `${this.beneficiosUrl}/asociarBeneficio`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    
+    const relacion = {
+      id_solucion: idSolucion,
+      id_beneficio: idBeneficio
+    };
+    
+    return this.https.post<any>(url, relacion, { headers });
+  }
+
+  /* getPeticiones(): Observable<Peticion[]> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.get<Peticion[]>(`${this.peticionesUrl}/listPeticiones`, { headers });
+  }
+
   /* getPeticiones(): Observable<Peticion[]> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<Peticion[]>(`${this.peticionesUrl}/listPeticiones`, { headers });
