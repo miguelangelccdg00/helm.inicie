@@ -142,6 +142,12 @@ export class StoreSolucionesService {
     return this.https.get<StoreBeneficios[]>(url, { headers });
   }
 
+  getAllBeneficios(): Observable<StoreBeneficios[]> {
+    const url = `${this.beneficiosUrl}/listCompleteBeneficios`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.get<StoreBeneficios[]>(url, { headers });
+  }
+
   createBeneficio(idSolucion: number, beneficio: StoreBeneficios): Observable<CreateBeneficioResponse> {
     const url = `${this.beneficiosUrl}/createBeneficio/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');

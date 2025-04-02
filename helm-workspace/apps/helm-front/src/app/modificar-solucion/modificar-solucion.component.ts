@@ -15,13 +15,12 @@ import { MenuComponent } from '../menu/menu.component';
 
 export class ModificarSolucionComponent implements OnInit {
 
+  buscadorBeneficio: string = '';
+  tipoSeleccionado: string = ''; 
   beneficios: StoreBeneficios[] = [];
-
+  allBeneficios: StoreBeneficios[] = [];
   solucion: StoreSoluciones | null = null;
-
-  mostrarFormularioBeneficio = false;
-  nuevoBeneficioTitulo = '';
-  nuevoBeneficioDescripcion = '';
+  beneficiosFiltrados: StoreBeneficios[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -30,13 +29,25 @@ export class ModificarSolucionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // Obtener los beneficios disponibles
+    this.storeSolucionesService.getAllBeneficios().subscribe({
+      next: (beneficios) => {
+        console.log('Beneficios disponibles: ', beneficios);
+        this.allBeneficios = beneficios;
+      },
+      error: (error) => {
+        console.error('Error al obtener los beneficios: ', error);
+      }
+    });
+
     const idSolucion = this.route.snapshot.paramMap.get('id');
     if (idSolucion) {
       this.storeSolucionesService.getStoreSolucionById(+idSolucion).subscribe({
         next: (solucion) => {
           console.log('Solución obtenida: ', solucion);
           this.solucion = solucion;
-
+          
+          // Asegurarse de que los beneficios existan
           if (!this.solucion.beneficios) {
             this.solucion.beneficios = [];
           }
@@ -82,47 +93,33 @@ export class ModificarSolucionComponent implements OnInit {
   }
 
   agregarBeneficio() {
-    if (this.nuevoBeneficioTitulo && this.nuevoBeneficioDescripcion && this.solucion) {
-      const nuevoBeneficio: StoreBeneficios = {
-        titulo: this.nuevoBeneficioTitulo,
-        description: this.nuevoBeneficioDescripcion
-      };
-
-      this.storeSolucionesService.createBeneficio(this.solucion.id_solucion, nuevoBeneficio).subscribe({
-        next: (response) => {
-          console.log('Beneficio creado correctamente:', response);
-
-          if (response && response.beneficio.id_beneficio) {
-            nuevoBeneficio.id_beneficio = response.beneficio.id_beneficio;
-          }
-
-          this.beneficios.push(nuevoBeneficio);
-          if (this.solucion) {
-            this.solucion.beneficios = this.beneficios;
-
-            this.solucion.titleBeneficio = nuevoBeneficio.titulo || null;
-            this.solucion.beneficiosPragma = nuevoBeneficio.description;
-
-            this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
-              next: () => {
-                console.log('Campos de beneficio actualizados en la solución');
-              },
-              error: (error) => {
-                console.error('Error al actualizar campos de beneficio en la solución:', error);
-              }
-            });
-          }
-
-          this.nuevoBeneficioTitulo = '';
-          this.nuevoBeneficioDescripcion = '';
-          this.mostrarFormularioBeneficio = false;
-        },
-        error: (error) => {
-          console.error('Error al crear el beneficio:', error);
+    if (this.tipoSeleccionado && this.solucion) {
+      const beneficioSeleccionado = this.allBeneficios.find(b => b.id_beneficio === +this.tipoSeleccionado);
+  
+      if (beneficioSeleccionado) {
+        this.beneficios.push(beneficioSeleccionado);
+        if (this.solucion) {
+          this.solucion.beneficios = this.beneficios;
+  
+          this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
+            next: () => {
+              console.log('Beneficio agregado correctamente a la solución');
+            },
+            error: (error) => {
+              console.error('Error al agregar beneficio:', error);
+            }
+          });
         }
-      });
+  
+        this.tipoSeleccionado = '';
+      } else {
+        console.error('Beneficio no encontrado');
+      }
+    } else {
+      console.error('Debe seleccionar un beneficio antes de agregarlo');
     }
   }
+  
 
   eliminarBeneficio(index: number) {
     const beneficio = this.beneficios[index];
@@ -141,5 +138,12 @@ export class ModificarSolucionComponent implements OnInit {
       this.beneficios.splice(index, 1);
     }
   }
-  
+
+  filtrarBeneficios() {
+    const filtro = this.buscadorBeneficio.toLowerCase().trim();
+    this.beneficiosFiltrados = this.allBeneficios.filter(beneficio =>
+      beneficio.description.toLowerCase().includes(filtro)
+    );
+  }
+
 }

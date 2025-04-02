@@ -16,7 +16,7 @@
             <label for="title">Título:</label>
             <input [(ngModel)]="solucion.title" name="title" id="title" placeholder="Ingrese el título" />
           </div>
-          
+
           <br>
 
           <div class="form-group col-6">
@@ -201,45 +201,39 @@
       <div class="seccion">
         <h2 class="titulo-seccion">Beneficios</h2>
 
-        <!-- Mostrar el formulario para agregar un beneficio -->
-        <div *ngIf="mostrarFormularioBeneficio">
-          <div class="grid-container">
-            <div class="form-group col-6">
-              <label for="nuevoBeneficioTitulo">Título del Beneficio:</label>
-              <input [(ngModel)]="nuevoBeneficioTitulo" name="nuevoBeneficioTitulo" id="nuevoBeneficioTitulo"
-                placeholder="Ingrese el título del beneficio" />
-            </div>
-
-            <br>
-
-            <div class="form-group col-6">
-              <label for="nuevoBeneficioDescripcion">Descripción del Beneficio:</label>
-              <textarea [(ngModel)]="nuevoBeneficioDescripcion" name="nuevoBeneficioDescripcion"
-                id="nuevoBeneficioDescripcion" placeholder="Descripción del beneficio"></textarea>
-            </div>
+        <div class="buscador-selector-container">
+          <div class="form-group col-6">
+            <label for="buscadorBeneficio">Buscar Beneficio:</label>
+            <input type="text" id="buscadorBeneficio" [(ngModel)]="buscadorBeneficio" (input)="filtrarBeneficios()" placeholder="Buscar beneficio..." />
           </div>
 
-          <div class="botones-container">
-            <button type="button" (click)="agregarBeneficio()">Agregar Beneficio</button>
-            <button type="button" (click)="mostrarFormularioBeneficio = false">Cancelar</button>
+          <div class="form-group col-6">
+            <label for="selectorBeneficio">Seleccionar Tipo:</label>
+            <select id="selectorBeneficio" [(ngModel)]="tipoSeleccionado">
+              <option value="">Seleccione un beneficio</option>
+              <option *ngFor="let beneficio of allBeneficios" [value]="beneficio.id_beneficio">
+                {{ beneficio.description }}
+              </option>
+            </select>
           </div>
         </div>
 
-        <!-- Botón para mostrar el formulario de beneficios -->
-        <button *ngIf="!mostrarFormularioBeneficio" type="button" (click)="mostrarFormularioBeneficio = true">Añadir
-          Beneficio</button>
+        <!-- Botón para añadir el beneficio seleccionado -->
+        <div class="botones-container">
+          <button type="button" (click)="agregarBeneficio()">Añadir Beneficio</button>
+        </div>
 
         <!-- Mostrar los beneficios existentes -->
         <div *ngIf="solucion?.beneficios && solucion.beneficios.length">
           <ul>
             <p *ngFor="let beneficio of solucion.beneficios; let i = index">
               Descripción: {{ beneficio.description }}
-              <button class="botonDeleteBeneficio" type="button" (click)="eliminarBeneficio(i)">Eliminar beneficio</button>
+              <button class="botonDeleteBeneficio" type="button" (click)="eliminarBeneficio(i)">Eliminar
+                beneficio</button>
             </p>
           </ul>
         </div>
       </div>
-
 
       <!-- Sección de clasificación -->
       <!-- <div class="seccion">
