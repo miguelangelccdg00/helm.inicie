@@ -40,12 +40,11 @@ export class ModificarSolucionComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Obtener los beneficios disponibles
     this.storeSolucionesService.getAllBeneficios().subscribe({
       next: (beneficios: StoreBeneficios[]) => {
         console.log('Beneficios disponibles: ', beneficios);
         this.allBeneficios = beneficios;
-        this.beneficiosFiltrados = beneficios; // Inicializar con todos los beneficios
+        this.beneficiosFiltrados = beneficios;
       },
       error: (error: any) => {
         console.error('Error al obtener los beneficios: ', error);
@@ -59,7 +58,6 @@ export class ModificarSolucionComponent implements OnInit {
           console.log('Solución obtenida: ', solucion);
           this.solucion = solucion;
           
-          // Asegurarse de que los beneficios existan
           if (!this.solucion.beneficios) {
             this.solucion.beneficios = [];
           }
@@ -84,12 +82,10 @@ export class ModificarSolucionComponent implements OnInit {
 
   guardarCambios() {
     if (this.solucion) {
-      // Primero actualizamos la solución
       this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
         next: () => {
           console.log('Solución actualizada correctamente');
           
-          // Ahora asociamos cada beneficio a la solución
           const observables: Observable<any>[] = [];
           
           this.beneficios.forEach(beneficio => {
@@ -104,7 +100,6 @@ export class ModificarSolucionComponent implements OnInit {
           });
           
           if (observables.length > 0) {
-            // Utilizamos forkJoin para esperar a que todas las peticiones se completen
             forkJoin(observables).subscribe({
               next: () => {
                 console.log('Todos los beneficios han sido asociados correctamente');
@@ -139,14 +134,12 @@ export class ModificarSolucionComponent implements OnInit {
 
   agregarBeneficio() {
     if (this.buscadorBeneficio && this.solucion) {
-      // Buscar el beneficio que coincide con el texto ingresado
       const beneficioSeleccionado = this.beneficioSeleccionado || 
         this.allBeneficios.find(
           b => b.description.toLowerCase() === this.buscadorBeneficio.toLowerCase()
         );
 
       if (beneficioSeleccionado) {
-        // Verificar si el beneficio ya está agregado
         const yaExiste = this.beneficios.some(
           b => b.id_beneficio === beneficioSeleccionado.id_beneficio
         );
@@ -155,7 +148,6 @@ export class ModificarSolucionComponent implements OnInit {
           this.beneficios.push(beneficioSeleccionado);
           this.solucion.beneficios = this.beneficios;
           
-          // Actualizar la solución en la base de datos
           this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
             next: () => {
               console.log('Beneficio agregado correctamente a la solución');
@@ -165,7 +157,6 @@ export class ModificarSolucionComponent implements OnInit {
             }
           });
           
-          // Limpiar el campo después de agregar
           this.buscadorBeneficio = '';
           this.beneficioSeleccionado = null;
         } else {
