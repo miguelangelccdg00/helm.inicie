@@ -126,9 +126,14 @@ class StoreBeneficiosControllers
         {
             const { id_solucion, id_beneficio } = req.body;
     
-            if (!id_solucion || !id_beneficio) 
+            if (!id_solucion) 
             {
-                res.status(400).json({ message: 'Faltan datos para la asociación (id_solucion o id_beneficio)' });
+                res.status(401).json({ message: 'Faltan datos para la asociación en el id_solucion' });
+                return;
+            }
+            if (!id_beneficio) 
+            {
+                res.status(402).json({ message: 'Faltan datos para la asociación en el id_beneficio' });
                 return;
             }
     

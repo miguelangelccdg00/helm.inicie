@@ -5,6 +5,7 @@ import registroRoutes from './routes/RegistroRoute';
 import loginRoutes from './routes/LoginRoute';
 import storeSolucionesRoute from './routes/StoreSolucionesRoute';
 import storeBeneficiosRoute from './routes/StoreBeneficiosRoute';
+import storeProblemasRoute from './routes/SotreProblemasRoute';
 import menuRoutes from './routes/MenuRoute';
 import path from 'path';
 
@@ -21,6 +22,7 @@ app.use('/login', loginRoutes);
 app.use('/registro', registroRoutes);
 app.use('/storeSolucion', storeSolucionesRoute);
 app.use('/storeBeneficios', storeBeneficiosRoute);
+app.use('/storeProblemas', storeProblemasRoute);
 app.use('/menu', menuRoutes);
 
 /** 
@@ -66,6 +68,15 @@ app.get('/', (req, res) =>
                         {method: 'GET', path: '/listBeneficios/:id'},
                         {method:'POST', path: '/createBeneficio/:idSolucion' },
                         {method:'DELETE', path:'/deleteBeneficio/:idBeneficio'}
+                    ]
+                }
+            },
+            {
+                storeProblemas:
+                {
+                    base: 'storeProblemas',
+                    operations: [
+                        {method:'POST', path: '/createProblema/:idSolucion' }
                     ]
                 }
             },
