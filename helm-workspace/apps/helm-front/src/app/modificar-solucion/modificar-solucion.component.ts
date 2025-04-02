@@ -92,8 +92,8 @@ export class ModificarSolucionComponent implements OnInit {
         next: (response) => {
           console.log('Beneficio creado correctamente:', response);
 
-          if (response && response.id_beneficio) {
-            nuevoBeneficio.id_beneficio = response.id_beneficio;
+          if (response && response.beneficio.id_beneficio) {
+            nuevoBeneficio.id_beneficio = response.beneficio.id_beneficio;
           }
 
           this.beneficios.push(nuevoBeneficio);

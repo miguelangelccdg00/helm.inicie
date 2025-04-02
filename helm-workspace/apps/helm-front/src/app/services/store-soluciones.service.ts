@@ -2,39 +2,38 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface StoreSoluciones 
-{
-    id_solucion: number;
-    description: string;
-    title: string | null;
-    subtitle: string | null;
-    icon: string;
-    slug: string;
-    titleweb: string | null;
-    multimediaUri: string | null;
-    multimediaTypeId: number | null;
-    problemaTitle: string | null;
-    problemaPragma: string | null;
-    solucionTitle: string | null;
-    solucionPragma: string | null;
-    caracteristicasTitle: string | null;
-    caracteristicasPragma: string | null;
-    casosdeusoTitle: string | null;
-    casosdeusoPragma: string | null;
-    firstCtaTitle: string | null;
-    firstCtaPragma: string | null;
-    secondCtaTitle: string | null;
-    secondCtaPragma: string | null;
-    titleBeneficio: string | null;
-    beneficiosPragma: string | null;
-    // Campos adicionales que podrían estar en la respuesta
-    sector?: string;
-    ambito?: string;
-    id_ambito?: number;
-    responseChat?: string;
-    data?: string;
-    deleted?: boolean;
-    beneficios: StoreBeneficios[];
+export interface StoreSoluciones {
+  id_solucion: number;
+  description: string;
+  title: string | null;
+  subtitle: string | null;
+  icon: string;
+  slug: string;
+  titleweb: string | null;
+  multimediaUri: string | null;
+  multimediaTypeId: number | null;
+  problemaTitle: string | null;
+  problemaPragma: string | null;
+  solucionTitle: string | null;
+  solucionPragma: string | null;
+  caracteristicasTitle: string | null;
+  caracteristicasPragma: string | null;
+  casosdeusoTitle: string | null;
+  casosdeusoPragma: string | null;
+  firstCtaTitle: string | null;
+  firstCtaPragma: string | null;
+  secondCtaTitle: string | null;
+  secondCtaPragma: string | null;
+  titleBeneficio: string | null;
+  beneficiosPragma: string | null;
+  // Campos adicionales que podrían estar en la respuesta
+  sector?: string;
+  ambito?: string;
+  id_ambito?: number;
+  responseChat?: string;
+  data?: string;
+  deleted?: boolean;
+  beneficios: StoreBeneficios[];
 }
 
 export interface StoreBeneficios {
@@ -43,8 +42,27 @@ export interface StoreBeneficios {
   description: string;
 }
 
+export interface UpdateStoreSolucionResponse {
+  success: boolean;
+  message?: string;
+  updatedSolucion?: StoreSoluciones;
+}
+
+export interface DeleteSolucionResponse {
+  message: string;
+}
+
+export interface CreateBeneficioResponse {
+  message: string;
+  beneficio: StoreBeneficios;
+}
+
+export interface DeleteBeneficioResponse {
+  message: string;
+}
+
 // Nueva interfaz para las peticiones
-export interface Peticion {
+/* export interface Peticion {
   id_sector: number;
   sector: string;
   id_solucion: number;
@@ -54,7 +72,7 @@ export interface Peticion {
   responsechat: string;
   data: string;
   deleted: boolean;
-}
+} */
 
 @Injectable({
   providedIn: 'root'
@@ -79,10 +97,10 @@ export class StoreSolucionesService {
     return this.https.get<StoreSoluciones>(url, { headers });
   }
 
-  updateStoreSolucion(id: number, solucion: StoreSoluciones): Observable<any> {
+  updateStoreSolucion(id: number, solucion: StoreSoluciones): Observable<UpdateStoreSolucionResponse> {
     const url = `http://localhost:3009/storeSolucion/modifyStoreSoluciones/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    
+
     const solucionToUpdate = {
       id_solucion: solucion.id_solucion,
       description: solucion.description,
@@ -108,14 +126,14 @@ export class StoreSolucionesService {
       titleBeneficio: solucion.titleBeneficio,
       beneficiosPragma: solucion.beneficiosPragma
     };
-    
-    return this.https.put(url, solucionToUpdate, { headers });
+
+    return this.https.put<UpdateStoreSolucionResponse>(url, solucionToUpdate, { headers });
   }
 
-  deleteStoreSolucion(id: number): Observable<any> {
+  deleteStoreSolucion(id: number): Observable<DeleteSolucionResponse> {
     const url = `http://localhost:3009/storeSolucion/deleteStoreSolucion/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.delete(url, { headers });
+    return this.https.delete<DeleteSolucionResponse>(url, { headers });
   }
 
   getBeneficiosBySolucion(idSolucion: number): Observable<StoreBeneficios[]> {
@@ -124,25 +142,25 @@ export class StoreSolucionesService {
     return this.https.get<StoreBeneficios[]>(url, { headers });
   }
 
-    createBeneficio(idSolucion: number, beneficio: StoreBeneficios): Observable<any> {
-      const url = `${this.beneficiosUrl}/createBeneficio/${idSolucion}`;
-      const headers = new HttpHeaders().set('Content-Type', 'application/json');
-      
-      const beneficioToCreate = {
-        titulo: beneficio.titulo,
-        description: beneficio.description
-      };
-      
-      return this.https.post(url, beneficioToCreate, { headers });
-    }
-
-  deleteBeneficio(idBeneficio: number): Observable<any> {
-    const url = `${this.beneficiosUrl}/deleteBeneficio/${idBeneficio}`;
+  createBeneficio(idSolucion: number, beneficio: StoreBeneficios): Observable<CreateBeneficioResponse> {
+    const url = `${this.beneficiosUrl}/createBeneficio/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.delete(url, { headers });
+
+    const beneficioToCreate = {
+      titulo: beneficio.titulo,
+      description: beneficio.description
+    };
+
+    return this.https.post<CreateBeneficioResponse>(url, beneficioToCreate, { headers });
   }
 
-  getPeticiones(): Observable<Peticion[]> {
+  deleteBeneficio(idBeneficio: number): Observable<DeleteBeneficioResponse> {
+    const url = `${this.beneficiosUrl}/deleteBeneficio/${idBeneficio}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.delete<DeleteBeneficioResponse>(url, { headers });
+  }
+
+  /* getPeticiones(): Observable<Peticion[]> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<Peticion[]>(`${this.peticionesUrl}/listPeticiones`, { headers });
   }
@@ -165,5 +183,5 @@ export class StoreSolucionesService {
   deletePeticion(id: number): Observable<any> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete(`${this.peticionesUrl}/deletePeticion/${id}`, { headers });
-  }
+  } */
 }
