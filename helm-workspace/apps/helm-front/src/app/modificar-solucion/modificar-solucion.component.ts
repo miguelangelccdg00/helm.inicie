@@ -82,9 +82,11 @@ export class ModificarSolucionComponent implements OnInit {
 
   guardarCambios() {
     if (this.solucion) {
+      
       this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
         next: () => {
           console.log('Solución actualizada correctamente');
+          
           
           const observables: Observable<any>[] = [];
           
@@ -100,6 +102,7 @@ export class ModificarSolucionComponent implements OnInit {
           });
           
           if (observables.length > 0) {
+            
             forkJoin(observables).subscribe({
               next: () => {
                 console.log('Todos los beneficios han sido asociados correctamente');

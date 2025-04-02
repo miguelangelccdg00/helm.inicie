@@ -189,6 +189,11 @@ export class StoreSolucionesService {
     return this.https.get<Peticion[]>(`${this.peticionesUrl}/listPeticiones`, { headers });
   }
 
+  /* getPeticiones(): Observable<Peticion[]> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.get<Peticion[]>(`${this.peticionesUrl}/listPeticiones`, { headers });
+  }
+
   getPeticionById(id: number): Observable<Peticion> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<Peticion>(`${this.peticionesUrl}/listIdPeticion/${id}`, { headers });
