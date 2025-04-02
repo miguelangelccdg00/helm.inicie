@@ -4,6 +4,10 @@ import storeBeneficiosController from "../controllers/StoreBeneficiosController"
 const router = Router();
 
 /**
+ * @description Listado de beneficios  */
+router.get('/listCompleteBeneficios', storeBeneficiosController.listCompleteBeneficios);
+
+/**
  * @description Obtencion de beneficios por solución específica de su ID
  */
 router.get('/listBeneficios/:idSolucion', storeBeneficiosController.listBeneficios);

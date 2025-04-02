@@ -10,7 +10,7 @@ class StoreBeneficiosServices
         {
             await conn.beginTransaction();
 
-            // Verificar si la solución existe antes de relacionarla
+            // Verifica si la solución existe antes de relacionarla
             const [solucionExiste]: any = await conn.query(
                 `SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?`, [idSolucion]);
 
@@ -41,6 +41,12 @@ class StoreBeneficiosServices
         {
             conn.release();
         }
+    }
+
+    async getBeneficio() 
+    {
+        const [rows] = await pool.promise().query(`SELECT * FROM storeBeneficios `);
+        return rows;
     }
 
     /** Obtiene los beneficios de una solución por su ID */

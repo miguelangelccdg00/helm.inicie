@@ -64,6 +64,31 @@ class StoreBeneficiosControllers
         }
     }
 
+    /** Listado de beneficios de una solución */
+    async listCompleteBeneficios(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
+
+            const listBeneficio = await storeBeneficiosService.getBeneficio();
+
+            if (!listBeneficio.length) 
+            {
+                res.status(404).json({ message: 'No existen beneficios' });
+                return;
+            }
+
+            res.status(200).json(listBeneficio);
+
+        } 
+        catch (error) 
+        {
+            console.error('Error obteniendo beneficios:', error);
+            res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    }
+
+
      /** Eliminacion de beneficios de una solución */
     async deleteBeneficio(req: Request, res: Response): Promise<void> 
     {

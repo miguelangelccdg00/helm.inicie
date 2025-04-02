@@ -22,4 +22,5 @@ export interface StoreSoluciones
     secondCtaTitle: string;
     secondCtaPragma: string;
     beneficiosPragma: string;
+    titleBeneficio: string;
 }

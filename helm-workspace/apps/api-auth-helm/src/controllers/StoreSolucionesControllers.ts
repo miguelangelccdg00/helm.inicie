@@ -87,7 +87,7 @@ class StoreSolucionesController
     {
         try 
         {
-            const { id } = req.params; // <-- ¿Está recibiendo correctamente el 'id'?
+            const { id } = req.params; 
 
             if (!id) 
             {
