@@ -59,17 +59,14 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
-
   guardarCambios() {
     if (this.solucion) {
-      // Asegurarse de que los beneficios estén actualizados en la solución
       this.solucion.beneficios = this.beneficios;
-
+  
       this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
         next: () => {
-          console.log('Solución actualizada correctamente');
-          // Guardar los beneficios asociados a esta solución
-          this.guardarBeneficios();
+          console.log('Solución actualizada correctamente con sus beneficios');
+          this.router.navigate(['/store-soluciones']);
         },
         error: (error) => {
           console.error('Error al actualizar la solución:', error);
@@ -77,25 +74,6 @@ export class ModificarSolucionComponent implements OnInit {
       });
     } else {
       console.error('La solución no está definida');
-    }
-  }
-
-  guardarBeneficios() {
-    if (this.solucion && this.beneficios.length > 0) {
-      console.log('Guardando beneficios:', this.beneficios);
-
-      // Asignar los beneficios directamente en la solución
-      this.solucion.beneficios = this.beneficios;
-
-      this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
-        next: () => {
-          console.log('Solución actualizada correctamente con sus beneficios');
-          this.router.navigate(['/store-soluciones']);
-        },
-        error: (error) => {
-          console.error('Error al actualizar la solución con sus beneficios:', error);
-        }
-      });
     }
   }
 
@@ -110,26 +88,21 @@ export class ModificarSolucionComponent implements OnInit {
         description: this.nuevoBeneficioDescripcion
       };
 
-      // Primero agregamos el beneficio a la base de datos
       this.storeSolucionesService.createBeneficio(this.solucion.id_solucion, nuevoBeneficio).subscribe({
         next: (response) => {
           console.log('Beneficio creado correctamente:', response);
 
-          // Si el backend devuelve el ID del beneficio creado, lo asignamos
           if (response && response.id_beneficio) {
             nuevoBeneficio.id_beneficio = response.id_beneficio;
           }
 
-          // Luego lo agregamos al array local
           this.beneficios.push(nuevoBeneficio);
           if (this.solucion) {
             this.solucion.beneficios = this.beneficios;
 
-            // Actualizar titleBeneficio y beneficiosPragma en la solución
             this.solucion.titleBeneficio = nuevoBeneficio.titulo || null;
             this.solucion.beneficiosPragma = nuevoBeneficio.description;
 
-            // Actualizar la solución en la base de datos
             this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
               next: () => {
                 console.log('Campos de beneficio actualizados en la solución');
@@ -152,28 +125,21 @@ export class ModificarSolucionComponent implements OnInit {
   }
 
   eliminarBeneficio(index: number) {
-    if (this.solucion && this.beneficios[index]) {
-      // Si el beneficio tiene ID, lo eliminamos de la base de datos
-      const beneficio = this.beneficios[index];
-      if (beneficio.id_beneficio) {
-        this.storeSolucionesService.deleteBeneficio(beneficio.id_beneficio).subscribe({
-          next: () => {
-            console.log('Beneficio eliminado correctamente de la base de datos');
-            // Eliminamos del array local después de confirmar la eliminación en la BD
-            this.beneficios.splice(index, 1);
-            if (this.solucion) {
-              this.solucion.beneficios = this.beneficios;
-            }
-          },
-          error: (error) => {
-            console.error('Error al eliminar el beneficio:', error);
-          }
-        });
-      } else {
-        // Si no tiene ID, solo lo eliminamos del array local
-        this.beneficios.splice(index, 1);
-        this.solucion.beneficios = this.beneficios;
-      }
+    const beneficio = this.beneficios[index];
+  
+    if (beneficio?.id_beneficio) {
+      this.storeSolucionesService.deleteBeneficio(beneficio.id_beneficio).subscribe({
+        next: () => {
+          console.log('Beneficio eliminado correctamente de la base de datos');
+          this.beneficios.splice(index, 1);
+        },
+        error: (error) => {
+          console.error('Error al eliminar el beneficio:', error);
+        }
+      });
+    } else {
+      this.beneficios.splice(index, 1);
     }
   }
+  
 }
