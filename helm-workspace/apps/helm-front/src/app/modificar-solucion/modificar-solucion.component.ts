@@ -31,11 +31,11 @@ export class ModificarSolucionComponent implements OnInit {
   ngOnInit() {
     // Obtener los beneficios disponibles
     this.storeSolucionesService.getAllBeneficios().subscribe({
-      next: (beneficios) => {
+      next: (beneficios: StoreBeneficios[]) => {
         console.log('Beneficios disponibles: ', beneficios);
         this.allBeneficios = beneficios;
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error al obtener los beneficios: ', error);
       }
     });
@@ -43,7 +43,7 @@ export class ModificarSolucionComponent implements OnInit {
     const idSolucion = this.route.snapshot.paramMap.get('id');
     if (idSolucion) {
       this.storeSolucionesService.getStoreSolucionById(+idSolucion).subscribe({
-        next: (solucion) => {
+        next: (solucion: StoreSoluciones) => {
           console.log('Solución obtenida: ', solucion);
           this.solucion = solucion;
           
@@ -53,17 +53,17 @@ export class ModificarSolucionComponent implements OnInit {
           }
 
           this.storeSolucionesService.getBeneficiosBySolucion(this.solucion.id_solucion).subscribe({
-            next: (beneficios) => {
+            next: (beneficios: StoreBeneficios[]) => {
               console.log('Beneficios obtenidos: ', beneficios);
               this.beneficios = beneficios;
               this.solucion!.beneficios = beneficios;
             },
-            error: (error) => {
+            error: (error: any) => {
               console.error('Error al obtener los beneficios: ', error);
             }
           });
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error al obtener la solución: ', error);
         }
       });
@@ -79,7 +79,7 @@ export class ModificarSolucionComponent implements OnInit {
           console.log('Solución actualizada correctamente con sus beneficios');
           this.router.navigate(['/store-soluciones']);
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error al actualizar la solución:', error);
         }
       });
@@ -105,7 +105,7 @@ export class ModificarSolucionComponent implements OnInit {
             next: () => {
               console.log('Beneficio agregado correctamente a la solución');
             },
-            error: (error) => {
+            error: (error: any) => {
               console.error('Error al agregar beneficio:', error);
             }
           });
@@ -120,7 +120,6 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
   
-
   eliminarBeneficio(index: number) {
     const beneficio = this.beneficios[index];
   
@@ -130,7 +129,7 @@ export class ModificarSolucionComponent implements OnInit {
           console.log('Beneficio eliminado correctamente de la base de datos');
           this.beneficios.splice(index, 1);
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error al eliminar el beneficio:', error);
         }
       });
@@ -145,5 +144,4 @@ export class ModificarSolucionComponent implements OnInit {
       beneficio.description.toLowerCase().includes(filtro)
     );
   }
-
 }
