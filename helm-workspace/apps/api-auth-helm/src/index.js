@@ -5,7 +5,7 @@ import registroRoutes from './routes/RegistroRoute';
 import loginRoutes from './routes/LoginRoute';
 import storeSolucionesRoute from './routes/StoreSolucionesRoute';
 import storeBeneficiosRoute from './routes/StoreBeneficiosRoute';
-import storeProblemasRoute from './routes/SotreProblemasRoute';
+import storeProblemasRoute from './routes/StoreProblemasRoute';
 import menuRoutes from './routes/MenuRoute';
 import path from 'path';
 
@@ -76,6 +76,8 @@ app.get('/', (req, res) =>
                 {
                     base: 'storeProblemas',
                     operations: [
+                        {method: 'GET', path: '/listCompleteProblemas'},
+                        {method: 'GET', path: '/listProblemas/:idSolucion'},
                         {method:'POST', path: '/createProblema/:idSolucion' }
                     ]
                 }
