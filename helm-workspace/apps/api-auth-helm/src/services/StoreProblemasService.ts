@@ -2,32 +2,43 @@ import { promises } from 'dns';
 import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
 import { StoreProblemas } from '../models/storeProblemas';
 
-class StoreProblemasService
-{         
-    async createProblema({ description, idSolucion}) 
+class StoreProblemasService 
+{
+    /**
+     * Crea un problema y lo asocia con una solución existente.
+     */
+    async createProblema({ description, idSolucion }) 
     {
         const conn = await pool.promise().getConnection();
 
         try 
-        {   
+        {
             await conn.beginTransaction();
             
             // Verifica si la solución existe antes de relacionarla
             const [solucionExiste]: any = await conn.query(
-                `SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?`, [idSolucion]);
+                `SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?`, 
+                [idSolucion]
+            );
 
             if (solucionExiste.length === 0) 
             {
                 throw new Error(`La solución con id ${idSolucion} no existe.`);
             }
 
+            // Inserta el problema en la base de datos
             const [problemaResult]: any = await conn.query(
-                `INSERT INTO storeProblemas (description) VALUES (?)`, [description]);
+                `INSERT INTO storeProblemas (description) VALUES (?)`, 
+                [description]
+            );
 
             const idProblema = problemaResult.insertId;
 
+            // Relaciona el problema con la solución
             await conn.query(
-                `INSERT INTO storeSolucionesProblemas (id_solucion, id_problema) VALUES (?, ?)`, [idSolucion, idProblema]);
+                `INSERT INTO storeSolucionesProblemas (id_solucion, id_problema) VALUES (?, ?)`, 
+                [idSolucion, idProblema]
+            );
 
             await conn.commit();
 
@@ -45,23 +56,33 @@ class StoreProblemasService
         }
     }
 
+    /**
+     * Obtiene la lista de todos los problemas registrados.
+     */
     async getProblemas() 
     {
-        const [rows] = await pool.promise().query(`SELECT * FROM storeProblemas `);
+        const [rows] = await pool.promise().query(`SELECT * FROM storeProblemas`);
         return rows;
     }
 
-    async getByIdProblemas(idSolucion: Number)
+    /**
+     * Obtiene los problemas asociados a una solución específica.
+     */
+    async getByIdProblemas(idSolucion: Number) 
     {
         const [rows] = await pool.promise().query(
             `SELECT p.* 
-            FROM storeProblemas p
-            JOIN storeSolucionesProblemas sp ON p.id_problema = sp.id_problema
-            WHERE sp.id_solucion = ?`, [idSolucion]
+             FROM storeProblemas p
+             JOIN storeSolucionesProblemas sp ON p.id_problema = sp.id_problema
+             WHERE sp.id_solucion = ?`, 
+            [idSolucion]
         );
         return rows;
     }
 
+    /**
+     * Asocia un problema existente con una solución existente.
+     */
     async asociarProblema(idSolucion: number, idProblema: number) 
     {
         const conn = await pool.promise().getConnection();
@@ -71,7 +92,9 @@ class StoreProblemasService
 
             // Verifica si la solución existe
             const [solucionExiste]: any = await conn.query(
-                `SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?`, [idSolucion]);
+                `SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?`, 
+                [idSolucion]
+            );
 
             if (solucionExiste.length === 0) 
             {
@@ -80,7 +103,9 @@ class StoreProblemasService
 
             // Verifica si el problema existe
             const [problemaExiste]: any = await conn.query(
-                `SELECT id_problema FROM storeProblemas WHERE id_problema = ?`, [idProblema]);
+                `SELECT id_problema FROM storeProblemas WHERE id_problema = ?`, 
+                [idProblema]
+            );
 
             if (problemaExiste.length === 0) 
             {
@@ -90,11 +115,11 @@ class StoreProblemasService
             // Verifica si la relación ya existe
             const [relacionExiste]: any = await conn.query(
                 `SELECT * FROM storeSolucionesProblemas WHERE id_solucion = ? AND id_problema = ?`, 
-                [idSolucion, idProblema]);
+                [idSolucion, idProblema]
+            );
 
             if (relacionExiste.length > 0) 
             {
-                // La relación ya existe, no es necesario crearla de nuevo
                 await conn.commit();
                 return { idSolucion, idProblema, message: 'La relación ya existía' };
             }
@@ -102,7 +127,8 @@ class StoreProblemasService
             // Crea la relación entre la solución y el problema
             await conn.query(
                 `INSERT INTO storeSolucionesProblemas (id_solucion, id_problema) VALUES (?, ?)`, 
-                [idSolucion, idProblema]);
+                [idSolucion, idProblema]
+            );
 
             await conn.commit();
 
@@ -118,9 +144,12 @@ class StoreProblemasService
         {
             conn.release();
         }
-    } 
+    }
 
-    async deleteProblema(idProblema: number): Promise <boolean>
+    /**
+     * Elimina un problema y su relación con cualquier solución.
+     */
+    async deleteProblema(idProblema: number): Promise<boolean> 
     {
         const conn = await pool.promise().getConnection();
 
@@ -128,27 +157,24 @@ class StoreProblemasService
         {
             await conn.beginTransaction();
             
-            const [result]: any = await conn.query('DELETE FROM storeSolucionesProblemas WHERE id_problema = ?',[idProblema]);
-            
+            await conn.query('DELETE FROM storeSolucionesProblemas WHERE id_problema = ?', [idProblema]);
             const [resultProblema]: any = await conn.query('DELETE FROM storeProblemas WHERE id_problema = ?', [idProblema]);
             
             await conn.commit();
 
-            return result.affectedRows > 0 && resultProblema.affectedRows > 0;
+            return resultProblema.affectedRows > 0;
         } 
         catch (error) 
         {
             await conn.rollback();
-            console.error('Error al eliminar la asociación del problema:', error);
+            console.error('Error al eliminar el problema:', error);
             throw error;
         }
-        finally
+        finally 
         {
             conn.release();
         }
-        
-    }  
-
+    }
 }
 
 export default new StoreProblemasService();

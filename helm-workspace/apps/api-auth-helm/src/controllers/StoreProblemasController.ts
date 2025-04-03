@@ -6,22 +6,27 @@ class StoreProblemasController
 {
     constructor() {}
 
-    async createProblema(req: Request, res: Response): Promise <void>
+    /**
+     * Crea un nuevo problema y lo asocia a una solución.
+     */
+    async createProblema(req: Request, res: Response): Promise<void>
     {
         try 
         {
             const idSolucion = parseInt(req.params.idSolucion, 10);
             const { description } = req.body;
             
+            // Verifica que los datos requeridos estén presentes.
             if (!description || !idSolucion) 
             {
-                res.status(401).json({ message: 'Faltan datos del problema' })   
+                res.status(401).json({ message: 'Faltan datos del problema' });
                 return;
             }
 
-            const problema = await storeProblemasService.createProblema({ description, idSolucion});
-            res.status(201).json({ message: 'Problema creado y relacionado con la solución con éxito',problema });
+            // Llama al servicio para crear el problema y asociarlo a la solución.
+            const problema = await storeProblemasService.createProblema({ description, idSolucion });
 
+            res.status(201).json({ message: 'Problema creado y relacionado con la solución con éxito', problema });
         } 
         catch (error)
         {
@@ -30,11 +35,13 @@ class StoreProblemasController
         }
     }
 
-    async listProblema(req: Request, res: Response): Promise <void>
+    /**
+     * Lista todos los problemas disponibles en la base de datos.
+     */
+    async listProblema(req: Request, res: Response): Promise<void>
     {
         try 
         {
-               
             const listProblema = await storeProblemasService.getProblemas();
 
             if (!listProblema.length) 
@@ -44,20 +51,21 @@ class StoreProblemasController
             }
 
             res.status(202).json(listProblema);
-
         } 
         catch (error)
         {
-            console.error('Error creando el problema:', error);
+            console.error('Error listando los problemas:', error);
             res.status(500).json({ message: 'Error interno del servidor' });
         }
     }
 
-    async listIdProblema(req: Request, res: Response): Promise <void>
+    /**
+     * Obtiene los problemas asociados a una solución específica.
+     */
+    async listIdProblema(req: Request, res: Response): Promise<void>
     {
         try 
         {
-            
             const { idSolucion } = req.params;
 
             if (!idSolucion) 
@@ -78,11 +86,14 @@ class StoreProblemasController
         } 
         catch (error)
         {
-            console.error('Error creando el problema:', error);
+            console.error('Error obteniendo los problemas:', error);
             res.status(500).json({ message: 'Error interno del servidor' });
         }
     }
 
+    /**
+     * Asocia un problema existente a una solución en la base de datos.
+     */
     async asociarProblema(req: Request, res: Response) 
     {
         try 
@@ -100,7 +111,7 @@ class StoreProblemasController
                 return;
             }
     
-            // Asociar el beneficio a la solución
+            // Llama al servicio para asociar el problema con la solución.
             const asociacion = await storeProblemasService.asociarProblema(id_solucion, id_problema);
     
             res.status(201).json({ 
@@ -115,6 +126,9 @@ class StoreProblemasController
         }
     }
 
+    /**
+     * Elimina un problema de la base de datos.
+     */
     async deleteProblema(req: Request, res: Response): Promise<void> 
     {
         try 
@@ -143,7 +157,6 @@ class StoreProblemasController
             res.status(500).json({ message: 'Error interno en el servidor' });
         }
     }
-
 }
 
 export default new StoreProblemasController();
