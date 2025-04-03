@@ -1,8 +1,9 @@
+import { promises } from 'dns';
 import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
 import { StoreProblemas } from '../models/storeProblemas';
 
 class StoreProblemasService
-{       
+{         
     async createProblema({ description, idSolucion}) 
     {
         const conn = await pool.promise().getConnection();
@@ -118,6 +119,35 @@ class StoreProblemasService
             conn.release();
         }
     } 
+
+    async deleteProblema(idProblema: number): Promise <boolean>
+    {
+        const conn = await pool.promise().getConnection();
+
+        try 
+        {
+            await conn.beginTransaction();
+            
+            const [result]: any = await conn.query('DELETE FROM storeSolucionesProblemas WHERE id_problema = ?',[idProblema]);
+            
+            const [resultProblema]: any = await conn.query('DELETE FROM storeProblemas WHERE id_problema = ?', [idProblema]);
+            
+            await conn.commit();
+
+            return result.affectedRows > 0 && resultProblema.affectedRows > 0;
+        } 
+        catch (error) 
+        {
+            await conn.rollback();
+            console.error('Error al eliminar la asociación del problema:', error);
+            throw error;
+        }
+        finally
+        {
+            conn.release();
+        }
+        
+    }  
 
 }
 

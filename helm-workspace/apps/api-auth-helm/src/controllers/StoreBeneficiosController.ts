@@ -89,7 +89,7 @@ class StoreBeneficiosControllers
     }
 
 
-          /** Eliminacion de beneficios de una solución */
+    /** Eliminacion de beneficios de una solución */
     async deleteBeneficio(req: Request, res: Response): Promise<void> 
     {
         try 

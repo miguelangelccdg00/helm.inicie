@@ -22,4 +22,9 @@ router.post('/createProblema/:idSolucion', storeProblemasController.createProble
  */
 router.post('/asociarProblema', storeProblemasController.asociarProblema);
 
+/**
+ * @description Eliminacion de un problema específica por su ID
+ */
+router.delete('/deleteProblema/:idProblema', storeProblemasController.deleteProblema);
+
 export default router;

@@ -78,7 +78,8 @@ app.get('/', (req, res) =>
                     operations: [
                         {method: 'GET', path: '/listCompleteProblemas'},
                         {method: 'GET', path: '/listProblemas/:idSolucion'},
-                        {method:'POST', path: '/createProblema/:idSolucion' }
+                        {method:'POST', path: '/createProblema/:idSolucion' },
+                        {method:'DELETE', path:'/deleteProblema/:idProblema'}
                     ]
                 }
             },

@@ -115,6 +115,35 @@ class StoreProblemasController
         }
     }
 
+    async deleteProblema(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
+            const { idProblema } = req.params;
+
+            if (!idProblema) 
+            {
+                res.status(400).json({ message: 'ID no proporcionado' });
+                return;
+            }
+
+            const wasDeleted = await storeProblemasService.deleteProblema(Number(idProblema));
+
+            if (!wasDeleted) 
+            {
+                res.status(404).json({ message: 'Problema no encontrado o ya eliminado' });
+                return;
+            }
+
+            res.status(200).json({ message: 'Problema eliminado correctamente' });
+        } 
+        catch (error) 
+        {
+            console.error('Error al eliminar el problema:', error);
+            res.status(500).json({ message: 'Error interno en el servidor' });
+        }
+    }
+
 }
 
 export default new StoreProblemasController();
