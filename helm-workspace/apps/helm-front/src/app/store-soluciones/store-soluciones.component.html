@@ -19,7 +19,7 @@
           <td><i class="{{solucion.icon}}"></i></td>
           <td>{{solucion.description}}</td>
           <td class="text-center">
-            <button class="delete-btn" (click)="eliminarSolucion(solucion.id_solucion, $event)" title="Eliminar solución">
+            <button class="delete-btn" (click)="confirmarEliminarSolucion(solucion.id_solucion, $event)" title="Eliminar solución">
               <img src="assets/papelera.png" alt="papelera" width="25px" height="25px">
             </button>
           </td>
@@ -29,6 +29,23 @@
 
     <div class="no-data-message" *ngIf="solucionesFiltradas.length === 0">
       No se encontraron soluciones disponibles.
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para eliminar solución -->
+<div class="modal-overlay" *ngIf="mostrarModal">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2>Confirmar eliminación</h2>
+    </div>
+    <div class="modal-body">
+      <p>¿Está seguro de que desea eliminar la solución con id {{solucionAEliminar}}?</p>
+      <p class="warning-text">Esta acción no se puede deshacer.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cancelarEliminarSolucion()">Cancelar</button>
+      <button class="btn-eliminar" (click)="eliminarSolucion()">Eliminar</button>
     </div>
   </div>
 </div>

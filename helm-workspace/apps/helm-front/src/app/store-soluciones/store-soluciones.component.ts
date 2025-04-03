@@ -18,7 +18,10 @@ export class StoreSolucionesComponent implements OnInit {
   storeSoluciones: StoreSoluciones[] = [];
   solucionesFiltradas: StoreSoluciones[] = [];
   filtroDescripcion: string = '';
-
+  
+  // Variables para el modal
+  mostrarModal: boolean = false;
+  solucionAEliminar: number | null = null;
 
   constructor(private storeSolucionesService: StoreSolucionesService, private router: Router) {}
 
@@ -39,18 +42,34 @@ export class StoreSolucionesComponent implements OnInit {
     this.router.navigate(['modificar-solucion', idSolucion]);
   }
 
-  eliminarSolucion(idSolucion: number, event: MouseEvent) {
+  // Método para abrir el modal de confirmación
+  confirmarEliminarSolucion(idSolucion: number, event: MouseEvent) {
     event.stopPropagation();
-  
-    if (confirm(`¿Está seguro de que desea eliminar la solución con id ${idSolucion}?`)) {
-      this.storeSolucionesService.deleteStoreSolucion(idSolucion).subscribe({
+    this.solucionAEliminar = idSolucion;
+    this.mostrarModal = true;
+  }
+
+  // Método para cancelar la eliminación
+  cancelarEliminarSolucion() {
+    this.mostrarModal = false;
+    this.solucionAEliminar = null;
+  }
+
+  // Método para confirmar y ejecutar la eliminación
+  eliminarSolucion() {
+    if (this.solucionAEliminar) {
+      this.storeSolucionesService.deleteStoreSolucion(this.solucionAEliminar).subscribe({
         next: () => {
-          this.storeSoluciones = this.storeSoluciones.filter(solucion => solucion.id_solucion !== idSolucion);
+          this.storeSoluciones = this.storeSoluciones.filter(solucion => solucion.id_solucion !== this.solucionAEliminar);
           this.filtrarSoluciones();
-          console.log(`Solución con id ${idSolucion} eliminada correctamente`);
+          console.log(`Solución con id ${this.solucionAEliminar} eliminada correctamente`);
+          this.mostrarModal = false;
+          this.solucionAEliminar = null;
         },
         error: (error) => {
           console.error('Error al eliminar solución: ', error);
+          this.mostrarModal = false;
+          this.solucionAEliminar = null;
         }
       });
     }
@@ -66,5 +85,4 @@ export class StoreSolucionesComponent implements OnInit {
       solucion.description.toLowerCase().includes(filtro)
     );
   }
-
 }
