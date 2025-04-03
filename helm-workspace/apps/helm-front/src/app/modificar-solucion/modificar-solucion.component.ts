@@ -27,6 +27,7 @@ export class ModificarSolucionComponent implements OnInit {
   mostrarCrearProblema: boolean = false;
   mostrarOpcionesProblema: boolean = false;
   mostrarBotonCrearProblema: boolean = true;
+  problemaAEliminar: number | null = null;
 
   nuevoBeneficio: StoreBeneficios = { titulo: '', description: '' };
   buscadorBeneficio: string = '';
@@ -37,6 +38,10 @@ export class ModificarSolucionComponent implements OnInit {
   mostrarOpciones: boolean = false;
   mostrarCrearBeneficio: boolean = false;
   mostrarBotonCrear: boolean = true;
+  beneficioAEliminar: number | null = null;
+
+  mostrarModalProblema: boolean = false;
+  mostrarModalBeneficio: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -114,19 +119,15 @@ export class ModificarSolucionComponent implements OnInit {
 
   guardarCambios() {
     if (this.solucion) {
-      // Asegurarnos de que problemaPragma está correctamente establecido antes de guardar
       if (this.problemas.length > 0 && this.problemas[0].description) {
         this.solucion.problemaPragma = this.problemas[0].description;
       }
-      
+
       this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
         next: () => {
           console.log('Solución actualizada correctamente');
 
           const observables: Observable<any>[] = [];
-
-          // El resto del método permanece sin cambios
-          // ...
 
           this.beneficios.forEach(beneficio => {
             if (beneficio.id_beneficio) {
@@ -240,20 +241,16 @@ export class ModificarSolucionComponent implements OnInit {
         );
 
         if (!yaExiste) {
-          // Primero actualizar el título y descripción del problema en la solución
           if (problemaSeleccionado.titulo) {
             this.solucion.problemaTitle = problemaSeleccionado.titulo;
           }
-          
-          // Actualizar la descripción del problema - Aseguramos que se establece correctamente
+
           this.solucion.problemaPragma = problemaSeleccionado.description;
           console.log('Estableciendo problemaPragma:', problemaSeleccionado.description);
-          
-          // Luego añadir el problema a la lista
+
           this.problemas.push(problemaSeleccionado);
           this.solucion.problemas = this.problemas;
 
-          // Primero actualizamos la solución con los campos de título y descripción
           this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
             next: () => {
               console.log('Problema agregado correctamente a la solución');
@@ -261,8 +258,7 @@ export class ModificarSolucionComponent implements OnInit {
                 problemaTitle: this.solucion?.problemaTitle,
                 problemaPragma: this.solucion?.problemaPragma
               });
-              
-              // Asociar el problema
+
               if (problemaSeleccionado.id_problema) {
                 this.storeSolucionesService.asociarProblemaASolucion(
                   this.solucion!.id_solucion,
@@ -270,8 +266,7 @@ export class ModificarSolucionComponent implements OnInit {
                 ).subscribe({
                   next: () => {
                     console.log('Problema asociado correctamente');
-                    
-                    // Verificar que los cambios se mantuvieron después de la asociación
+
                     this.storeSolucionesService.getStoreSolucionById(this.solucion!.id_solucion).subscribe({
                       next: (solucionActualizada) => {
                         console.log('Solución después de asociar problema:', solucionActualizada);
@@ -302,41 +297,51 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
-  eliminarBeneficio(index: number) {
-    const beneficio = this.beneficios[index];
-
-    if (beneficio?.id_beneficio) {
-      this.storeSolucionesService.deleteBeneficio(beneficio.id_beneficio).subscribe({
+  eliminarBeneficio() {
+    if (this.beneficioAEliminar !== null) {
+      this.storeSolucionesService.deleteBeneficio(this.beneficioAEliminar).subscribe({
         next: () => {
           console.log('Beneficio eliminado correctamente de la base de datos');
-          this.beneficios.splice(index, 1);
+  
+          if (this.solucion && this.solucion.beneficios) {
+            this.solucion.beneficios = this.solucion.beneficios.filter(
+              beneficio => beneficio.id_beneficio !== this.beneficioAEliminar
+            );
+          }
+  
+          this.beneficioAEliminar = null;
+          this.mostrarModalBeneficio = false;
         },
         error: (error) => {
           console.error('Error al eliminar el beneficio:', error);
+          this.mostrarModalBeneficio = false;
         }
       });
-    } else {
-      this.beneficios.splice(index, 1);
     }
   }
+  
 
-  eliminarProblema(index: number) {
-    const problema = this.problemas[index];
-
-    if (problema?.id_problema) {
-      this.storeSolucionesService.deleteProblema(problema.id_problema).subscribe({
+  eliminarProblema() {
+    if (this.problemaAEliminar !== null) {
+      this.storeSolucionesService.deleteProblema(this.problemaAEliminar).subscribe({
         next: () => {
           console.log('Problema eliminado correctamente de la base de datos');
-          this.problemas.splice(index, 1);
+
+          if (this.solucion && this.solucion.problemas) {
+            this.solucion.problemas = this.solucion.problemas.filter(problema => problema.id_problema !== this.problemaAEliminar);
+          }
+
+          this.problemaAEliminar = null;
+          this.mostrarModalProblema = false;
         },
         error: (error) => {
           console.error('Error al eliminar el problema:', error);
+          this.mostrarModalProblema = false;
         }
       });
-    } else {
-      this.problemas.splice(index, 1);
     }
   }
+
 
   filtrarBeneficios() {
     const filtro = this.buscadorBeneficio.toLowerCase().trim();
@@ -401,11 +406,9 @@ export class ModificarSolucionComponent implements OnInit {
           description: this.nuevoProblema.description
         };
 
-        // Solo añadimos el problema a la lista de problemas disponibles
         this.allProblemas.push(problemaCreado);
         this.filtrarProblemas();
 
-        // Limpiamos el formulario
         this.nuevoProblema = { titulo: '', description: '' };
       },
       error: (error) => {
@@ -413,4 +416,27 @@ export class ModificarSolucionComponent implements OnInit {
       }
     });
   }
+
+  confirmarEliminarProblema(idProblema: number, event: MouseEvent) {
+    event.stopPropagation();
+    this.problemaAEliminar = idProblema;
+    this.mostrarModalProblema = true;
+  }
+
+  cancelarEliminarProblema() {
+    this.mostrarModalProblema = false;
+    this.problemaAEliminar = null;
+  }
+
+  confirmarEliminarBeneficio(idBeneficio: number, event: MouseEvent) {
+    event.stopPropagation();
+    this.beneficioAEliminar = idBeneficio;
+    this.mostrarModalBeneficio = true;
+  }
+
+  cancelarEliminarBeneficio() {
+    this.mostrarModalBeneficio = false;
+    this.problemaAEliminar = null;
+  }
+
 }

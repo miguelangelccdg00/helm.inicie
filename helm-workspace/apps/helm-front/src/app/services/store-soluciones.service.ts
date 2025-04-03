@@ -35,7 +35,7 @@ export interface StoreSoluciones {
   data?: string;
   deleted?: boolean;
   beneficios: StoreBeneficios[];
-  problemas: StoreBeneficios[];
+  problemas: StoreProblemas[];
 }
 
 export interface StoreBeneficios {

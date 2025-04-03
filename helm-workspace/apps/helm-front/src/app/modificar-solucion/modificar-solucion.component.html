@@ -74,7 +74,7 @@
 
         <div class="subseccion">
           <h3 class="titulo-subseccion">Crear problemas</h3>
-          
+
           <!-- Botón para mostrar el formulario de creación -->
           <button *ngIf="mostrarBotonCrearProblema" type="button"
             (click)="mostrarCrearProblema = true; mostrarBotonCrearProblema = false">Crear Nuevo Problema</button>
@@ -98,7 +98,8 @@
             </div>
             <div class="botones-container">
               <button type="submit">Crear Problema</button>
-              <button type="button" (click)="mostrarCrearProblema = false; mostrarBotonCrearProblema = true">Cancelar</button>
+              <button type="button"
+                (click)="mostrarCrearProblema = false; mostrarBotonCrearProblema = true">Cancelar</button>
             </div>
           </form>
         </div>
@@ -130,11 +131,12 @@
         </div>
 
         <div class="subseccion">
-          <h3 class="titulo-subseccion">Problemas asociados a la solución con ID {{ solucion.id_solucion }} | (Click al problema que quiere eliminar)</h3>
+          <h3 class="titulo-subseccion">Problemas asociados a la solución con ID {{ solucion.id_solucion }} | (Click al
+            problema que quiere eliminar)</h3>
           <div *ngIf="solucion?.problemas && solucion.problemas.length">
             <ul>
               <p *ngFor="let problema of solucion.problemas; let i = index" id="descripciones"
-                (click)="eliminarProblema(i)">
+                (click)="problema.id_problema !== undefined ? confirmarEliminarProblema(problema.id_problema, $event) : null">
                 Título: {{ problema.titulo }} | Descripción: {{ problema.description }}
               </p>
             </ul>
@@ -287,7 +289,7 @@
           <div *ngIf="solucion?.beneficios && solucion.beneficios.length">
             <ul>
               <p *ngFor="let beneficio of solucion.beneficios; let i = index" id="descripciones"
-                (click)="eliminarBeneficio(i)">
+                (click)="beneficio.id_beneficio !== undefined ? confirmarEliminarBeneficio(beneficio.id_beneficio, $event) : null">
                 Descripción: {{ beneficio.description }}
               </p>
             </ul>
@@ -303,5 +305,39 @@
         <button type="button" class="btn-secondary" (click)="cancelar()">Cancelar</button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- Modal de confirmación para eliminar problema -->
+<div class="modal-overlay" *ngIf="mostrarModalProblema">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2>Confirmar eliminación</h2>
+    </div>
+    <div class="modal-body">
+      <p>¿Está seguro de que desea eliminar este problema?</p>
+      <p class="warning-text">Esta acción no se puede deshacer.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cancelarEliminarProblema()">Cancelar</button>
+      <button class="btn-eliminar" (click)="eliminarProblema()">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para eliminar beneficio -->
+<div class="modal-overlay" *ngIf="mostrarModalBeneficio">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2>Confirmar eliminación</h2>
+    </div>
+    <div class="modal-body">
+      <p>¿Está seguro de que desea eliminar este beneficio?</p>
+      <p class="warning-text">Esta acción no se puede deshacer.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cancelarEliminarBeneficio()">Cancelar</button>
+      <button class="btn-eliminar" (click)="eliminarBeneficio()">Eliminar</button>
+    </div>
   </div>
 </div>
