@@ -198,43 +198,66 @@
       </div>
 
       <!-- Sección de beneficios -->
-<div class="seccion">
-  <h2 class="titulo-seccion">Beneficios</h2>
+      <div class="seccion">
+        <h2 class="titulo-seccion">Beneficios</h2>
 
-  <div class="buscador-selector-container">
-    <div class="form-group col-12">
-      <label for="buscadorBeneficio">Seleccionar Beneficio:</label>
-      <div class="custom-select">
-        <input type="text" id="buscadorBeneficio" [(ngModel)]="buscadorBeneficio" name="buscadorBeneficio" 
-              (input)="filtrarBeneficios()" (focus)="mostrarOpciones = true" (click)="mostrarOpciones = true"
-              placeholder="Buscar y seleccionar beneficio..." />
-        <div class="dropdown-menu" *ngIf="mostrarOpciones">
-          <div *ngFor="let beneficio of beneficiosFiltrados" 
-               class="dropdown-item" 
-               (click)="seleccionarBeneficio(beneficio)">
-            {{ beneficio.description }}
+        <div class="subseccion">
+          <h3 class="titulo-subseccion">Crear beneficios</h3>
+
+          <button *ngIf="mostrarBotonCrear" (click)="mostrarCrearBeneficio = true; mostrarBotonCrear = false" >Crear</button>
+
+          <form *ngIf="mostrarCrearBeneficio === true" (ngSubmit)="crearNuevoBeneficio()">
+            <div class="form-group">
+              <label for="nuevoTitulo">Título:</label>
+              <input type="text" id="nuevoTitulo" [(ngModel)]="nuevoBeneficio.titulo" name="nuevoTitulo" required>
+            </div>
+            <div class="form-group">
+              <label for="nuevaDescripcion">Descripción:</label>
+              <textarea id="nuevaDescripcion" [(ngModel)]="nuevoBeneficio.description" name="nuevaDescripcion"
+                required></textarea>
+            </div>
+            <button type="submit">Crear Beneficio</button>
+          </form>
+        </div>
+
+        <div class="subseccion">
+          <h3 class="titulo-subseccion">Añadir beneficios a la solución con ID {{ solucion.id_solucion }}</h3>
+          <div class="buscador-selector-container">
+            <div class="form-group col-12">
+              <label for="buscadorBeneficio">Seleccionar Beneficio:</label>
+              <div class="custom-select">
+                <input type="text" id="buscadorBeneficio" [(ngModel)]="buscadorBeneficio" name="buscadorBeneficio"
+                  (input)="filtrarBeneficios()" (focus)="mostrarOpciones = true" (click)="mostrarOpciones = true"
+                  placeholder="Buscar y seleccionar beneficio..." />
+                <div class="dropdown-menu" *ngIf="mostrarOpciones">
+                  <div *ngFor="let beneficio of beneficiosFiltrados" class="dropdown-item"
+                    (click)="seleccionarBeneficio(beneficio)">
+                    {{ beneficio.description }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="botones-container">
+          <button type="button" (click)="agregarBeneficio()">Añadir Beneficio</button>
+        </div>
+
+        <div class="subseccion">
+          <h3 class="titulo-subseccion">Beneficios asociados a la solución con ID {{ solucion.id_solucion }} | (Click al
+            beneficio que quiere eliminar)</h3>
+          <div *ngIf="solucion?.beneficios && solucion.beneficios.length">
+            <ul>
+              <p *ngFor="let beneficio of solucion.beneficios; let i = index" id="descripciones"
+                (click)="eliminarBeneficio(i)">
+                Descripción: {{ beneficio.description }}
+              </p>
+            </ul>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Botón para añadir el beneficio seleccionado -->
-  <div class="botones-container">
-    <button type="button" (click)="agregarBeneficio()">Añadir Beneficio</button>
-  </div>
-
-  <!-- Mostrar los beneficios existentes -->
-  <div *ngIf="solucion?.beneficios && solucion.beneficios.length">
-    <ul>
-      <p *ngFor="let beneficio of solucion.beneficios; let i = index">
-        Descripción: {{ beneficio.description }}
-        <button class="botonDeleteBeneficio" type="button" (click)="eliminarBeneficio(i)">Eliminar
-          beneficio</button>
-      </p>
-    </ul>
-  </div>
-</div>
 
       <!-- Sección de clasificación -->
       <!-- <div class="seccion">

@@ -16,6 +16,8 @@ import { forkJoin, Observable } from 'rxjs';
 
 export class ModificarSolucionComponent implements OnInit {
 
+  nuevoBeneficio: StoreBeneficios = { titulo: '', description: '' };
+
   buscadorBeneficio: string = '';
   tipoSeleccionado: string = ''; 
   beneficios: StoreBeneficios[] = [];
@@ -24,6 +26,8 @@ export class ModificarSolucionComponent implements OnInit {
   beneficiosFiltrados: StoreBeneficios[] = [];
   beneficioSeleccionado: StoreBeneficios | null = null;
   mostrarOpciones: boolean = false;
+  mostrarCrearBeneficio: boolean = false;
+  mostrarBotonCrear: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -182,7 +186,7 @@ export class ModificarSolucionComponent implements OnInit {
           console.log('Beneficio eliminado correctamente de la base de datos');
           this.beneficios.splice(index, 1);
         },
-        error: (error: any) => {
+        error: (error) => {
           console.error('Error al eliminar el beneficio:', error);
         }
       });
@@ -197,4 +201,34 @@ export class ModificarSolucionComponent implements OnInit {
       beneficio.description.toLowerCase().includes(filtro)
     );
   }
+
+  crearNuevoBeneficio() {
+    if (!this.nuevoBeneficio.description || !this.solucion) {
+      console.error('Debe ingresar una descripción y la solución debe estar cargada');
+      return;
+    }
+  
+    this.storeSolucionesService.createBeneficio(this.solucion.id_solucion, this.nuevoBeneficio).subscribe({
+      next: (response) => {
+        console.log('Beneficio creado:', response);
+  
+        // Añadir el beneficio creado a la lista general de beneficios
+        const beneficioCreado: StoreBeneficios = {
+          id_beneficio: response.beneficio.id_beneficio,
+          titulo: this.nuevoBeneficio.titulo,
+          description: this.nuevoBeneficio.description
+        };
+  
+        this.allBeneficios.push(beneficioCreado);
+        this.filtrarBeneficios(); // Refrescar la lista filtrada
+        
+        // Limpiar el formulario
+        this.nuevoBeneficio = { titulo: '', description: '' };
+      },
+      error: (error) => {
+        console.error('Error al crear el beneficio:', error);
+      }
+    });
+  }
+
 }
