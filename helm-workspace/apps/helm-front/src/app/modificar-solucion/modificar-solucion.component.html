@@ -73,7 +73,7 @@
         <h2 class="titulo-seccion">Problema y Solución</h2>
 
         <div class="subseccion">
-          <h3 class="titulo-subseccion">Problema</h3>
+          <h3 class="titulo-subseccion">Crear problemas</h3>
           
           <!-- Botón para mostrar el formulario de creación -->
           <button *ngIf="mostrarBotonCrearProblema" type="button"
@@ -103,24 +103,9 @@
           </form>
         </div>
 
-        <div class="subseccion">
-          <h3 class="titulo-subseccion">Problemas Asociados</h3>
-          <div *ngIf="solucion?.problemas && solucion.problemas.length">
-            <ul>
-              <p *ngFor="let problema of solucion.problemas; let i = index" id="descripciones"
-                (click)="eliminarProblema(i)">
-                Título: {{ problema.titulo }} | Descripción: {{ problema.description }}
-              </p>
-            </ul>
-          </div>
-          <div *ngIf="!solucion?.problemas || solucion.problemas.length === 0">
-            <p>No hay problemas asociados a esta solución.</p>
-          </div>
-        </div>
-
         <!-- Sección para buscar y añadir nuevos problemas -->
         <div class="subseccion">
-          <h3 class="titulo-subseccion">Añadir Problema</h3>
+          <h3 class="titulo-subseccion">Añadir problemas a la solución con ID {{ solucion.id_solucion }}</h3>
 
           <div class="buscador-selector-container">
             <div class="form-group col-12">
@@ -132,7 +117,7 @@
                 <div class="dropdown-menu" *ngIf="mostrarOpcionesProblema">
                   <div *ngFor="let problema of problemasFiltrados" class="dropdown-item"
                     (click)="seleccionarProblema(problema)">
-                    {{ problema.titulo }} - {{ problema.description }}
+                    {{ problema.description }}
                   </div>
                 </div>
               </div>
@@ -141,6 +126,21 @@
 
           <div class="botones-container">
             <button type="button" (click)="agregarProblema()">Añadir Problema</button>
+          </div>
+        </div>
+
+        <div class="subseccion">
+          <h3 class="titulo-subseccion">Problemas asociados a la solución con ID {{ solucion.id_solucion }} | (Click al problema que quiere eliminar)</h3>
+          <div *ngIf="solucion?.problemas && solucion.problemas.length">
+            <ul>
+              <p *ngFor="let problema of solucion.problemas; let i = index" id="descripciones"
+                (click)="eliminarProblema(i)">
+                Título: {{ problema.titulo }} | Descripción: {{ problema.description }}
+              </p>
+            </ul>
+          </div>
+          <div *ngIf="!solucion?.problemas || solucion.problemas.length === 0">
+            <p>No hay problemas asociados a esta solución.</p>
           </div>
         </div>
 

@@ -194,7 +194,7 @@ export class StoreSolucionesService {
   }
 
   createProblema(idSolucion: number, problema: StoreBeneficios): Observable<CreateProblemaResponse> {
-    const url = `${this.beneficiosUrl}/createBeneficio/${idSolucion}`;
+    const url = `${this.problemasUrl}/createProblema/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     const problemaToCreate = {

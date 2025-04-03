@@ -131,6 +131,17 @@ export class ModificarSolucionComponent implements OnInit {
             }
           });
 
+          this.problemas.forEach(problema => {
+            if (problema.id_problema) {
+              observables.push(
+                this.storeSolucionesService.asociarProblemaASolucion(
+                  this.solucion!.id_solucion,
+                  problema.id_problema
+                )
+              );
+            }
+          });
+
           if (observables.length > 0) {
             forkJoin(observables).subscribe({
               next: () => {
@@ -167,7 +178,7 @@ export class ModificarSolucionComponent implements OnInit {
   seleccionarProblema(problema: StoreProblemas) {
     this.buscadorProblema = problema.description;
     this.problemaSeleccionado = problema;
-    this.mostrarOpciones = false;
+    this.mostrarOpcionesProblema = false;
   }
 
   agregarBeneficio() {
