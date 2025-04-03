@@ -304,9 +304,23 @@ export class ModificarSolucionComponent implements OnInit {
           console.log('Beneficio eliminado correctamente de la base de datos');
   
           if (this.solucion && this.solucion.beneficios) {
-            this.solucion.beneficios = this.solucion.beneficios.filter(
+            // Actualizar la lista local de beneficios
+            this.beneficios = this.beneficios.filter(
               beneficio => beneficio.id_beneficio !== this.beneficioAEliminar
             );
+            
+            // Actualizar también la lista en el objeto solución
+            this.solucion.beneficios = this.beneficios;
+            
+            // Guardar los cambios en la solución para asegurar que se actualiza en la base de datos
+            this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
+              next: () => {
+                console.log('Solución actualizada después de eliminar beneficio');
+              },
+              error: (err) => {
+                console.error('Error al actualizar la solución después de eliminar beneficio:', err);
+              }
+            });
           }
   
           this.beneficioAEliminar = null;
@@ -328,7 +342,29 @@ export class ModificarSolucionComponent implements OnInit {
           console.log('Problema eliminado correctamente de la base de datos');
 
           if (this.solucion && this.solucion.problemas) {
-            this.solucion.problemas = this.solucion.problemas.filter(problema => problema.id_problema !== this.problemaAEliminar);
+            // Filtrar el problema eliminado de la lista local
+            this.problemas = this.problemas.filter(problema => 
+              problema.id_problema !== this.problemaAEliminar
+            );
+            
+            // Actualizar también la lista en el objeto solución
+            this.solucion.problemas = this.problemas;
+            
+            // Si eliminamos todos los problemas o el problema principal, limpiar problemaPragma
+            if (this.problemas.length === 0) {
+              this.solucion.problemaPragma = null;
+              this.solucion.problemaTitle = null;
+            }
+            
+            // Guardar los cambios en la solución para asegurar que se actualiza en la base de datos
+            this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
+              next: () => {
+                console.log('Solución actualizada después de eliminar problema');
+              },
+              error: (err) => {
+                console.error('Error al actualizar la solución después de eliminar problema:', err);
+              }
+            });
           }
 
           this.problemaAEliminar = null;
