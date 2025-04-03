@@ -52,7 +52,9 @@ export class ModificarSolucionComponent implements OnInit {
   @HostListener('document:click', ['$event'])
   clickFuera(event: MouseEvent) {
     const target = event.target as HTMLElement;
-    if (!target.closest('.custom-select')) {
+
+    if (!target.closest('.buscador-selector-container')) {
+      this.mostrarOpcionesProblema = false;
       this.mostrarOpciones = false;
     }
   }
@@ -302,16 +304,16 @@ export class ModificarSolucionComponent implements OnInit {
       this.storeSolucionesService.deleteBeneficio(this.beneficioAEliminar).subscribe({
         next: () => {
           console.log('Beneficio eliminado correctamente de la base de datos');
-  
+
           if (this.solucion && this.solucion.beneficios) {
             // Actualizar la lista local de beneficios
             this.beneficios = this.beneficios.filter(
               beneficio => beneficio.id_beneficio !== this.beneficioAEliminar
             );
-            
+
             // Actualizar también la lista en el objeto solución
             this.solucion.beneficios = this.beneficios;
-            
+
             // Guardar los cambios en la solución para asegurar que se actualiza en la base de datos
             this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
               next: () => {
@@ -322,7 +324,7 @@ export class ModificarSolucionComponent implements OnInit {
               }
             });
           }
-  
+
           this.beneficioAEliminar = null;
           this.mostrarModalBeneficio = false;
         },
@@ -333,7 +335,7 @@ export class ModificarSolucionComponent implements OnInit {
       });
     }
   }
-  
+
 
   eliminarProblema() {
     if (this.problemaAEliminar !== null) {
@@ -343,19 +345,19 @@ export class ModificarSolucionComponent implements OnInit {
 
           if (this.solucion && this.solucion.problemas) {
             // Filtrar el problema eliminado de la lista local
-            this.problemas = this.problemas.filter(problema => 
+            this.problemas = this.problemas.filter(problema =>
               problema.id_problema !== this.problemaAEliminar
             );
-            
+
             // Actualizar también la lista en el objeto solución
             this.solucion.problemas = this.problemas;
-            
+
             // Si eliminamos todos los problemas o el problema principal, limpiar problemaPragma
             if (this.problemas.length === 0) {
               this.solucion.problemaPragma = null;
               this.solucion.problemaTitle = null;
             }
-            
+
             // Guardar los cambios en la solución para asegurar que se actualiza en la base de datos
             this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
               next: () => {
