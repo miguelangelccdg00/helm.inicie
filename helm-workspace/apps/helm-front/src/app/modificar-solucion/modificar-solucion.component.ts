@@ -297,7 +297,6 @@ export class ModificarSolucionComponent implements OnInit {
   }
 
   crearNuevoBeneficio() {
-
     this.mostrarCrearBeneficio = false;
     this.mostrarBotonCrear = true;
 
@@ -328,7 +327,6 @@ export class ModificarSolucionComponent implements OnInit {
   }
 
   crearNuevoProblema() {
-
     this.mostrarCrearProblema = false;
     this.mostrarBotonCrearProblema = true;
 

@@ -90,7 +90,7 @@
             </div>
           </div>
 
-          <button *ngIf="mostrarBotonCrearProblema"
+          <button *ngIf="mostrarBotonCrearProblema" type="button"
             (click)="mostrarCrearProblema = true; mostrarBotonCrearProblema = false">Crear</button>
 
           <form *ngIf="mostrarCrearProblema === true" (ngSubmit)="crearNuevoProblema()">
@@ -105,6 +105,7 @@
                 name="nuevoProblemaDescription" required></textarea>
             </div>
             <button type="submit">Crear Problema</button>
+            <button type="button" (click)="mostrarCrearProblema = false; mostrarBotonCrearProblema = true">Cancelar</button>
           </form>
         </div>
 
@@ -117,6 +118,9 @@
                 Título: {{ problema.titulo }} | Descripción: {{ problema.description }}
               </p>
             </ul>
+          </div>
+          <div *ngIf="!solucion?.problemas || solucion.problemas.length === 0">
+            <p>No hay problemas asociados a esta solución.</p>
           </div>
         </div>
 
@@ -241,7 +245,7 @@
         <div class="subseccion">
           <h3 class="titulo-subseccion">Crear beneficios</h3>
 
-          <button *ngIf="mostrarBotonCrear"
+          <button *ngIf="mostrarBotonCrear" type="button"
             (click)="mostrarCrearBeneficio = true; mostrarBotonCrear = false">Crear</button>
 
           <form *ngIf="mostrarCrearBeneficio === true" (ngSubmit)="crearNuevoBeneficio()">
@@ -255,6 +259,7 @@
                 required></textarea>
             </div>
             <button type="submit">Crear Beneficio</button>
+            <button type="button" (click)="mostrarCrearBeneficio = false; mostrarBotonCrear = true">Cancelar</button>
           </form>
         </div>
 
@@ -292,6 +297,9 @@
                 Descripción: {{ beneficio.description }}
               </p>
             </ul>
+          </div>
+          <div *ngIf="!solucion?.beneficios || solucion.beneficios.length === 0">
+            <p>No hay beneficios asociados a esta solución.</p>
           </div>
         </div>
       </div>
