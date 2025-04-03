@@ -77,7 +77,7 @@
           <div class="grid-container">
             <div class="form-group col-6">
               <label for="problemaTitle">Título del Problema:</label>
-              <input [(ngModel)]="solucion.problemaTitle" name="problemaTitle" id="problemaTitle"
+              <input [(ngModel)]="nuevoProblema.titulo" name="problemaTitle" id="problemaTitle"
                 placeholder="Título del problema" />
             </div>
 
@@ -85,30 +85,67 @@
 
             <div class="form-group col-6">
               <label for="problemaPragma">Descripción del Problema:</label>
-              <textarea [(ngModel)]="solucion.problemaPragma" name="problemaPragma" id="problemaPragma"
+              <textarea [(ngModel)]="nuevoProblema.description" name="problemaPragma" id="problemaPragma"
                 placeholder="Descripción del problema"></textarea>
             </div>
           </div>
+
+          <button *ngIf="mostrarBotonCrearProblema"
+            (click)="mostrarCrearProblema = true; mostrarBotonCrearProblema = false">Crear</button>
+
+          <form *ngIf="mostrarCrearProblema === true" (ngSubmit)="crearNuevoProblema()">
+            <div class="form-group">
+              <label for="nuevoProblemaTitle">Título del Problema:</label>
+              <input type="text" id="nuevoProblemaTitle" [(ngModel)]="nuevoProblema.titulo" name="nuevoProblemaTitle"
+                required>
+            </div>
+            <div class="form-group">
+              <label for="nuevoProblemaDescription">Descripción del Problema:</label>
+              <textarea id="nuevoProblemaDescription" [(ngModel)]="nuevoProblema.description"
+                name="nuevoProblemaDescription" required></textarea>
+            </div>
+            <button type="submit">Crear Problema</button>
+          </form>
         </div>
 
         <div class="subseccion">
-          <h3 class="titulo-subseccion">Solución</h3>
-          <div class="grid-container">
-            <div class="form-group col-6">
-              <label for="solucionTitle">Título de la Solución:</label>
-              <input [(ngModel)]="solucion.solucionTitle" name="solucionTitle" id="solucionTitle"
-                placeholder="Título de la solución" />
-            </div>
-
-            <br>
-
-            <div class="form-group col-6">
-              <label for="solucionPragma">Descripción de la Solución:</label>
-              <textarea [(ngModel)]="solucion.solucionPragma" name="solucionPragma" id="solucionPragma"
-                placeholder="Descripción de la solución"></textarea>
-            </div>
+          <h3 class="titulo-subseccion">Problemas Asociados</h3>
+          <div *ngIf="solucion?.problemas && solucion.problemas.length">
+            <ul>
+              <p *ngFor="let problema of solucion.problemas; let i = index" id="descripciones"
+                (click)="eliminarProblema(i)">
+                Título: {{ problema.titulo }} | Descripción: {{ problema.description }}
+              </p>
+            </ul>
           </div>
         </div>
+
+        <!-- Sección para buscar y añadir nuevos problemas -->
+        <div class="subseccion">
+          <h3 class="titulo-subseccion">Añadir Problema</h3>
+
+          <div class="buscador-selector-container">
+            <div class="form-group col-12">
+              <label for="buscadorProblema">Seleccionar Problema:</label>
+              <div class="custom-select">
+                <input type="text" id="buscadorProblema" [(ngModel)]="buscadorProblema" name="buscadorProblema"
+                  (input)="filtrarProblemas()" (focus)="mostrarOpcionesProblema = true"
+                  (click)="mostrarOpcionesProblema = true" placeholder="Buscar y seleccionar problema..." />
+                <div class="dropdown-menu" *ngIf="mostrarOpcionesProblema">
+                  <div *ngFor="let problema of problemasFiltrados" class="dropdown-item"
+                    (click)="seleccionarProblema(problema)">
+                    {{ problema.titulo }} - {{ problema.description }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="botones-container">
+            <button type="button" (click)="agregarProblema()">Añadir Problema</button>
+          </div>
+        </div>
+
       </div>
 
       <!-- Sección de características y casos de uso -->
@@ -204,7 +241,8 @@
         <div class="subseccion">
           <h3 class="titulo-subseccion">Crear beneficios</h3>
 
-          <button *ngIf="mostrarBotonCrear" (click)="mostrarCrearBeneficio = true; mostrarBotonCrear = false" >Crear</button>
+          <button *ngIf="mostrarBotonCrear"
+            (click)="mostrarCrearBeneficio = true; mostrarBotonCrear = false">Crear</button>
 
           <form *ngIf="mostrarCrearBeneficio === true" (ngSubmit)="crearNuevoBeneficio()">
             <div class="form-group">
@@ -257,54 +295,6 @@
           </div>
         </div>
       </div>
-
-
-      <!-- Sección de clasificación -->
-      <!-- <div class="seccion">
-        <h2 class="titulo-seccion">Clasificación</h2>
-
-        <div class="grid-container">
-          <div class="form-group col-6">
-            <label for="sector">Sector:</label>
-            <input [(ngModel)]="solucion.sector" name="sector" id="sector" placeholder="Sector" />
-          </div>
-
-          <br>
-
-          <div class="form-group col-6">
-            <label for="ambito">Ámbito:</label>
-            <input [(ngModel)]="solucion.ambito" name="ambito" id="ambito" placeholder="Ámbito" />
-          </div>
-
-          <br>
-
-          <div class="form-group col-6">
-            <label for="id_ambito">ID Ámbito:</label>
-            <input [(ngModel)]="solucion.id_ambito" name="id_ambito" id="id_ambito" type="number"
-              placeholder="ID del ámbito" />
-          </div>
-        </div>
-      </div> -->
-
-      <!-- Sección de datos adicionales -->
-      <!-- <div class="seccion">
-        <h2 class="titulo-seccion">Datos Adicionales</h2>
-
-        <div class="grid-container">
-          <div class="form-group col-6">
-            <label for="responseChat">Response Chat:</label>
-            <input [(ngModel)]="solucion.responseChat" name="responseChat" id="responseChat"
-              placeholder="Respuesta del chat" />
-          </div>
-
-          <br>
-
-          <div class="form-group col-6">
-            <label for="data">Data:</label>
-            <input [(ngModel)]="solucion.data" name="data" id="data" placeholder="Datos adicionales" />
-          </div>
-        </div>
-      </div> -->
 
       <div class="botones-container">
         <button type="submit">Guardar Cambios</button>
