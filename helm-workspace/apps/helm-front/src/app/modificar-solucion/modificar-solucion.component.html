@@ -74,38 +74,32 @@
 
         <div class="subseccion">
           <h3 class="titulo-subseccion">Problema</h3>
-          <div class="grid-container">
-            <div class="form-group col-6">
-              <label for="problemaTitle">Título del Problema:</label>
-              <input [(ngModel)]="nuevoProblema.titulo" name="problemaTitle" id="problemaTitle"
-                placeholder="Título del problema" />
-            </div>
-
-            <br>
-
-            <div class="form-group col-6">
-              <label for="problemaPragma">Descripción del Problema:</label>
-              <textarea [(ngModel)]="nuevoProblema.description" name="problemaPragma" id="problemaPragma"
-                placeholder="Descripción del problema"></textarea>
-            </div>
-          </div>
-
+          
+          <!-- Botón para mostrar el formulario de creación -->
           <button *ngIf="mostrarBotonCrearProblema" type="button"
-            (click)="mostrarCrearProblema = true; mostrarBotonCrearProblema = false">Crear</button>
+            (click)="mostrarCrearProblema = true; mostrarBotonCrearProblema = false">Crear Nuevo Problema</button>
 
+          <!-- Formulario para crear un nuevo problema -->
           <form *ngIf="mostrarCrearProblema === true" (ngSubmit)="crearNuevoProblema()">
-            <div class="form-group">
-              <label for="nuevoProblemaTitle">Título del Problema:</label>
-              <input type="text" id="nuevoProblemaTitle" [(ngModel)]="nuevoProblema.titulo" name="nuevoProblemaTitle"
-                required>
+            <div class="grid-container">
+              <div class="form-group col-6">
+                <label for="nuevoProblemaTitle">Título del Problema:</label>
+                <input type="text" id="nuevoProblemaTitle" [(ngModel)]="nuevoProblema.titulo" name="nuevoProblemaTitle"
+                  required placeholder="Título del problema">
+              </div>
+
+              <br>
+
+              <div class="form-group col-6">
+                <label for="nuevoProblemaDescription">Descripción del Problema:</label>
+                <textarea id="nuevoProblemaDescription" [(ngModel)]="nuevoProblema.description"
+                  name="nuevoProblemaDescription" required placeholder="Descripción del problema"></textarea>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="nuevoProblemaDescription">Descripción del Problema:</label>
-              <textarea id="nuevoProblemaDescription" [(ngModel)]="nuevoProblema.description"
-                name="nuevoProblemaDescription" required></textarea>
+            <div class="botones-container">
+              <button type="submit">Crear Problema</button>
+              <button type="button" (click)="mostrarCrearProblema = false; mostrarBotonCrearProblema = true">Cancelar</button>
             </div>
-            <button type="submit">Crear Problema</button>
-            <button type="button" (click)="mostrarCrearProblema = false; mostrarBotonCrearProblema = true">Cancelar</button>
           </form>
         </div>
 
