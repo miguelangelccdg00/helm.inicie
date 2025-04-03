@@ -6,6 +6,7 @@ import loginRoutes from './routes/LoginRoute';
 import storeSolucionesRoute from './routes/StoreSolucionesRoute';
 import storeBeneficiosRoute from './routes/StoreBeneficiosRoute';
 import storeProblemasRoute from './routes/StoreProblemasRoute';
+import storeCaracteristicasRoute from './routes/StoreCaracteristicasRoute';
 import menuRoutes from './routes/MenuRoute';
 import path from 'path';
 
@@ -23,8 +24,8 @@ app.use('/registro', registroRoutes);
 app.use('/storeSolucion', storeSolucionesRoute);
 app.use('/storeBeneficios', storeBeneficiosRoute);
 app.use('/storeProblemas', storeProblemasRoute);
+app.use('/storeCaracteristicas', storeCaracteristicasRoute);
 app.use('/menu', menuRoutes);
-
 /** 
  * Ruta que muestra información sobre los endpoints disponibles
  */
@@ -80,6 +81,17 @@ app.get('/', (req, res) =>
                         {method: 'GET', path: '/listProblemas/:idSolucion'},
                         {method:'POST', path: '/createProblema/:idSolucion' },
                         {method:'DELETE', path:'/deleteProblema/:idProblema'}
+                    ]
+                }
+            },
+            {
+                storeCaracteristicas:
+                {
+                    base: 'storeCaracteristicas',
+                    operations: [
+                        {method:'GET', path: '/listCompleteCaracteristicas'},
+                        {method: 'GET', path: '/listCaracteristicas/:idSolucion'},
+                        {method:'POST', path: '/createCaracteristicas/:idSolucion'}
                     ]
                 }
             },
