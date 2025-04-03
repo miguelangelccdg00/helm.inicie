@@ -26,6 +26,10 @@ export class StoreSolucionesComponent implements OnInit {
   constructor(private storeSolucionesService: StoreSolucionesService, private router: Router) {}
 
   ngOnInit() {
+    this.cargarSoluciones();
+  }
+
+  cargarSoluciones() {
     this.storeSolucionesService.getStoreSoluciones().subscribe({
       next: (response) => {
         console.log('StoreSoluciones obtenidos: ', response);

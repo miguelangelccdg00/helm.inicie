@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { StoreProblemas } from "../models/storeProblemas";
 import storeProblemasService from '../services/StoreProblemasService';
+import storeSolucionesService from '../services/StoreSolucionesService';
 
 class StoreProblemasController
 {
@@ -14,7 +15,7 @@ class StoreProblemasController
         try 
         {
             const idSolucion = parseInt(req.params.idSolucion, 10);
-            const { description } = req.body;
+            const { description, titulo } = req.body;
             
             // Verifica que los datos requeridos estén presentes.
             if (!description || !idSolucion) 
@@ -24,7 +25,20 @@ class StoreProblemasController
             }
 
             // Llama al servicio para crear el problema y asociarlo a la solución.
-            const problema = await storeProblemasService.createProblema({ description, idSolucion });
+            const problema = await storeProblemasService.createProblema({ 
+                description, 
+                titulo, 
+                idSolucion 
+            } as any); // Usamos 'as any' temporalmente para evitar el error de tipo
+
+            // Actualiza los campos problemaTitle y problemaPragma en la solución
+            const solucion = await storeSolucionesService.getById(idSolucion);
+            if (solucion) {
+                await storeSolucionesService.update(idSolucion, {
+                    problemaTitle: titulo || solucion.problemaTitle,
+                    problemaPragma: description || solucion.problemaPragma
+                });
+            }
 
             res.status(201).json({ message: 'Problema creado y relacionado con la solución con éxito', problema });
         } 
@@ -113,6 +127,19 @@ class StoreProblemasController
     
             // Llama al servicio para asociar el problema con la solución.
             const asociacion = await storeProblemasService.asociarProblema(id_solucion, id_problema);
+            
+            // Obtiene los datos del problema para actualizar la solución
+            const problema = await storeProblemasService.getProblemaById(id_problema);
+            if (problema) {
+                // Actualiza los campos problemaTitle y problemaPragma en la solución
+                const solucion = await storeSolucionesService.getById(id_solucion);
+                if (solucion) {
+                    await storeSolucionesService.update(id_solucion, {
+                        problemaTitle: problema.titulo || solucion.problemaTitle,
+                        problemaPragma: problema.description || solucion.problemaPragma
+                    });
+                }
+            }
     
             res.status(201).json({ 
                 message: 'Problema asociado a la solución con éxito',
@@ -154,6 +181,37 @@ class StoreProblemasController
         catch (error) 
         {
             console.error('Error al eliminar el problema:', error);
+            res.status(500).json({ message: 'Error interno en el servidor' });
+        }
+    }
+
+    /**
+     * Elimina la asociación entre un problema y una solución sin eliminar el problema.
+     */
+    async removeProblemaFromSolucion(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
+            const { idSolucion, idProblema } = req.params;
+
+            if (!idSolucion || !idProblema) 
+            {
+                res.status(400).json({ message: 'IDs de solución y problema son requeridos' });
+                return;
+            }
+
+            await storeSolucionesService.removeProblemaFromSolucion(
+                Number(idSolucion), 
+                Number(idProblema)
+            );
+
+            res.status(200).json({ 
+                message: 'Problema desasociado de la solución correctamente' 
+            });
+        } 
+        catch (error) 
+        {
+            console.error('Error al desasociar el problema de la solución:', error);
             res.status(500).json({ message: 'Error interno en el servidor' });
         }
     }

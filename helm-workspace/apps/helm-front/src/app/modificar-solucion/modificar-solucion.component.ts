@@ -114,11 +114,19 @@ export class ModificarSolucionComponent implements OnInit {
 
   guardarCambios() {
     if (this.solucion) {
+      // Asegurarnos de que problemaPragma está correctamente establecido antes de guardar
+      if (this.problemas.length > 0 && this.problemas[0].description) {
+        this.solucion.problemaPragma = this.problemas[0].description;
+      }
+      
       this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
         next: () => {
           console.log('Solución actualizada correctamente');
 
           const observables: Observable<any>[] = [];
+
+          // El resto del método permanece sin cambios
+          // ...
 
           this.beneficios.forEach(beneficio => {
             if (beneficio.id_beneficio) {
@@ -145,11 +153,11 @@ export class ModificarSolucionComponent implements OnInit {
           if (observables.length > 0) {
             forkJoin(observables).subscribe({
               next: () => {
-                console.log('Todos los beneficios han sido asociados correctamente');
+                console.log('Todos los beneficios y problemas han sido asociados correctamente');
                 this.router.navigate(['/store-soluciones']);
               },
               error: (error) => {
-                console.error('Error al asociar beneficios:', error);
+                console.error('Error al asociar beneficios o problemas:', error);
               }
             });
           } else {
@@ -232,12 +240,49 @@ export class ModificarSolucionComponent implements OnInit {
         );
 
         if (!yaExiste) {
+          // Primero actualizar el título y descripción del problema en la solución
+          if (problemaSeleccionado.titulo) {
+            this.solucion.problemaTitle = problemaSeleccionado.titulo;
+          }
+          
+          // Actualizar la descripción del problema - Aseguramos que se establece correctamente
+          this.solucion.problemaPragma = problemaSeleccionado.description;
+          console.log('Estableciendo problemaPragma:', problemaSeleccionado.description);
+          
+          // Luego añadir el problema a la lista
           this.problemas.push(problemaSeleccionado);
           this.solucion.problemas = this.problemas;
 
+          // Primero actualizamos la solución con los campos de título y descripción
           this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
             next: () => {
               console.log('Problema agregado correctamente a la solución');
+              console.log('Valores actualizados:', {
+                problemaTitle: this.solucion?.problemaTitle,
+                problemaPragma: this.solucion?.problemaPragma
+              });
+              
+              // Asociar el problema
+              if (problemaSeleccionado.id_problema) {
+                this.storeSolucionesService.asociarProblemaASolucion(
+                  this.solucion!.id_solucion,
+                  problemaSeleccionado.id_problema
+                ).subscribe({
+                  next: () => {
+                    console.log('Problema asociado correctamente');
+                    
+                    // Verificar que los cambios se mantuvieron después de la asociación
+                    this.storeSolucionesService.getStoreSolucionById(this.solucion!.id_solucion).subscribe({
+                      next: (solucionActualizada) => {
+                        console.log('Solución después de asociar problema:', solucionActualizada);
+                      }
+                    });
+                  },
+                  error: (error) => {
+                    console.error('Error al asociar problema:', error);
+                  }
+                });
+              }
             },
             error: (error: any) => {
               console.error('Error al agregar problema:', error);
@@ -356,9 +401,11 @@ export class ModificarSolucionComponent implements OnInit {
           description: this.nuevoProblema.description
         };
 
+        // Solo añadimos el problema a la lista de problemas disponibles
         this.allProblemas.push(problemaCreado);
         this.filtrarProblemas();
 
+        // Limpiamos el formulario
         this.nuevoProblema = { titulo: '', description: '' };
       },
       error: (error) => {

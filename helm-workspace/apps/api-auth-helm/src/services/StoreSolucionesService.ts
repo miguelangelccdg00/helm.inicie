@@ -30,6 +30,9 @@ class StoreSolucionesService
         return { message: 'StoreSoluciones actualizado' };
     }
 
+    /**
+     * Elimina una solución específica de la base de datos
+     */
     async deleteSolucion(id: number) 
     {
         const conn = await pool.promise().getConnection(); // Inicia conexión
@@ -57,6 +60,28 @@ class StoreSolucionesService
             // Liberar conexión
             conn.release(); 
         }
+    }
+
+    /**
+     * Verifica si una solución existe en la base de datos
+     */
+    async checkSolucionExists(id: number) 
+    {
+        const [rows] = await pool.promise().query('SELECT * FROM storeSoluciones WHERE id_solucion = ?', [id]);
+        return rows.length > 0;
+    }
+
+    /**
+     * Elimina la asociación entre una solución y un problema
+     */
+    async removeProblemaFromSolucion(idSolucion: number, idProblema: number) 
+    {
+        // Elimina solo la asociación en la tabla de relaciones
+        await pool.promise().query(
+            'DELETE FROM storeProblemasSoluciones WHERE id_solucion = ? AND id_problema = ?', 
+            [idSolucion, idProblema]
+        );
+        return { message: 'Asociación entre problema y solución eliminada correctamente' };
     }
 }
 

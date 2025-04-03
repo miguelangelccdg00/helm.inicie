@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 
 export interface StoreSoluciones {
   id_solucion: number;
@@ -104,6 +105,9 @@ export class StoreSolucionesService {
     const url = `http://localhost:3009/storeSolucion/modifyStoreSoluciones/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
+    // Asegurarnos de que problemaPragma se incluye correctamente
+    console.log('Enviando problemaPragma:', solucion.problemaPragma);
+    
     const solucionToUpdate = {
       id_solucion: solucion.id_solucion,
       description: solucion.description,
@@ -130,8 +134,45 @@ export class StoreSolucionesService {
       beneficiosPragma: solucion.beneficiosPragma
     };
 
-    return this.https.put<UpdateStoreSolucionResponse>(url, solucionToUpdate, { headers });
+    // Verificar que todos los campos se están enviando correctamente
+    console.log('Objeto completo a enviar:', solucionToUpdate);
+
+    return this.https.put<UpdateStoreSolucionResponse>(url, solucionToUpdate, { headers })
+      .pipe(
+        map(response => {
+          console.log('Respuesta del servidor:', response);
+          return response;
+        })
+      );
   }
+
+    // Método específico para actualizar el problema y asociarlo a la solución
+    updateProblemaAndAsociar(idSolucion: number, problema: StoreProblemas): Observable<any> {
+      // Primero actualizamos la solución con el título y descripción del problema
+      return this.getStoreSolucionById(idSolucion).pipe(
+        switchMap(solucion => {
+          // Actualizamos los campos de problema en la solución
+          solucion.problemaTitle = problema.titulo || solucion.problemaTitle;
+          solucion.problemaPragma = problema.description;
+          
+          console.log('Actualizando problemaPragma a:', problema.description);
+          
+          // Actualizamos la solución
+          return this.updateStoreSolucion(idSolucion, solucion).pipe(
+            switchMap(response => {
+              // Si el problema tiene ID, lo asociamos a la solución
+              if (problema.id_problema) {
+                return this.asociarProblemaASolucion(idSolucion, problema.id_problema);
+              }
+              return new Observable(observer => {
+                observer.next({ message: 'Problema actualizado sin asociación' });
+                observer.complete();
+              });
+            })
+          );
+        })
+      );
+    }
 
   deleteStoreSolucion(id: number): Observable<DeleteSolucionResponse> {
     const url = `http://localhost:3009/storeSolucion/deleteStoreSolucion/${id}`;
@@ -193,7 +234,7 @@ export class StoreSolucionesService {
     return this.https.post<any>(url, relacion, { headers });
   }
 
-  createProblema(idSolucion: number, problema: StoreBeneficios): Observable<CreateProblemaResponse> {
+  createProblema(idSolucion: number, problema: StoreProblemas): Observable<CreateProblemaResponse> {
     const url = `${this.problemasUrl}/createProblema/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
@@ -211,16 +252,15 @@ export class StoreSolucionesService {
     return this.https.delete<DeleteProblemaResponse>(url, { headers });
   }
 
-  getProblemasBySolucion(idSolucion: number): Observable<StoreBeneficios[]> {
+  getProblemasBySolucion(idSolucion: number): Observable<StoreProblemas[]> {
     const url = `${this.problemasUrl}/listProblemas/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.get<StoreBeneficios[]>(url, { headers });
+    return this.https.get<StoreProblemas[]>(url, { headers });
   }
 
-  getAllProblemas(): Observable<StoreBeneficios[]> {
+  getAllProblemas(): Observable<StoreProblemas[]> {
     const url = `${this.problemasUrl}/listCompleteProblemas`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.get<StoreBeneficios[]>(url, { headers });
+    return this.https.get<StoreProblemas[]>(url, { headers });
   }
-
 }
