@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
+/* Interfaces */
+
 export interface StoreSoluciones {
   id_solucion: number;
   description: string;
@@ -78,6 +80,21 @@ export interface DeleteProblemaResponse {
   message: string;
 }
 
+export interface StoreCaracteristicas {
+  id_problema?: number;
+  titulo?: string;
+  description: string;
+}
+
+export interface CreateCaracteristicaResponse {
+  message: string;
+  beneficio: StoreCaracteristicas;
+}
+
+export interface DeleteCaracteristicaResponse {
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -87,8 +104,11 @@ export class StoreSolucionesService {
   private apiUrl = 'http://localhost:3009/storeSolucion/listStoreSoluciones';
   private beneficiosUrl = 'http://localhost:3009/storeBeneficios';
   private problemasUrl = 'http://localhost:3009/storeProblemas';
+  private caracteristicasUrl = 'http://localhost:3009/storeCaracteristicas';
 
   constructor(private https: HttpClient) { }
+
+  /* StoreSoluciones */
 
   getStoreSoluciones(): Observable<StoreSoluciones[]> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -105,9 +125,8 @@ export class StoreSolucionesService {
     const url = `http://localhost:3009/storeSolucion/modifyStoreSoluciones/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    // Asegurarnos de que problemaPragma se incluye correctamente
     console.log('Enviando problemaPragma:', solucion.problemaPragma);
-    
+
     const solucionToUpdate = {
       id_solucion: solucion.id_solucion,
       description: solucion.description,
@@ -134,7 +153,6 @@ export class StoreSolucionesService {
       beneficiosPragma: solucion.beneficiosPragma
     };
 
-    // Verificar que todos los campos se están enviando correctamente
     console.log('Objeto completo a enviar:', solucionToUpdate);
 
     return this.https.put<UpdateStoreSolucionResponse>(url, solucionToUpdate, { headers })
@@ -146,39 +164,13 @@ export class StoreSolucionesService {
       );
   }
 
-    // Método específico para actualizar el problema y asociarlo a la solución
-    updateProblemaAndAsociar(idSolucion: number, problema: StoreProblemas): Observable<any> {
-      // Primero actualizamos la solución con el título y descripción del problema
-      return this.getStoreSolucionById(idSolucion).pipe(
-        switchMap(solucion => {
-          // Actualizamos los campos de problema en la solución
-          solucion.problemaTitle = problema.titulo || solucion.problemaTitle;
-          solucion.problemaPragma = problema.description;
-          
-          console.log('Actualizando problemaPragma a:', problema.description);
-          
-          // Actualizamos la solución
-          return this.updateStoreSolucion(idSolucion, solucion).pipe(
-            switchMap(response => {
-              // Si el problema tiene ID, lo asociamos a la solución
-              if (problema.id_problema) {
-                return this.asociarProblemaASolucion(idSolucion, problema.id_problema);
-              }
-              return new Observable(observer => {
-                observer.next({ message: 'Problema actualizado sin asociación' });
-                observer.complete();
-              });
-            })
-          );
-        })
-      );
-    }
-
   deleteStoreSolucion(id: number): Observable<DeleteSolucionResponse> {
     const url = `http://localhost:3009/storeSolucion/deleteStoreSolucion/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete<DeleteSolucionResponse>(url, { headers });
   }
+
+  /* Beneficios */
 
   getBeneficiosBySolucion(idSolucion: number): Observable<StoreBeneficios[]> {
     const url = `${this.beneficiosUrl}/listBeneficios/${idSolucion}`;
@@ -213,24 +205,26 @@ export class StoreSolucionesService {
   asociarBeneficioASolucion(idSolucion: number, idBeneficio: number): Observable<any> {
     const url = `${this.beneficiosUrl}/asociarBeneficio`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    
+
     const relacion = {
       id_solucion: idSolucion,
       id_beneficio: idBeneficio
     };
-    
+
     return this.https.post<any>(url, relacion, { headers });
   }
+
+  /* Problemas */
 
   asociarProblemaASolucion(idSolucion: number, idProblema: number): Observable<any> {
     const url = `${this.problemasUrl}/asociarProblema`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    
+
     const relacion = {
       id_solucion: idSolucion,
       id_problema: idProblema
     };
-    
+
     return this.https.post<any>(url, relacion, { headers });
   }
 
@@ -263,4 +257,72 @@ export class StoreSolucionesService {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<StoreProblemas[]>(url, { headers });
   }
+
+  updateProblemaAndAsociar(idSolucion: number, problema: StoreProblemas): Observable<any> {
+    return this.getStoreSolucionById(idSolucion).pipe(
+      switchMap(solucion => {
+        solucion.problemaTitle = problema.titulo || solucion.problemaTitle;
+        solucion.problemaPragma = problema.description;
+
+        console.log('Actualizando problemaPragma a:', problema.description);
+
+        return this.updateStoreSolucion(idSolucion, solucion).pipe(
+          switchMap(response => {
+            if (problema.id_problema) {
+              return this.asociarProblemaASolucion(idSolucion, problema.id_problema);
+            }
+            return new Observable(observer => {
+              observer.next({ message: 'Problema actualizado sin asociación' });
+              observer.complete();
+            });
+          })
+        );
+      })
+    );
+  }
+
+  /* Características */
+
+  createCaracteristica(idSolucion: number, caracteristica: StoreCaracteristicas): Observable<CreateCaracteristicaResponse> {
+    const url = `${this.caracteristicasUrl}/createCaracteristicas/${idSolucion}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    const caracteristicaToCreate = {
+      titulo: caracteristica.titulo,
+      description: caracteristica.description
+    };
+
+    return this.https.post<CreateCaracteristicaResponse>(url, caracteristicaToCreate, { headers });
+  }
+
+  /* deleteCaracteristica(idCaracteristica: number): Observable<DeleteCaracteristicaResponse> {
+    const url = `${this.caracteristicasUrl}/deleteProblema/${idCaracteristica}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.delete<DeleteCaracteristicaResponse>(url, { headers });
+  } */
+
+  getCaracteristicaBySolucion(idSolucion: number): Observable<StoreCaracteristicas[]> {
+    const url = `${this.caracteristicasUrl}/listCaracteristicas/${idSolucion}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.get<StoreCaracteristicas[]>(url, { headers });
+  }
+
+  getAllCaracteristicas(): Observable<StoreCaracteristicas[]> {
+    const url = `${this.caracteristicasUrl}/listCompleteProblemas`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.get<StoreCaracteristicas[]>(url, { headers });
+  }
+
+  asociarCaracteristicaASolucion(idSolucion: number, idCaracteristica: number): Observable<any> {
+    const url = `${this.caracteristicasUrl}/asociarCaracteristica`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    const relacion = {
+      id_solucion: idSolucion,
+      id_caracteristica: idCaracteristica
+    };
+
+    return this.https.post<any>(url, relacion, { headers });
+  }
+
 }
