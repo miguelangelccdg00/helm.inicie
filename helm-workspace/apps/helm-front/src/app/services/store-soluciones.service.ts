@@ -134,9 +134,8 @@ export class StoreSolucionesService {
     const url = `http://localhost:3009/storeSolucion/modifyStoreSoluciones/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    console.log('Enviando problemaPragma:', solucion.problemaPragma);
-
-    const solucionToUpdate = {
+    // Creamos un objeto completo con todos los campos necesarios
+    const solucionToUpdate: any = {
       id_solucion: solucion.id_solucion,
       description: solucion.description,
       title: solucion.title,
@@ -146,6 +145,8 @@ export class StoreSolucionesService {
       titleweb: solucion.titleweb,
       multimediaUri: solucion.multimediaUri,
       multimediaTypeId: solucion.multimediaTypeId,
+      
+      // Siempre incluimos estos campos para asegurar que se envíen correctamente
       problemaTitle: solucion.problemaTitle,
       problemaPragma: solucion.problemaPragma,
       solucionTitle: solucion.solucionTitle,
@@ -301,7 +302,43 @@ export class StoreSolucionesService {
       description: caracteristica.description
     };
 
-    return this.https.post<CreateCaracteristicaResponse>(url, caracteristicaToCreate, { headers });
+    // Guardamos los valores originales para asegurarnos de que no se pierdan
+    const originalTitle = caracteristica.titulo;
+    const originalDescription = caracteristica.description;
+
+    console.log('Valores originales a guardar:', { title: originalTitle, description: originalDescription });
+
+    // Primero creamos la característica
+    return this.https.post<CreateCaracteristicaResponse>(url, caracteristicaToCreate, { headers }).pipe(
+      switchMap(response => {
+        // Después de crear la característica, actualizamos la solución con los valores originales
+        return this.getStoreSolucionById(idSolucion).pipe(
+          switchMap(solucion => {
+            // Usamos los valores originales guardados, no los que podrían haber cambiado
+            solucion.caracteristicasTitle = originalTitle || solucion.caracteristicasTitle;
+            solucion.caracteristicasPragma = originalDescription;
+            
+            console.log('Actualizando solución después de crear característica:');
+            console.log('caracteristicasTitle:', originalTitle);
+            console.log('caracteristicasPragma:', originalDescription);
+            
+            return this.updateStoreSolucion(idSolucion, solucion).pipe(
+              map(() => {
+                // Devolvemos la respuesta original con los valores correctos
+                return {
+                  ...response,
+                  caracteristica: {
+                    ...response.caracteristica,
+                    titulo: originalTitle,
+                    description: originalDescription
+                  }
+                };
+              })
+            );
+          })
+        );
+      })
+    );
   }
 
   deleteCaracteristica(idCaracteristica: number): Observable<DeleteCaracteristicaResponse> {
@@ -322,39 +359,71 @@ export class StoreSolucionesService {
     return this.https.get<StoreCaracteristicas[]>(url, { headers });
   }
 
-  asociarCaracteristicaASolucion(idSolucion: number, idCaracteristica: number): Observable<any> {
+  asociarCaracteristicaASolucion(idSolucion: number, idCaracteristica: number, titulo?: string): Observable<any> {
     const url = `${this.caracteristicasUrl}/asociarCaracteristica`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
+    // Solo enviamos la información mínima necesaria para la asociación
     const relacion = {
       id_solucion: idSolucion,
       id_caracteristica: idCaracteristica
     };
 
+    // No incluimos el título ni actualizamos la solución
     return this.https.post<any>(url, relacion, { headers });
   }
 
+  // También necesitamos añadir este método para obtener una característica por su ID
+  getCaracteristicaById(idCaracteristica: number): Observable<StoreCaracteristicas> {
+    const url = `${this.caracteristicasUrl}/getCaracteristica/${idCaracteristica}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.get<StoreCaracteristicas>(url, { headers });
+  }
+
   updateCaracteristicaAndAsociar(idSolucion: number, caracteristica: StoreCaracteristicas): Observable<any> {
-    return this.getStoreSolucionById(idSolucion).pipe(
-      switchMap(solucion => {
-        solucion.caracteristicasTitle = caracteristica.titulo || solucion.caracteristicasTitle;
-        solucion.caracteristicasPragma = caracteristica.description;
-
-        console.log('Actualizando caracteristicasPragma a:', caracteristica.description);
-
-        return this.updateStoreSolucion(idSolucion, solucion).pipe(
-          switchMap(response => {
-            if (caracteristica.id_caracteristica) {
-              return this.asociarCaracteristicaASolucion(idSolucion, caracteristica.id_caracteristica);
-            }
-            return new Observable(observer => {
-              observer.next({ message: 'Característica actualizada sin asociación' });
-              observer.complete();
-            });
-          })
-        );
-      })
-    );
+    // Primero verificamos si necesitamos asociar una característica existente
+    if (caracteristica.id_caracteristica) {
+      // Si hay un ID de característica, primero hacemos la asociación
+      return this.asociarCaracteristicaASolucion(idSolucion, caracteristica.id_caracteristica).pipe(
+        switchMap(() => {
+          // Después de asociar, actualizamos la solución con los datos de la característica
+          return this.getStoreSolucionById(idSolucion).pipe(
+            switchMap(solucion => {
+              // Actualizamos los campos en la solución
+              solucion.caracteristicasTitle = caracteristica.titulo || solucion.caracteristicasTitle;
+              solucion.caracteristicasPragma = caracteristica.description;
+              
+              console.log('Actualizando caracteristicasTitle a:', caracteristica.titulo);
+              console.log('Actualizando caracteristicasPragma a:', caracteristica.description);
+              
+              // Finalmente actualizamos la solución
+              return this.updateStoreSolucion(idSolucion, solucion);
+            })
+          );
+        })
+      );
+    } else {
+      // Si no hay ID de característica, solo actualizamos la solución
+      return this.getStoreSolucionById(idSolucion).pipe(
+        switchMap(solucion => {
+          solucion.caracteristicasTitle = caracteristica.titulo || solucion.caracteristicasTitle;
+          solucion.caracteristicasPragma = caracteristica.description;
+          
+          console.log('Actualizando caracteristicasTitle a:', caracteristica.titulo);
+          console.log('Actualizando caracteristicasPragma a:', caracteristica.description);
+          
+          return this.updateStoreSolucion(idSolucion, solucion).pipe(
+            map(response => {
+              return { 
+                message: 'Característica actualizada sin asociación',
+                caracteristicasTitle: caracteristica.titulo,
+                caracteristicasPragma: caracteristica.description
+              };
+            })
+          );
+        })
+      );
+    }
   }
 
 }

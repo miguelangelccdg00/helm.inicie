@@ -573,25 +573,53 @@ export class ModificarSolucionComponent implements OnInit {
       return;
     }
 
-    this.storeSolucionesService.createCaracteristica(this.solucion.id_solucion, this.nuevaCaracteristica).subscribe({
-      next: (response) => {
-        console.log('Característica creada:', response);
+    // Primero actualizamos la solución con los datos de la característica
+    if (this.solucion) {
+      this.solucion.caracteristicasTitle = this.nuevaCaracteristica.titulo || this.solucion.caracteristicasTitle;
+      this.solucion.caracteristicasPragma = this.nuevaCaracteristica.description;
+      
+      // Actualizamos primero la solución para asegurar que los campos se guarden
+      this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
+        next: () => {
+          console.log('Solución actualizada con los datos de la característica');
+          
+          // Luego creamos la característica
+          this.storeSolucionesService.createCaracteristica(this.solucion!.id_solucion, this.nuevaCaracteristica).subscribe({
+            next: (response) => {
+              console.log('Característica creada:', response);
 
-        const caracteristicaCreada: StoreCaracteristicas = {
-          id_caracteristica: response.caracteristica.id_caracteristica,
-          titulo: this.nuevaCaracteristica.titulo,
-          description: this.nuevaCaracteristica.description
-        };
+              const caracteristicaCreada: StoreCaracteristicas = {
+                id_caracteristica: response.caracteristica.id_caracteristica,
+                titulo: this.nuevaCaracteristica.titulo,
+                description: this.nuevaCaracteristica.description
+              };
 
-        this.allCaracteristicas.push(caracteristicaCreada);
-        this.filtrarCaracteristicas();
+              this.allCaracteristicas.push(caracteristicaCreada);
+              this.filtrarCaracteristicas();
 
-        this.nuevaCaracteristica = { titulo: '', description: '' };
-      },
-      error: (error) => {
-        console.error('Error al crear la característica:', error);
-      }
-    });
+              // Asociamos la característica a la solución
+              if (response.caracteristica.id_caracteristica) {
+                this.storeSolucionesService.asociarCaracteristicaASolucion(
+                  this.solucion!.id_solucion, 
+                  response.caracteristica.id_caracteristica
+                ).subscribe({
+                  next: () => console.log('Característica asociada correctamente'),
+                  error: (err) => console.error('Error al asociar la característica:', err)
+                });
+              }
+
+              this.nuevaCaracteristica = { titulo: '', description: '' };
+            },
+            error: (error) => {
+              console.error('Error al crear la característica:', error);
+            }
+          });
+        },
+        error: (err) => {
+          console.error('Error al actualizar la solución con los datos de la característica:', err);
+        }
+      });
+    }
   }
 
   confirmarEliminarProblema(idProblema: number, event: MouseEvent) {

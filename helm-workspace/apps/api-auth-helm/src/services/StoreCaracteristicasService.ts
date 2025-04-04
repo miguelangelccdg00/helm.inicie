@@ -46,7 +46,14 @@ class StoreCaracteristicasService
 
             await conn.commit();
 
-            return { idCaracteristica, idSolucion, description, titulo };
+            return { 
+                idCaracteristica, 
+                idSolucion, 
+                description, 
+                titulo,
+                caracteristicasTitle: titulo,
+                caracteristicasPragma: description
+            };
         } 
         catch (error) 
         {
