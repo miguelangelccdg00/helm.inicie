@@ -50,6 +50,7 @@
     "@swc/helpers": "~0.5.11",
     "@types/bcryptjs": "^3.0.0",
     "@types/jest": "^29.5.12",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "18.16.9",
     "@typescript-eslint/eslint-plugin": "^7.16.0",
     "@typescript-eslint/parser": "^7.16.0",
