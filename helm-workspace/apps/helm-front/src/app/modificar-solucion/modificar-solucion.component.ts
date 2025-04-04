@@ -69,6 +69,7 @@ export class ModificarSolucionComponent implements OnInit {
     if (!target.closest('.buscador-selector-container')) {
       this.mostrarOpcionesProblema = false;
       this.mostrarOpciones = false;
+      this.mostrarOpcionesCaracteristicas = false;
     }
   }
 
@@ -444,9 +445,9 @@ export class ModificarSolucionComponent implements OnInit {
 
   eliminarCaracteristica() {
     if (this.caracteristicaAEliminar !== null) {
-      this.storeSolucionesService.deleteProblema(this.caracteristicaAEliminar).subscribe({
+      this.storeSolucionesService.deleteCaracteristica(this.caracteristicaAEliminar).subscribe({
         next: () => {
-          console.log('Problema eliminado correctamente de la base de datos');
+          console.log('Característica eliminada correctamente de la base de datos');
 
           if (this.solucion && this.solucion.caracteristicas) {
             this.caracteristicas = this.caracteristicas.filter(caracteristica =>
@@ -564,7 +565,7 @@ export class ModificarSolucionComponent implements OnInit {
   }
 
   crearNuevaCaracteristica() {
-    this.mostrarCrearProblema = false;
+    this.mostrarCrearCaracteristica = false;
     this.mostrarBotonCrearCaracteristica = true;
 
     if (!this.nuevaCaracteristica.description || !this.solucion) {
@@ -612,7 +613,7 @@ export class ModificarSolucionComponent implements OnInit {
 
   cancelarEliminarBeneficio() {
     this.mostrarModalBeneficio = false;
-    this.problemaAEliminar = null;
+    this.beneficioAEliminar = null;
   }
 
   confirmarEliminarCaracteristica(idCaracteristica: number, event: MouseEvent) {

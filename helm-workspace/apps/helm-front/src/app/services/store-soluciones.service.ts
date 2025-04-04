@@ -317,7 +317,7 @@ export class StoreSolucionesService {
   }
 
   getAllCaracteristicas(): Observable<StoreCaracteristicas[]> {
-    const url = `${this.caracteristicasUrl}/listCompleteProblemas`;
+    const url = `${this.caracteristicasUrl}/listCompleteCaracteristicas`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<StoreCaracteristicas[]>(url, { headers });
   }
@@ -332,6 +332,29 @@ export class StoreSolucionesService {
     };
 
     return this.https.post<any>(url, relacion, { headers });
+  }
+
+  updateCaracteristicaAndAsociar(idSolucion: number, caracteristica: StoreCaracteristicas): Observable<any> {
+    return this.getStoreSolucionById(idSolucion).pipe(
+      switchMap(solucion => {
+        solucion.caracteristicasTitle = caracteristica.titulo || solucion.caracteristicasTitle;
+        solucion.caracteristicasPragma = caracteristica.description;
+
+        console.log('Actualizando caracteristicasPragma a:', caracteristica.description);
+
+        return this.updateStoreSolucion(idSolucion, solucion).pipe(
+          switchMap(response => {
+            if (caracteristica.id_caracteristica) {
+              return this.asociarCaracteristicaASolucion(idSolucion, caracteristica.id_caracteristica);
+            }
+            return new Observable(observer => {
+              observer.next({ message: 'Característica actualizada sin asociación' });
+              observer.complete();
+            });
+          })
+        );
+      })
+    );
   }
 
 }

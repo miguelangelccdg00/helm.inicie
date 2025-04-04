@@ -75,11 +75,9 @@
         <div class="subseccion">
           <h3 class="titulo-subseccion">Crear problemas</h3>
 
-          <!-- Botón para mostrar el formulario de creación -->
           <button *ngIf="mostrarBotonCrearProblema" type="button"
             (click)="mostrarCrearProblema = true; mostrarBotonCrearProblema = false">Crear Nuevo Problema</button>
 
-          <!-- Formulario para crear un nuevo problema -->
           <form *ngIf="mostrarCrearProblema === true" (ngSubmit)="crearNuevoProblema()">
             <div class="grid-container">
               <div class="form-group col-6">
@@ -104,7 +102,6 @@
           </form>
         </div>
 
-        <!-- Sección para buscar y añadir nuevos problemas -->
         <div class="subseccion">
           <h3 class="titulo-subseccion">Añadir problemas a la solución con ID {{ solucion.id_solucion }}</h3>
 
@@ -156,22 +153,30 @@
           <h3 class="titulo-subseccion">Crear características</h3>
 
           <button *ngIf="mostrarBotonCrearCaracteristica" type="button"
-            (click)="mostrarCrearCaracteristica = true; mostrarBotonCrearCaracteristica = false">Crear Nueva Característica</button>
+            (click)="mostrarCrearCaracteristica = true; mostrarBotonCrearCaracteristica = false">Crear Nueva
+            Característica</button>
 
           <form *ngIf="mostrarCrearCaracteristica === true" (ngSubmit)="crearNuevaCaracteristica()">
-            <div class="form-group">
-              <label for="nuevaCaracteristicaTitulo">Título:</label>
-              <input type="text" id="nuevaCaracteristicaTitulo" [(ngModel)]="nuevaCaracteristica.titulo"
-                name="nuevaCaracteristicaTitulo" required>
+            <div class="grid-container">
+              <div class="form-group col-6">
+                <label for="nuevaCaracteristicaTitulo">Título:</label>
+                <input type="text" id="nuevaCaracteristicaTitulo" [(ngModel)]="nuevaCaracteristica.titulo"
+                  name="nuevaCaracteristicaTitulo" required placeholder="Título de la característica">
+              </div>
+
+              <br>
+
+              <div class="form-group col-6">
+                <label for="nuevaCaracteristicaDescripcion">Descripción:</label>
+                <textarea id="nuevaCaracteristicaDescripcion" [(ngModel)]="nuevaCaracteristica.description"
+                  name="nuevaCaracteristicaDescripcion" required placeholder="Descripción de la característica"></textarea>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="nuevaCaracteristicaDescripcion">Descripción:</label>
-              <textarea id="nuevaCaracteristicaDescripcion" [(ngModel)]="nuevaCaracteristica.description"
-                name="nuevaCaracteristicaDescripcion" required></textarea>
+            <div class="botones-container">
+              <button type="submit">Crear Característica</button>
+              <button type="button"
+                (click)="mostrarCrearCaracteristica = false; mostrarBotonCrearCaracteristica = true">Cancelar</button>
             </div>
-            <button type="submit">Crear Característica</button>
-            <button type="button"
-              (click)="mostrarCrearCaracteristica = false; mostrarBotonCrearCaracteristica = true">Cancelar</button>
           </form>
         </div>
 
@@ -380,7 +385,7 @@
     </div>
     <div class="modal-footer">
       <button class="btn-cancelar" (click)="cancelarEliminarCaracteristica()">Cancelar</button>
-      <button class="btn-eliminar" (click)="eliminarBeneficio()">Eliminar</button>
+      <button class="btn-eliminar" (click)="eliminarCaracteristica()">Eliminar</button>
     </div>
   </div>
 </div>
