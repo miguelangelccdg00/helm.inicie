@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StoreSolucionesService, StoreSoluciones, StoreBeneficios, StoreProblemas } from '../services/store-soluciones.service';
+import { StoreSolucionesService, StoreSoluciones, StoreBeneficios, StoreProblemas, StoreCaracteristicas } from '../services/store-soluciones.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MenuComponent } from '../menu/menu.component';
@@ -40,8 +40,21 @@ export class ModificarSolucionComponent implements OnInit {
   mostrarBotonCrear: boolean = true;
   beneficioAEliminar: number | null = null;
 
+  nuevaCaracteristica: StoreCaracteristicas = { titulo: '', description: '' };
+  buscadorCaracteristica: string = '';
+  caracteristicas: StoreCaracteristicas[] = [];
+  allCaracteristicas: StoreCaracteristicas[] = [];
+  caracteristicasFiltradas: StoreCaracteristicas[] = [];
+  caracteristicaSeleccionada: StoreCaracteristicas | null = null;
+  mostrarCrearCaracteristica: boolean = false;
+  mostrarOpcionesCaracteristicas: boolean = false;
+  mostrarBotonCrearCaracteristica: boolean = true;
+  caracteristicaAEliminar: number | null = null;
+
+
   mostrarModalProblema: boolean = false;
   mostrarModalBeneficio: boolean = false;
+  mostrarModalCaracteristica: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -65,59 +78,63 @@ export class ModificarSolucionComponent implements OnInit {
       this.storeSolucionesService.getStoreSolucionById(+idSolucion).subscribe({
         next: (solucion: StoreSoluciones) => {
           this.solucion = solucion;
-          if (!this.solucion.problemas) {
-            this.solucion.problemas = [];
-          }
+          if (!this.solucion.problemas) this.solucion.problemas = [];
+          if (!this.solucion.beneficios) this.solucion.beneficios = [];
+          if (!this.solucion.caracteristicas) this.solucion.caracteristicas = [];
 
           this.storeSolucionesService.getProblemasBySolucion(this.solucion.id_solucion).subscribe({
             next: (problemas: StoreProblemas[]) => {
               this.problemas = problemas;
               this.solucion!.problemas = problemas;
             },
-            error: (error: any) => {
-              console.error('Error al obtener los problemas: ', error);
-            }
+            error: (error: any) => console.error('Error al obtener los problemas: ', error)
           });
 
           this.storeSolucionesService.getBeneficiosBySolucion(this.solucion.id_solucion).subscribe({
             next: (beneficios: StoreBeneficios[]) => {
-              console.log('Beneficios obtenidos: ', beneficios);
               this.beneficios = beneficios;
               this.solucion!.beneficios = beneficios;
             },
-            error: (error: any) => {
-              console.error('Error al obtener los beneficios: ', error);
-            }
+            error: (error: any) => console.error('Error al obtener los beneficios: ', error)
+          });
+
+          this.storeSolucionesService.getCaracteristicasBySolucion(this.solucion.id_solucion).subscribe({
+            next: (caracteristicas: StoreCaracteristicas[]) => {
+              this.caracteristicas = caracteristicas;
+              this.solucion!.caracteristicas = caracteristicas;
+            },
+            error: (error: any) => console.error('Error al obtener las características: ', error)
           });
         },
-        error: (error: any) => {
-          console.error('Error al obtener la solución: ', error);
-        }
+        error: (error: any) => console.error('Error al obtener la solución: ', error)
       });
 
       this.storeSolucionesService.getAllProblemas().subscribe({
         next: (problemas: StoreProblemas[]) => {
-          console.log('Problemas disponibles: ', problemas);
           this.allProblemas = problemas;
           this.problemasFiltrados = problemas;
         },
-        error: (error: any) => {
-          console.error('Error al obtener los problemas: ', error);
-        }
+        error: (error: any) => console.error('Error al obtener los problemas: ', error)
       });
 
       this.storeSolucionesService.getAllBeneficios().subscribe({
         next: (beneficios: StoreBeneficios[]) => {
-          console.log('Beneficios disponibles: ', beneficios);
           this.allBeneficios = beneficios;
           this.beneficiosFiltrados = beneficios;
         },
-        error: (error: any) => {
-          console.error('Error al obtener los beneficios: ', error);
-        }
+        error: (error: any) => console.error('Error al obtener los beneficios: ', error)
+      });
+
+      this.storeSolucionesService.getAllCaracteristicas().subscribe({
+        next: (caracteristicas: StoreCaracteristicas[]) => {
+          this.allCaracteristicas = caracteristicas;
+          this.caracteristicasFiltradas = caracteristicas;
+        },
+        error: (error: any) => console.error('Error al obtener las características: ', error)
       });
     }
   }
+
 
   guardarCambios() {
     if (this.solucion) {
@@ -153,28 +170,36 @@ export class ModificarSolucionComponent implements OnInit {
             }
           });
 
+          this.caracteristicas.forEach(caracteristica => {
+            if (caracteristica.id_caracteristica) {
+              observables.push(
+                this.storeSolucionesService.asociarCaracteristicaASolucion(
+                  this.solucion!.id_solucion,
+                  caracteristica.id_caracteristica
+                )
+              );
+            }
+          });
+
           if (observables.length > 0) {
             forkJoin(observables).subscribe({
               next: () => {
-                console.log('Todos los beneficios y problemas han sido asociados correctamente');
+                console.log('Beneficios, problemas y características asociados correctamente');
                 this.router.navigate(['/store-soluciones']);
               },
-              error: (error) => {
-                console.error('Error al asociar beneficios o problemas:', error);
-              }
+              error: (error) => console.error('Error al asociar beneficios, problemas o características:', error)
             });
           } else {
             this.router.navigate(['/store-soluciones']);
           }
         },
-        error: (error: any) => {
-          console.error('Error al actualizar la solución:', error);
-        }
+        error: (error: any) => console.error('Error al actualizar la solución:', error)
       });
     } else {
       console.error('La solución no está definida');
     }
   }
+
 
   cancelar() {
     this.router.navigate(['/store-soluciones']);
@@ -190,6 +215,12 @@ export class ModificarSolucionComponent implements OnInit {
     this.buscadorProblema = problema.description;
     this.problemaSeleccionado = problema;
     this.mostrarOpcionesProblema = false;
+  }
+
+  seleccionarCaracteristica(caracteristica: StoreCaracteristicas) {
+    this.buscadorCaracteristica = caracteristica.description;
+    this.caracteristicaSeleccionada = caracteristica;
+    this.mostrarOpcionesCaracteristicas = false;
   }
 
   agregarBeneficio() {
@@ -299,6 +330,44 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  agregarCaracteristica() {
+    if (this.buscadorCaracteristica && this.solucion) {
+      const caracteristicaSeleccionada = this.caracteristicaSeleccionada ||
+        this.allCaracteristicas.find(
+          c => c.description.toLowerCase() === this.buscadorCaracteristica.toLowerCase()
+        );
+
+      if (caracteristicaSeleccionada) {
+        const yaExiste = this.caracteristicas.some(
+          c => c.id_caracteristica === caracteristicaSeleccionada.id_caracteristica
+        );
+
+        if (!yaExiste) {
+          this.caracteristicas.push(caracteristicaSeleccionada);
+          this.solucion.caracteristicas = this.caracteristicas;
+
+          this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
+            next: () => {
+              console.log('Característica agregada correctamente a la solución');
+            },
+            error: (error: any) => {
+              console.error('Error al agregar característica:', error);
+            }
+          });
+
+          this.buscadorCaracteristica = '';
+          this.caracteristicaSeleccionada = null;
+        } else {
+          console.error('Esta característica ya está agregada');
+        }
+      } else {
+        console.error('Característica no encontrada');
+      }
+    } else {
+      console.error('Debe seleccionar una característica antes de agregarla');
+    }
+  }
+
   eliminarBeneficio() {
     if (this.beneficioAEliminar !== null) {
       this.storeSolucionesService.deleteBeneficio(this.beneficioAEliminar).subscribe({
@@ -306,15 +375,12 @@ export class ModificarSolucionComponent implements OnInit {
           console.log('Beneficio eliminado correctamente de la base de datos');
 
           if (this.solucion && this.solucion.beneficios) {
-            // Actualizar la lista local de beneficios
             this.beneficios = this.beneficios.filter(
               beneficio => beneficio.id_beneficio !== this.beneficioAEliminar
             );
 
-            // Actualizar también la lista en el objeto solución
             this.solucion.beneficios = this.beneficios;
 
-            // Guardar los cambios en la solución para asegurar que se actualiza en la base de datos
             this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
               next: () => {
                 console.log('Solución actualizada después de eliminar beneficio');
@@ -344,21 +410,17 @@ export class ModificarSolucionComponent implements OnInit {
           console.log('Problema eliminado correctamente de la base de datos');
 
           if (this.solucion && this.solucion.problemas) {
-            // Filtrar el problema eliminado de la lista local
             this.problemas = this.problemas.filter(problema =>
               problema.id_problema !== this.problemaAEliminar
             );
 
-            // Actualizar también la lista en el objeto solución
             this.solucion.problemas = this.problemas;
 
-            // Si eliminamos todos los problemas o el problema principal, limpiar problemaPragma
             if (this.problemas.length === 0) {
               this.solucion.problemaPragma = null;
               this.solucion.problemaTitle = null;
             }
 
-            // Guardar los cambios en la solución para asegurar que se actualiza en la base de datos
             this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
               next: () => {
                 console.log('Solución actualizada después de eliminar problema');
@@ -380,6 +442,45 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  eliminarCaracteristica() {
+    if (this.caracteristicaAEliminar !== null) {
+      this.storeSolucionesService.deleteProblema(this.caracteristicaAEliminar).subscribe({
+        next: () => {
+          console.log('Problema eliminado correctamente de la base de datos');
+
+          if (this.solucion && this.solucion.caracteristicas) {
+            this.caracteristicas = this.caracteristicas.filter(caracteristica =>
+              caracteristica.id_caracteristica !== this.caracteristicaAEliminar
+            );
+
+            this.solucion.caracteristicas = this.caracteristicas;
+
+            if (this.caracteristicas.length === 0) {
+              this.solucion.caracteristicasPragma = null;
+              this.solucion.caracteristicasTitle = null;
+            }
+
+            this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
+              next: () => {
+                console.log('Solución actualizada después de eliminar característica');
+              },
+              error: (err) => {
+                console.error('Error al actualizar la solución después de eliminar característica:', err);
+              }
+            });
+          }
+
+          this.caracteristicaAEliminar = null;
+          this.mostrarModalCaracteristica = false;
+        },
+        error: (error) => {
+          console.error('Error al eliminar la característica:', error);
+          this.mostrarModalCaracteristica = false;
+        }
+      });
+    }
+  }
+
 
   filtrarBeneficios() {
     const filtro = this.buscadorBeneficio.toLowerCase().trim();
@@ -392,6 +493,13 @@ export class ModificarSolucionComponent implements OnInit {
     const filtro = this.buscadorProblema.toLowerCase().trim();
     this.problemasFiltrados = this.allProblemas.filter(problema =>
       problema.description.toLowerCase().includes(filtro)
+    );
+  }
+
+  filtrarCaracteristicas() {
+    const filtro = this.buscadorCaracteristica.toLowerCase().trim();
+    this.caracteristicasFiltradas = this.allCaracteristicas.filter(caracteristica =>
+      caracteristica.description.toLowerCase().includes(filtro)
     );
   }
 
@@ -455,6 +563,36 @@ export class ModificarSolucionComponent implements OnInit {
     });
   }
 
+  crearNuevaCaracteristica() {
+    this.mostrarCrearProblema = false;
+    this.mostrarBotonCrearCaracteristica = true;
+
+    if (!this.nuevaCaracteristica.description || !this.solucion) {
+      console.error('Debe ingresar una descripción y la solución debe estar cargada');
+      return;
+    }
+
+    this.storeSolucionesService.createCaracteristica(this.solucion.id_solucion, this.nuevaCaracteristica).subscribe({
+      next: (response) => {
+        console.log('Característica creada:', response);
+
+        const caracteristicaCreada: StoreCaracteristicas = {
+          id_caracteristica: response.caracteristica.id_caracteristica,
+          titulo: this.nuevaCaracteristica.titulo,
+          description: this.nuevaCaracteristica.description
+        };
+
+        this.allCaracteristicas.push(caracteristicaCreada);
+        this.filtrarCaracteristicas();
+
+        this.nuevaCaracteristica = { titulo: '', description: '' };
+      },
+      error: (error) => {
+        console.error('Error al crear la característica:', error);
+      }
+    });
+  }
+
   confirmarEliminarProblema(idProblema: number, event: MouseEvent) {
     event.stopPropagation();
     this.problemaAEliminar = idProblema;
@@ -475,6 +613,17 @@ export class ModificarSolucionComponent implements OnInit {
   cancelarEliminarBeneficio() {
     this.mostrarModalBeneficio = false;
     this.problemaAEliminar = null;
+  }
+
+  confirmarEliminarCaracteristica(idCaracteristica: number, event: MouseEvent) {
+    event.stopPropagation();
+    this.caracteristicaAEliminar = idCaracteristica;
+    this.mostrarModalCaracteristica = true;
+  }
+
+  cancelarEliminarCaracteristica() {
+    this.mostrarModalCaracteristica = false;
+    this.caracteristicaAEliminar = null;
   }
 
 }

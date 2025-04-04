@@ -5,6 +5,8 @@ import { switchMap, map } from 'rxjs/operators';
 
 /* Interfaces */
 
+/* StoreSoluciones */
+
 export interface StoreSoluciones {
   id_solucion: number;
   description: string;
@@ -38,12 +40,7 @@ export interface StoreSoluciones {
   deleted?: boolean;
   beneficios: StoreBeneficios[];
   problemas: StoreProblemas[];
-}
-
-export interface StoreBeneficios {
-  id_beneficio?: number;
-  titulo?: string;
-  description: string;
+  caracteristicas: StoreCaracteristicas[];
 }
 
 export interface UpdateStoreSolucionResponse {
@@ -56,6 +53,14 @@ export interface DeleteSolucionResponse {
   message: string;
 }
 
+/* Beneficios */
+
+export interface StoreBeneficios {
+  id_beneficio?: number;
+  titulo?: string;
+  description: string;
+}
+
 export interface CreateBeneficioResponse {
   message: string;
   beneficio: StoreBeneficios;
@@ -64,6 +69,8 @@ export interface CreateBeneficioResponse {
 export interface DeleteBeneficioResponse {
   message: string;
 }
+
+/* Problemas */
 
 export interface StoreProblemas {
   id_problema?: number;
@@ -80,15 +87,17 @@ export interface DeleteProblemaResponse {
   message: string;
 }
 
+/* Características */
+
 export interface StoreCaracteristicas {
-  id_problema?: number;
+  id_caracteristica?: number;
   titulo?: string;
   description: string;
 }
 
 export interface CreateCaracteristicaResponse {
   message: string;
-  beneficio: StoreCaracteristicas;
+  caracteristica: StoreCaracteristicas;
 }
 
 export interface DeleteCaracteristicaResponse {
@@ -301,7 +310,7 @@ export class StoreSolucionesService {
     return this.https.delete<DeleteCaracteristicaResponse>(url, { headers });
   } */
 
-  getCaracteristicaBySolucion(idSolucion: number): Observable<StoreCaracteristicas[]> {
+  getCaracteristicasBySolucion(idSolucion: number): Observable<StoreCaracteristicas[]> {
     const url = `${this.caracteristicasUrl}/listCaracteristicas/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<StoreCaracteristicas[]>(url, { headers });

@@ -148,45 +148,71 @@
 
       </div>
 
-      <!-- Sección de características y casos de uso -->
+      <!-- Sección de características -->
       <div class="seccion">
-        <h2 class="titulo-seccion">Características y Casos de Uso</h2>
+        <h2 class="titulo-seccion">Características</h2>
 
         <div class="subseccion">
-          <h3 class="titulo-subseccion">Características</h3>
-          <div class="grid-container">
-            <div class="form-group col-6">
-              <label for="caracteristicasTitle">Título de Características:</label>
-              <input [(ngModel)]="solucion.caracteristicasTitle" name="caracteristicasTitle" id="caracteristicasTitle"
-                placeholder="Título de características" />
+          <h3 class="titulo-subseccion">Crear características</h3>
+
+          <button *ngIf="mostrarBotonCrearCaracteristica" type="button"
+            (click)="mostrarCrearCaracteristica = true; mostrarBotonCrearCaracteristica = false">Crear Nueva Característica</button>
+
+          <form *ngIf="mostrarCrearCaracteristica === true" (ngSubmit)="crearNuevaCaracteristica()">
+            <div class="form-group">
+              <label for="nuevaCaracteristicaTitulo">Título:</label>
+              <input type="text" id="nuevaCaracteristicaTitulo" [(ngModel)]="nuevaCaracteristica.titulo"
+                name="nuevaCaracteristicaTitulo" required>
             </div>
+            <div class="form-group">
+              <label for="nuevaCaracteristicaDescripcion">Descripción:</label>
+              <textarea id="nuevaCaracteristicaDescripcion" [(ngModel)]="nuevaCaracteristica.description"
+                name="nuevaCaracteristicaDescripcion" required></textarea>
+            </div>
+            <button type="submit">Crear Característica</button>
+            <button type="button"
+              (click)="mostrarCrearCaracteristica = false; mostrarBotonCrearCaracteristica = true">Cancelar</button>
+          </form>
+        </div>
 
-            <br>
-
-            <div class="form-group col-6">
-              <label for="caracteristicasPragma">Descripción de Características:</label>
-              <textarea [(ngModel)]="solucion.caracteristicasPragma" name="caracteristicasPragma"
-                id="caracteristicasPragma" placeholder="Descripción de características"></textarea>
+        <div class="subseccion">
+          <h3 class="titulo-subseccion">Añadir características a la solución con ID {{ solucion.id_solucion }}</h3>
+          <div class="buscador-selector-container">
+            <div class="form-group col-12">
+              <label for="buscadorCaracteristica">Seleccionar Característica:</label>
+              <div class="custom-select">
+                <input type="text" id="buscadorCaracteristica" [(ngModel)]="buscadorCaracteristica"
+                  name="buscadorCaracteristica" (input)="filtrarCaracteristicas()"
+                  (focus)="mostrarOpcionesCaracteristicas = true" (click)="mostrarOpcionesCaracteristicas = true"
+                  placeholder="Buscar y seleccionar característica..." />
+                <div class="dropdown-menu" *ngIf="mostrarOpcionesCaracteristicas">
+                  <div *ngFor="let caracteristica of caracteristicasFiltradas" class="dropdown-item"
+                    (click)="seleccionarCaracteristica(caracteristica)">
+                    {{ caracteristica.description }}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
+        <div class="botones-container">
+          <button type="button" (click)="agregarCaracteristica()">Añadir Característica</button>
+        </div>
+
         <div class="subseccion">
-          <h3 class="titulo-subseccion">Casos de Uso</h3>
-          <div class="grid-container">
-            <div class="form-group col-6">
-              <label for="casosdeusoTitle">Título de Casos de Uso:</label>
-              <input [(ngModel)]="solucion.casosdeusoTitle" name="casosdeusoTitle" id="casosdeusoTitle"
-                placeholder="Título de casos de uso" />
-            </div>
-
-            <br>
-
-            <div class="form-group col-6">
-              <label for="casosdeusoPragma">Descripción de Casos de Uso:</label>
-              <textarea [(ngModel)]="solucion.casosdeusoPragma" name="casosdeusoPragma" id="casosdeusoPragma"
-                placeholder="Descripción de casos de uso"></textarea>
-            </div>
+          <h3 class="titulo-subseccion">Características asociadas a la solución con ID {{ solucion.id_solucion }} |
+            (Click a la característica que quiere eliminar)</h3>
+          <div *ngIf="solucion?.caracteristicas && solucion.caracteristicas.length">
+            <ul>
+              <p *ngFor="let caracteristica of solucion.caracteristicas; let i = index" id="descripciones"
+                (click)="caracteristica.id_caracteristica !== undefined ? confirmarEliminarCaracteristica(caracteristica.id_caracteristica, $event) : null">
+                Descripción: {{ caracteristica.description }}
+              </p>
+            </ul>
+          </div>
+          <div *ngIf="!solucion?.caracteristicas || solucion.caracteristicas.length === 0">
+            <p>No hay características asociadas a esta solución.</p>
           </div>
         </div>
       </div>
@@ -337,6 +363,23 @@
     </div>
     <div class="modal-footer">
       <button class="btn-cancelar" (click)="cancelarEliminarBeneficio()">Cancelar</button>
+      <button class="btn-eliminar" (click)="eliminarBeneficio()">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para eliminar característica -->
+<div class="modal-overlay" *ngIf="mostrarModalCaracteristica">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2>Confirmar eliminación</h2>
+    </div>
+    <div class="modal-body">
+      <p>¿Está seguro de que desea eliminar esta característica?</p>
+      <p class="warning-text">Esta acción no se puede deshacer.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cancelarEliminarCaracteristica()">Cancelar</button>
       <button class="btn-eliminar" (click)="eliminarBeneficio()">Eliminar</button>
     </div>
   </div>
