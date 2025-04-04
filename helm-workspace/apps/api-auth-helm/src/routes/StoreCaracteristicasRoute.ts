@@ -22,4 +22,9 @@ router.post('/createCaracteristicas/:idSolucion', storeCaracteristicasController
  */
 router.post('/asociarCaracteristica', storeCaracteristicasController.asociarCaracteristica);
 
+/**
+ * @description Eliminacion de una caracteristica específica por su ID
+ */
+router.delete('/deleteCaracteristicas/:idCaracteristica', storeCaracteristicasController.deleteCaracteristica);
+
 export default router;

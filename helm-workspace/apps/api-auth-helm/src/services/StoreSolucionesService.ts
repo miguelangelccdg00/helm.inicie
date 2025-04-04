@@ -2,7 +2,7 @@ import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
 import { StoreSoluciones } from '../models/storeSoluciones';
 
 class StoreSolucionesService 
-{
+{    
     /**
      * Obtiene todas las soluciones almacenadas en la base de datos
      */
@@ -82,6 +82,16 @@ class StoreSolucionesService
             [idSolucion, idProblema]
         );
         return { message: 'Asociación entre problema y solución eliminada correctamente' };
+    }
+
+    async removeCaracteristicaFromSolucion(idSolucion: number, idCaracteristica: number)
+    {
+         // Elimina solo la asociación en la tabla de relaciones
+         await pool.promise().query(
+            'DELETE FROM storeSolucionesCaracteristicas WHERE id_solucion = ? AND id_caracteristica = ?', 
+            [idSolucion, idCaracteristica]
+        );
+        return { message: 'Asociación entre caracteristica y solución eliminada correctamente' };
     }
 }
 

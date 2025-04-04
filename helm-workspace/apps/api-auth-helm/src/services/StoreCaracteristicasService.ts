@@ -169,6 +169,35 @@ class StoreCaracteristicasService
         return rows;
     }
 
+    async deleteCaracteristica(idCaracteristica: number): Promise<boolean>
+    {
+        const conn = await pool.promise().getConnection();
+
+        try
+        {
+            await conn.beginTransaction();
+
+            const [relacionResult]: any = await conn.query(
+                'DELETE FROM storeSolucionesCaracteristicas WHERE id_caracteristica = ?',[idCaracteristica]);
+
+            const [caracteristicaResult]: any = await conn.query(
+                'DELETE FROM storeCaracteristicas WHERE id_caracteristica = ?',[idCaracteristica]);
+
+            await conn.commit();
+
+            return caracteristicaResult.affectedRows > 0;
+        }
+        catch (error)
+        {
+            await conn.rollback();
+            console.error('Error al eliminar la caracteristica:', error);
+            throw error;
+        }
+        finally
+        {
+            conn.release();
+        }
+    }
 
 }
 

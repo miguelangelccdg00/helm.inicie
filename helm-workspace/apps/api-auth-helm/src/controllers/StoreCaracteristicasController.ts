@@ -154,6 +154,67 @@ class StoreCaracteristicasController
             res.status(500).json({ message: 'Error interno del servidor' });
         }
     }
+
+    async deleteCaracteristica(req:Request, res: Response): Promise<void>
+    {
+        try 
+        {
+            const { idCaracteristica } = req.params;
+
+            if(!idCaracteristica)
+            {
+                res.status(401).json({message: 'ID no proporcionado' });
+                return;
+            }
+            
+            const wasDeleted = await StoreCaracteristicasService.deleteCaracteristica(Number(idCaracteristica));
+            
+            if (!wasDeleted) 
+            {
+                res.status(404).json({ message: 'Caracteristica no encontrado o ya eliminado' });
+                return;   
+            }
+
+            res.status(201).json({ message: 'Caracteristica eliminado correctamente' })
+
+        }   
+        catch (error) 
+        {
+            console.error('Error al eliminar la caracteristica:', error);
+            res.status(500).json({ message: 'Error interno en el servidor' });
+        }
+    }
+
+    /**
+     * Elimina la asociación entre una caracteristica y una solución sin eliminar la caracteristica.
+     */
+    async removeCaracteristicaFromSolucion(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
+            const { idSolucion, idCaracteristica } = req.params;
+
+            if (!idSolucion || !idCaracteristica) 
+            {
+                res.status(400).json({ message: 'IDs de solución y caracteristica son requeridos' });
+                return;
+            }
+
+            await storeSolucionesService.removeCaracteristicaFromSolucion(
+                Number(idSolucion), 
+                Number(idCaracteristica)
+            );
+
+            res.status(200).json({ 
+                message: 'Caracteristica desasociado de la solución correctamente' 
+            });
+        } 
+        catch (error) 
+        {
+            console.error('Error al desasociar el caracteristica de la solución:', error);
+            res.status(500).json({ message: 'Error interno en el servidor' });
+        }
+    }
  
 }
 
