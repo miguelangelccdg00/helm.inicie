@@ -8,6 +8,7 @@ import storeBeneficiosRoute from './routes/StoreBeneficiosRoute';
 import storeProblemasRoute from './routes/StoreProblemasRoute';
 import storeCaracteristicasRoute from './routes/StoreCaracteristicasRoute';
 import menuRoutes from './routes/MenuRoute';
+import tokenRoute from './routes/TokenRoute';
 import path from 'path';
 
 const app = express();
@@ -26,6 +27,7 @@ app.use('/storeBeneficios', storeBeneficiosRoute);
 app.use('/storeProblemas', storeProblemasRoute);
 app.use('/storeCaracteristicas', storeCaracteristicasRoute);
 app.use('/menu', menuRoutes);
+app.use('/token', tokenRoute);
 /** 
  * Ruta que muestra información sobre los endpoints disponibles
  */
