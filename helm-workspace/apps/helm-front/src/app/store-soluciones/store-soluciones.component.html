@@ -2,12 +2,15 @@
   <app-menu class="menu-lateral"></app-menu>
   
   <div class="contenido-principal">
-    <h1>Store soluciones</h1>
+
+    <div class="header">
+      <h1>Store soluciones</h1>
     
-    <input type="text" placeholder="Buscar solución por descripción..." class="buscador" [(ngModel)]="filtroDescripcion" (input)="filtrarSoluciones()">
+      <input type="text" placeholder="Buscar solución por descripción..." class="buscador" [formControl]="filtroDescripcion">
+    </div>
 
     <table>
-      <thead>
+      <thead> 
         <tr>
           <th>Icono</th>
           <th>Descripción</th>

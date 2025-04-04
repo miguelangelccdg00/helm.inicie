@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { StoreSolucionesService, StoreSoluciones } from '../services/store-soluciones.service';
 import { MenuComponent } from '../menu/menu.component';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-store-soluciones',
   standalone: true,
-  imports: [CommonModule, MenuComponent, FormsModule],
+  imports: [CommonModule, MenuComponent, FormsModule, ReactiveFormsModule],
   templateUrl: './store-soluciones.component.html',
   styleUrls: ['./store-soluciones.component.sass'],
   encapsulation: ViewEncapsulation.None 
@@ -17,9 +18,8 @@ export class StoreSolucionesComponent implements OnInit {
 
   storeSoluciones: StoreSoluciones[] = [];
   solucionesFiltradas: StoreSoluciones[] = [];
-  filtroDescripcion: string = '';
+  filtroDescripcion = new FormControl('');
   
-  // Variables para el modal
   mostrarModal: boolean = false;
   solucionAEliminar: number | null = null;
 
@@ -27,6 +27,10 @@ export class StoreSolucionesComponent implements OnInit {
 
   ngOnInit() {
     this.cargarSoluciones();
+
+    this.filtroDescripcion.valueChanges
+      .pipe(debounceTime(500))
+      .subscribe(filtro => this.filtrarSoluciones(filtro || ''));
   }
 
   cargarSoluciones() {
@@ -46,26 +50,23 @@ export class StoreSolucionesComponent implements OnInit {
     this.router.navigate(['modificar-solucion', idSolucion]);
   }
 
-  // Método para abrir el modal de confirmación
   confirmarEliminarSolucion(idSolucion: number, event: MouseEvent) {
     event.stopPropagation();
     this.solucionAEliminar = idSolucion;
     this.mostrarModal = true;
   }
 
-  // Método para cancelar la eliminación
   cancelarEliminarSolucion() {
     this.mostrarModal = false;
     this.solucionAEliminar = null;
   }
 
-  // Método para confirmar y ejecutar la eliminación
   eliminarSolucion() {
     if (this.solucionAEliminar) {
       this.storeSolucionesService.deleteStoreSolucion(this.solucionAEliminar).subscribe({
         next: () => {
           this.storeSoluciones = this.storeSoluciones.filter(solucion => solucion.id_solucion !== this.solucionAEliminar);
-          this.filtrarSoluciones();
+          this.filtrarSoluciones(this.filtroDescripcion.value || '');
           console.log(`Solución con id ${this.solucionAEliminar} eliminada correctamente`);
           this.mostrarModal = false;
           this.solucionAEliminar = null;
@@ -83,10 +84,16 @@ export class StoreSolucionesComponent implements OnInit {
     return solucion.id_solucion;
   }
 
-  filtrarSoluciones() {
-    const filtro = this.filtroDescripcion.toLowerCase().trim();
+  filtrarSoluciones(filtro: string) {
+    const filtroLimpio = filtro.toLowerCase().trim();
+    
+    if (filtroLimpio.length < 3) {
+      this.solucionesFiltradas = this.storeSoluciones;
+      return;
+    }
+
     this.solucionesFiltradas = this.storeSoluciones.filter(solucion =>
-      solucion.description.toLowerCase().includes(filtro)
+      solucion.description.toLowerCase().includes(filtroLimpio)
     );
   }
 }
