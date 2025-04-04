@@ -304,11 +304,11 @@ export class StoreSolucionesService {
     return this.https.post<CreateCaracteristicaResponse>(url, caracteristicaToCreate, { headers });
   }
 
-  /* deleteCaracteristica(idCaracteristica: number): Observable<DeleteCaracteristicaResponse> {
-    const url = `${this.caracteristicasUrl}/deleteProblema/${idCaracteristica}`;
+  deleteCaracteristica(idCaracteristica: number): Observable<DeleteCaracteristicaResponse> {
+    const url = `${this.caracteristicasUrl}/deleteCaracteristicas/${idCaracteristica}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete<DeleteCaracteristicaResponse>(url, { headers });
-  } */
+  }
 
   getCaracteristicasBySolucion(idSolucion: number): Observable<StoreCaracteristicas[]> {
     const url = `${this.caracteristicasUrl}/listCaracteristicas/${idSolucion}`;
