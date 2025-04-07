@@ -72,6 +72,26 @@
       <div class="seccion">
         <h2 class="titulo-seccion">Problema y Solución</h2>
 
+        <div *ngIf="mostrarModificarProblema === true" class="subseccion">
+          <h3 class="titulo-subseccion">Modificar problema</h3>
+
+          <form (ngSubmit)="modificarProblema()">
+            <div class="grid-container">
+          
+              <div class="form-group col-6">
+                <label for="nuevoProblemaDescription">Descripción:</label>
+                <textarea id="nuevoProblemaDescription" [(ngModel)]="nuevoProblema.description"
+                  name="nuevoProblemaDescription" required placeholder="Descripción del problema"></textarea>
+              </div>
+            </div>
+            <div class="botones-container">
+              <button type="submit">Modificar</button>
+              <button type="button"
+                (click)="mostrarModificarProblema = false; mostrarBotonModificarProblema = true">Cancelar</button>
+            </div>
+          </form>
+        </div>
+
         <div *ngIf="mostrarCrearProblema === true" class="subseccion">
           <h3 class="titulo-subseccion">Crear y añadir problema</h3>
 
@@ -134,7 +154,7 @@
                 <tr *ngFor="let problema of solucion.problemas; let i = index">
                   <td>{{ problema.description }}</td>
                   <td>
-                    <span class="emojis">
+                    <span (click)="seleccionarProblema(problema); mostrarModificarProblema = true" class="emojis">
                       ✏️
                     </span>
                   </td>
@@ -151,7 +171,7 @@
           <div *ngIf="!solucion?.problemas || solucion.problemas.length === 0">
             <p>No hay problemas asociados a esta solución.</p>
           </div>
-        </div>
+        </div>  
       </div>
 
 
@@ -159,6 +179,26 @@
       <div class="seccion">
         <h2 class="titulo-seccion">Características</h2>
 
+        <div *ngIf="mostrarModificarCaracteristica === true" class="subseccion">
+          <h3 class="titulo-subseccion">Modificar característica</h3>
+        
+          <form (ngSubmit)="modificarCaracteristica()">
+            <div class="grid-container">
+              <div class="form-group col-6">
+                <label for="nuevaCaracteristicaDescription">Descripción:</label>
+                <textarea id="nuevaCaracteristicaDescription" [(ngModel)]="nuevaCaracteristica.description"
+                  name="nuevaCaracteristicaDescription" required
+                  placeholder="Descripción de la característica"></textarea>
+              </div>
+            </div>
+            <div class="botones-container">
+              <button type="submit">Modificar</button>
+              <button type="button"
+                (click)="mostrarModificarCaracteristica = false; mostrarBotonModificarCaracteristica = true">Cancelar</button>
+            </div>
+          </form>
+        </div>
+        
         <div *ngIf="mostrarCrearCaracteristica === true" class="subseccion">
           <h3 class="titulo-subseccion">Crear y añadir característica</h3>
 
@@ -223,7 +263,7 @@
                 <tr *ngFor="let caracteristica of solucion.caracteristicas; let i = index">
                   <td>{{ caracteristica.description }}</td>
                   <td>
-                    <span class="emojis">
+                    <span (click)="seleccionarCaracteristica(caracteristica); mostrarModificarCaracteristica = true" class="emojis">
                       ✏️
                     </span>
                   </td>
@@ -290,6 +330,26 @@
       <div class="seccion">
         <h2 class="titulo-seccion">Beneficios</h2>
 
+        <div *ngIf="mostrarModificarBeneficio === true" class="subseccion">
+          <h3 class="titulo-subseccion">Modificar beneficio</h3>
+
+          <form (ngSubmit)="modificarBeneficio()">
+            <div class="grid-container">
+          
+              <div class="form-group col-6">
+                <label for="nuevoBeneficioDescription">Descripción:</label>
+                <textarea id="nuevoBeneficioDescription" [(ngModel)]="nuevoBeneficio.description"
+                  name="nuevoBeneficioDescription" required placeholder="Descripción del beneficio"></textarea>
+              </div>
+            </div>
+            <div class="botones-container">
+              <button type="submit">Modificar</button>
+              <button type="button"
+                (click)="mostrarModificarBeneficio = false; mostrarBotonModificarBeneficio = true">Cancelar</button>
+            </div>
+          </form>
+        </div>
+
         <div *ngIf="mostrarCrearBeneficio === true" class="subseccion">
           <h3 class="titulo-subseccion">Crear y añadir beneficio</h3>
 
@@ -348,7 +408,7 @@
                 <tr *ngFor="let beneficio of solucion.beneficios; let i = index">
                   <td>{{ beneficio.description }}</td>
                   <td>
-                    <span class="emojis">
+                    <span (click)="seleccionarBeneficio(beneficio); mostrarModificarBeneficio = true" class="emojis">
                       ✏️
                     </span>
                   </td>

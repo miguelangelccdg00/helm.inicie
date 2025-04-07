@@ -25,8 +25,10 @@ export class ModificarSolucionComponent implements OnInit {
   problemasFiltrados: StoreProblemas[] = [];
   problemaSeleccionado: StoreProblemas | null = null;
   mostrarCrearProblema: boolean = false;
+  mostrarModificarProblema: boolean = false;
   mostrarOpcionesProblema: boolean = false;
   mostrarBotonCrearProblema: boolean = true;
+  mostrarBotonModificarProblema: boolean = false;
   problemaAEliminar: number | null = null;
 
   nuevoBeneficio: StoreBeneficios = { titulo: '', description: '' };
@@ -37,7 +39,9 @@ export class ModificarSolucionComponent implements OnInit {
   beneficioSeleccionado: StoreBeneficios | null = null;
   mostrarOpciones: boolean = false;
   mostrarCrearBeneficio: boolean = false;
+  mostrarModificarBeneficio: boolean = false;
   mostrarBotonCrear: boolean = true;
+  mostrarBotonModificarBeneficio: boolean = false;
   beneficioAEliminar: number | null = null;
 
   nuevaCaracteristica: StoreCaracteristicas = { titulo: '', description: '' };
@@ -47,8 +51,10 @@ export class ModificarSolucionComponent implements OnInit {
   caracteristicasFiltradas: StoreCaracteristicas[] = [];
   caracteristicaSeleccionada: StoreCaracteristicas | null = null;
   mostrarCrearCaracteristica: boolean = false;
+  mostrarModificarCaracteristica: boolean = false;
   mostrarOpcionesCaracteristicas: boolean = false;
   mostrarBotonCrearCaracteristica: boolean = true;
+  mostrarBotonModificarCaracteristica: boolean = false;
   caracteristicaAEliminar: number | null = null;
 
 
@@ -209,18 +215,21 @@ export class ModificarSolucionComponent implements OnInit {
   seleccionarBeneficio(beneficio: StoreBeneficios) {
     this.buscadorBeneficio = beneficio.description;
     this.beneficioSeleccionado = beneficio;
+    this.nuevoBeneficio = { ...beneficio };
     this.mostrarOpciones = false;
   }
 
   seleccionarProblema(problema: StoreProblemas) {
     this.buscadorProblema = problema.description;
     this.problemaSeleccionado = problema;
+    this.nuevoProblema = { ...problema };
     this.mostrarOpcionesProblema = false;
   }
 
   seleccionarCaracteristica(caracteristica: StoreCaracteristicas) {
     this.buscadorCaracteristica = caracteristica.description;
     this.caracteristicaSeleccionada = caracteristica;
+    this.nuevaCaracteristica = { ...caracteristica };
     this.mostrarOpcionesCaracteristicas = false;
   }
 
@@ -573,17 +582,14 @@ export class ModificarSolucionComponent implements OnInit {
       return;
     }
 
-    // Primero actualizamos la solución con los datos de la característica
     if (this.solucion) {
       this.solucion.caracteristicasTitle = this.nuevaCaracteristica.titulo || this.solucion.caracteristicasTitle;
       this.solucion.caracteristicasPragma = this.nuevaCaracteristica.description;
-      
-      // Actualizamos primero la solución para asegurar que los campos se guarden
+
       this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
         next: () => {
           console.log('Solución actualizada con los datos de la característica');
-          
-          // Luego creamos la característica
+
           this.storeSolucionesService.createCaracteristica(this.solucion!.id_solucion, this.nuevaCaracteristica).subscribe({
             next: (response) => {
               console.log('Característica creada:', response);
@@ -597,10 +603,9 @@ export class ModificarSolucionComponent implements OnInit {
               this.allCaracteristicas.push(caracteristicaCreada);
               this.filtrarCaracteristicas();
 
-              // Asociamos la característica a la solución
               if (response.caracteristica.id_caracteristica) {
                 this.storeSolucionesService.asociarCaracteristicaASolucion(
-                  this.solucion!.id_solucion, 
+                  this.solucion!.id_solucion,
                   response.caracteristica.id_caracteristica
                 ).subscribe({
                   next: () => console.log('Característica asociada correctamente'),
@@ -653,6 +658,84 @@ export class ModificarSolucionComponent implements OnInit {
   cancelarEliminarCaracteristica() {
     this.mostrarModalCaracteristica = false;
     this.caracteristicaAEliminar = null;
+  }
+
+  modificarProblema() {
+    console.log('Modificando problema...', this.nuevoProblema, this.problemaSeleccionado);
+  
+    if (!this.nuevoProblema || !this.nuevoProblema.description) {
+      console.error('Debe ingresar la descripción del problema');
+      return;
+    }
+  
+    if (this.problemaSeleccionado && this.problemaSeleccionado.id_problema !== undefined) {
+      console.log('ID problema a modificar:', this.problemaSeleccionado.id_problema);
+      this.storeSolucionesService.modifyProblema(this.problemaSeleccionado.id_problema, this.nuevoProblema)
+        .subscribe({
+          next: (updatedProblema: StoreProblemas) => {
+            console.log('Problema actualizado correctamente:', updatedProblema);
+            this.mostrarModificarProblema = false;
+            this.mostrarBotonModificarProblema = true;
+          },
+          error: (error) => {
+            console.error('Error al modificar el problema:', error);
+          }
+        });
+    } else {
+      console.error('Problema no seleccionado o id_problema inválido');
+    }
+  }
+
+  modificarCaracteristica() {
+    console.log('Modificando característica..', this.nuevaCaracteristica, this.caracteristicaSeleccionada);
+  
+    if (!this.nuevaCaracteristica || !this.nuevaCaracteristica.description) {
+      console.error('Debe ingresar la descripción de la característica');
+      return;
+    }
+  
+    if (this.caracteristicaSeleccionada && this.caracteristicaSeleccionada.id_caracteristica !== undefined) {
+      console.log('ID caracteristica a modificar:', this.caracteristicaSeleccionada.id_caracteristica);
+      this.storeSolucionesService.modifyCaracteristica(this.caracteristicaSeleccionada.id_caracteristica, this.nuevaCaracteristica)
+        .subscribe({
+          next: (updatedCaracteristica: StoreCaracteristicas) => {
+            console.log('Característica actualizada correctamente:', updatedCaracteristica);
+            this.mostrarModificarCaracteristica = false;
+            this.mostrarBotonModificarCaracteristica = true;
+          },
+          error: (error) => {
+            console.error('Error al modificar la característica:', error);
+          }
+        });
+    } else {
+      console.error('Característica no seleccionada o id_caracteristica inválido');
+    }
+  }
+
+  modificarBeneficio() {
+    console.log('Modificando beneficio..', this.nuevoBeneficio, this.beneficioSeleccionado);
+  
+    if (!this.nuevoBeneficio || !this.nuevoBeneficio.description) {
+      console.error('Debe ingresar la descripción del beneficio');
+      return;
+    }
+  
+    if (this.beneficioSeleccionado && this.beneficioSeleccionado.id_beneficio !== undefined) {
+      console.log('ID beneficio a modificar:', this.beneficioSeleccionado.id_beneficio);
+      this.storeSolucionesService.modifyBeneficio(this.beneficioSeleccionado.id_beneficio, this.nuevoBeneficio)
+        .subscribe({
+          next: (updatedBeneficio: StoreBeneficios) => {
+            console.log('Beneficio actualizado correctamente:', updatedBeneficio);
+            this.mostrarModificarBeneficio = false;
+            this.mostrarBotonModificarBeneficio = true;
+          },
+          error: (error) => {
+            console.error('Error al modificar el beneficio:', error);
+          }
+        });
+    } else {
+      console.error('Beneficio no seleccionado o id_beneficio inválido');
+    }
   }
 
 }
