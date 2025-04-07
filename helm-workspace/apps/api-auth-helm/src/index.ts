@@ -26,7 +26,7 @@ app.use('/login', loginRoutes);
 app.use('/registro', registroRoutes);
 
 // Middleware para proteger todas las rutas siguientes
-//app.use(verifyToken);
+app.use(verifyToken);
 
 // Rutas protegidas
 app.use('/storeSolucion', storeSolucionesRoute);
