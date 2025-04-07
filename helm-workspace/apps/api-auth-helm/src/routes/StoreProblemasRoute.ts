@@ -23,6 +23,11 @@ router.post('/createProblema/:idSolucion', storeProblemasController.createProble
 router.post('/asociarProblema', storeProblemasController.asociarProblema);
 
 /**
+ * @description Modifica un problema específico por su ID
+ */
+router.put('/modifyStoreProblema/:id', storeProblemasController.modifyStoreProblemas);
+
+/**
  * @description Eliminacion de un problema específica por su ID
  */
 router.delete('/deleteProblema/:idProblema', storeProblemasController.deleteProblema);

@@ -23,6 +23,11 @@ router.post('/createBeneficio/:idSolucion', storeBeneficiosController.createBene
 router.post('/asociarBeneficio', storeBeneficiosController.asociarBeneficio);
 
 /**
+ * @description Modifica un beneficio específico por su ID
+ */
+router.put('/modifyStoreBeneficio/:id', storeBeneficiosController.modifyStoreBeneficios);
+
+/**
  * @description Eliminacion de un beneficio específica por su ID
  */
 router.delete('/deleteBeneficio/:idBeneficio', storeBeneficiosController.deleteBeneficio);

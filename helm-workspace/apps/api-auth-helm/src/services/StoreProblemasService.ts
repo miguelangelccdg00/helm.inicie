@@ -170,6 +170,12 @@ class StoreProblemasService
         }
     }
 
+    async update(id: number, updateData: Partial<StoreProblemas>) 
+    {
+        await pool.promise().query('UPDATE storeProblemas SET ? WHERE id_problema = ?', [updateData, id]);
+        return { message: 'Problema actualizado' };
+    }
+
     /**
      * Elimina la asociación de un problema con una solución sin eliminar el problema.
      */

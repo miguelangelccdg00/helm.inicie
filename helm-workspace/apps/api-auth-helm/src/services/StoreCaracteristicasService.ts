@@ -1,4 +1,5 @@
 import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
+import { StoreCaracteristicas } from '../models/storeCaracteristicas.js';
 
 class StoreCaracteristicasService
 {
@@ -174,6 +175,12 @@ class StoreCaracteristicasService
             [idSolucion]  
         );
         return rows;
+    }
+
+    async update(id: number, updateData: Partial<StoreCaracteristicas>) 
+    {
+        await pool.promise().query('UPDATE storeCaracteristicas SET ? WHERE id_caracteristica = ?', [updateData, id]);
+        return { message: 'Caracteristica actualizada' };
     }
 
     async deleteCaracteristica(idCaracteristica: number): Promise<boolean>

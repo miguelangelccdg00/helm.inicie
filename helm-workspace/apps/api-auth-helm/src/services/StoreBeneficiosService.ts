@@ -63,6 +63,16 @@ class StoreBeneficiosServices
         return rows;
     }
 
+    /**
+     * Actualiza una solución específica en la base de datos
+     */
+    async update(id: number, updateData: Partial<StoreBeneficios>) 
+    {
+        await pool.promise().query('UPDATE storeBeneficios SET ? WHERE id_beneficio = ?', [updateData, id]);
+        return { message: 'Beneficio actualizado' };
+    }
+
+
     async deleteBeneficio(idBeneficio: number): Promise<boolean> 
     {
         const conn = await pool.promise().getConnection();

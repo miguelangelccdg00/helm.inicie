@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import storeBeneficiosService from '../services/StoreBeneficiosService';
+import StoreBeneficiosService from '../services/StoreBeneficiosService';
 
 /**
  * Controlador para gestionar los beneficios asociados a soluciones.
@@ -104,6 +105,45 @@ class StoreBeneficiosControllers
         {
             console.error('Error obteniendo beneficios:', error);
             res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    }
+
+    /**
+     * Modifica una beneficio almacenada en la base de datos.
+     * 
+     * @param {Request} req - Objeto de solicitud HTTP que contiene el parámetro `id` en los parámetros de la URL y los datos a modificar en el cuerpo de la solicitud.
+     * @param {string} req.params.id - El ID de la solución que se desea modificar.
+     * @param {Object} req.body - El objeto que contiene los datos para actualizar la solución.
+     * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+     * 
+     * @returns {Promise<void>} Devuelve el resultado de la actualización de la solución.
+     */
+    async modifyStoreBeneficios(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
+            const { id } = req.params;
+            const updateData = req.body;
+
+            if (!id) 
+            {
+                res.status(400).json({ message: 'ID no proporcionado' });
+                return;
+            }
+
+            if (!Object.keys(updateData).length) 
+            {
+                res.status(400).json({ message: 'No se proporcionaron datos' });
+                return;
+            }
+
+            const result = await StoreBeneficiosService.update(Number(id), updateData);
+            res.json(result);
+        } 
+        catch (error) 
+        {
+            console.error('Error al modificar storeSoluciones:', error);
+            res.status(500).json({ message: 'Error interno en el servidor' });
         }
     }
 

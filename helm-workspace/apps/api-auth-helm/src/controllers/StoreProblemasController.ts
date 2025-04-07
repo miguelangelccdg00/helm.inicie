@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import storeProblemasService from '../services/StoreProblemasService';
 import storeSolucionesService from '../services/StoreSolucionesService';
+import StoreProblemasService from '../services/StoreProblemasService';
 
 /**
  * Controlador para gestionar los problemas asociados a soluciones.
@@ -205,6 +206,44 @@ class StoreProblemasController
         }
     }
 
+    /**
+     * Modifica una caracteristica almacenada en la base de datos.
+     * 
+     * @param {Request} req - Objeto de solicitud HTTP que contiene el parámetro `id` en los parámetros de la URL y los datos a modificar en el cuerpo de la solicitud.
+     * @param {string} req.params.id - El ID de la solución que se desea modificar.
+     * @param {Object} req.body - El objeto que contiene los datos para actualizar la solución.
+     * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+     * 
+     * @returns {Promise<void>} Devuelve el resultado de la actualización de la solución.
+     */
+    async modifyStoreProblemas(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
+            const { id } = req.params;
+            const updateData = req.body;
+
+            if (!id) 
+            {
+                res.status(400).json({ message: 'ID no proporcionado' });
+                return;
+            }
+
+            if (!Object.keys(updateData).length) 
+            {
+                res.status(400).json({ message: 'No se proporcionaron datos' });
+                return;
+            }
+
+            const result = await StoreProblemasService.update(Number(id), updateData);
+            res.json(result);
+        } 
+        catch (error) 
+        {
+            console.error('Error al modificar storeProblemas:', error);
+            res.status(500).json({ message: 'Error interno en el servidor' });
+        }
+    }
     /**
      * Desasocia un problema de una solución sin eliminarlo.
      *

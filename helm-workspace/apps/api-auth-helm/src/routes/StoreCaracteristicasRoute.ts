@@ -23,6 +23,11 @@ router.post('/createCaracteristicas/:idSolucion', storeCaracteristicasController
 router.post('/asociarCaracteristica', storeCaracteristicasController.asociarCaracteristica);
 
 /**
+ * @description Modifica un beneficio específico por su ID
+ */
+router.put('/modifyStoreCaracteristica/:id', storeCaracteristicasController.modifyStoreCaracteristicas);
+
+/**
  * @description Eliminacion de una caracteristica específica por su ID
  */
 router.delete('/deleteCaracteristicas/:idCaracteristica', storeCaracteristicasController.deleteCaracteristica);
