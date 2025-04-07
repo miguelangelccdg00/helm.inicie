@@ -178,12 +178,14 @@ h1
     
     // Tablas
     table
-        width: 100%
+        width: 90%
         border-collapse: collapse
         margin-bottom: $spacing-standard
+        text-align: center
+        margin: 0 auto
+
         
         th
-            text-align: left
             padding: 10px
             border-bottom: 1px solid $azul-principal
             font-weight: 500
@@ -192,9 +194,10 @@ h1
             padding: 10px
             border-bottom: 1px solid $gris-borde
         
-        tr:hover
-            background-color: $azul-hover
-        
+        tbody 
+            tr:hover
+                background-color: $azul-hover
+
         // Filas anidadas
         .nested-table
             margin-left: 20px
@@ -420,3 +423,14 @@ button
     
     &:hover
       background-color: darken(#e74c3c, 10%)
+
+.crear-beneficio-opcion
+  font-weight: bold
+  color: #007bff
+  cursor: pointer
+
+.crear-beneficio-opcion:hover
+  text-decoration: underline
+
+.emojis
+    cursor: pointer

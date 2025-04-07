@@ -74,7 +74,6 @@
 
         <div class="subseccion">
           <h3 class="titulo-subseccion">Crear problemas</h3>
-
           <button *ngIf="mostrarBotonCrearProblema" type="button"
             (click)="mostrarCrearProblema = true; mostrarBotonCrearProblema = false">Crear Nuevo Problema</button>
 
@@ -103,7 +102,7 @@
         </div>
 
         <div class="subseccion">
-          <h3 class="titulo-subseccion">Añadir problemas a la solución con ID {{ solucion.id_solucion }}</h3>
+          <h3 class="titulo-subseccion">Añadir problemas a la solución: {{ solucion.description }}</h3>
 
           <div class="buscador-selector-container">
             <div class="form-group col-12">
@@ -128,22 +127,40 @@
         </div>
 
         <div class="subseccion">
-          <h3 class="titulo-subseccion">Problemas asociados a la solución con ID {{ solucion.id_solucion }} | (Click al
-            problema que quiere eliminar)</h3>
+          <h3 class="titulo-subseccion">Problemas asociados a la solución: {{ solucion.description }}</h3>
           <div *ngIf="solucion?.problemas && solucion.problemas.length">
-            <ul>
-              <p *ngFor="let problema of solucion.problemas; let i = index" id="descripciones"
-                (click)="problema.id_problema !== undefined ? confirmarEliminarProblema(problema.id_problema, $event) : null">
-                Título: {{ problema.titulo }} | Descripción: {{ problema.description }}
-              </p>
-            </ul>
+            <table>
+              <thead>
+                <tr>
+                  <th>Descripción del Problema</th>
+                  <th>Editar</th>
+                  <th>Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let problema of solucion.problemas; let i = index">
+                  <td>{{ problema.description }}</td>
+                  <td>
+                    <span class="emojis">
+                      ✏️
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      class="emojis" (click)="problema.id_problema !== undefined ? confirmarEliminarProblema(problema.id_problema, $event) : null">
+                      🗑️
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div *ngIf="!solucion?.problemas || solucion.problemas.length === 0">
             <p>No hay problemas asociados a esta solución.</p>
           </div>
         </div>
-
       </div>
+
 
       <!-- Sección de características -->
       <div class="seccion">
@@ -169,7 +186,8 @@
               <div class="form-group col-6">
                 <label for="nuevaCaracteristicaDescripcion">Descripción:</label>
                 <textarea id="nuevaCaracteristicaDescripcion" [(ngModel)]="nuevaCaracteristica.description"
-                  name="nuevaCaracteristicaDescripcion" required placeholder="Descripción de la característica"></textarea>
+                  name="nuevaCaracteristicaDescripcion" required
+                  placeholder="Descripción de la característica"></textarea>
               </div>
             </div>
             <div class="botones-container">
@@ -181,7 +199,7 @@
         </div>
 
         <div class="subseccion">
-          <h3 class="titulo-subseccion">Añadir características a la solución con ID {{ solucion.id_solucion }}</h3>
+          <h3 class="titulo-subseccion">Añadir características a la solución: {{ solucion.description }}</h3>
           <div class="buscador-selector-container">
             <div class="form-group col-12">
               <label for="buscadorCaracteristica">Seleccionar Característica:</label>
@@ -206,15 +224,33 @@
         </div>
 
         <div class="subseccion">
-          <h3 class="titulo-subseccion">Características asociadas a la solución con ID {{ solucion.id_solucion }} |
-            (Click a la característica que quiere eliminar)</h3>
+          <h3 class="titulo-subseccion">Características asociadas a la solución: {{ solucion.description }}</h3>
           <div *ngIf="solucion?.caracteristicas && solucion.caracteristicas.length">
-            <ul>
-              <p *ngFor="let caracteristica of solucion.caracteristicas; let i = index" id="descripciones"
-                (click)="caracteristica.id_caracteristica !== undefined ? confirmarEliminarCaracteristica(caracteristica.id_caracteristica, $event) : null">
-                Descripción: {{ caracteristica.description }}
-              </p>
-            </ul>
+            <table>
+              <thead>
+                <tr>
+                  <th>Descripción de la Característica</th>
+                  <th>Editar</th>
+                  <th>Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let caracteristica of solucion.caracteristicas; let i = index">
+                  <td>{{ caracteristica.description }}</td>
+                  <td>
+                    <span class="emojis">
+                      ✏️
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      class="emojis" (click)="caracteristica.id_caracteristica !== undefined ? confirmarEliminarCaracteristica(caracteristica.id_caracteristica, $event) : null">
+                      🗑️
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div *ngIf="!solucion?.caracteristicas || solucion.caracteristicas.length === 0">
             <p>No hay características asociadas a esta solución.</p>
@@ -291,7 +327,7 @@
         </div>
 
         <div class="subseccion">
-          <h3 class="titulo-subseccion">Añadir beneficios a la solución con ID {{ solucion.id_solucion }}</h3>
+          <h3 class="titulo-subseccion">Añadir beneficios a la solución: {{ solucion.description }}</h3>
           <div class="buscador-selector-container">
             <div class="form-group col-12">
               <label for="buscadorBeneficio">Seleccionar Beneficio:</label>
@@ -315,15 +351,33 @@
         </div>
 
         <div class="subseccion">
-          <h3 class="titulo-subseccion">Beneficios asociados a la solución con ID {{ solucion.id_solucion }} | (Click al
-            beneficio que quiere eliminar)</h3>
+          <h3 class="titulo-subseccion">Beneficios asociados a la solución: {{ solucion.description }}</h3>
           <div *ngIf="solucion?.beneficios && solucion.beneficios.length">
-            <ul>
-              <p *ngFor="let beneficio of solucion.beneficios; let i = index" id="descripciones"
-                (click)="beneficio.id_beneficio !== undefined ? confirmarEliminarBeneficio(beneficio.id_beneficio, $event) : null">
-                Descripción: {{ beneficio.description }}
-              </p>
-            </ul>
+            <table>
+              <thead>
+                <tr>
+                  <th>Descripción del Beneficio</th>
+                  <th>Editar</th>
+                  <th>Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let beneficio of solucion.beneficios; let i = index">
+                  <td>{{ beneficio.description }}</td>
+                  <td>
+                    <span class="emojis">
+                      ✏️
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      class="emojis" (click)="beneficio.id_beneficio !== undefined ? confirmarEliminarBeneficio(beneficio.id_beneficio, $event) : null">
+                      🗑️
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div *ngIf="!solucion?.beneficios || solucion.beneficios.length === 0">
             <p>No hay beneficios asociados a esta solución.</p>
