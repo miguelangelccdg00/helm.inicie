@@ -28,25 +28,33 @@ export class LoginService {
 
     return this.http.post<LoginResponse>(this.apiUrl, body, { headers }).pipe(
       tap(response => {
-        if (response.user) {
+        if (response.user && response.token) {
           localStorage.setItem('user', JSON.stringify(response.user));
+          localStorage.setItem('token', response.token);
           this.loggedIn.next(true);
         }
       })
     );
   }
 
-  isAuth(): boolean {
-    return localStorage.getItem('user') !== null;
+  
+    // Add these new methods to handle the token
+    getToken(): string | null {
+      return localStorage.getItem('token');
+    }
+  
+    isAuth(): boolean {
+      return localStorage.getItem('user') !== null && localStorage.getItem('token') !== null;
+    }
+  
+    // Método para el componente de menú que devuelve un Observable
+    isAuthenticated(): Observable<boolean> {
+      return this.loggedIn.asObservable();
+    }
+  
+    logout() {
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      this.loggedIn.next(false);
+    }
   }
-
-  // Método para el componente de menú que devuelve un Observable
-  isAuthenticated(): Observable<boolean> {
-    return this.loggedIn.asObservable();
-  }
-
-  logout() {
-    localStorage.removeItem('user');
-    this.loggedIn.next(false);
-  }
-}
