@@ -2,6 +2,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
+// Clave secreta para la verificación del token
 const SECRET_KEY = 'token123';
 
 // Definición de la interfaz AuthRequest para extender Request
@@ -9,21 +10,22 @@ export interface AuthRequest extends Request {
     user?: any;
 }
 
-export const verifyToken = (req: Request, res: Response, next: NextFunction) =>
-{
-    const authHeader = req.headers.authorization;
+// Middleware para verificar el token
+const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) => {
+    const token = req.header('Authorization')?.split(' ')[1]; // Obtener el token del header
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    // Si no hay token, retornamos un error 401
+    if (!token) {
         return res.status(401).json({ message: 'Token no proporcionado' });
     }
 
-    const token = authHeader.split(' ')[1];
-
     try {
+        // Verificar el token con la clave secreta
         const decoded = jwt.verify(token, SECRET_KEY);
-        (req as AuthRequest).user = decoded;
-        next();
+        req.user = decoded; // Guardamos los datos decodificados en el objeto req
+        next(); // Pasamos al siguiente middleware o controlador
     } catch (error) {
+        console.error('Error al verificar el token: ', error);
         return res.status(403).json({ message: 'Token inválido o expirado' });
     }
 };
@@ -33,19 +35,19 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) =>
  * @param roles Array de roles permitidos
  */
 export const checkRole = (roles: string[]) => {
-    return (req: Request, res: Response, next: NextFunction) => {
-        const authReq = req as AuthRequest;
-        
-        if (!authReq.user) {
+    return (req: AuthRequest, res: Response, next: NextFunction) => {  // Usa AuthRequest aquí
+        if (!req.user) {
             return res.status(401).json({ message: 'Usuario no autenticado' });
         }
-        
-        const userRole = authReq.user.role;
-        
+
+        const userRole = req.user.role;
+
         if (!roles.includes(userRole)) {
             return res.status(403).json({ message: 'No tienes permisos para acceder a este recurso' });
         }
-        
+
         next();
     };
 };
+
+export default verifyToken;

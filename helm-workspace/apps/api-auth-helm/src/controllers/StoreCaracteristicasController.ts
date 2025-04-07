@@ -55,15 +55,19 @@ class StoreCaracteristicasController {
      * @param {number} req.body.id_caracteristica - ID de la característica a asociar.
      * @param {Response} res - Objeto de respuesta HTTP.
      */
-    async asociarCaracteristica(req: Request, res: Response): Promise<void> {
-        try {
+    async asociarCaracteristica(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
             const { id_solucion, id_caracteristica } = req.body;
     
-            if (!id_solucion) {
+            if (!id_solucion) 
+            {
                 res.status(401).json({ message: 'Faltan datos para la asociación en el id_solucion' });
                 return;
             }
-            if (!id_caracteristica) {
+            if (!id_caracteristica) 
+            {
                 res.status(402).json({ message: 'Faltan datos para la asociación en el id_caracteristica' });
                 return;
             }
@@ -73,11 +77,13 @@ class StoreCaracteristicasController {
             
             // Obtiene los datos de la característica para actualizar la solución
             const caracteristicas = await StoreCaracteristicasService.getCaracteristicaById(id_caracteristica);
-            if (caracteristicas) {
+            if (caracteristicas) 
+            {
                 // Actualiza los campos característicasTitle y característicasPragma en la solución
                 const solucion = await storeSolucionesService.getById(id_solucion);
                 if (solucion) {
-                    await storeSolucionesService.update(id_solucion, {
+                    await storeSolucionesService.update(id_solucion, 
+                    {
                         caracteristicasTitle: caracteristicas.titulo || solucion.caracteristicasTitle,
                         caracteristicasPragma: caracteristicas.description || solucion.caracteristicasPragma
                     });
@@ -88,7 +94,9 @@ class StoreCaracteristicasController {
                 message: 'Característica asociada a la solución con éxito',
                 asociacion
             });
-        } catch (error) {
+        } 
+        catch (error) 
+        {
             console.error('Error asociando la característica:', error);
             res.status(500).json({ message: 'Error interno del servidor' });
         }
@@ -100,17 +108,22 @@ class StoreCaracteristicasController {
      * @param {Request} req - Objeto de solicitud HTTP.
      * @param {Response} res - Objeto de respuesta HTTP.
      */
-    async listCaracteristica(req: Request, res: Response): Promise<void> {
-        try {
+    async listCaracteristica(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
             const listCaracteristica = await StoreCaracteristicasService.listCaracteristicas();
 
-            if (!listCaracteristica.length) {
+            if (!listCaracteristica.length) 
+            {
                 res.status(404).json({ message: 'No existen características' });
                 return;
             }
 
             res.status(202).json(listCaracteristica);
-        } catch (error) {
+        } 
+        catch (error) 
+        {
             console.error('Error listando las características:', error);
             res.status(500).json({ message: 'Error interno del servidor' });
         }
@@ -123,11 +136,14 @@ class StoreCaracteristicasController {
      * @param {string} req.params.idSolucion - ID de la solución.
      * @param {Response} res - Objeto de respuesta HTTP.
      */
-    async listIdCaracteristica(req: Request, res: Response): Promise<void> {
-        try {
+    async listIdCaracteristica(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
             const { idSolucion } = req.params;
     
-            if (!idSolucion) {
+            if (!idSolucion) 
+            {
                 res.status(400).json({ message: 'ID de la solución no proporcionado' });
                 return;
             }
@@ -136,13 +152,16 @@ class StoreCaracteristicasController {
     
             console.log("Características encontradas:", caracteristicaSolucion);
     
-            if (!caracteristicaSolucion || caracteristicaSolucion.length === 0) {
+            if (!caracteristicaSolucion || caracteristicaSolucion.length === 0) 
+            {
                 res.status(404).json({ message: 'No se encontraron características para esta solución' });
                 return;
             }
     
             res.status(200).json(caracteristicaSolucion);
-        } catch (error) {
+        } 
+        catch (error) 
+        {
             console.error('Error obteniendo las características:', error);
             res.status(500).json({ message: 'Error interno del servidor' });
         }
@@ -155,24 +174,30 @@ class StoreCaracteristicasController {
      * @param {string} req.params.idCaracteristica - ID de la característica a eliminar.
      * @param {Response} res - Objeto de respuesta HTTP.
      */
-    async deleteCaracteristica(req: Request, res: Response): Promise<void> {
-        try {
+    async deleteCaracteristica(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
             const { idCaracteristica } = req.params;
 
-            if (!idCaracteristica) {
+            if (!idCaracteristica) 
+            {
                 res.status(401).json({ message: 'ID no proporcionado' });
                 return;
             }
             
             const wasDeleted = await StoreCaracteristicasService.deleteCaracteristica(Number(idCaracteristica));
             
-            if (!wasDeleted) {
+            if (!wasDeleted) 
+            {
                 res.status(404).json({ message: 'Característica no encontrada o ya eliminada' });
                 return;   
             }
 
             res.status(201).json({ message: 'Característica eliminada correctamente' });
-        } catch (error) {
+        } 
+        catch (error) 
+        {
             console.error('Error al eliminar la característica:', error);
             res.status(500).json({ message: 'Error interno en el servidor' });
         }
@@ -186,11 +211,14 @@ class StoreCaracteristicasController {
      * @param {string} req.params.idCaracteristica - ID de la característica.
      * @param {Response} res - Objeto de respuesta HTTP.
      */
-    async removeCaracteristicaFromSolucion(req: Request, res: Response): Promise<void> {
-        try {
+    async removeCaracteristicaFromSolucion(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
             const { idSolucion, idCaracteristica } = req.params;
 
-            if (!idSolucion || !idCaracteristica) {
+            if (!idSolucion || !idCaracteristica) 
+            {
                 res.status(400).json({ message: 'IDs de solución y característica son requeridos' });
                 return;
             }
@@ -203,7 +231,9 @@ class StoreCaracteristicasController {
             res.status(200).json({ 
                 message: 'Característica desasociada de la solución correctamente' 
             });
-        } catch (error) {
+        } 
+        catch (error) 
+        {
             console.error('Error al desasociar la característica de la solución:', error);
             res.status(500).json({ message: 'Error interno del servidor' });
         }

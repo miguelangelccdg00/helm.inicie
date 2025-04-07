@@ -83,7 +83,7 @@ class StoreBeneficiosServices
             await conn.rollback();
             console.error('Error al eliminar la asociación del beneficio:', error);
             throw error;
-        } 
+        }         
         finally 
         {
             conn.release();

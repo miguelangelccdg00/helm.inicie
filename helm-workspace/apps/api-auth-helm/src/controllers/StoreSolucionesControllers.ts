@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import StoreSolucionesService from '../services/StoreSolucionesService';
 
-class StoreSolucionesController {
+class StoreSolucionesController 
+{
     /**
      * Obtiene todas las soluciones almacenadas en la base de datos.
      * 
@@ -10,11 +11,15 @@ class StoreSolucionesController {
      * 
      * @returns {Promise<void>} Devuelve un arreglo de soluciones almacenadas en la base de datos.
      */
-    async listStoreSoluciones(req: Request, res: Response): Promise<void> {
-        try {
+    async listStoreSoluciones(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
             const soluciones = await StoreSolucionesService.getAll();
             res.json(soluciones);
-        } catch (error) {
+        } 
+        catch (error) 
+        {
             console.error('Error al listar storeSoluciones:', error);
             res.status(500).json({ message: 'Error interno en el servidor' });
         }
@@ -29,24 +34,30 @@ class StoreSolucionesController {
      * 
      * @returns {Promise<void>} Devuelve la solución encontrada o un mensaje de error si no se encuentra.
      */
-    async listIdStoreSoluciones(req: Request, res: Response): Promise<void> {
-        try {
+    async listIdStoreSoluciones(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
             const { id } = req.params;
 
-            if (!id) {
+            if (!id) 
+                {
                 res.status(400).json({ message: 'ID no proporcionado' });
                 return;
             }
 
             const solucion = await StoreSolucionesService.getById(Number(id));
 
-            if (!solucion) {
+            if (!solucion) 
+                {
                 res.status(404).json({ message: 'Solución no encontrada' });
                 return;
             }
 
             res.json(solucion);
-        } catch (error) {
+        } 
+        catch (error) 
+        {
             console.error('Error al obtener storeSoluciones:', error);
             res.status(500).json({ message: 'Error interno en el servidor' });
         }
@@ -62,24 +73,30 @@ class StoreSolucionesController {
      * 
      * @returns {Promise<void>} Devuelve el resultado de la actualización de la solución.
      */
-    async modifyStoreSoluciones(req: Request, res: Response): Promise<void> {
-        try {
+    async modifyStoreSoluciones(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
             const { id } = req.params;
             const updateData = req.body;
 
-            if (!id) {
+            if (!id) 
+            {
                 res.status(400).json({ message: 'ID no proporcionado' });
                 return;
             }
 
-            if (!Object.keys(updateData).length) {
+            if (!Object.keys(updateData).length) 
+            {
                 res.status(400).json({ message: 'No se proporcionaron datos' });
                 return;
             }
 
             const result = await StoreSolucionesService.update(Number(id), updateData);
             res.json(result);
-        } catch (error) {
+        } 
+        catch (error) 
+        {
             console.error('Error al modificar storeSoluciones:', error);
             res.status(500).json({ message: 'Error interno en el servidor' });
         }
@@ -94,24 +111,30 @@ class StoreSolucionesController {
      * 
      * @returns {Promise<void>} Devuelve el resultado de la eliminación de la solución.
      */
-    async deleteSolucion(req: Request, res: Response): Promise<void> {
-        try {
+    async deleteSolucion(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
             const { id } = req.params;
 
-            if (!id) {
+            if (!id) 
+            {
                 res.status(400).json({ message: 'ID no proporcionado' });
                 return;
             }
 
             const deleteSoluciones = await StoreSolucionesService.deleteSolucion(Number(id));
 
-            if (!deleteSoluciones) {
+            if (!deleteSoluciones) 
+            {
                 res.status(404).json({ message: 'Solución no encontrada' });
                 return;
             }
 
             res.json(deleteSoluciones);
-        } catch (error) {
+        } 
+        catch (error)
+        {
             console.error('Error al eliminar deleteSolucion:', error);
             res.status(500).json({ message: 'Error interno en el servidor' });
         }

@@ -1,6 +1,7 @@
 // routes/privada.ts
 import { Router } from 'express';
-import { verifyToken, AuthRequest } from '../assets/authMiddleware';
+import { AuthRequest } from '../assets/authMiddleware';
+import verifyToken from '../assets/authMiddleware';
 
 const router = Router();
 
