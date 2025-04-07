@@ -72,29 +72,19 @@
       <div class="seccion">
         <h2 class="titulo-seccion">Problema y Solución</h2>
 
-        <div class="subseccion">
-          <h3 class="titulo-subseccion">Crear problemas</h3>
-          <button *ngIf="mostrarBotonCrearProblema" type="button"
-            (click)="mostrarCrearProblema = true; mostrarBotonCrearProblema = false">Crear Nuevo Problema</button>
+        <div *ngIf="mostrarCrearProblema === true" class="subseccion">
+          <h3 class="titulo-subseccion">Crear y añadir problema</h3>
 
-          <form *ngIf="mostrarCrearProblema === true" (ngSubmit)="crearNuevoProblema()">
+          <form (ngSubmit)="crearNuevoProblema()">
             <div class="grid-container">
               <div class="form-group col-6">
-                <label for="nuevoProblemaTitle">Título del Problema:</label>
-                <input type="text" id="nuevoProblemaTitle" [(ngModel)]="nuevoProblema.titulo" name="nuevoProblemaTitle"
-                  required placeholder="Título del problema">
-              </div>
-
-              <br>
-
-              <div class="form-group col-6">
-                <label for="nuevoProblemaDescription">Descripción del Problema:</label>
+                <label for="nuevoProblemaDescription">Descripción:</label>
                 <textarea id="nuevoProblemaDescription" [(ngModel)]="nuevoProblema.description"
                   name="nuevoProblemaDescription" required placeholder="Descripción del problema"></textarea>
               </div>
             </div>
             <div class="botones-container">
-              <button type="submit">Crear Problema</button>
+              <button type="submit">Crear y Añadir</button>
               <button type="button"
                 (click)="mostrarCrearProblema = false; mostrarBotonCrearProblema = true">Cancelar</button>
             </div>
@@ -115,6 +105,9 @@
                   <div *ngFor="let problema of problemasFiltrados" class="dropdown-item"
                     (click)="seleccionarProblema(problema)">
                     {{ problema.description }}
+                  </div>
+                  <div class="dropdown-item" (click)="mostrarCrearProblema = true; mostrarOpcionesProblema = false">
+                    - Crear y Añadir Problema -
                   </div>
                 </div>
               </div>
@@ -146,8 +139,8 @@
                     </span>
                   </td>
                   <td>
-                    <span
-                      class="emojis" (click)="problema.id_problema !== undefined ? confirmarEliminarProblema(problema.id_problema, $event) : null">
+                    <span class="emojis"
+                      (click)="problema.id_problema !== undefined ? confirmarEliminarProblema(problema.id_problema, $event) : null">
                       🗑️
                     </span>
                   </td>
@@ -166,23 +159,12 @@
       <div class="seccion">
         <h2 class="titulo-seccion">Características</h2>
 
-        <div class="subseccion">
-          <h3 class="titulo-subseccion">Crear características</h3>
+        <div *ngIf="mostrarCrearCaracteristica === true" class="subseccion">
+          <h3 class="titulo-subseccion">Crear y añadir característica</h3>
 
-          <button *ngIf="mostrarBotonCrearCaracteristica" type="button"
-            (click)="mostrarCrearCaracteristica = true; mostrarBotonCrearCaracteristica = false">Crear Nueva
-            Característica</button>
-
-          <form *ngIf="mostrarCrearCaracteristica === true" (ngSubmit)="crearNuevaCaracteristica()">
+          <form (ngSubmit)="crearNuevaCaracteristica()">
             <div class="grid-container">
-              <div class="form-group col-6">
-                <label for="nuevaCaracteristicaTitulo">Título:</label>
-                <input type="text" id="nuevaCaracteristicaTitulo" [(ngModel)]="nuevaCaracteristica.titulo"
-                  name="nuevaCaracteristicaTitulo" required placeholder="Título de la característica">
-              </div>
-
-              <br>
-
+        
               <div class="form-group col-6">
                 <label for="nuevaCaracteristicaDescripcion">Descripción:</label>
                 <textarea id="nuevaCaracteristicaDescripcion" [(ngModel)]="nuevaCaracteristica.description"
@@ -191,7 +173,7 @@
               </div>
             </div>
             <div class="botones-container">
-              <button type="submit">Crear Característica</button>
+              <button type="submit">Crear y Añadir</button>
               <button type="button"
                 (click)="mostrarCrearCaracteristica = false; mostrarBotonCrearCaracteristica = true">Cancelar</button>
             </div>
@@ -212,6 +194,9 @@
                   <div *ngFor="let caracteristica of caracteristicasFiltradas" class="dropdown-item"
                     (click)="seleccionarCaracteristica(caracteristica)">
                     {{ caracteristica.description }}
+                  </div>
+                  <div class="dropdown-item" (click)="mostrarCrearCaracteristica = true; mostrarOpcionesCaracteristicas = false">
+                    - Crear y Añadir Característica -
                   </div>
                 </div>
               </div>
@@ -243,8 +228,8 @@
                     </span>
                   </td>
                   <td>
-                    <span
-                      class="emojis" (click)="caracteristica.id_caracteristica !== undefined ? confirmarEliminarCaracteristica(caracteristica.id_caracteristica, $event) : null">
+                    <span class="emojis"
+                      (click)="caracteristica.id_caracteristica !== undefined ? confirmarEliminarCaracteristica(caracteristica.id_caracteristica, $event) : null">
                       🗑️
                     </span>
                   </td>
@@ -305,24 +290,19 @@
       <div class="seccion">
         <h2 class="titulo-seccion">Beneficios</h2>
 
-        <div class="subseccion">
-          <h3 class="titulo-subseccion">Crear beneficios</h3>
+        <div *ngIf="mostrarCrearBeneficio === true" class="subseccion">
+          <h3 class="titulo-subseccion">Crear y añadir beneficio</h3>
 
-          <button *ngIf="mostrarBotonCrear" type="button"
-            (click)="mostrarCrearBeneficio = true; mostrarBotonCrear = false">Crear</button>
-
-          <form *ngIf="mostrarCrearBeneficio === true" (ngSubmit)="crearNuevoBeneficio()">
-            <div class="form-group">
-              <label for="nuevoTitulo">Título:</label>
-              <input type="text" id="nuevoTitulo" [(ngModel)]="nuevoBeneficio.titulo" name="nuevoTitulo" required>
-            </div>
+          <form (ngSubmit)="crearNuevoBeneficio()">
             <div class="form-group">
               <label for="nuevaDescripcion">Descripción:</label>
               <textarea id="nuevaDescripcion" [(ngModel)]="nuevoBeneficio.description" name="nuevaDescripcion"
                 required></textarea>
             </div>
-            <button type="submit">Crear Beneficio</button>
-            <button type="button" (click)="mostrarCrearBeneficio = false; mostrarBotonCrear = true">Cancelar</button>
+            <div class="botones-container">
+              <button type="submit">Crear y Añadir</button>
+              <button type="button" (click)="mostrarCrearBeneficio = false; mostrarBotonCrear = true">Cancelar</button>
+            </div>
           </form>
         </div>
 
@@ -339,6 +319,9 @@
                   <div *ngFor="let beneficio of beneficiosFiltrados" class="dropdown-item"
                     (click)="seleccionarBeneficio(beneficio)">
                     {{ beneficio.description }}
+                  </div>
+                  <div class="dropdown-item" (click)="mostrarCrearBeneficio = true; mostrarOpciones = false">
+                    - Crear y Añadir Beneficio -
                   </div>
                 </div>
               </div>
@@ -370,8 +353,8 @@
                     </span>
                   </td>
                   <td>
-                    <span
-                      class="emojis" (click)="beneficio.id_beneficio !== undefined ? confirmarEliminarBeneficio(beneficio.id_beneficio, $event) : null">
+                    <span class="emojis"
+                      (click)="beneficio.id_beneficio !== undefined ? confirmarEliminarBeneficio(beneficio.id_beneficio, $event) : null">
                       🗑️
                     </span>
                   </td>
