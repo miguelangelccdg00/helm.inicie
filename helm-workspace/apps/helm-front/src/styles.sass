@@ -1,8 +1,38 @@
-/* You can add global styles to this file, and also import other style files */
+
+@import "primeicons/primeicons.css"
+
 body, html
   margin: 0
   padding: 0
   overflow-x: hidden
 
-:root
+\:root
   font-family: "Rubik", sans-serif
+
+/* Estilos globales para PrimeNG */
+.p-component
+  font-family: "Rubik", sans-serif
+
+.p-datatable
+  .p-datatable-header
+    background: #f8f9fa
+    
+  .p-paginator
+    background: #ffffff
+    
+  .p-datatable-thead > tr > th
+    background: #f8f9fa
+    
+  .p-datatable-tbody > tr
+    &:nth-child(even)
+      background: #f8f9fa
+      
+    &:hover
+      background: #e9ecef
+
+.p-button
+  &.p-button-primary
+    background: #3B82F6
+    
+  &.p-button-secondary
+    background: #64748B
