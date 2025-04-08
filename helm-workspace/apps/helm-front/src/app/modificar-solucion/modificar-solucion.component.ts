@@ -5,11 +5,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MenuComponent } from '../menu/menu.component';
 import { forkJoin, Observable } from 'rxjs';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-modificar-solucion',
   standalone: true,
-  imports: [CommonModule, FormsModule, MenuComponent],
+  imports: [CommonModule, FormsModule, MenuComponent, TableModule],
   templateUrl: './modificar-solucion.component.html',
   styleUrls: ['./modificar-solucion.component.sass']
 })

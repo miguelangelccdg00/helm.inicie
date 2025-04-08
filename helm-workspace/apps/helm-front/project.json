@@ -8,12 +8,16 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/helm-front",
         "index": "apps/helm-front/src/index.html",
         "main": "apps/helm-front/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "tsConfig": "apps/helm-front/tsconfig.app.json",
         "inlineStyleLanguage": "sass",
         "assets": [
@@ -37,7 +41,9 @@
             "output": "assets"
           }
         ],
-        "styles": ["apps/helm-front/src/styles.sass"],
+        "styles": [
+          "apps/helm-front/src/styles.sass"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -90,7 +96,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "apps/helm-front/jest.config.ts"
       }

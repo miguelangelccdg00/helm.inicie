@@ -433,3 +433,63 @@ button
 
 .emojis
     cursor: pointer
+
+:host ::ng-deep .mi-tabla
+  width: 90%
+  border-collapse: collapse
+  margin-bottom: $spacing-standard
+  margin: 0 auto
+
+  table 
+    width: 100%
+    border-collapse: collapse
+  
+  th 
+    padding: 10px
+    border-bottom: 1px solid $azul-principal
+    font-weight: 500
+    background-color: $color-azul-claro
+    text-align: center
+  
+
+  td 
+    padding: 10px
+    border-bottom: 1px solid $gris-borde
+    text-align: center
+
+  tbody tr:hover 
+    background-color: $azul-hover
+  
+  .nested-table
+    margin-left: 20px
+    background-color: rgba($azul-hover, 0.2)
+
+    td 
+      padding-left: 20px
+
+
+/* Estilo de los botones del paginador */
+::ng-deep .p-paginator .p-paginator-page 
+  border: none /* Sin bordes */
+  border-radius: 4px /* Bordes redondeados */
+  padding: 8px 12px /* Tamaño del botón */
+  margin: 10px 0px
+  cursor: pointer /* Cambio de cursor al pasar el mouse */
+
+
+::ng-deep .p-paginator .p-paginator-page:hover
+  background-color: #a6cbf3 /* Color al pasar el mouse */
+
+::ng-deep .p-paginator .p-paginator-prev,
+::ng-deep .p-paginator .p-paginator-next
+  border: none
+  border-radius: 50%
+  padding: 8px 12px
+  cursor: pointer
+  display: flex
+  justify-content: center
+  align-items: center
+
+::ng-deep .p-paginator .p-paginator-prev:hover,
+::ng-deep .p-paginator .p-paginator-next:hover
+  background-color: #a6cbf3
