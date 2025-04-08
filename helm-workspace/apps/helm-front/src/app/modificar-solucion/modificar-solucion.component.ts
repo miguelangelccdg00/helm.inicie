@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreSolucionesService, StoreSoluciones, StoreBeneficios, StoreProblemas, StoreCaracteristicas } from '../services/store-soluciones.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,6 +16,11 @@ import { TableModule } from 'primeng/table';
 })
 
 export class ModificarSolucionComponent implements OnInit {
+
+  @ViewChild('scrollProblemas', { static: false }) scrollProblemas: ElementRef | undefined;
+  @ViewChild('scrollBeneficios', { static: false }) scrollBeneficios: ElementRef | undefined;
+  @ViewChild('scrollCaracteristicas', { static: false }) scrollCaracteristicas: ElementRef | undefined;
+
 
   solucion: StoreSoluciones | null = null;
 
@@ -218,6 +223,11 @@ export class ModificarSolucionComponent implements OnInit {
     this.beneficioSeleccionado = beneficio;
     this.nuevoBeneficio = { ...beneficio };
     this.mostrarOpciones = false;
+
+    if (this.scrollBeneficios) {
+      this.scrollBeneficios.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+
   }
 
   seleccionarProblema(problema: StoreProblemas) {
@@ -225,6 +235,11 @@ export class ModificarSolucionComponent implements OnInit {
     this.problemaSeleccionado = problema;
     this.nuevoProblema = { ...problema };
     this.mostrarOpcionesProblema = false;
+  
+    if (this.scrollProblemas) {
+      this.scrollProblemas.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+    
   }
 
   seleccionarCaracteristica(caracteristica: StoreCaracteristicas) {
@@ -232,6 +247,11 @@ export class ModificarSolucionComponent implements OnInit {
     this.caracteristicaSeleccionada = caracteristica;
     this.nuevaCaracteristica = { ...caracteristica };
     this.mostrarOpcionesCaracteristicas = false;
+
+    if (this.scrollCaracteristicas) {
+      this.scrollCaracteristicas.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+
   }
 
   agregarBeneficio() {

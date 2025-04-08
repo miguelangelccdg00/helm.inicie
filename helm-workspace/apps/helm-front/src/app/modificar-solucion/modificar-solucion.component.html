@@ -69,7 +69,7 @@
       </div>
 
       <!-- Sección de problema y solución -->
-      <div class="seccion">
+      <div class="seccion" #scrollProblemas>
         <h2 class="titulo-seccion">Problema y Solución</h2>
 
         <div *ngIf="mostrarModificarProblema === true" class="subseccion">
@@ -139,7 +139,7 @@
           </div>
         </div>
 
-        <p-table [value]="solucion.problemas" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 15]"
+        <p-table [value]="solucion.problemas" [paginator]="true" [rows]="5"
           [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
 
           <ng-template pTemplate="header">
@@ -168,12 +168,11 @@
           </ng-template>
         </p-table>
 
-
       </div>
 
 
       <!-- Sección de características -->
-      <div class="seccion">
+      <div class="seccion" #scrollCaracteristicas>
         <h2 class="titulo-seccion">Características</h2>
 
         <div *ngIf="mostrarModificarCaracteristica === true" class="subseccion">
@@ -249,7 +248,7 @@
         <div class="subseccion">
           <h3 class="titulo-subseccion">Características asociadas a la solución: {{ solucion.description }}</h3>
           <div *ngIf="solucion?.caracteristicas && solucion.caracteristicas.length">
-            <p-table [value]="solucion.caracteristicas" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 15]"
+            <p-table [value]="solucion.caracteristicas" [paginator]="true" [rows]="5"
               [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
               <ng-template pTemplate="header">
                 <tr>
@@ -328,7 +327,7 @@
       </div>
 
       <!-- Sección de beneficios -->
-      <div class="seccion">
+      <div class="seccion" #scrollBeneficios>
         <h2 class="titulo-seccion">Beneficios</h2>
 
         <div *ngIf="mostrarModificarBeneficio === true" class="subseccion">
@@ -397,7 +396,7 @@
         <div class="subseccion">
           <h3 class="titulo-subseccion">Beneficios asociados a la solución: {{ solucion.description }}</h3>
           <div *ngIf="solucion?.beneficios && solucion.beneficios.length">
-            <p-table [value]="solucion.beneficios" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 15]"
+            <p-table [value]="solucion.beneficios" [paginator]="true" [rows]="5"
               [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
               <ng-template pTemplate="header">
                 <tr>

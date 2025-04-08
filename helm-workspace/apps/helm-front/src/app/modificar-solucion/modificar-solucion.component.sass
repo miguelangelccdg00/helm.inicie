@@ -468,27 +468,43 @@ button
       padding-left: 20px
 
 
-/* Estilo de los botones del paginador */
 :host ::ng-deep .p-paginator .p-paginator-page
-  border: none !important
-  border-radius: 4px !important
-  padding: 8px 12px !important
-  margin: 10px 0px !important
-  cursor: pointer !important
+    border: none !important
+    border-radius: 4px !important
+    padding: 8px 12px !important
+    margin: 10px 0px !important
+    cursor: pointer !important
 
 :host ::ng-deep .p-paginator .p-paginator-page:hover
-  background-color: #a6cbf3 !important
+    background-color: #a6cbf3 !important
+
+:host ::ng-deep .p-paginator .p-paginator-page.active
+  background-color: #6a96e5 !important
 
 :host ::ng-deep .p-paginator .p-paginator-prev,
 :host ::ng-deep .p-paginator .p-paginator-next
-  border: none !important
-  border-radius: 50% !important
-  padding: 8px 12px !important
-  cursor: pointer !important
-  display: flex !important
-  justify-content: center !important
-  align-items: center !important
+    border: none !important
+    border-radius: 50% !important
+    padding: 8px 10px !important
+    cursor: pointer !important
+    display: flex !important
+    justify-content: center !important
+    align-items: center !important
 
 :host ::ng-deep .p-paginator .p-paginator-prev:hover,
 :host ::ng-deep .p-paginator .p-paginator-next:hover
-  background-color: #a6cbf3 !important
+    background-color: #a6cbf3 !important
+
+:host ::ng-deep .p-paginator .p-paginator-first,
+:host ::ng-deep .p-paginator .p-paginator-last
+    border: none !important
+    border-radius: 50% !important
+    padding: 8px 10px !important
+    cursor: pointer !important
+    display: flex !important
+    justify-content: center !important
+    align-items: center !important
+
+:host ::ng-deep .p-paginator .p-paginator-first:hover,
+:host ::ng-deep .p-paginator .p-paginator-last:hover
+    background-color: #a6cbf3 !important
