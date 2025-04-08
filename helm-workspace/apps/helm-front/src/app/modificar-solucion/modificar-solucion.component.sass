@@ -45,7 +45,6 @@ h1
     
     input
         width: 100%
-        max-width: 700px
         border-radius: 7px
         border: 1px solid #ccced7
         padding: 9px
@@ -57,7 +56,6 @@ h1
     .dropdown-menu
         position: absolute
         width: 100%
-        max-width: 300px
         max-height: 200px
         overflow-y: auto
         background-color: $blanco
@@ -76,7 +74,6 @@ h1
 
 #buscadorBeneficio #buscadorProblema #buscadorCaracteristica
     width: 100%
-    max-width: 700px
     border-radius: 7px
     border: 1px solid #ccced7
     padding: 9px
@@ -113,7 +110,7 @@ h1
     // Subsecciones
     .subseccion
         input, select, textarea
-            width: 700px
+            width: 100%
         
         // Título de subsección
         .titulo-subseccion
@@ -137,7 +134,7 @@ h1
     
     // Estilos para inputs
     input, select, textarea
-        width: 700px
+        width: 100%
         padding: 9px
         border-radius: 4px
         border: 1px solid $gris-borde
@@ -438,7 +435,7 @@ button
   width: 90%
   border-collapse: collapse
   margin-bottom: $spacing-standard
-  margin: 0 auto
+  margin: 20px auto
 
   table 
     width: 100%
@@ -451,7 +448,6 @@ button
     background-color: $color-azul-claro
     text-align: center
   
-
   td 
     padding: 10px
     border-bottom: 1px solid $gris-borde
@@ -476,10 +472,8 @@ button
     cursor: pointer !important
 
 :host ::ng-deep .p-paginator .p-paginator-page:hover
-    background-color: #a6cbf3 !important
-
-:host ::ng-deep .p-paginator .p-paginator-page.active
-  background-color: #6a96e5 !important
+    background-color: $azul-principal
+    color: white
 
 :host ::ng-deep .p-paginator .p-paginator-prev,
 :host ::ng-deep .p-paginator .p-paginator-next
@@ -493,7 +487,8 @@ button
 
 :host ::ng-deep .p-paginator .p-paginator-prev:hover,
 :host ::ng-deep .p-paginator .p-paginator-next:hover
-    background-color: #a6cbf3 !important
+    background-color: $azul-principal
+    color: white
 
 :host ::ng-deep .p-paginator .p-paginator-first,
 :host ::ng-deep .p-paginator .p-paginator-last
@@ -507,4 +502,8 @@ button
 
 :host ::ng-deep .p-paginator .p-paginator-first:hover,
 :host ::ng-deep .p-paginator .p-paginator-last:hover
-    background-color: #a6cbf3 !important
+    background-color: $azul-principal
+    color: white
+
+:host ::ng-deep .mi-tabla tr
+  background-color: #ffffff !important
