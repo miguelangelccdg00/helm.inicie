@@ -1,3 +1,4 @@
+
 // Variables de colores según la guía de diseño
 $azul-principal: #010D3D
 $blanco: #FFFFFF
@@ -29,6 +30,30 @@ h1
     margin-bottom: $spacing-standard
     font-family: "Raleway", sans-serif
 
+.grid-container
+    display: flex
+    flex-direction: column
+    gap: 15px
+    width: 100%
+    max-width: 800px
+    margin: 0 auto
+
+.form-group
+    width: 100%
+    margin-bottom: 10px
+    label
+        display: block
+        margin-bottom: 5px
+        color: $azul-principal
+    input, textarea
+        width: 100%
+        padding: 8px
+        border-radius: 4px
+        border: 1px solid $gris-borde
+        &:focus
+            border-color: $azul-focus
+            outline: none
+
 #solucion
     text-align: center
     margin-bottom: $spacing-standard
@@ -41,16 +66,20 @@ h1
 // Estilos para el selector personalizado
 .custom-select
     position: relative
-    width: 100%
+    width: 100% !important
     
     input
-        width: 100%
+        width: 100% !important
         border-radius: 7px
         border: 1px solid #ccced7
         padding: 9px
+        box-sizing: border-box !important
+        display: block !important
+        min-width: 100% !important
+        max-width: none !important
         
         &:focus
-            border: 2px solid $azul-focus
+            border: 2px solid $azul-focus !important
             outline: none
     
     .dropdown-menu
@@ -73,12 +102,16 @@ h1
                 background-color: $azul-hover
 
 #buscadorBeneficio #buscadorProblema #buscadorCaracteristica
-    width: 100%
+    width: 100% !important
     border-radius: 7px
     border: 1px solid #ccced7
     padding: 9px
+    box-sizing: border-box !important
+    display: block !important
+    min-width: 100% !important
+    max-width: none !important
 
-#buscadorBeneficio:focus #buscadorProblema:focus #buscadorCaracteristica:focus
+#buscadorBeneficio:focus, #buscadorProblema:focus, #buscadorCaracteristica:focus
     border: 2px solid #a6cbf3
     outline: none
 
@@ -93,6 +126,15 @@ h1
     margin: 0 auto
     background: #F8FEFF
     font-weight: 400
+    box-sizing: border-box
+    
+    input, select, textarea
+        width: 100% !important
+        display: block
+        min-width: 100%
+        box-sizing: border-box !important
+        flex: 1 1 auto
+        margin: 0
 
     // Secciones del formulario
     .seccion
@@ -110,7 +152,9 @@ h1
     // Subsecciones
     .subseccion
         input, select, textarea
-            width: 100%
+            width: 100% !important
+            box-sizing: border-box !important
+            display: block !important
         
         // Título de subsección
         .titulo-subseccion
@@ -125,21 +169,43 @@ h1
     .form-group
         margin-bottom: $spacing-standard
         text-align: left
+        width: 100% !important
+        display: block !important
+        box-sizing: border-box !important
         
         label
             display: block
             margin-bottom: 8px
             font-weight: 500
             color: $azul-principal
+
+            
+            
+        input, select, textarea
+            width: 100% !important
+            box-sizing: border-box !important
+            display: block !important
+            min-width: 100% !important
+            max-width: none !important
+            margin: 0
     
     // Estilos para inputs
     input, select, textarea
-        width: 100%
+        width: 100% !important
         padding: 9px
         border-radius: 4px
         border: 1px solid $gris-borde
-        margin-bottom: $spacing-standard
         font-family: inherit
+        box-sizing: border-box !important
+        display: block !important
+        min-width: 100% !important
+        max-width: none !important
+        margin: 0
+        max-width: none !important
+        display: block !important
+        min-width: 100% !important
+        flex: 1 1 auto !important
+        margin: 0
     
     textarea
         height: 80px
@@ -261,30 +327,14 @@ button
 
 // Grid layout para formularios complejos
 .grid-container
-    display: grid
-    grid-template-columns: repeat(12, 1fr)
+    display: flex
+    flex-direction: column
     gap: $spacing-standard
+    width: 100%
     
-    .col-2
-        grid-column: span 2
-    
-    .col-3
-        grid-column: span 3
-    
-    .col-4
-        grid-column: span 4
-    
-    .col-5
-        grid-column: span 5
-    
-    .col-6
-        grid-column: span 6
-    
-    .col-8
-        grid-column: span 8
-    
-    .col-12
-        grid-column: span 12
+    > *
+        width: 100%
+        margin-bottom: 15px
 
 // Texto seguido de input
 .text-input-inline
@@ -464,46 +514,246 @@ button
       padding-left: 20px
 
 
-:host ::ng-deep .p-paginator .p-paginator-page
-    border: none !important
-    border-radius: 4px !important
-    padding: 8px 12px !important
-    margin: 10px 0px !important
-    cursor: pointer !important
+:host ::ng-deep .p-paginator
+    .p-paginator-page
+        border: none !important
+        border-radius: 4px !important
+        padding: 8px 12px !important
+        margin: 10px 0px !important
+        cursor: pointer !important
+        transition: background-color 0.3s ease !important
 
-:host ::ng-deep .p-paginator .p-paginator-page:hover
-    background-color: $azul-principal
-    color: white
+        &:not(.p-highlight):hover
+            background-color: $azul-principal !important
+            color: white !important
 
-:host ::ng-deep .p-paginator .p-paginator-prev,
-:host ::ng-deep .p-paginator .p-paginator-next
-    border: none !important
-    border-radius: 50% !important
-    padding: 8px 10px !important
-    cursor: pointer !important
-    display: flex !important
-    justify-content: center !important
-    align-items: center !important
+        &.p-highlight
+            background-color: $azul-principal !important
+            color: white !important
 
-:host ::ng-deep .p-paginator .p-paginator-prev:hover,
-:host ::ng-deep .p-paginator .p-paginator-next:hover
-    background-color: $azul-principal
-    color: white
+            &:hover
+                background-color: darken($azul-principal, 10%) !important
 
-:host ::ng-deep .p-paginator .p-paginator-first,
-:host ::ng-deep .p-paginator .p-paginator-last
-    border: none !important
-    border-radius: 50% !important
-    padding: 8px 10px !important
-    cursor: pointer !important
-    display: flex !important
-    justify-content: center !important
-    align-items: center !important
+    .p-paginator-prev,
+    .p-paginator-next,
+    .p-paginator-first,
+    .p-paginator-last
+        border: none !important
+        border-radius: 50% !important
+        padding: 8px 10px !important
+        cursor: pointer !important
+        display: flex !important
+        justify-content: center !important
+        align-items: center !important
+        transition: background-color 0.3s ease !important
 
-:host ::ng-deep .p-paginator .p-paginator-first:hover,
-:host ::ng-deep .p-paginator .p-paginator-last:hover
-    background-color: $azul-principal
-    color: white
+        &:hover
+            background-color: $azul-principal !important
+            color: white !important
 
 :host ::ng-deep .mi-tabla tr
   background-color: #ffffff !important
+
+// Estilos para inputs y textareas
+.form-group
+    margin-bottom: 20px
+    width: 100%
+    
+    input, textarea
+        width: 100%
+        padding: 10px
+        border-radius: 7px
+        border: 1px solid $gris-borde
+        margin-top: 5px
+        
+        &:focus
+            border: 2px solid $azul-focus
+            outline: none
+
+// Grid layout para formularios complejos
+.grid-container
+    display: flex
+    flex-direction: column
+    gap: $spacing-standard
+    width: 100%
+    
+    > *
+        width: 100%
+        margin-bottom: 15px
+
+// Texto seguido de input
+.text-input-inline
+    display: flex
+    align-items: center
+    gap: 10px
+    
+    input
+        width: auto
+
+.beneficios-input-container
+    display: flex
+    align-items: center
+    gap: 20px
+
+.beneficios-input-container button
+    padding: 7px 9px
+    background-color: $azul-principal
+    color: $blanco
+    border: none
+    border-radius: 5px
+    cursor: pointer
+    margin-top: -18px
+
+    &:hover
+        background-color: #333D63
+  
+.beneficio-item 
+    display: flex
+    justify-content: space-between
+    align-items: center
+    margin-bottom: 10px
+
+.beneficio-description 
+    flex-grow: 1
+
+// Estilos para el contenedor de búsqueda y selector
+.buscador-selector-container
+    display: flex
+    flex-direction: column
+    gap: 15px
+    margin-bottom: 20px
+
+#descripciones:hover
+    cursor: pointer
+    color: #DD6F63
+
+.botones-container
+    button
+        margin-bottom: 20px
+
+#nuevaDescripcion
+    width: 350px !important
+
+// Estilos para el modal
+.modal-overlay
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  background-color: rgba(0, 0, 0, 0.5)
+  display: flex
+  justify-content: center
+  align-items: center
+  z-index: 1000
+
+.modal-container
+  background-color: white
+  border-radius: 8px
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2)
+  width: 400px
+  max-width: 90%
+  overflow: hidden
+  animation: modal-appear 0.3s ease-out
+
+@keyframes modal-appear
+  from
+    opacity: 0
+    transform: translateY(-20px)
+  to
+    opacity: 1
+    transform: translateY(0)
+
+.modal-header
+  padding: 16px 20px
+  background-color: $color-azul-principal
+  color: white
+  
+  h2
+    margin: 0
+    font-size: 18px
+    font-weight: 500
+
+.modal-body
+  padding: 20px
+  
+  p
+    margin: 0 0 10px
+    color: $color-azul-principal
+  
+  .warning-text
+    color: #e74c3c
+    font-size: 14px
+    margin-top: 10px
+
+.modal-footer
+  padding: 16px 20px
+  display: flex
+  justify-content: flex-end
+  gap: 10px
+  border-top: 1px solid $color-gris-divisor
+
+  button
+    padding: 8px 16px
+    border-radius: 4px
+    font-weight: 500
+    cursor: pointer
+    transition: background-color 0.2s ease
+    border: none
+    
+  .btn-cancelar
+    background-color: $color-gris-claro
+    color: $color-azul-principal
+    
+    &:hover
+      background-color: darken($color-gris-claro, 5%)
+  
+  .btn-eliminar
+    background-color: #e74c3c
+    color: white
+    
+    &:hover
+      background-color: darken(#e74c3c, 10%)
+
+.crear-beneficio-opcion
+  font-weight: bold
+  color: #007bff
+  cursor: pointer
+
+.crear-beneficio-opcion:hover
+  text-decoration: underline
+
+.emojis
+    cursor: pointer
+
+:host ::ng-deep .mi-tabla
+  width: 90%
+  border-collapse: collapse
+  margin-bottom: $spacing-standard
+  margin: 20px auto
+
+  table 
+    width: 100%
+    border-collapse: collapse
+  
+  th 
+    padding: 10px
+    border-bottom: 1px solid $azul-principal
+    font-weight: 500
+    background-color: $color-azul-claro
+    text-align: center
+  
+  td 
+    padding: 10px
+    border-bottom: 1px solid $gris-borde
+    text-align: center
+
+  tbody tr:hover 
+    background-color: $azul-hover
+  
+  .nested-table
+    margin-left: 20px
+    background-color: rgba($azul-hover, 0.2)
+
+    td 
+      padding-left: 20px
