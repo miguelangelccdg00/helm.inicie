@@ -45,7 +45,7 @@ h1
     
     input
         width: 100%
-        max-width: 300px
+        max-width: 700px
         border-radius: 7px
         border: 1px solid #ccced7
         padding: 9px
@@ -76,7 +76,7 @@ h1
 
 #buscadorBeneficio #buscadorProblema #buscadorCaracteristica
     width: 100%
-    max-width: 300px
+    max-width: 700px
     border-radius: 7px
     border: 1px solid #ccced7
     padding: 9px
@@ -112,8 +112,8 @@ h1
     
     // Subsecciones
     .subseccion
-        margin-bottom: $spacing-subsection
-        margin-left: 20px
+        input, select, textarea
+            width: 700px
         
         // Título de subsección
         .titulo-subseccion
@@ -137,12 +137,15 @@ h1
     
     // Estilos para inputs
     input, select, textarea
-        width: 100%
+        width: 700px
         padding: 9px
         border-radius: 4px
         border: 1px solid $gris-borde
         margin-bottom: $spacing-standard
         font-family: inherit
+    
+    textarea
+        height: 80px
         
         &::placeholder
             color: #999
@@ -335,9 +338,6 @@ button
 .botones-container
     button
         margin-bottom: 20px
-
-#nuevoTitulo
-    width: 350px !important
 
 #nuevaDescripcion
     width: 350px !important
