@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StoreSolucionesService, StoreSoluciones, StoreBeneficios, StoreProblemas, StoreCaracteristicas } from '../services/store-soluciones.service';
+import { StoreSolucionesService, StoreSoluciones, StoreBeneficios, StoreProblemas, StoreCaracteristicas, StoreAmbitos } from '../services/store-soluciones.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MenuComponent } from '../menu/menu.component';
@@ -22,6 +22,8 @@ export class ModificarSolucionComponent implements OnInit {
   @ViewChild('scrollProblemas', { static: false }) scrollProblemas: ElementRef | undefined;
   @ViewChild('scrollBeneficios', { static: false }) scrollBeneficios: ElementRef | undefined;
   @ViewChild('scrollCaracteristicas', { static: false }) scrollCaracteristicas: ElementRef | undefined;
+  @ViewChild('scrollAmbitos', { static: false }) scrollAmbitos: ElementRef | undefined;
+
 
 
   solucion: StoreSoluciones | null = null;
@@ -65,10 +67,24 @@ export class ModificarSolucionComponent implements OnInit {
   mostrarBotonModificarCaracteristica: boolean = false;
   caracteristicaAEliminar: number | null = null;
 
+  nuevoAmbito: StoreAmbitos = { description: '', textoweb: '', prefijo: '', slug: '' };
+  buscadorAmbito: string = '';
+  ambitos: StoreCaracteristicas[] = [];
+  allAmbitos: StoreCaracteristicas[] = [];
+  ambitosFiltrados: StoreCaracteristicas[] = [];
+  ambitoSeleccionado: StoreCaracteristicas | null = null;
+  mostrarCrearAmbito: boolean = false;
+  mostrarModificarAmbito: boolean = false;
+  mostrarOpcionesAmbitos: boolean = false;
+  mostrarBotonCrearAmbito: boolean = true;
+  mostrarBotonModificarAmbito: boolean = false;
+  AmbitoAEliminar: number | null = null;
+
 
   mostrarModalProblema: boolean = false;
   mostrarModalBeneficio: boolean = false;
   mostrarModalCaracteristica: boolean = false;
+  mostrarModalAmbito: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
