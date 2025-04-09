@@ -11,20 +11,25 @@ export interface AuthRequest extends Request {
 }
 
 // Middleware para verificar el token
-const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) => {
-    const token = req.header('Authorization')?.split(' ')[1]; // Obtener el token del header
+const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) => 
+{
+    const token = req.header('Authorization')?.split(' ')[1]; 
 
     // Si no hay token, retornamos un error 401
-    if (!token) {
+    if (!token) 
+    {
         return res.status(401).json({ message: 'Token no proporcionado' });
     }
 
-    try {
+    try 
+    {
         // Verificar el token con la clave secreta
         const decoded = jwt.verify(token, SECRET_KEY);
-        req.user = decoded; // Guardamos los datos decodificados en el objeto req
-        next(); // Pasamos al siguiente middleware o controlador
-    } catch (error) {
+        req.user = decoded; 
+        next(); 
+    } 
+    catch (error) 
+    {
         console.error('Error al verificar el token: ', error);
         return res.status(403).json({ message: 'Token inválido o expirado' });
     }
@@ -34,15 +39,20 @@ const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) => {
  * Middleware para verificar permisos basados en roles
  * @param roles Array de roles permitidos
  */
-export const checkRole = (roles: string[]) => {
-    return (req: AuthRequest, res: Response, next: NextFunction) => {  // Usa AuthRequest aquí
-        if (!req.user) {
+export const checkRole = (roles: string[]) => 
+{
+    return (req: AuthRequest, res: Response, next: NextFunction) =>
+    { 
+
+        if (!req.user) 
+        {
             return res.status(401).json({ message: 'Usuario no autenticado' });
         }
 
         const userRole = req.user.role;
 
-        if (!roles.includes(userRole)) {
+        if (!roles.includes(userRole)) 
+        {
             return res.status(403).json({ message: 'No tienes permisos para acceder a este recurso' });
         }
 

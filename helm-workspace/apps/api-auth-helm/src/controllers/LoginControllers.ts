@@ -6,7 +6,8 @@ import jwt from 'jsonwebtoken';
 // Definir una clave secreta para la generación del token JWT
 const SECRET_KEY = 'token123';
 
-class LoginController {
+class LoginController 
+{
     /**
      * Inicia sesión de un usuario y genera un token de acceso.
      * 
@@ -21,13 +22,16 @@ class LoginController {
      * @throws {500} Error interno en el servidor en caso de fallos al intentar autenticar al usuario.
      */
     //@Post('/login/loginUsuario') 
-    async loginUsuario(req: Request, res: Response): Promise<void> {
-        try {
+    async loginUsuario(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
             // Extraemos los datos de nombreUsuario y contraseña del cuerpo de la solicitud
             const { nombreUsuario, contraseña } = req.body;
 
             // Verifica que los campos necesarios estén presentes
-            if (!nombreUsuario || !contraseña) {
+            if (!nombreUsuario || !contraseña) 
+            {
                 res.status(400).json({ message: 'Usuario y contraseña son requeridos' });
                 return;
             }
@@ -36,7 +40,8 @@ class LoginController {
             const usuario = await AuthService.findUserByUsername(nombreUsuario);
 
             // Verifica si el usuario existe
-            if (!usuario) {
+            if (!usuario) 
+            {
                 res.status(401).json({ message: 'Usuario no encontrado' });
                 return;
             }
@@ -45,7 +50,8 @@ class LoginController {
             const contraseñaValida = await AuthService.validatePassword(contraseña, usuario.pass);
 
             // Si la contraseña es incorrecta, se retorna un error
-            if (!contraseñaValida) {
+            if (!contraseñaValida) 
+            {
                 res.status(401).json({ message: 'Credenciales incorrectas' });
                 return;
             }
@@ -67,7 +73,9 @@ class LoginController {
                     email: usuario.email
                 }
             });
-        } catch (error) {
+        } 
+        catch (error) 
+        {
             // Maneja cualquier error interno y responde con un mensaje de error
             console.error('Error al loguear usuario: ', error);
             res.status(500).json({ message: 'Error interno en el servidor' });

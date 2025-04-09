@@ -9,6 +9,7 @@ import storeSolucionesRoute from './routes/StoreSolucionesRoute';
 import storeBeneficiosRoute from './routes/StoreBeneficiosRoute';
 import storeProblemasRoute from './routes/StoreProblemasRoute';
 import storeCaracteristicasRoute from './routes/StoreCaracteristicasRoute';
+import storeAmbitosRoute from './routes/StoreAmbitosRoute';
 import menuRoutes from './routes/MenuRoute';
 import tokenRoute from './routes/TokenRoute';
 
@@ -33,6 +34,7 @@ app.use('/storeSolucion', storeSolucionesRoute);
 app.use('/storeBeneficios', storeBeneficiosRoute);
 app.use('/storeProblemas', storeProblemasRoute);
 app.use('/storeCaracteristicas', storeCaracteristicasRoute);
+app.use('/storeAmbitos', storeAmbitosRoute);
 app.use('/menu', menuRoutes);
 app.use('/token', tokenRoute);
 
@@ -106,6 +108,15 @@ app.get('/', (req: Request, res: Response): void =>
                         { method: 'POST', path: '/createCaracteristicas/:idSolucion' },
                         { method: 'PUT', path: '/modifyCaracteristicas/:id' },
                         { method: 'DELETE', path: '/deleteCaracteristicas/:idCaracteristicas' }
+                    ]
+                }
+            },
+            {
+                storeAmbitos:
+                {
+                    base: 'storeAmbitos',
+                    operations: [
+                        { method: 'POST', path: '/createAmbitos/:idSolucion' }
                     ]
                 }
             },

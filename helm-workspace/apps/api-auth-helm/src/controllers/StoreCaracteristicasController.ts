@@ -2,7 +2,8 @@ import { Request, Response } from 'express';
 import storeSolucionesService from '../services/StoreSolucionesService';
 import StoreCaracteristicasService from '../services/StoreCaracteristicasService';
 
-class StoreCaracteristicasController {
+class StoreCaracteristicasController
+{
     constructor() {}
 
     /**
@@ -14,13 +15,16 @@ class StoreCaracteristicasController {
      * @param {string} req.body.titulo - Título de la característica.
      * @param {Response} res - Objeto de respuesta HTTP.
      */
-    async createCaracteristicas(req: Request, res: Response): Promise<void> {
-        try {
+    async createCaracteristicas(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
             const idSolucion = parseInt(req.params.idSolucion, 10);
             const { description, titulo } = req.body;
             
             // Verifica que los datos requeridos estén presentes.
-            if (!description || !idSolucion) {
+            if (!description || !idSolucion) 
+            {
                 res.status(401).json({ message: 'Faltan datos de características' });
                 return;
             }
@@ -41,7 +45,9 @@ class StoreCaracteristicasController {
                 });
             }
             res.status(201).json({ message: 'Característica creada y relacionada con la solución con éxito', caracteristica });
-        } catch (error) {
+        } 
+        catch (error) 
+        {
             console.error('Error creando la característica:', error);
             res.status(500).json({ message: 'Error interno del servidor' });
         }
