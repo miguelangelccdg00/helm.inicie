@@ -14,23 +14,24 @@
         <div class="grid-container">
           <div class="form-group">
             <label for="title">Título:</label>
-            <input [(ngModel)]="solucion.title" name="title" id="title" placeholder="Ingrese el título" />
+            <input id="title" name="title" [(ngModel)]="solucion.title" placeholder="Ingrese el título" pInputText
+              variant="filled" />
           </div>
           <div class="form-group">
             <label for="subtitle">Subtítulo:</label>
-            <input [(ngModel)]="solucion.subtitle" name="subtitle" id="subtitle" placeholder="Ingrese el subtítulo" />
+            <input [(ngModel)]="solucion.subtitle" name="subtitle" id="subtitle" placeholder="Ingrese el subtítulo" pInputText variant="filled"/>
           </div>
           <div class="form-group">
             <label for="icon">Icono:</label>
-            <input [(ngModel)]="solucion.icon" name="icon" id="icon" placeholder="Nombre del icono" />
+            <input [(ngModel)]="solucion.icon" name="icon" id="icon" placeholder="Nombre del icono" pInputText variant="filled"/>
           </div>
           <div class="form-group">
             <label for="slug">Slug:</label>
-            <input [(ngModel)]="solucion.slug" name="slug" id="slug" placeholder="URL amigable" />
+            <input [(ngModel)]="solucion.slug" name="slug" id="slug" placeholder="URL amigable" pInputText variant="filled"/>
           </div>
           <div class="form-group">
             <label for="titleweb">Título Web:</label>
-            <input [(ngModel)]="solucion.titleweb" name="titleweb" id="titleweb" placeholder="Título para la web" />
+            <input [(ngModel)]="solucion.titleweb" name="titleweb" id="titleweb" placeholder="Título para la web" pInputText variant="filled"/>
           </div>
         </div>
       </div>
@@ -43,12 +44,12 @@
           <div class="form-group col-8">
             <label for="multimediaUri">Multimedia URI:</label>
             <input [(ngModel)]="solucion.multimediaUri" name="multimediaUri" id="multimediaUri"
-              placeholder="URL del recurso multimedia" />
+              placeholder="URL del recurso multimedia" pInputText variant="filled"/>
           </div>
           <div class="form-group col-4">
             <label for="multimediaTypeId">Tipo de Multimedia:</label>
             <input [(ngModel)]="solucion.multimediaTypeId" name="multimediaTypeId" id="multimediaTypeId" type="number"
-              placeholder="ID del tipo" />
+              placeholder="ID del tipo" pInputText variant="filled"/>
           </div>
         </div>
       </div>
@@ -66,7 +67,7 @@
               <div class="form-group col-6">
                 <label for="nuevoProblemaDescription">Descripción:</label>
                 <textarea id="nuevoProblemaDescription" [(ngModel)]="nuevoProblema.description"
-                  name="nuevoProblemaDescription" required placeholder="Descripción del problema"></textarea>
+                  name="nuevoProblemaDescription" required placeholder="Descripción del problema" pInputText variant="filled"></textarea>
               </div>
             </div>
             <div class="botones-container">
@@ -85,7 +86,7 @@
               <div class="form-group col-6">
                 <label for="nuevoProblemaDescription">Descripción:</label>
                 <textarea id="nuevoProblemaDescription" [(ngModel)]="nuevoProblema.description"
-                  name="nuevoProblemaDescription" required placeholder="Descripción del problema"></textarea>
+                  name="nuevoProblemaDescription" required placeholder="Descripción del problema" pInputText variant="filled"></textarea>
               </div>
             </div>
             <div class="botones-container">
@@ -105,7 +106,7 @@
               <div class="custom-select">
                 <input type="text" id="buscadorProblema" [(ngModel)]="buscadorProblema" name="buscadorProblema"
                   (input)="filtrarProblemas()" (focus)="mostrarOpcionesProblema = true"
-                  (click)="mostrarOpcionesProblema = true" placeholder="Buscar y seleccionar problema..." />
+                  (click)="mostrarOpcionesProblema = true" placeholder="Buscar y seleccionar problema..." pInputText variant="filled"/>
                 <div class="dropdown-menu" *ngIf="mostrarOpcionesProblema">
                   <div *ngFor="let problema of problemasFiltrados" class="dropdown-item"
                     (click)="seleccionarProblema(problema)">
@@ -169,7 +170,7 @@
                 <label for="nuevaCaracteristicaDescription">Descripción:</label>
                 <textarea id="nuevaCaracteristicaDescription" [(ngModel)]="nuevaCaracteristica.description"
                   name="nuevaCaracteristicaDescription" required
-                  placeholder="Descripción de la característica"></textarea>
+                  placeholder="Descripción de la característica" pInputText variant="filled"></textarea>
               </div>
             </div>
             <div class="botones-container">
@@ -190,7 +191,7 @@
                 <label for="nuevaCaracteristicaDescripcion">Descripción:</label>
                 <textarea id="nuevaCaracteristicaDescripcion" [(ngModel)]="nuevaCaracteristica.description"
                   name="nuevaCaracteristicaDescripcion" required
-                  placeholder="Descripción de la característica"></textarea>
+                  placeholder="Descripción de la característica" pInputText variant="filled"></textarea>
               </div>
             </div>
             <div class="botones-container">
@@ -210,7 +211,7 @@
                 <input type="text" id="buscadorCaracteristica" [(ngModel)]="buscadorCaracteristica"
                   name="buscadorCaracteristica" (input)="filtrarCaracteristicas()"
                   (focus)="mostrarOpcionesCaracteristicas = true" (click)="mostrarOpcionesCaracteristicas = true"
-                  placeholder="Buscar y seleccionar característica..." />
+                  placeholder="Buscar y seleccionar característica..." pInputText variant="filled"/>
                 <div class="dropdown-menu" *ngIf="mostrarOpcionesCaracteristicas">
                   <div *ngFor="let caracteristica of caracteristicasFiltradas" class="dropdown-item"
                     (click)="seleccionarCaracteristica(caracteristica)">
@@ -278,12 +279,12 @@
             <div class="form-group col-6">
               <label for="firstCtaTitle">Título del Primer CTA:</label>
               <input [(ngModel)]="solucion.firstCtaTitle" name="firstCtaTitle" id="firstCtaTitle"
-                placeholder="Título del primer CTA" />
+                placeholder="Título del primer CTA" pInputText variant="filled"/>
             </div>
             <div class="form-group col-6">
               <label for="firstCtaPragma">Descripción del Primer CTA:</label>
               <textarea [(ngModel)]="solucion.firstCtaPragma" name="firstCtaPragma" id="firstCtaPragma"
-                placeholder="Descripción del primer CTA"></textarea>
+                placeholder="Descripción del primer CTA" pInputText variant="filled"></textarea>
             </div>
           </div>
         </div>
@@ -294,12 +295,12 @@
             <div class="form-group col-6">
               <label for="secondCtaTitle">Título del Segundo CTA:</label>
               <input [(ngModel)]="solucion.secondCtaTitle" name="secondCtaTitle" id="secondCtaTitle"
-                placeholder="Título del segundo CTA" />
+                placeholder="Título del segundo CTA" pInputText variant="filled"/>
             </div>
             <div class="form-group col-6">
               <label for="secondCtaPragma">Descripción del Segundo CTA:</label>
               <textarea [(ngModel)]="solucion.secondCtaPragma" name="secondCtaPragma" id="secondCtaPragma"
-                placeholder="Descripción del segundo CTA"></textarea>
+                placeholder="Descripción del segundo CTA" pInputText variant="filled"></textarea>
             </div>
           </div>
         </div>
@@ -318,7 +319,7 @@
               <div class="form-group col-6">
                 <label for="nuevoBeneficioDescription">Descripción:</label>
                 <textarea id="nuevoBeneficioDescription" [(ngModel)]="nuevoBeneficio.description"
-                  name="nuevoBeneficioDescription" required placeholder="Descripción del beneficio"></textarea>
+                  name="nuevoBeneficioDescription" required placeholder="Descripción del beneficio" pInputText variant="filled"></textarea>
               </div>
             </div>
             <div class="botones-container">
@@ -353,7 +354,7 @@
               <div class="custom-select">
                 <input type="text" id="buscadorBeneficio" [(ngModel)]="buscadorBeneficio" name="buscadorBeneficio"
                   (input)="filtrarBeneficios()" (focus)="mostrarOpciones = true" (click)="mostrarOpciones = true"
-                  placeholder="Buscar y seleccionar beneficio..." />
+                  placeholder="Buscar y seleccionar beneficio..." pInputText variant="filled"/>
                 <div class="dropdown-menu" *ngIf="mostrarOpciones">
                   <div *ngFor="let beneficio of beneficiosFiltrados" class="dropdown-item"
                     (click)="seleccionarBeneficio(beneficio)">

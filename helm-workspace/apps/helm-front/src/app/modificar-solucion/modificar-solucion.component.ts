@@ -6,11 +6,13 @@ import { FormsModule } from '@angular/forms';
 import { MenuComponent } from '../menu/menu.component';
 import { forkJoin, Observable } from 'rxjs';
 import { TableModule } from 'primeng/table';
+import { InputTextModule } from 'primeng/inputtext';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
   selector: 'app-modificar-solucion',
   standalone: true,
-  imports: [CommonModule, FormsModule, MenuComponent, TableModule],
+  imports: [CommonModule, FormsModule, MenuComponent, TableModule, InputTextModule, FloatLabelModule],
   templateUrl: './modificar-solucion.component.html',
   styleUrls: ['./modificar-solucion.component.sass']
 })
