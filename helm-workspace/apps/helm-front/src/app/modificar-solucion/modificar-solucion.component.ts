@@ -107,47 +107,52 @@ export class ModificarSolucionComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
-  
+
     const idSolucion = +id;
-  
+
     this.storeSolucionesService.getStoreSolucionById(idSolucion).subscribe({
       next: (solucion) => {
         this.solucion = {
           ...solucion,
           problemas: solucion.problemas || [],
           beneficios: solucion.beneficios || [],
-          caracteristicas: solucion.caracteristicas || []
+          caracteristicas: solucion.caracteristicas || [],
+          ambitos: solucion.ambitos || []
         };
-  
+
         forkJoin([
           this.storeSolucionesService.getProblemasBySolucion(idSolucion),
           this.storeSolucionesService.getBeneficiosBySolucion(idSolucion),
           this.storeSolucionesService.getCaracteristicasBySolucion(idSolucion)
+          this.storeSolucionesService.getAmbitosBySolucion(idSolucion)
         ]).subscribe({
-          next: ([problemas, beneficios, caracteristicas]) => {
+          next: ([problemas, beneficios, caracteristicas, ambitos]) => {
             this.problemas = this.solucion!.problemas = problemas;
             this.beneficios = this.solucion!.beneficios = beneficios;
             this.caracteristicas = this.solucion!.caracteristicas = caracteristicas;
+            this.ambitos = this.solucion!.ambitos = ambitos;
           },
-          error: (e) => console.error('Error al obtener problemas, beneficios o características:', e)
+          error: (e) => console.error('Error al obtener problemas, beneficios, características o ámbitos:', e)
         });
       },
       error: (e) => console.error('Error al obtener la solución:', e)
     });
-  
+
     forkJoin([
       this.storeSolucionesService.getAllProblemas(),
       this.storeSolucionesService.getAllBeneficios(),
       this.storeSolucionesService.getAllCaracteristicas()
+      this.storeSolucionesService.getAllAmbitos()
     ]).subscribe({
-      next: ([allProblemas, allBeneficios, allCaracteristicas]) => {
+      next: ([allProblemas, allBeneficios, allCaracteristicas, allAmbitos]) => {
         this.allProblemas = this.problemasFiltrados = allProblemas;
         this.allBeneficios = this.beneficiosFiltrados = allBeneficios;
         this.allCaracteristicas = this.caracteristicasFiltradas = allCaracteristicas;
+        this.allAmbitos = this.ambitosFiltrados = allAmbitos;
       },
       error: (e) => console.error('Error al obtener listas globales:', e)
     });
-  }  
+  }
 
   guardarCambios() {
     if (this.solucion) {
@@ -235,11 +240,11 @@ export class ModificarSolucionComponent implements OnInit {
     this.problemaSeleccionado = problema;
     this.nuevoProblema = { ...problema };
     this.mostrarOpcionesProblema = false;
-  
+
     if (this.scrollProblemas) {
       this.scrollProblemas.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
-    
+
   }
 
   seleccionarCaracteristica(caracteristica: StoreCaracteristicas) {
@@ -667,6 +672,84 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  crearNuevoAmbito() {
+    this.mostrarCrearAmbito = false;
+    this.mostrarBotonCrearAmbito = true;
+
+    if (!this.nuevoAmbito || !this.nuevoAmbito.description) {
+      console.error('Debe ingresar la descripción del ámbito');
+      return;
+    }
+
+    if (!this.nuevoAmbito.slug) {
+      console.error('Debe ingresar el slug del ámbito');
+      return;
+    }
+
+    if (!this.nuevoAmbito.textoweb) {
+      console.error('Debe ingresar el texto web del ámbito');
+      return;
+    }
+
+    if (!this.nuevoAmbito.prefijo) {
+      console.error('Debe ingresar el prefijo del ámbito');
+      return;
+    }
+
+    if (!this.solucion) {
+      console.error('La solución debe estar cargada para asociar el ámbito');
+      return;
+    }
+
+    if (this.solucion) {
+      this.solucion.description = this.nuevoAmbito.description || this.solucion.description;
+      this.solucion.textoweb = this.nuevoAmbito.textoweb || this.solucion.textoweb;
+      this.solucion.prefijo = this.nuevoAmbito.prefijo || this.solucion.prefijo;
+      this.solucion.slug = this.nuevoAmbito.slug || this.solucion.slug;
+
+      this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
+        next: () => {
+          console.log('Solución actualizada con los datos del ámbito');
+
+          this.storeSolucionesService.createAmbito(this.solucion!.id_solucion, this.nuevoAmbito).subscribe({
+            next: (response) => {
+              console.log('Ámbito creado:', response);
+
+              const ambitoCreado: StoreAmbitos = {
+                id_ambito: response.caracteristica.id_caracteristica,
+                description: this.nuevoAmbito.description,
+                textoweb: this.nuevoAmbito.textoweb,
+                prefijo: this.nuevoAmbito.prefijo,
+                slug: this.nuevoAmbito.slug
+              };
+
+              this.allAmbitos.push(ambitoCreado);
+              this.filtrarAmbitos();
+
+              if (response.ambito.id_ambito) {
+                this.storeSolucionesService.asociarAmbitoASolucion(
+                  this.solucion!.id_solucion,
+                  response.ambito.id_ambito
+                ).subscribe({
+                  next: () => console.log('Ámbito asociado correctamente'),
+                  error: (err) => console.error('Error al asociar el ámbito:', err)
+                });
+              }
+
+              this.nuevoAmbito = { description: '', textoweb: '', prefijo: '', slug: '' };
+            },
+            error: (error) => {
+              console.error('Error al crear el ámbito:', error);
+            }
+          });
+        },
+        error: (err) => {
+          console.error('Error al actualizar la solución con los datos del ámbito:', err);
+        }
+      });
+    }
+  }
+
   confirmarEliminarProblema(idProblema: number, event: MouseEvent) {
     event.stopPropagation();
     this.problemaAEliminar = idProblema;
@@ -713,12 +796,12 @@ export class ModificarSolucionComponent implements OnInit {
 
   modificarProblema() {
     console.log('Modificando problema...', this.nuevoProblema, this.problemaSeleccionado);
-  
+
     if (!this.nuevoProblema || !this.nuevoProblema.description) {
       console.error('Debe ingresar la descripción del problema');
       return;
     }
-  
+
     if (this.problemaSeleccionado && this.problemaSeleccionado.id_problema !== undefined) {
       console.log('ID problema a modificar:', this.problemaSeleccionado.id_problema);
       this.storeSolucionesService.modifyProblema(this.problemaSeleccionado.id_problema, this.nuevoProblema)
@@ -739,12 +822,12 @@ export class ModificarSolucionComponent implements OnInit {
 
   modificarCaracteristica() {
     console.log('Modificando característica..', this.nuevaCaracteristica, this.caracteristicaSeleccionada);
-  
+
     if (!this.nuevaCaracteristica || !this.nuevaCaracteristica.description) {
       console.error('Debe ingresar la descripción de la característica');
       return;
     }
-  
+
     if (this.caracteristicaSeleccionada && this.caracteristicaSeleccionada.id_caracteristica !== undefined) {
       console.log('ID caracteristica a modificar:', this.caracteristicaSeleccionada.id_caracteristica);
       this.storeSolucionesService.modifyCaracteristica(this.caracteristicaSeleccionada.id_caracteristica, this.nuevaCaracteristica)
@@ -765,12 +848,12 @@ export class ModificarSolucionComponent implements OnInit {
 
   modificarBeneficio() {
     console.log('Modificando beneficio..', this.nuevoBeneficio, this.beneficioSeleccionado);
-  
+
     if (!this.nuevoBeneficio || !this.nuevoBeneficio.description) {
       console.error('Debe ingresar la descripción del beneficio');
       return;
     }
-  
+
     if (this.beneficioSeleccionado && this.beneficioSeleccionado.id_beneficio !== undefined) {
       console.log('ID beneficio a modificar:', this.beneficioSeleccionado.id_beneficio);
       this.storeSolucionesService.modifyBeneficio(this.beneficioSeleccionado.id_beneficio, this.nuevoBeneficio)
@@ -788,5 +871,47 @@ export class ModificarSolucionComponent implements OnInit {
       console.error('Beneficio no seleccionado o id_beneficio inválido');
     }
   }
+
+  modificarAmbito() {
+    console.log('Modificando ambito..', this.nuevoAmbito, this.ambitoSeleccionado);
+
+    if (!this.nuevoAmbito || !this.nuevoAmbito.description) {
+      console.error('Debe ingresar la descripción del ámbito');
+      return;
+    }
+
+    if (!this.nuevoAmbito.slug) {
+      console.error('Debe ingresar el slug del ámbito');
+      return;
+    }
+
+    if (!this.nuevoAmbito.textoweb) {
+      console.error('Debe ingresar el texto web del ámbito');
+      return;
+    }
+
+    if (!this.nuevoAmbito.prefijo) {
+      console.error('Debe ingresar el prefijo del ámbito');
+      return;
+    }
+
+    if (this.ambitoSeleccionado && this.ambitoSeleccionado.id_ambito !== undefined) {
+      console.log('ID ámbito a modificar:', this.ambitoSeleccionado.id_ambito);
+      this.storeSolucionesService.modifyAmbito(this.ambitoSeleccionado.id_ambito, this.nuevoAmbito)
+        .subscribe({
+          next: (updatedAmbito: StoreAmbitos) => {
+            console.log('Ámbito actualizado correctamente:', updatedAmbito);
+            this.mostrarModificarAmbito = false;
+            this.mostrarBotonModificarAmbito = true;
+          },
+          error: (error) => {
+            console.error('Error al modificar el ámbito:', error);
+          }
+        });
+    } else {
+      console.error('Ámbito no seleccionado o id_ambito inválido');
+    }
+  }
+
 
 }

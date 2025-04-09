@@ -41,6 +41,7 @@ export interface StoreSoluciones {
   beneficios: StoreBeneficios[];
   problemas: StoreProblemas[];
   caracteristicas: StoreCaracteristicas[];
+  ambitos: StoreAmbitos[];
 }
 
 export interface UpdateStoreSolucionResponse {
