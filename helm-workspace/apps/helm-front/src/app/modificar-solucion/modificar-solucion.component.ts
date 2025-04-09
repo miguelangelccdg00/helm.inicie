@@ -100,6 +100,7 @@ export class ModificarSolucionComponent implements OnInit {
       this.mostrarOpcionesProblema = false;
       this.mostrarOpciones = false;
       this.mostrarOpcionesCaracteristicas = false;
+      this.mostrarModificarAmbito = false;
     }
   }
 
@@ -249,6 +250,18 @@ export class ModificarSolucionComponent implements OnInit {
 
     if (this.scrollCaracteristicas) {
       this.scrollCaracteristicas.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+
+  }
+
+  seleccionarAmbito(ambito: StoreAmbitos) {
+    this.buscadorAmbito = ambito.description;
+    this.ambitoSeleccionado = ambito;
+    this.nuevoAmbito = { ...ambito };
+    this.mostrarOpcionesAmbitos = false;
+
+    if (this.scrollAmbitos) {
+      this.scrollAmbitos.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
 
   }
@@ -533,6 +546,13 @@ export class ModificarSolucionComponent implements OnInit {
     );
   }
 
+  filtrarAmbitos() {
+    const filtro = this.buscadorAmbito.toLowerCase().trim();
+    this.ambitosFiltrados = this.allAmbitos.filter(ambito =>
+      ambito.description.toLowerCase().includes(filtro)
+    );
+  }
+
   crearNuevoBeneficio() {
     this.mostrarCrearBeneficio = false;
     this.mostrarBotonCrear = true;
@@ -678,6 +698,17 @@ export class ModificarSolucionComponent implements OnInit {
   cancelarEliminarCaracteristica() {
     this.mostrarModalCaracteristica = false;
     this.caracteristicaAEliminar = null;
+  }
+
+  confirmarEliminarAmbito(idAmbito: number, event: MouseEvent) {
+    event.stopPropagation();
+    this.AmbitoAEliminar = idAmbito;
+    this.mostrarModalAmbito = true;
+  }
+
+  cancelarEliminarAmbito() {
+    this.mostrarModalAmbito = false;
+    this.AmbitoAEliminar = null;
   }
 
   modificarProblema() {
