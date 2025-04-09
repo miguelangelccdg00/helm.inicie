@@ -116,6 +116,8 @@ app.get('/', (req: Request, res: Response): void =>
                 {
                     base: 'storeAmbitos',
                     operations: [
+                        { method: 'GET', path: '/listCompleteAmbitos' },
+                        { method: 'GET', path: '/listAmbitos/:idSolucion' },
                         { method: 'POST', path: '/createAmbitos/:idSolucion' }
                     ]
                 }

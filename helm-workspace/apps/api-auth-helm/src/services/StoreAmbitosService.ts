@@ -90,6 +90,41 @@ class StoreAmbitosService
             conn.release();
         }
     }
+
+    /**
+     * Obtiene la lista de todos los caracteristicas registrados.
+     */
+    async listAmbitos() 
+    {
+        const [rows] = await pool.promise().query(`SELECT * FROM storeAmbitos`);
+        return rows;
+    }
+
+    /**
+     * Obtiene un problema específico por su ID.
+     */
+    async getAmbitoById(idAmbito: number) 
+    {
+        const [rows] = await pool.promise().query(
+            `SELECT * FROM storeAmbitos WHERE id_ambito = ?`, [idAmbito]);
+        return rows.length ? rows[0] : null;
+    }
+
+    /**
+     * Obtiene las caracteristicas asociados a una solución específica.
+     */
+    async getByIdAmbitos(idSolucion: Number) 
+    {
+        const [rows] = await pool.promise().query(
+            `SELECT a.* 
+            FROM storeAmbitos a
+            JOIN storeSolucionesAmbitos sc ON a.id_ambito = sc.id_ambito
+            WHERE sc.id_solucion = ?`, 
+            [idSolucion]  
+        );
+        return rows;
+    }
+
 }
 
 export default new StoreAmbitosService();
