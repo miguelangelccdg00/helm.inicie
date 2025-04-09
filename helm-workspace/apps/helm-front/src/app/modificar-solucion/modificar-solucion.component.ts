@@ -88,68 +88,49 @@ export class ModificarSolucionComponent implements OnInit {
   }
 
   ngOnInit() {
-    const idSolucion = this.route.snapshot.paramMap.get('id');
-    if (idSolucion) {
-      this.storeSolucionesService.getStoreSolucionById(+idSolucion).subscribe({
-        next: (solucion: StoreSoluciones) => {
-          this.solucion = solucion;
-          if (!this.solucion.problemas) this.solucion.problemas = [];
-          if (!this.solucion.beneficios) this.solucion.beneficios = [];
-          if (!this.solucion.caracteristicas) this.solucion.caracteristicas = [];
-
-          this.storeSolucionesService.getProblemasBySolucion(this.solucion.id_solucion).subscribe({
-            next: (problemas: StoreProblemas[]) => {
-              this.problemas = problemas;
-              this.solucion!.problemas = problemas;
-            },
-            error: (error: any) => console.error('Error al obtener los problemas: ', error)
-          });
-
-          this.storeSolucionesService.getBeneficiosBySolucion(this.solucion.id_solucion).subscribe({
-            next: (beneficios: StoreBeneficios[]) => {
-              this.beneficios = beneficios;
-              this.solucion!.beneficios = beneficios;
-            },
-            error: (error: any) => console.error('Error al obtener los beneficios: ', error)
-          });
-
-          this.storeSolucionesService.getCaracteristicasBySolucion(this.solucion.id_solucion).subscribe({
-            next: (caracteristicas: StoreCaracteristicas[]) => {
-              this.caracteristicas = caracteristicas;
-              this.solucion!.caracteristicas = caracteristicas;
-            },
-            error: (error: any) => console.error('Error al obtener las características: ', error)
-          });
-        },
-        error: (error: any) => console.error('Error al obtener la solución: ', error)
-      });
-
-      this.storeSolucionesService.getAllProblemas().subscribe({
-        next: (problemas: StoreProblemas[]) => {
-          this.allProblemas = problemas;
-          this.problemasFiltrados = problemas;
-        },
-        error: (error: any) => console.error('Error al obtener los problemas: ', error)
-      });
-
-      this.storeSolucionesService.getAllBeneficios().subscribe({
-        next: (beneficios: StoreBeneficios[]) => {
-          this.allBeneficios = beneficios;
-          this.beneficiosFiltrados = beneficios;
-        },
-        error: (error: any) => console.error('Error al obtener los beneficios: ', error)
-      });
-
-      this.storeSolucionesService.getAllCaracteristicas().subscribe({
-        next: (caracteristicas: StoreCaracteristicas[]) => {
-          this.allCaracteristicas = caracteristicas;
-          this.caracteristicasFiltradas = caracteristicas;
-        },
-        error: (error: any) => console.error('Error al obtener las características: ', error)
-      });
-    }
-  }
-
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) return;
+  
+    const idSolucion = +id;
+  
+    this.storeSolucionesService.getStoreSolucionById(idSolucion).subscribe({
+      next: (solucion) => {
+        this.solucion = {
+          ...solucion,
+          problemas: solucion.problemas || [],
+          beneficios: solucion.beneficios || [],
+          caracteristicas: solucion.caracteristicas || []
+        };
+  
+        forkJoin([
+          this.storeSolucionesService.getProblemasBySolucion(idSolucion),
+          this.storeSolucionesService.getBeneficiosBySolucion(idSolucion),
+          this.storeSolucionesService.getCaracteristicasBySolucion(idSolucion)
+        ]).subscribe({
+          next: ([problemas, beneficios, caracteristicas]) => {
+            this.problemas = this.solucion!.problemas = problemas;
+            this.beneficios = this.solucion!.beneficios = beneficios;
+            this.caracteristicas = this.solucion!.caracteristicas = caracteristicas;
+          },
+          error: (e) => console.error('Error al obtener problemas, beneficios o características:', e)
+        });
+      },
+      error: (e) => console.error('Error al obtener la solución:', e)
+    });
+  
+    forkJoin([
+      this.storeSolucionesService.getAllProblemas(),
+      this.storeSolucionesService.getAllBeneficios(),
+      this.storeSolucionesService.getAllCaracteristicas()
+    ]).subscribe({
+      next: ([allProblemas, allBeneficios, allCaracteristicas]) => {
+        this.allProblemas = this.problemasFiltrados = allProblemas;
+        this.allBeneficios = this.beneficiosFiltrados = allBeneficios;
+        this.allCaracteristicas = this.caracteristicasFiltradas = allCaracteristicas;
+      },
+      error: (e) => console.error('Error al obtener listas globales:', e)
+    });
+  }  
 
   guardarCambios() {
     if (this.solucion) {
