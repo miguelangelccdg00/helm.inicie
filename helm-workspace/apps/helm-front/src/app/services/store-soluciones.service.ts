@@ -42,7 +42,7 @@ export interface StoreSoluciones {
   problemas: StoreProblemas[];
   caracteristicas: StoreCaracteristicas[];
   ambitos: StoreAmbitos[];
-}
+} 
 
 export interface UpdateStoreSolucionResponse {
   success: boolean;
@@ -134,6 +134,7 @@ export class StoreSolucionesService {
   private beneficiosUrl = 'http://localhost:3009/storeBeneficios';
   private problemasUrl = 'http://localhost:3009/storeProblemas';
   private caracteristicasUrl = 'http://localhost:3009/storeCaracteristicas';
+  private ambitosUrl = 'http://localhost:3009/storeAmbitos';
 
   constructor(private https: HttpClient) { }
 
@@ -461,6 +462,46 @@ export class StoreSolucionesService {
         })
       );
     }
+  }
+
+  /* Ámbitos */
+
+  getAmbitosBySolucion(idSolucion: number): Observable<StoreAmbitos[]> {
+    const url = `${this.ambitosUrl}/listAmbitos/${idSolucion}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.get<StoreAmbitos[]>(url, { headers });
+  }
+
+  getAllAmbitos(): Observable<StoreAmbitos[]> {
+    const url = `${this.ambitosUrl}/listCompleteAmbitos`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.get<StoreAmbitos[]>(url, { headers });
+  }
+
+  createAmbito(idSolucion: number, ambito: StoreAmbitos): Observable<CreateAmbitoResponse> {
+    const url = `${this.ambitosUrl}/createAmbito/${idSolucion}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    const ambitoToCreate = {
+      description: ambito.description,
+      textoweb: ambito.textoweb,
+      prefijo: ambito.prefijo,
+      slug: ambito.slug
+    };
+
+    return this.https.post<CreateAmbitoResponse>(url, ambitoToCreate, { headers });
+  }
+
+  asociarAmbitoASolucion(idSolucion: number, idAmbito: number): Observable<any> {
+    const url = `${this.ambitosUrl}/asociarAmbito`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    const relacion = {
+      id_solucion: idSolucion,
+      id_ambito: idAmbito
+    };
+
+    return this.https.post<any>(url, relacion, { headers });
   }
 
 }
