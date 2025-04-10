@@ -15,7 +15,7 @@ router.get('/listAmbitos/:idSolucion', storeAmbitosController.listIdAmbito);
 /**
  * @description Obtencion de problemas por solución específica de su ID
  */
-router.get('/listAmbitos/:idSolucion/:idAmbito', storeAmbitosController.getVariantesSolucionPorAmbito);
+router.get('/listAmbitosSolucion/:idSolucion/:idAmbito', storeAmbitosController.getVariantesSolucionPorAmbito);
 
 /**
  * @description Insercion de problemas por solución específica de su ID
