@@ -93,16 +93,21 @@ export class ModificarSolucionComponent implements OnInit {
   ) { }
 
   @HostListener('document:click', ['$event'])
-  clickFuera(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-
-    if (!target.closest('.buscador-selector-container')) {
-      this.mostrarOpcionesProblema = false;
-      this.mostrarOpciones = false;
-      this.mostrarOpcionesCaracteristicas = false;
-      this.mostrarModificarAmbito = false;
-    }
+clickFuera(event: MouseEvent) {
+  const target = event.target as HTMLElement;
+  
+  // No cerrar si se hace clic en el lápiz o en el formulario de modificación
+  if (target.closest('.emojis') || target.closest('.subseccion')) {
+    return;
   }
+
+  if (!target.closest('.buscador-selector-container')) {
+    this.mostrarOpcionesProblema = false;
+    this.mostrarOpciones = false;
+    this.mostrarOpcionesCaracteristicas = false;
+    this.mostrarOpcionesAmbitos = false;
+  }
+}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -914,7 +919,7 @@ export class ModificarSolucionComponent implements OnInit {
 
   modificarAmbito() {
     if (this.ambitoSeleccionado) {
-      this.storeSolucionesService.modifyAmbito(this.ambitoSeleccionado.id_ambito!, this.nuevoAmbito).subscribe({
+      this.storeSolucionesService.modifyAmbito(this.solucion!.id_solucion, this.ambitoSeleccionado.id_ambito!, this.nuevoAmbito).subscribe({
         next: (updatedAmbito) => {
           console.log('Ámbito modificado correctamente:', updatedAmbito);
   
@@ -933,4 +938,32 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
   
+  editarAmbito(ambito: StoreAmbitos, event?: MouseEvent) {
+    // Prevenir la propagación del evento
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  
+    // Copia los datos del ámbito seleccionado
+    this.ambitoSeleccionado = ambito;
+    this.nuevoAmbito = { 
+      description: ambito.description,
+      textoweb: ambito.textoweb,
+      prefijo: ambito.prefijo,
+      slug: ambito.slug,
+      id_ambito: ambito.id_ambito
+    };
+    
+    // Mostrar directamente el formulario de edición
+    this.mostrarModificarAmbito = true;
+    this.mostrarBotonCrearAmbito = false;
+    this.mostrarBotonModificarAmbito = true;
+    this.mostrarOpcionesAmbitos = false;
+    
+    // Hacer scroll al formulario
+    if (this.scrollAmbitos) {
+      this.scrollAmbitos.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 }

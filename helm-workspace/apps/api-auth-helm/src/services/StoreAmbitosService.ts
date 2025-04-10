@@ -216,21 +216,103 @@ class StoreAmbitosService
         return rows;
     }
 
-    async update(idAmbito: number, idSolucion: number, updateData: Partial<storeSolucionesAmbitos>) 
-    {
+    async update(idAmbito: number, idSolucion: number, updateData: { [key: string]: any }) {
         const conn = await pool.promise().getConnection();
-
-        try 
-        {
+    
+        try {
             await conn.beginTransaction();
+    
+            // Extract ámbito-specific data
+            const { 
+                textoweb, 
+                prefijo,
+                // Fields from storeSolucionesAmbitos
+                id_solucion,
+                id_ambito,
+                description,
+                title,
+                subtitle,
+                icon,
+                titleweb,
+                slug,
+                multimediaUri,
+                multimediaTypeId,
+                problemaTitle,
+                problemaPragma,
+                solucionTitle,
+                solucionPragma,
+                caracteristicasTitle,
+                caracteristicasPragma,
+                casosdeusoTitle,
+                casosdeusoPragma,
+                firstCtaTitle,
+                firstCtaPragma,
+                secondCtaTitle,
+                secondCtaPragma,
+                beneficiosTitle,
+                beneficiosPragma,
+                ...restUpdateData
+            } = updateData;
+    
+            // Update storeAmbitos
+            const ambitoUpdate = {
+                description,
+                textoweb,
+                prefijo,
+                slug
+            };
 
-            // Actualiza storeSolucionesAmbitos
-            await conn.query(
-                'UPDATE storeSolucionesAmbitos SET ? WHERE id_ambito = ? AND id_solucion = ?',
-                [updateData, idAmbito, idSolucion]
+            // Filter out undefined values
+            Object.keys(ambitoUpdate).forEach(key => 
+                ambitoUpdate[key] === undefined && delete ambitoUpdate[key]
+            );
+    
+            if (Object.keys(ambitoUpdate).length > 0) {
+                await conn.query(
+                    'UPDATE storeAmbitos SET ? WHERE id_ambito = ?',
+                    [ambitoUpdate, idAmbito]
+                );
+            }
+    
+            // Update storeSolucionesAmbitos
+            const solucionUpdateData = {
+                description,
+                title,
+                subtitle,
+                icon,
+                titleweb,
+                slug,
+                multimediaUri,
+                multimediaTypeId,
+                problemaTitle,
+                problemaPragma,
+                solucionTitle,
+                solucionPragma,
+                caracteristicasTitle,
+                caracteristicasPragma,
+                casosdeusoTitle,
+                casosdeusoPragma,
+                firstCtaTitle,
+                firstCtaPragma,
+                secondCtaTitle,
+                secondCtaPragma,
+                beneficiosTitle,
+                beneficiosPragma
+            };
+
+            // Filter out undefined values
+            Object.keys(solucionUpdateData).forEach(key => 
+                solucionUpdateData[key] === undefined && delete solucionUpdateData[key]
             );
 
-            // Filtra solo los campos que existen en storeSoluciones
+            if (Object.keys(solucionUpdateData).length > 0) {
+                await conn.query(
+                    'UPDATE storeSolucionesAmbitos SET ? WHERE id_ambito = ? AND id_solucion = ?',
+                    [solucionUpdateData, idAmbito, idSolucion]
+                );
+            }
+    
+            // Filter only the fields that exist in storeSoluciones
             const camposSoluciones = [
                 'description', 'title', 'subtitle', 'icon', 'titleweb', 'slug', 'multimediaUri', 'multimediaTypeId',
                 'problemaTitle', 'problemaPragma', 'solucionTitle', 'solucionPragma',
@@ -238,36 +320,31 @@ class StoreAmbitosService
                 'firstCtaTitle', 'firstCtaPragma', 'secondCtaTitle', 'secondCtaPragma',
                 'beneficiosTitle', 'beneficiosPragma'
             ];
-
+    
             const updateDataSolucion: any = {};
-            for (const key of camposSoluciones) 
-            {
-                if (key in updateData) 
-                {
+            for (const key of camposSoluciones) {
+                if (key in updateData) {
                     updateDataSolucion[key] = updateData[key];
                 }
             }
-
-            if (Object.keys(updateDataSolucion).length > 0) 
-            {
+    
+            if (Object.keys(updateDataSolucion).length > 0) {
                 await conn.query(
                     'UPDATE storeSoluciones SET ? WHERE id_solucion = ?',
                     [updateDataSolucion, idSolucion]
                 );
             }
-
+    
             await conn.commit();
-
+    
             return { message: 'Ámbito y solución actualizados correctamente' };
-        } 
-        catch (error) 
-        {
+        }
+        catch (error) {
             await conn.rollback();
             console.error('Error en update:', error);
             throw error;
-        } 
-        finally 
-        {
+        }
+        finally {
             conn.release();
         }
     }

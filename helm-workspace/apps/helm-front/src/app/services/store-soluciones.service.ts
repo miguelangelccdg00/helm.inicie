@@ -504,8 +504,8 @@ export class StoreSolucionesService {
     return this.https.post<any>(url, relacion, { headers });
   }
 
-  modifyAmbito(idAmbito: number, ambito: StoreAmbitos): Observable<StoreAmbitos> {
-    const url = `${this.ambitosUrl}/modifyStoreAmbitos/${idAmbito}`;
+  modifyAmbito(idSolucion: number, idAmbito: number, ambito: StoreAmbitos): Observable<StoreAmbitos> {
+    const url = `${this.ambitosUrl}/modifyAmbitos/${idSolucion}/${idAmbito}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     const ambitoToUpdate = {
