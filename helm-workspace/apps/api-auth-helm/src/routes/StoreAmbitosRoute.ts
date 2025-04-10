@@ -13,6 +13,11 @@ router.get('/listCompleteAmbitos', storeAmbitosController.listAmbitos);
 router.get('/listAmbitos/:idSolucion', storeAmbitosController.listIdAmbito);
 
 /**
+ * @description Obtencion de problemas por solución específica de su ID
+ */
+router.get('/listAmbitos/:idSolucion/:idAmbito', storeAmbitosController.getVariantesSolucionPorAmbito);
+
+/**
  * @description Insercion de problemas por solución específica de su ID
  */
 router.post('/createAmbito/:idSolucion', storeAmbitosController.createAmbitos);

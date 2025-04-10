@@ -224,6 +224,22 @@ class StoreAmbitosService
         }
     }
 
+    /**
+     * Devuelve todas las variantes de una solución para un ámbito específico.
+     */
+    async getVariantesBySolucionAndAmbito(idSolucion: number, idAmbito: number) 
+    {
+        const [rows] = await pool.promise().query(
+            `SELECT * 
+                FROM storeSolucionesAmbitos 
+                WHERE id_solucion = ? AND id_ambito = ?`,
+            [idSolucion, idAmbito]
+        );
+
+        return rows;
+    }
+    
+
 }
 
 export default new StoreAmbitosService();
