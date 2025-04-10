@@ -1,4 +1,5 @@
 import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
+import { StoreAmbitos } from '../models/storeAmbitos.js';
 
 class StoreAmbitosService 
 {
@@ -172,7 +173,7 @@ class StoreAmbitosService
     }
 
     /**
-     * Obtiene las caracteristicas asociados a una solución específica.
+     * Obtiene los ambitos asociados a una solución específica.
      */
     async getByIdAmbitos(idSolucion: Number) 
     {
@@ -184,6 +185,12 @@ class StoreAmbitosService
             [idSolucion]  
         );
         return rows;
+    }
+
+    async update(id: number, updateData: Partial<StoreAmbitos>) 
+    {
+        await pool.promise().query('UPDATE storeAmbitos SET ? WHERE id_ambito = ?', [updateData, id]);
+        return { message: 'Ámbito actualizado' };
     }
 
 }

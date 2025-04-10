@@ -31736,3 +31736,30 @@ Error: InvalidSymbol in c:\Users\juana\helm.inicie.es\.nx\workspace-data\file-ma
 [NX v20.6.2 Daemon Server] - 2025-04-09T15:50:55.922Z - Done responding to the client handleContextFileData
 [NX v20.6.2 Daemon Server] - 2025-04-09T15:50:55.922Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 1. Response time: 2.
 [NX v20.6.2 Daemon Server] - 2025-04-09T15:50:55.923Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:06.474Z - Started listening on: \\.\pipe\nx\C:\Users\juana\AppData\Local\Temp\6ac6f0d2c7b0077ed933\d.sock
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:06.493Z - [WATCHER]: Subscribed to changes within: c:\Users\juana\helm.inicie.es (native)
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:06.501Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:06.515Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:06.816Z - Time taken for 'loadSpecifiedNxPlugins' 6.058499991893768ms
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:08.207Z - Established a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:08.207Z - Established a connection. Number of open connections: 2
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:08.208Z - Closed a connection. Number of open connections: 1
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:08.212Z - [REQUEST]: Client Request for Project Graph Received
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:09.686Z - Time taken for 'Load Nx Plugin: c:\Users\juana\helm.inicie.es\node_modules\nx\src\plugins\package-json' 3082.9388999938965ms
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:10.025Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:10.026Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:10.026Z - [REQUEST]: 
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:10.063Z - Time taken for 'loadDefaultNxPlugins' 3423.6227999925613ms
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:10.165Z - Time taken for 'build-project-configs' 47.16839998960495ms
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:10.321Z - [SYNC]: collect registered sync generators
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:10.324Z - [REQUEST]: Responding to the client. project-graph
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:10.327Z - Time taken for 'total for creating and serializing project graph' 2111.124800026417ms
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:10.328Z - Done responding to the client project-graph
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:10.329Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 2111. Response time: 6.
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:10.357Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:10.375Z - Done responding to the client handleContextFileData
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:10.375Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 2. Response time: 18.
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:09:10.376Z - Closed a connection. Number of open connections: 0
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:10:04.896Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:10:11.828Z - [WATCHER]: Processing file changes in outputs
+[NX v20.6.2 Daemon Server] - 2025-04-10T06:10:22.539Z - [WATCHER]: Processing file changes in outputs

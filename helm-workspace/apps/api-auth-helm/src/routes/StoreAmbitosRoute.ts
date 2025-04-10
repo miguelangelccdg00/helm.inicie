@@ -22,4 +22,9 @@ router.post('/createAmbito/:idSolucion', storeAmbitosController.createAmbitos);
  */
 router.post('/asociarAmbito', storeAmbitosController.asociarAmbito);
 
+/**
+ * @description Modifica un beneficio específico por su ID
+ */
+router.put('/modifyStoreAmbitos/:id', storeAmbitosController.modifyStoreAmbitos);
+
 export default router;
