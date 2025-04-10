@@ -216,11 +216,62 @@ class StoreAmbitosService
         return rows;
     }
 
-    async update(idSolucion: number,idAmbito: number ,updateData: Partial<storeSolucionesAmbitos>) 
+    async update(idAmbito: number, idSolucion: number, updateData: Partial<storeSolucionesAmbitos>) 
     {
-        await pool.promise().query('UPDATE storeSolucionesAmbitos SET ? WHERE id_ambito = ? AND id_solucion = ?', [updateData, idAmbito, idSolucion]);
-        return { message: 'Ámbito actualizado' };
+        const conn = await pool.promise().getConnection();
+
+        try 
+        {
+            await conn.beginTransaction();
+
+            // Actualiza storeSolucionesAmbitos
+            await conn.query(
+                'UPDATE storeSolucionesAmbitos SET ? WHERE id_ambito = ? AND id_solucion = ?',
+                [updateData, idAmbito, idSolucion]
+            );
+
+            // Filtra solo los campos que existen en storeSoluciones
+            const camposSoluciones = [
+                'description', 'title', 'subtitle', 'icon', 'titleweb', 'slug', 'multimediaUri', 'multimediaTypeId',
+                'problemaTitle', 'problemaPragma', 'solucionTitle', 'solucionPragma',
+                'caracteristicasTitle', 'caracteristicasPragma', 'casosdeusoTitle', 'casosdeusoPragma',
+                'firstCtaTitle', 'firstCtaPragma', 'secondCtaTitle', 'secondCtaPragma',
+                'beneficiosTitle', 'beneficiosPragma'
+            ];
+
+            const updateDataSolucion: any = {};
+            for (const key of camposSoluciones) 
+            {
+                if (key in updateData) 
+                {
+                    updateDataSolucion[key] = updateData[key];
+                }
+            }
+
+            if (Object.keys(updateDataSolucion).length > 0) 
+            {
+                await conn.query(
+                    'UPDATE storeSoluciones SET ? WHERE id_solucion = ?',
+                    [updateDataSolucion, idSolucion]
+                );
+            }
+
+            await conn.commit();
+
+            return { message: 'Ámbito y solución actualizados correctamente' };
+        } 
+        catch (error) 
+        {
+            await conn.rollback();
+            console.error('Error en update:', error);
+            throw error;
+        } 
+        finally 
+        {
+            conn.release();
+        }
     }
+
 
     async deleteAmbito(idAmbito: number): Promise<boolean>
     {
