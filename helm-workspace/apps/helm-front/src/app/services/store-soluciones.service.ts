@@ -504,4 +504,18 @@ export class StoreSolucionesService {
     return this.https.post<any>(url, relacion, { headers });
   }
 
+  modifyAmbito(idAmbito: number, ambito: StoreAmbitos): Observable<StoreAmbitos> {
+    const url = `${this.ambitosUrl}/modifyStoreAmbitos/${idAmbito}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    const ambitoToUpdate = {
+      description: ambito.description,
+      textoweb: ambito.textoweb,
+      prefijo: ambito.prefijo,
+      slug: ambito.slug
+    };
+
+    return this.https.put<StoreAmbitos>(url, ambitoToUpdate, { headers });
+  }
+
 }
