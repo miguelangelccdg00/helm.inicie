@@ -711,22 +711,31 @@ export class ModificarSolucionComponent implements OnInit {
           slug: this.nuevoAmbito.slug
         };
   
-        this.storeSolucionesService.asociarAmbitoASolucion(
-          this.solucion!.id_solucion,
-          ambitoCreado.id_ambito!
-        ).subscribe({
-          next: () => {
-            console.log('Ámbito asociado correctamente a la solución');
+        if (this.solucion && this.solucion.id_solucion && ambitoCreado.id_ambito !== undefined) {
+          this.storeSolucionesService.asociarAmbitoASolucion(this.solucion.id_solucion, ambitoCreado.id_ambito).subscribe({
+            next: () => {
+              console.log('Ámbito asociado correctamente a la solución');
   
-            this.allAmbitos.push(ambitoCreado);
-            this.filtrarAmbitos();
+              this.storeSolucionesService.getAmbitosBySolucion(this.solucion!.id_solucion).subscribe({
+                next: (ambitosActualizados) => {
+                  this.solucion!.ambitos = ambitosActualizados;
+                  this.ambitos = ambitosActualizados;
+                  this.filtrarAmbitos();
+                },
+                error: (error) => {
+                  console.error('Error al actualizar los ámbitos de la solución:', error);
+                }
+              });
   
-            this.nuevoAmbito = { description: '', textoweb: '', prefijo: '', slug: '' };
-          },
-          error: (error) => {
-            console.error('Error al asociar el ámbito a la solución:', error);
-          }
-        });
+              this.nuevoAmbito = { description: '', textoweb: '', prefijo: '', slug: '' };
+            },
+            error: (error) => {
+              console.error('Error al asociar el ámbito a la solución:', error);
+            }
+          });
+        } else {
+          console.error('No se pudo asociar el ámbito a la solución. Verifica los datos.');
+        }
       },
       error: (error) => {
         console.error('Error al crear el ámbito:', error);
