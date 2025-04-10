@@ -518,4 +518,16 @@ export class StoreSolucionesService {
     return this.https.put<StoreAmbitos>(url, ambitoToUpdate, { headers });
   }
 
+  deleteAmbito(idAmbito: number): Observable<DeleteAmbitoResponse> {
+    const url = `${this.ambitosUrl}/deleteAmbito/${idAmbito}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.delete<DeleteAmbitoResponse>(url, { headers });
+  }
+
+  listAmbitos(idSolucion: number): Observable<any> {
+    const url = `${this.ambitosUrl}/listAmbitosSolucion/${idSolucion}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.get<any>(url, { headers });
+  }
+
 }

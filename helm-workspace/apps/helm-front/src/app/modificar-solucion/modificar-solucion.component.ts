@@ -26,6 +26,8 @@ export class ModificarSolucionComponent implements OnInit {
 
   solucion: StoreSoluciones | null = null;
 
+  solucionesAmbitos: any[] = [];
+
   nuevoProblema: StoreProblemas = { titulo: '', description: '' };
   buscadorProblema: string = '';
   problemas: StoreProblemas[] = [];
@@ -105,9 +107,9 @@ export class ModificarSolucionComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
-
+  
     const idSolucion = +id;
-
+  
     this.storeSolucionesService.getStoreSolucionById(idSolucion).subscribe({
       next: (solucion) => {
         this.solucion = {
@@ -117,7 +119,7 @@ export class ModificarSolucionComponent implements OnInit {
           caracteristicas: solucion.caracteristicas || [],
           ambitos: solucion.ambitos || []
         };
-
+  
         forkJoin([
           this.storeSolucionesService.getProblemasBySolucion(idSolucion),
           this.storeSolucionesService.getBeneficiosBySolucion(idSolucion),
@@ -132,10 +134,17 @@ export class ModificarSolucionComponent implements OnInit {
           },
           error: (e) => console.error('Error al obtener problemas, beneficios, características o ámbitos:', e)
         });
+  
+        this.storeSolucionesService.listAmbitos(idSolucion).subscribe({
+          next: (res) => {
+            this.solucionesAmbitos = res;
+          },
+          error: (err) => console.error('Error al obtener soluciones por ámbito:', err)
+        });
       },
       error: (e) => console.error('Error al obtener la solución:', e)
     });
-
+  
     forkJoin([
       this.storeSolucionesService.getAllProblemas(),
       this.storeSolucionesService.getAllBeneficios(),
@@ -527,6 +536,44 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  /* eliminarAmbito() {
+    if (this.AmbitoAEliminar !== null) {
+      this.storeSolucionesService.deleteAmbito(this.AmbitoAEliminar).subscribe({
+        next: () => {
+          console.log('Ámbito eliminado correctamente de la base de datos');
+
+          if (this.solucion && this.solucion.ambitos) {
+            this.ambitos = this.caracteristicas.filter(ambito =>
+              ambito.id_ambito !== this.AmbitoAEliminar
+            );
+
+            this.solucion.ambitos = this.ambitos;
+
+            if (this.caracteristicas.length === 0) {
+              this.solucion.caracteristicasPragma = null;
+              this.solucion.caracteristicasTitle = null;
+            }
+
+            this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
+              next: () => {
+                console.log('Solución actualizada después de eliminar ámbito');
+              },
+              error: (err) => {
+                console.error('Error al actualizar la solución después de eliminar ámbito:', err);
+              }
+            });
+          }
+
+          this.AmbitoAEliminar = null;
+          this.mostrarModalAmbito = false;
+        },
+        error: (error) => {
+          console.error('Error al eliminar el ámbito:', error);
+          this.mostrarModalAmbito = false;
+        }
+      });
+    }
+  } */
 
   filtrarBeneficios() {
     const filtro = this.buscadorBeneficio.toLowerCase().trim();
@@ -865,46 +912,25 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
-  /* modificarAmbito() {
-    console.log('Modificando ambito..', this.nuevoAmbito, this.ambitoSeleccionado);
-
-    if (!this.nuevoAmbito || !this.nuevoAmbito.description) {
-      console.error('Debe ingresar la descripción del ámbito');
-      return;
-    }
-
-    if (!this.nuevoAmbito.slug) {
-      console.error('Debe ingresar el slug del ámbito');
-      return;
-    }
-
-    if (!this.nuevoAmbito.textoweb) {
-      console.error('Debe ingresar el texto web del ámbito');
-      return;
-    }
-
-    if (!this.nuevoAmbito.prefijo) {
-      console.error('Debe ingresar el prefijo del ámbito');
-      return;
-    }
-
-    if (this.ambitoSeleccionado && this.ambitoSeleccionado.id_ambito !== undefined) {
-      console.log('ID ámbito a modificar:', this.ambitoSeleccionado.id_ambito);
-      this.storeSolucionesService.modifyAmbito(this.ambitoSeleccionado.id_ambito, this.nuevoAmbito)
-        .subscribe({
-          next: (updatedAmbito: StoreAmbitos) => {
-            console.log('Ámbito actualizado correctamente:', updatedAmbito);
-            this.mostrarModificarAmbito = false;
-            this.mostrarBotonModificarAmbito = true;
-          },
-          error: (error) => {
-            console.error('Error al modificar el ámbito:', error);
+  modificarAmbito() {
+    if (this.ambitoSeleccionado) {
+      this.storeSolucionesService.modifyAmbito(this.ambitoSeleccionado.id_ambito!, this.nuevoAmbito).subscribe({
+        next: (updatedAmbito) => {
+          console.log('Ámbito modificado correctamente:', updatedAmbito);
+  
+          const index = this.solucion!.ambitos.findIndex(a => a.id_ambito === updatedAmbito.id_ambito);
+          if (index !== -1) {
+            this.solucion!.ambitos[index] = updatedAmbito;
           }
-        });
-    } else {
-      console.error('Ámbito no seleccionado o id_ambito inválido');
+  
+          this.mostrarModificarAmbito = false;
+          this.mostrarBotonModificarAmbito = true;
+        },
+        error: (error) => {
+          console.error('Error al modificar el ámbito:', error);
+        }
+      });
     }
-  } */
-
-
+  }
+  
 }
