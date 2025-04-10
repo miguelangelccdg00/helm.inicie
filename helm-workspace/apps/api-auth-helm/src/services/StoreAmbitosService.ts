@@ -26,13 +26,41 @@ class StoreAmbitosService
                 throw new Error(`La solución con id ${idSolucion} no existe.`);
             }
 
-            // Inserta el nuevo ámbito
+            // Crear temporalmente la función generate_slug que falta
+            await conn.query(`
+                CREATE FUNCTION IF NOT EXISTS generate_slug(input_string VARCHAR(255))
+                RETURNS VARCHAR(255)
+                DETERMINISTIC
+                BEGIN
+                    DECLARE output_string VARCHAR(255);
+                    SET output_string = LOWER(input_string);
+                    SET output_string = REPLACE(output_string, ' ', '-');
+                    SET output_string = REPLACE(output_string, '.', '-');
+                    SET output_string = REPLACE(output_string, ',', '-');
+                    SET output_string = REPLACE(output_string, ';', '-');
+                    SET output_string = REPLACE(output_string, ':', '-');
+                    SET output_string = REPLACE(output_string, '!', '');
+                    SET output_string = REPLACE(output_string, '?', '');
+                    SET output_string = REPLACE(output_string, 'á', 'a');
+                    SET output_string = REPLACE(output_string, 'é', 'e');
+                    SET output_string = REPLACE(output_string, 'í', 'i');
+                    SET output_string = REPLACE(output_string, 'ó', 'o');
+                    SET output_string = REPLACE(output_string, 'ú', 'u');
+                    SET output_string = REPLACE(output_string, 'ñ', 'n');
+                    RETURN output_string;
+                END
+            `);
+            
+            // Insertar con la función ya disponible
             const [ambitoResult]: any = await conn.query(
-                `INSERT INTO storeAmbitos (description, textoweb, prefijo, slug) VALUES (?, ?, ?, ?)`,
+                `INSERT INTO storeAmbitos (description, textoweb, prefijo, slug) 
+                 VALUES (?, ?, ?, ?)`,
                 [description, textoweb, prefijo, slug]
             );
-
+            
             const idAmbito = ambitoResult.insertId;
+
+            // ... resto del código ...
 
             // Obtener los datos de la solución
             const [solucionRows]: any = await conn.query(
@@ -238,8 +266,6 @@ class StoreAmbitosService
 
         return rows;
     }
-    
-
 }
 
 export default new StoreAmbitosService();
