@@ -27,4 +27,9 @@ router.post('/asociarAmbito', storeAmbitosController.asociarAmbito);
  */
 router.put('/modifyStoreAmbitos/:id', storeAmbitosController.modifyStoreAmbitos);
 
+/**
+ * @description Eliminacion de un ambito específico por su ID
+ */
+router.delete('/deleteAmbito/:idAmbito', storeAmbitosController.deleteAmbito);
+
 export default router;

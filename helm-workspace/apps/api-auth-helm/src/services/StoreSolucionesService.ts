@@ -93,6 +93,16 @@ class StoreSolucionesService
         );
         return { message: 'Asociación entre caracteristica y solución eliminada correctamente' };
     }
+
+    async removeAmbitoFromSolucion(idSolucion: number, idAmbito: number)
+    {
+         // Elimina solo la asociación en la tabla de relaciones
+         await pool.promise().query(
+            'DELETE FROM storeSolucionesAmbitos WHERE id_solucion = ? AND id_ambito = ?', 
+            [idSolucion, idAmbito]
+        );
+        return { message: 'Asociación entre ambito y solución eliminada correctamente' };
+    }
 }
 
 export default new StoreSolucionesService();

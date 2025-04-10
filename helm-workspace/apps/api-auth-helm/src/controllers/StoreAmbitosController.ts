@@ -68,7 +68,7 @@ class StoreAmbitosController
     }    
 
     /**
-     * Lista todas las características disponibles en la base de datos.
+     * Lista todas las ambitos disponibles en la base de datos.
      *
      * @param {Request} req - Objeto de solicitud HTTP.
      * @param {Response} res - Objeto de respuesta HTTP.
@@ -89,13 +89,13 @@ class StoreAmbitosController
         } 
         catch (error) 
         {
-            console.error('Error listando las características:', error);
+            console.error('Error listando las ambitos:', error);
             res.status(500).json({ message: 'Error interno del servidor' });
         }
     }
 
     /**
-     * Obtiene las características asociadas a una solución específica.
+     * Obtiene las ambitos asociadas a una solución específica.
      *
      * @param {Request} req - Objeto de solicitud HTTP.
      * @param {string} req.params.idSolucion - ID de la solución.
@@ -133,7 +133,7 @@ class StoreAmbitosController
     }
 
     /**
-     * Modifica una caracteristica almacenada en la base de datos.
+     * Modifica un ambito almacenada en la base de datos.
      * 
      * @param {Request} req - Objeto de solicitud HTTP que contiene el parámetro `id` en los parámetros de la URL y los datos a modificar en el cuerpo de la solicitud.
      * @param {string} req.params.id - El ID de la solución que se desea modificar.
@@ -146,14 +146,21 @@ class StoreAmbitosController
     {
         try 
         {
-            const { id } = req.params;
+            const { idSolucion } = req.params;
+            const { idAmbito } = req.params;
             const updateData = req.body;
 
-            if (!id) 
+            if (!idSolucion) 
             {
-                res.status(400).json({ message: 'ID no proporcionado' });
+                res.status(400).json({ message: 'ID de solucion no proporcionado' });
                 return;
             }
+
+            if (!idAmbito) 
+                {
+                    res.status(400).json({ message: 'ID de ambito no proporcionado' });
+                    return;
+                }
 
             if (!Object.keys(updateData).length) 
             {
@@ -161,7 +168,7 @@ class StoreAmbitosController
                 return;
             }
 
-            const result = await StoreAmbitosService.update(Number(id), updateData);
+            const result = await StoreAmbitosService.update(Number(idAmbito), Number(idSolucion),updateData);
             res.json(result);
         } 
         catch (error) 
@@ -170,6 +177,79 @@ class StoreAmbitosController
             res.status(500).json({ message: 'Error interno en el servidor' });
         }
     }
+
+    /**
+     * Elimina una ambito existente por su ID.
+     *
+     * @param {Request} req - Objeto de solicitud HTTP.
+     * @param {string} req.params.idAmbito - ID de la ambito a eliminar.
+     * @param {Response} res - Objeto de respuesta HTTP.
+     */
+    async deleteAmbito(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
+            const { idAmbito } = req.params;
+
+            if (!idAmbito) 
+            {
+                res.status(401).json({ message: 'ID no proporcionado' });
+                return;
+            }
+            
+            const wasDeleted = await StoreAmbitosService.deleteAmbito(Number(idAmbito));
+            
+            if (!wasDeleted) 
+            {
+                res.status(404).json({ message: 'Ambito no encontrado o ya eliminado' });
+                return;   
+            }
+
+            res.status(201).json({ message: 'Ambito eliminado correctamente' });
+        } 
+        catch (error) 
+        {
+            console.error('Error al eliminar el ambito:', error);
+            res.status(500).json({ message: 'Error interno en el servidor' });
+        }
+    }
+
+    /**
+     * Elimina la asociación entre un ambito y una solución sin eliminar el ambito.
+     *
+     * @param {Request} req - Objeto de solicitud HTTP.
+     * @param {string} req.params.idSolucion - ID de la solución.
+     * @param {string} req.params.idAmbito - ID de la ambito.
+     * @param {Response} res - Objeto de respuesta HTTP.
+     */
+    async removeAmbitoFromSolucion(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
+            const { idSolucion, idAmbito } = req.params;
+
+            if (!idSolucion || !idAmbito) 
+            {
+                res.status(400).json({ message: 'IDs de solución y ambito son requeridos' });
+                return;
+            }
+
+            await storeSolucionesService.removeAmbitoFromSolucion(
+                Number(idSolucion), 
+                Number(idAmbito)
+            );
+
+            res.status(200).json({ 
+                message: 'Ambito desasociada de la solución correctamente' 
+            });
+        } 
+        catch (error) 
+        {
+            console.error('Error al desasociar la ambito de la solución:', error);
+            res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    }
+    
 }
 
 export default new StoreAmbitosController();

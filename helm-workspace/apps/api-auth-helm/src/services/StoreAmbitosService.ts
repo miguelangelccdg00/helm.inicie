@@ -1,5 +1,6 @@
 import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
-import { StoreAmbitos } from '../models/storeAmbitos.js';
+import { StoreAmbitos } from '../models/storeAmbitos';
+import { storeSolucionesAmbitos } from '../models/storeSolucionesAmbitos.js';
 
 class StoreAmbitosService 
 {
@@ -187,10 +188,40 @@ class StoreAmbitosService
         return rows;
     }
 
-    async update(id: number, updateData: Partial<StoreAmbitos>) 
+    async update(idSolucion: number,idAmbito: number ,updateData: Partial<storeSolucionesAmbitos>) 
     {
-        await pool.promise().query('UPDATE storeAmbitos SET ? WHERE id_ambito = ?', [updateData, id]);
+        await pool.promise().query('UPDATE storeSolucionesAmbitos SET ? WHERE id_ambito = ? AND id_solucion = ?', [updateData, idAmbito, idSolucion]);
         return { message: 'Ámbito actualizado' };
+    }
+
+    async deleteAmbito(idAmbito: number): Promise<boolean>
+    {
+        const conn = await pool.promise().getConnection();
+
+        try
+        {
+            await conn.beginTransaction();
+
+            const [relacionResult]: any = await conn.query(
+                'DELETE FROM storeSolucionesAmbitos WHERE id_ambito = ?',[idAmbito]);
+
+            const [ambitoResult]: any = await conn.query(
+                'DELETE FROM storeAmbitos WHERE id_ambito = ?',[idAmbito]);
+
+            await conn.commit();
+
+            return ambitoResult.affectedRows > 0;
+        }
+        catch (error)
+        {
+            await conn.rollback();
+            console.error('Error al eliminar el ambito:', error);
+            throw error;
+        }
+        finally
+        {
+            conn.release();
+        }
     }
 
 }
