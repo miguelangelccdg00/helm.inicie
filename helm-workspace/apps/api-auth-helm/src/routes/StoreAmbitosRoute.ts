@@ -17,4 +17,9 @@ router.get('/listAmbitos/:idSolucion', storeAmbitosController.listIdAmbito);
  */
 router.post('/createAmbito/:idSolucion', storeAmbitosController.createAmbitos);
 
+/**
+ * @description Asociar un problema existente a una solución
+ */
+router.post('/asociarAmbito', storeAmbitosController.asociarAmbito);
+
 export default router;

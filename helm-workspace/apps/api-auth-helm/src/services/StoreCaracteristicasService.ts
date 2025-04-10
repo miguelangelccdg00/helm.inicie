@@ -1,5 +1,5 @@
 import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
-import { StoreCaracteristicas } from '../models/storeCaracteristicas.js';
+import { StoreCaracteristicas } from '../models/storeCaracteristicas';
 
 class StoreCaracteristicasService
 {

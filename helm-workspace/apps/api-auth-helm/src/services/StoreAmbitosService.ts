@@ -91,6 +91,67 @@ class StoreAmbitosService
         }
     }
 
+    async asociarAmbito(idSolucion: number, idAmbito: number) 
+    {
+        const conn = await pool.promise().getConnection();
+        
+        try 
+        {
+            await conn.beginTransaction();
+
+            const [solucionExiste]: any = await conn.query(
+                `SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?`, 
+                [idSolucion]
+            );
+
+            if (solucionExiste.length === 0) 
+            {
+                throw new Error(`La solución con id ${idSolucion} no existe.`);
+            }
+
+            const [ambitosExiste]: any = await conn.query(
+                `SELECT * FROM storeAmbitos WHERE id_ambito = ?`, 
+                [idAmbito]
+            );
+
+            if (ambitosExiste.length === 0) 
+            {
+                throw new Error(`El ámbito con id ${idAmbito} no existe.`);
+            }
+
+            const [relacionExiste]: any = await conn.query(
+                `SELECT * FROM storeSolucionesAmbitos WHERE id_solucion = ? AND id_ambito = ?`, 
+                [idSolucion, idAmbito]
+            );
+
+            if (relacionExiste.length > 0) 
+            {
+                await conn.commit();
+                return { idSolucion, idAmbito, message: 'La relación ya existía' };
+            }
+
+            await conn.query(
+                `INSERT INTO storeSolucionesAmbitos (id_solucion, id_ambito) VALUES (?, ?)`, 
+                [idSolucion, idAmbito]
+            );
+
+            await conn.commit();
+
+            return { idSolucion, idAmbito, message: 'Relación creada con éxito' };
+        } 
+        catch (error) 
+        {
+            await conn.rollback();
+            console.error("Error al asociar ámbito:", error);
+            throw error;
+        } 
+        finally 
+        {
+            conn.release();
+        }
+    }
+
+
     /**
      * Obtiene la lista de todos los caracteristicas registrados.
      */

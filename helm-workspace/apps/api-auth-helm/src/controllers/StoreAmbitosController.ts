@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import StoreAmbitosService from '../services/StoreAmbitosService';
+import storeSolucionesService from '../services/StoreSolucionesService';
 
 class StoreAmbitosController 
 {
@@ -35,6 +36,38 @@ class StoreAmbitosController
             res.status(500).json({ message: 'Error interno del servidor al crear el ámbito.' });
         }
     }
+
+    async asociarAmbito(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
+            const { id_solucion, id_ambito } = req.body;
+
+            if (!id_solucion || !id_ambito) 
+            {
+                res.status(400).json({ message: 'Faltan datos para la asociación' });
+                return;
+            }
+
+            const asociacion = await StoreAmbitosService.asociarAmbito(id_solucion, id_ambito);
+
+            const ambito = await StoreAmbitosService.getAmbitoById(id_ambito);
+            const solucion = await storeSolucionesService.getById(id_solucion);
+
+            res.status(201).json(
+            {
+                message: 'Ámbito asociado a la solución con éxito',
+                asociacion
+            });
+        } 
+        catch (error) 
+        {
+            console.error('Error asociando el ámbito:', error);
+            res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    }
+
+    
 
     /**
      * Lista todas las características disponibles en la base de datos.
