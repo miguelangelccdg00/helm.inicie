@@ -309,11 +309,16 @@ class StoreAmbitosService
     async getVariantesBySolucionAndAmbito(idSolucion: number) 
     {
         const [rows] = await pool.promise().query(
-            `SELECT * FROM storeSolucionesAmbitos WHERE id_solucion = ?`, [idSolucion]
+            `SELECT sa.*, a.description AS ambitoDescription 
+            FROM storeSolucionesAmbitos sa
+            JOIN storeAmbitos a ON sa.id_ambito = a.id_ambito
+            WHERE sa.id_solucion = ?`,
+            [idSolucion]
         );
-
+    
         return rows;
     }
+    
 }
 
 export default new StoreAmbitosService();
