@@ -2,13 +2,17 @@ import { Request, Response } from 'express';
 import StoreAmbitosService from '../services/StoreAmbitosService';
 import storeSolucionesService from '../services/StoreSolucionesService';
 
-class StoreAmbitosController {
-    async createAmbitos(req: Request, res: Response): Promise<void> {
-        try {
+class StoreAmbitosController 
+{
+    async createAmbitos(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
             const idSolucion = parseInt(req.params.idSolucion, 10);
             const { description, textoweb, prefijo, slug } = req.body;
 
-            if (!description || !textoweb || !prefijo || !slug || !idSolucion) {
+            if (!description || !textoweb || !prefijo || !slug || !idSolucion) 
+                {
                 res.status(400).json({ message: 'Faltan datos requeridos para crear el ámbito.' });
                 return;
             }
@@ -52,27 +56,35 @@ class StoreAmbitosController {
         }
     }
 
-    async listAmbitos(req: Request, res: Response): Promise<void> {
-        try {
+    async listAmbitos(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
             const listAmbitos = await StoreAmbitosService.listAmbitos();
 
-            if (!listAmbitos.length) {
+            if (!listAmbitos.length) 
+            {
                 res.status(404).json({ message: 'No existen ambitos' });
                 return;
             }
 
             res.status(202).json(listAmbitos);
-        } catch (error) {
+        } 
+        catch (error) 
+        {
             console.error('Error listando las ambitos:', error);
             res.status(500).json({ message: 'Error interno del servidor' });
         }
     }
 
-    async listIdAmbito(req: Request, res: Response): Promise<void> {
-        try {
+    async listIdAmbito(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
             const { idSolucion } = req.params;
 
-            if (!idSolucion) {
+            if (!idSolucion) 
+            {
                 res.status(400).json({ message: 'ID de la solución no proporcionado' });
                 return;
             }
@@ -81,41 +93,51 @@ class StoreAmbitosController {
 
             console.log("Ambitos encontrados:", ambitoSolucion);
 
-            if (!ambitoSolucion || ambitoSolucion.length === 0) {
+            if (!ambitoSolucion || ambitoSolucion.length === 0) 
+            {
                 res.status(404).json({ message: 'No se encontraron ambitos para esta solución' });
                 return;
             }
 
             res.status(200).json(ambitoSolucion);
-        } catch (error) {
+        } 
+        catch (error) 
+        {
             console.error('Error obteniendo los ambitos:', error);
             res.status(500).json({ message: 'Error interno del servidor' });
         }
     }
 
-    async modifyStoreAmbitos(req: Request, res: Response): Promise<void> {
-        try {
+    async modifyStoreAmbitos(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
             const { idSolucion, idAmbito } = req.params;
             const updateData = req.body;
 
-            if (!idSolucion) {
+            if (!idSolucion) 
+            {
                 res.status(400).json({ message: 'ID de solucion no proporcionado' });
                 return;
             }
 
-            if (!idAmbito) {
+            if (!idAmbito) 
+            {
                 res.status(400).json({ message: 'ID de ambito no proporcionado' });
                 return;
             }
 
-            if (!Object.keys(updateData).length) {
+            if (!Object.keys(updateData).length) 
+            {
                 res.status(400).json({ message: 'No se proporcionaron datos' });
                 return;
             }
 
             const result = await StoreAmbitosService.update(Number(idAmbito), Number(idSolucion), updateData);
             res.json(result);
-        } catch (error) {
+        } 
+        catch (error)
+        {
             console.error('Error al modificar storeAmbitos:', error);
             res.status(500).json({ message: 'Error interno en el servidor' });
         }
@@ -174,18 +196,15 @@ class StoreAmbitosController {
     {
         try 
         {
-            const { idSolucion, idAmbito } = req.params;
+            const { idSolucion } = req.params;
 
-            if (!idSolucion || !idAmbito)
+            if (!idSolucion )
             {
                 res.status(400).json({ message: 'ID de solución y de ámbito son requeridos' });
                 return;
             }
 
-            const variantes = await StoreAmbitosService.getVariantesBySolucionAndAmbito(
-                Number(idSolucion),
-                Number(idAmbito)
-            );
+            const variantes = await StoreAmbitosService.getVariantesBySolucionAndAmbito(Number(idSolucion));
 
             if (!variantes.length) 
             {

@@ -6,7 +6,8 @@ import jwt from 'jsonwebtoken';
 const SECRET_KEY = 'token123';
 
 // Definición de la interfaz AuthRequest para extender Request
-export interface AuthRequest extends Request {
+export interface AuthRequest extends Request 
+{
     user?: any;
 }
 
