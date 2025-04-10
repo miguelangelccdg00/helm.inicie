@@ -420,12 +420,27 @@
           <form (ngSubmit)="crearNuevoAmbito()">
             <div class="form-group">
               <label for="nuevaDescripcion">Descripción:</label>
-              <textarea id="nuevaDescripcion" [(ngModel)]="nuevoAmbito.description" name="nuevaDescripcion"
+              <textarea id="nuevaDescripcion" [(ngModel)]="nuevoBeneficio.description" name="nuevaDescripcion"
+                required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="nuevoTextoweb">Textoweb:</label>
+              <textarea id="nuevoTextoweb" [(ngModel)]="nuevoAmbito.textoweb" name="nuevoTextoweb"
+                required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="nuevoPrefijo">Prefijo:</label>
+              <textarea id="nuevoPrefijo" [(ngModel)]="nuevoAmbito.prefijo" name="nuevoPrefijo"
+                required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="nuevoSlug">Slug:</label>
+              <textarea id="nuevoSlug" [(ngModel)]="nuevoAmbito.slug" name="nuevoSlug"
                 required></textarea>
             </div>
             <div class="botones-container">
               <button type="submit">Crear y Añadir</button>
-              <button type="button" (click)="mostrarCrearAmbito = false; mostrarBotonCrearAmbito = true">Cancelar</button>
+              <button type="button" (click)="mostrarCrearBeneficio = false; mostrarBotonCrear = true">Cancelar</button>
             </div>
           </form>
         </div>
@@ -437,24 +452,20 @@
               <label for="buscadorAmbito">Seleccionar Ámbito:</label>
               <div class="custom-select">
                 <input type="text" id="buscadorAmbito" [(ngModel)]="buscadorAmbito" name="buscadorAmbito"
-                  (input)="filtrarAmbitos()" (focus)="mostrarOpcionesAmbito = true" (click)="mostrarOpcionesAmbito = true"
-                  placeholder="Buscar y seleccionar ambito..." pInputText variant="filled"/>
-                <div class="dropdown-menu" *ngIf="mostrarOpcionesAmbito">
+                  (input)="filtrarAmbitos()" (focus)="mostrarOpcionesAmbitos = true" (click)="mostrarOpcionesAmbitos = true"
+                  placeholder="Buscar y seleccionar ámbito..." pInputText variant="filled"/>
+                <div class="dropdown-menu" *ngIf="mostrarOpcionesAmbitos">
                   <div *ngFor="let ambito of ambitosFiltrados" class="dropdown-item"
                     (click)="seleccionarAmbito(ambito)">
                     {{ ambito.description }}
                   </div>
-                  <div class="dropdown-item" (click)="mostrarCrearAmbito = true; mostrarOpcionesAmbito = false">
+                  <div class="dropdown-item" (click)="mostrarCrearAmbito = true; mostrarOpcionesAmbitos = false">
                     - Crear y Añadir Ámbito -
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-
-        <div class="botones-container">
-          <button type="button" (click)="agregarAmbito()">Añadir Ámbito</button>
         </div>
 
         <div class="subseccion">
@@ -498,6 +509,43 @@
             <p>No hay ámbitos asociados a esta solución.</p>
           </div>
         </div>
+
+        <div class="subseccion">
+          <h3 class="titulo-subseccion">Solución: ({{ solucion.description }}) según cada ámbito</h3>
+          <div *ngIf="solucion?.ambitos && solucion.ambitos.length">
+            <p-table [value]="solucion.ambitos" [paginator]="true" [rows]="5"
+              [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Descripción del ámbito</th>
+                  <th>Descripción de la solución</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-ambito>
+                <tr>
+                  <td>{{ ambito.description }}</td>
+                  <td>{{ ambito.textoweb }}</td>
+                  <td>
+                    <span (click)="seleccionarAmbito(ambito); mostrarModificarAmbito = true" class="emojis">
+                      ✏️
+                    </span>
+                  </td>
+                  <td>
+                    <span class="emojis"
+                      (click)="ambito.id_ambito !== undefined ? confirmarEliminarAmbito(ambito.id_ambito, $event) : null">
+                      🗑️
+                    </span>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+          <div *ngIf="!solucion?.ambitos || solucion.ambitos.length === 0">
+            <p>No hay ámbitos asociados a esta solución.</p>
+          </div>
+        </div>
+
       </div>
 
       <div class="botones-container2">

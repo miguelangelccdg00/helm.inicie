@@ -24,8 +24,6 @@ export class ModificarSolucionComponent implements OnInit {
   @ViewChild('scrollCaracteristicas', { static: false }) scrollCaracteristicas: ElementRef | undefined;
   @ViewChild('scrollAmbitos', { static: false }) scrollAmbitos: ElementRef | undefined;
 
-
-
   solucion: StoreSoluciones | null = null;
 
   nuevoProblema: StoreProblemas = { titulo: '', description: '' };
@@ -69,10 +67,10 @@ export class ModificarSolucionComponent implements OnInit {
 
   nuevoAmbito: StoreAmbitos = { description: '', textoweb: '', prefijo: '', slug: '' };
   buscadorAmbito: string = '';
-  ambitos: StoreCaracteristicas[] = [];
-  allAmbitos: StoreCaracteristicas[] = [];
-  ambitosFiltrados: StoreCaracteristicas[] = [];
-  ambitoSeleccionado: StoreCaracteristicas | null = null;
+  ambitos: StoreAmbitos[] = [];
+  allAmbitos: StoreAmbitos[] = [];
+  ambitosFiltrados: StoreAmbitos[] = [];
+  ambitoSeleccionado: StoreAmbitos | null = null;
   mostrarCrearAmbito: boolean = false;
   mostrarModificarAmbito: boolean = false;
   mostrarOpcionesAmbitos: boolean = false;
@@ -123,7 +121,7 @@ export class ModificarSolucionComponent implements OnInit {
         forkJoin([
           this.storeSolucionesService.getProblemasBySolucion(idSolucion),
           this.storeSolucionesService.getBeneficiosBySolucion(idSolucion),
-          this.storeSolucionesService.getCaracteristicasBySolucion(idSolucion)
+          this.storeSolucionesService.getCaracteristicasBySolucion(idSolucion),
           this.storeSolucionesService.getAmbitosBySolucion(idSolucion)
         ]).subscribe({
           next: ([problemas, beneficios, caracteristicas, ambitos]) => {
@@ -141,7 +139,7 @@ export class ModificarSolucionComponent implements OnInit {
     forkJoin([
       this.storeSolucionesService.getAllProblemas(),
       this.storeSolucionesService.getAllBeneficios(),
-      this.storeSolucionesService.getAllCaracteristicas()
+      this.storeSolucionesService.getAllCaracteristicas(),
       this.storeSolucionesService.getAllAmbitos()
     ]).subscribe({
       next: ([allProblemas, allBeneficios, allCaracteristicas, allAmbitos]) => {
@@ -675,81 +673,67 @@ export class ModificarSolucionComponent implements OnInit {
   crearNuevoAmbito() {
     this.mostrarCrearAmbito = false;
     this.mostrarBotonCrearAmbito = true;
-
+  
     if (!this.nuevoAmbito || !this.nuevoAmbito.description) {
       console.error('Debe ingresar la descripción del ámbito');
       return;
     }
-
+  
     if (!this.nuevoAmbito.slug) {
       console.error('Debe ingresar el slug del ámbito');
       return;
     }
-
+  
     if (!this.nuevoAmbito.textoweb) {
       console.error('Debe ingresar el texto web del ámbito');
       return;
     }
-
+  
     if (!this.nuevoAmbito.prefijo) {
       console.error('Debe ingresar el prefijo del ámbito');
       return;
     }
-
+  
     if (!this.solucion) {
       console.error('La solución debe estar cargada para asociar el ámbito');
       return;
     }
-
-    if (this.solucion) {
-      this.solucion.description = this.nuevoAmbito.description || this.solucion.description;
-      this.solucion.textoweb = this.nuevoAmbito.textoweb || this.solucion.textoweb;
-      this.solucion.prefijo = this.nuevoAmbito.prefijo || this.solucion.prefijo;
-      this.solucion.slug = this.nuevoAmbito.slug || this.solucion.slug;
-
-      this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
-        next: () => {
-          console.log('Solución actualizada con los datos del ámbito');
-
-          this.storeSolucionesService.createAmbito(this.solucion!.id_solucion, this.nuevoAmbito).subscribe({
-            next: (response) => {
-              console.log('Ámbito creado:', response);
-
-              const ambitoCreado: StoreAmbitos = {
-                id_ambito: response.caracteristica.id_caracteristica,
-                description: this.nuevoAmbito.description,
-                textoweb: this.nuevoAmbito.textoweb,
-                prefijo: this.nuevoAmbito.prefijo,
-                slug: this.nuevoAmbito.slug
-              };
-
-              this.allAmbitos.push(ambitoCreado);
-              this.filtrarAmbitos();
-
-              if (response.ambito.id_ambito) {
-                this.storeSolucionesService.asociarAmbitoASolucion(
-                  this.solucion!.id_solucion,
-                  response.ambito.id_ambito
-                ).subscribe({
-                  next: () => console.log('Ámbito asociado correctamente'),
-                  error: (err) => console.error('Error al asociar el ámbito:', err)
-                });
-              }
-
-              this.nuevoAmbito = { description: '', textoweb: '', prefijo: '', slug: '' };
-            },
-            error: (error) => {
-              console.error('Error al crear el ámbito:', error);
-            }
-          });
-        },
-        error: (err) => {
-          console.error('Error al actualizar la solución con los datos del ámbito:', err);
-        }
-      });
-    }
+  
+    this.storeSolucionesService.createAmbito(this.solucion.id_solucion, this.nuevoAmbito).subscribe({
+      next: (ambitoCreadoResponse) => {
+        console.log('Ámbito creado:', ambitoCreadoResponse);
+  
+        const ambitoCreado: StoreAmbitos = {
+          id_ambito: ambitoCreadoResponse.ambito.id_ambito,
+          description: this.nuevoAmbito.description,
+          textoweb: this.nuevoAmbito.textoweb,
+          prefijo: this.nuevoAmbito.prefijo,
+          slug: this.nuevoAmbito.slug
+        };
+  
+        this.storeSolucionesService.asociarAmbitoASolucion(
+          this.solucion!.id_solucion,
+          ambitoCreado.id_ambito!
+        ).subscribe({
+          next: () => {
+            console.log('Ámbito asociado correctamente a la solución');
+  
+            this.allAmbitos.push(ambitoCreado);
+            this.filtrarAmbitos();
+  
+            this.nuevoAmbito = { description: '', textoweb: '', prefijo: '', slug: '' };
+          },
+          error: (error) => {
+            console.error('Error al asociar el ámbito a la solución:', error);
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error al crear el ámbito:', error);
+      }
+    });
   }
-
+  
   confirmarEliminarProblema(idProblema: number, event: MouseEvent) {
     event.stopPropagation();
     this.problemaAEliminar = idProblema;
@@ -872,7 +856,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
-  modificarAmbito() {
+  /* modificarAmbito() {
     console.log('Modificando ambito..', this.nuevoAmbito, this.ambitoSeleccionado);
 
     if (!this.nuevoAmbito || !this.nuevoAmbito.description) {
@@ -911,7 +895,7 @@ export class ModificarSolucionComponent implements OnInit {
     } else {
       console.error('Ámbito no seleccionado o id_ambito inválido');
     }
-  }
+  } */
 
 
 }
