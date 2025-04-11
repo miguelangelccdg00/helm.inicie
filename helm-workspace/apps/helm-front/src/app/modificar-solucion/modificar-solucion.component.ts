@@ -23,6 +23,7 @@ export class ModificarSolucionComponent implements OnInit {
   @ViewChild('scrollBeneficios', { static: false }) scrollBeneficios: ElementRef | undefined;
   @ViewChild('scrollCaracteristicas', { static: false }) scrollCaracteristicas: ElementRef | undefined;
   @ViewChild('scrollAmbitos', { static: false }) scrollAmbitos: ElementRef | undefined;
+  @ViewChild('formularioSolucionAmbito', { static: false }) formularioSolucionAmbito: ElementRef | undefined;
 
   solucion: StoreSoluciones | null = null;
 
@@ -1010,28 +1011,55 @@ export class ModificarSolucionComponent implements OnInit {
     if (this.scrollAmbitos) {
       this.scrollAmbitos.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
-
   }
 
+  
+
   modificarSolucionAmbito() {
-    if (this.solucionAmbitoSeleccionado) {
-      this.storeSolucionesService.modifySolucionAmbito(this.solucion!.id_solucion, this.solucionAmbitoSeleccionado.id_ambito!, this.nuevaSolucionAmbito).subscribe({
-        next: (updatedSolucionAmbito) => {
-          console.log('Solución del ámbito modificada correctamente:', updatedSolucionAmbito);
-
-          const index = this.solucion!.ambitos.findIndex(a => a.id_ambito === updatedSolucionAmbito.id_ambito);
-          if (index !== -1) {
-            this.solucion!.solucionAmbito[index] = updatedSolucionAmbito;
-          }
-
-          this.mostrarModificarSolucionAmbito = false;
-          this.mostrarBotonModificarSolucionAmbito = true;
-        },
-        error: (error) => {
-          console.error('Error al modificar la solución del ámbito:', error);
-        }
-      });
+    if (!this.solucion || !this.solucionAmbitoSeleccionado) {
+      console.error('No hay solución o solución por ámbito seleccionada');
+      return;
     }
+
+    const idSolucion = this.solucion.id_solucion;
+    const idAmbito = this.solucionAmbitoSeleccionado.id_ambito;
+
+    if (!idSolucion || !idAmbito) {
+      console.error('ID de solución o ID de ámbito no disponibles');
+      return;
+    }
+
+    // Preparar el objeto para actualizar con los IDs necesarios
+    const solucionAmbitoActualizada: SolucionAmbito = {
+      ...this.nuevaSolucionAmbito,
+      id_solucion: idSolucion,
+      id_ambito: idAmbito
+    };
+
+    // Llamar al servicio con un array que contiene el objeto actualizado
+    this.storeSolucionesService.updateSolucionAmbitos(idSolucion, [solucionAmbitoActualizada]).subscribe({
+      next: (response) => {
+        console.log('Solución por ámbito actualizada correctamente:', response);
+        
+        // Actualizar la lista de soluciones por ámbito
+        const index = this.solucionesAmbitos.findIndex(
+          sa => sa.id_solucion === idSolucion && sa.id_ambito === idAmbito
+        );
+        
+        if (index !== -1) {
+          this.solucionesAmbitos[index] = {
+            ...this.solucionesAmbitos[index],
+            ...this.nuevaSolucionAmbito
+          };
+        }
+        
+        this.mostrarModificarSolucionAmbito = false;
+        this.solucionAmbitoSeleccionado = null;
+      },
+      error: (error) => {
+        console.error('Error al actualizar la solución por ámbito:', error);
+      }
+    });
   }
 
   editarSolucionAmbito(solucionAmbito: SolucionAmbito, event?: MouseEvent) {
@@ -1070,9 +1098,17 @@ export class ModificarSolucionComponent implements OnInit {
     this.mostrarBotonModificarSolucionAmbito = true;
     this.mostrarOpcionesSolucionAmbito = false;
 
+    // Primero hacemos scroll a la sección de ámbitos
     if (this.scrollAmbitos) {
       this.scrollAmbitos.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
 
+    // Después de un pequeño retraso, hacemos scroll al formulario específico
+    // para asegurar que el DOM ha sido actualizado y el formulario es visible
+    setTimeout(() => {
+      if (this.formularioSolucionAmbito) {
+        this.formularioSolucionAmbito.nativeElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   }
 }

@@ -30,6 +30,34 @@ class StoreSolucionesService
         return { message: 'StoreSoluciones actualizado' };
     }
 
+    async updateSolucionAmbitos(idSolucion: number, solucionAmbitos: any[]) 
+    {
+        const conn = await pool.promise().getConnection();
+        try 
+        {
+            await conn.beginTransaction();
+
+            for (const solucionAmbito of solucionAmbitos) {
+                await conn.query(
+                    'UPDATE storeSolucionesAmbitos SET ? WHERE id_solucion = ? AND id_ambito = ?',
+                    [solucionAmbito, idSolucion, solucionAmbito.id_ambito]
+                );
+            }
+
+            await conn.commit();
+            return { message: 'Solución por ámbitos actualizada correctamente' };
+        } 
+        catch (error) 
+        {
+            await conn.rollback();
+            throw error;
+        } 
+        finally 
+        {
+            conn.release();
+        }
+    }
+
     /**
      * Elimina una solución específica de la base de datos
      */

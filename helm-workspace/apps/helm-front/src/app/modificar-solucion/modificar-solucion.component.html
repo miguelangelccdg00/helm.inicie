@@ -60,7 +60,7 @@
 
       <!-- Sección de problema y solución -->
       <div class="seccion" #scrollProblemas>
-        <h2 class="titulo-seccion">Problema y Solución</h2>
+        <h2 class="titulo-subseccion">Problema y Solución</h2>
 
         <div *ngIf="mostrarModificarProblema === true" class="subseccion">
           <h3 class="titulo-subseccion">Modificar problema</h3>
@@ -543,6 +543,76 @@
 
         <div class="subseccion">
           <h3 class="titulo-subseccion">Solución: ({{ solucion.description }}) según cada ámbito</h3>
+          
+          <!-- Formulario para modificar solución por ámbito -->
+          <div *ngIf="mostrarModificarSolucionAmbito" class="subseccion" #formularioSolucionAmbito>
+            <h3 class="titulo-subseccion">Modificar solución por ámbito</h3>
+
+            <form (ngSubmit)="modificarSolucionAmbito()">
+              <div class="grid-container">
+                <div class="form-group col-6">
+                  <label for="nuevaSolucionAmbitoTitle">Título:</label>
+                  <input id="nuevaSolucionAmbitoTitle" [(ngModel)]="nuevaSolucionAmbito.title" name="nuevaSolucionAmbitoTitle" 
+                    required placeholder="Título" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="nuevaSolucionAmbitoSubtitle">Subtítulo:</label>
+                  <input id="nuevaSolucionAmbitoSubtitle" [(ngModel)]="nuevaSolucionAmbito.subtitle" name="nuevaSolucionAmbitoSubtitle" 
+                    placeholder="Subtítulo" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="nuevaSolucionAmbitoIcon">Icono:</label>
+                  <input id="nuevaSolucionAmbitoIcon" [(ngModel)]="nuevaSolucionAmbito.icon" name="nuevaSolucionAmbitoIcon" 
+                    placeholder="Icono" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="nuevaSolucionAmbitoTitleweb">Título Web:</label>
+                  <input id="nuevaSolucionAmbitoTitleweb" [(ngModel)]="nuevaSolucionAmbito.titleweb" name="nuevaSolucionAmbitoTitleweb" 
+                    placeholder="Título Web" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="nuevaSolucionAmbitoSlug">Slug:</label>
+                  <input id="nuevaSolucionAmbitoSlug" [(ngModel)]="nuevaSolucionAmbito.slug" name="nuevaSolucionAmbitoSlug" 
+                    placeholder="Slug" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="nuevaSolucionAmbitoMultimediaUri">URI Multimedia:</label>
+                  <input id="nuevaSolucionAmbitoMultimediaUri" [(ngModel)]="nuevaSolucionAmbito.multimediaUri" name="nuevaSolucionAmbitoMultimediaUri" 
+                    placeholder="URI Multimedia" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="nuevaSolucionAmbitoMultimediaTypeId">Tipo ID Multimedia:</label>
+                  <input id="nuevaSolucionAmbitoMultimediaTypeId" [(ngModel)]="nuevaSolucionAmbito.multimediaTypeId" name="nuevaSolucionAmbitoMultimediaTypeId" 
+                    placeholder="Tipo ID Multimedia" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="nuevaSolucionAmbitoProblemaTitle">Título del Problema:</label>
+                  <input id="nuevaSolucionAmbitoProblemaTitle" [(ngModel)]="nuevaSolucionAmbito.problemaTitle" name="nuevaSolucionAmbitoProblemaTitle" 
+                    placeholder="Título del Problema" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="nuevaSolucionAmbitoProblemaPragma">Descripción del Problema:</label>
+                  <textarea id="nuevaSolucionAmbitoProblemaPragma" [(ngModel)]="nuevaSolucionAmbito.problemaPragma" name="nuevaSolucionAmbitoProblemaPragma" 
+                    placeholder="Descripción del Problema" pInputText variant="filled"></textarea>
+                </div>
+                <div class="form-group col-6">
+                  <label for="nuevaSolucionAmbitoSolucionTitle">Título de la Solución:</label>
+                  <input id="nuevaSolucionAmbitoSolucionTitle" [(ngModel)]="nuevaSolucionAmbito.solucionTitle" name="nuevaSolucionAmbitoSolucionTitle" 
+                    placeholder="Título de la Solución" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="nuevaSolucionAmbitoSolucionPragma">Descripción de la Solución:</label>
+                  <textarea id="nuevaSolucionAmbitoSolucionPragma" [(ngModel)]="nuevaSolucionAmbito.solucionPragma" name="nuevaSolucionAmbitoSolucionPragma" 
+                    placeholder="Descripción de la Solución" pInputText variant="filled"></textarea>
+                </div>
+              </div>
+              <div class="botones-container">
+                <button type="submit">Modificar</button>
+                <button type="button" (click)="mostrarModificarSolucionAmbito = false">Cancelar</button>
+              </div>
+            </form>
+          </div>
+          
           <div *ngIf="solucion?.ambitos && solucion.ambitos.length">
             <p-table [value]="solucionesAmbitos" [paginator]="true" [rows]="5"
               [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">

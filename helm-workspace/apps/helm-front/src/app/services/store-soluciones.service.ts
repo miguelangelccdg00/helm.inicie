@@ -606,5 +606,10 @@ export class StoreSolucionesService {
     return this.https.delete<DeleteSolucionAmbitoResponse>(url, { headers });
   }
 
+  updateSolucionAmbitos(idSolucion: number, solucionAmbitos: SolucionAmbito[]): Observable<any> {
+    const url = `${this.ambitosUrl}/modifyAmbitos/${idSolucion}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.put<any>(url, solucionAmbitos, { headers });
+  }
 
 }
