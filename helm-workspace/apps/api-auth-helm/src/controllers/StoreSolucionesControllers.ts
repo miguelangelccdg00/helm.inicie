@@ -139,6 +139,54 @@ class StoreSolucionesController
             res.status(500).json({ message: 'Error interno en el servidor' });
         }
     }
+
+
+    /**
+     * Actualiza los ámbitos de una solución específica.
+     * 
+     * @param {Request} req - Objeto de solicitud HTTP que contiene el parámetro `id` en los parámetros de la URL y los datos de ámbitos a actualizar en el cuerpo.
+     * @param {string} req.params.id - El ID de la solución cuyos ámbitos se desean actualizar.
+     * @param {Array} req.body - Array de objetos con los datos de ámbitos a actualizar.
+     * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+     * 
+     * @returns {Promise<void>} Devuelve el resultado de la actualización de los ámbitos de la solución.
+     */
+    async updateSolucionAmbitos(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
+            const { id } = req.params;
+            const solucionAmbitos = req.body;
+
+            if (!id) 
+            {
+                res.status(400).json({ message: 'ID de solución no proporcionado' });
+                return;
+            }
+
+            if (!Array.isArray(solucionAmbitos) || solucionAmbitos.length === 0) 
+            {
+                res.status(400).json({ message: 'Se requiere un array de ámbitos para actualizar' });
+                return;
+            }
+
+            // Verificar si la solución existe
+            const exists = await StoreSolucionesService.checkSolucionExists(Number(id));
+            if (!exists) 
+            {
+                res.status(404).json({ message: 'Solución no encontrada' });
+                return;
+            }
+
+            const result = await StoreSolucionesService.updateSolucionAmbitos(Number(id), solucionAmbitos);
+            res.json(result);
+        } 
+        catch (error) 
+        {
+            console.error('Error al actualizar ámbitos de la solución:', error);
+            res.status(500).json({ message: 'Error interno en el servidor' });
+        }
+    }
 }
 
 export default new StoreSolucionesController();

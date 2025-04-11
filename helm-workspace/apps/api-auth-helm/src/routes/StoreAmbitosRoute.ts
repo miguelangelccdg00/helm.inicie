@@ -1,5 +1,6 @@
 import { Router } from "express";
 import storeAmbitosController from "../controllers/StoreAmbitosController";
+import storeSolucionesController from "../controllers/StoreSolucionesControllers";
 
 const router = Router();
 
@@ -31,6 +32,11 @@ router.post('/asociarAmbito', storeAmbitosController.asociarAmbito);
  * @description Modifica un ambito específico por su ID
  */
 router.put('/modifyAmbitos/:idSolucion/:idAmbito', storeAmbitosController.modifyStoreAmbitos);
+
+/**
+ * @description Actualiza los ámbitos de una solución
+ */
+router.put('/modifyAmbitos/:id', storeSolucionesController.updateSolucionAmbitos);
 
 /**
  * @description Eliminacion de un ambito específico por su ID
