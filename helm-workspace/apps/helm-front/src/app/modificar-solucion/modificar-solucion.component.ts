@@ -460,6 +460,53 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  agregarAmbito() {
+    if (this.buscadorAmbito && this.solucion) {
+      const ambitoSeleccionado = this.ambitoSeleccionado ||
+        this.allAmbitos.find(
+          a => a.description.toLowerCase() === this.buscadorAmbito.toLowerCase()
+        );
+  
+      if (ambitoSeleccionado) {
+        const yaExiste = this.ambitos.some(
+          a => a.id_ambito === ambitoSeleccionado.id_ambito
+        );
+  
+        if (!yaExiste) {
+          this.storeSolucionesService.asociarAmbitoASolucion(this.solucion.id_solucion, ambitoSeleccionado.id_ambito!).subscribe({
+            next: () => {
+              console.log('Ámbito asociado correctamente a la solución');
+  
+              this.storeSolucionesService.getAmbitosBySolucion(this.solucion!.id_solucion).subscribe({
+                next: (ambitosActualizados) => {
+                  this.solucion!.ambitos = ambitosActualizados;
+                  this.ambitos = ambitosActualizados;
+                  this.filtrarAmbitos();
+                },
+                error: (error) => {
+                  console.error('Error al actualizar los ámbitos de la solución:', error);
+                }
+              });
+  
+              this.buscadorAmbito = '';
+              this.ambitoSeleccionado = null;
+            },
+            error: (error) => {
+              console.error('Error al asociar el ámbito a la solución:', error);
+            }
+          });
+        } else {
+          console.error('Este ámbito ya está agregado');
+        }
+      } else {
+        console.error('Ámbito no encontrado');
+      }
+    } else {
+      console.error('Debe seleccionar un ámbito antes de agregarlo');
+    }
+  }
+  
+
   eliminarBeneficio() {
     if (this.beneficioAEliminar !== null) {
       this.storeSolucionesService.deleteBeneficio(this.beneficioAEliminar).subscribe({
@@ -1012,8 +1059,6 @@ export class ModificarSolucionComponent implements OnInit {
       this.scrollAmbitos.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
   }
-
-  
 
   modificarSolucionAmbito() {
     if (!this.solucion || !this.solucionAmbitoSeleccionado) {
