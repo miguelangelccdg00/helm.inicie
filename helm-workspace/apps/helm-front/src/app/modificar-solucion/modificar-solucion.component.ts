@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StoreSolucionesService, StoreSoluciones, StoreBeneficios, StoreProblemas, StoreCaracteristicas, StoreAmbitos } from '../services/store-soluciones.service';
+import { StoreSolucionesService, StoreSoluciones, StoreBeneficios, StoreProblemas, StoreCaracteristicas, StoreAmbitos, SolucionAmbito } from '../services/store-soluciones.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MenuComponent } from '../menu/menu.component';
@@ -26,7 +26,38 @@ export class ModificarSolucionComponent implements OnInit {
 
   solucion: StoreSoluciones | null = null;
 
-  solucionesAmbitos: any[] = [];
+  solucionesAmbitos: SolucionAmbito[] = [];
+
+  nuevaSolucionAmbito: SolucionAmbito = {
+    description: '',
+    title: '',
+    subtitle: '',
+    icon: '',
+    titleweb: '',
+    slug: '',
+    multimediaUri: '',
+    multimediaTypeId: '',
+    problemaTitle: '',
+    problemaPragma: '',
+    solucionTitle: '',
+    solucionPragma: '',
+    caracteristicasTitle: '',
+    caracteristicasPragma: '',
+    casosdeusoTitle: '',
+    casosdeusoPragma: '',
+    firstCtaTitle: '',
+    firstCtaPragma: '',
+    secondCtaTitle: '',
+    secondCtaPragma: '',
+    beneficiosTitle: '',
+    beneficiosPragma: '',
+  };
+  
+  mostrarOpcionesSolucionAmbito: boolean = false;
+  solucionAmbitoSeleccionado: SolucionAmbito | null = null;
+  solucionAmbitoAEliminar: { idAmbito: number, idSolucion: number } | null = null;
+  mostrarModificarSolucionAmbito: boolean = false;
+  mostrarBotonModificarSolucionAmbito: boolean = false;
 
   nuevoProblema: StoreProblemas = { titulo: '', description: '' };
   buscadorProblema: string = '';
@@ -85,6 +116,7 @@ export class ModificarSolucionComponent implements OnInit {
   mostrarModalBeneficio: boolean = false;
   mostrarModalCaracteristica: boolean = false;
   mostrarModalAmbito: boolean = false;
+  mostrarModalSolucionAmbito: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -93,28 +125,27 @@ export class ModificarSolucionComponent implements OnInit {
   ) { }
 
   @HostListener('document:click', ['$event'])
-clickFuera(event: MouseEvent) {
-  const target = event.target as HTMLElement;
-  
-  // No cerrar si se hace clic en el lápiz o en el formulario de modificación
-  if (target.closest('.emojis') || target.closest('.subseccion')) {
-    return;
-  }
+  clickFuera(event: MouseEvent) {
+    const target = event.target as HTMLElement;
 
-  if (!target.closest('.buscador-selector-container')) {
-    this.mostrarOpcionesProblema = false;
-    this.mostrarOpciones = false;
-    this.mostrarOpcionesCaracteristicas = false;
-    this.mostrarOpcionesAmbitos = false;
+    if (target.closest('.emojis') || target.closest('.subseccion')) {
+      return;
+    }
+
+    if (!target.closest('.buscador-selector-container')) {
+      this.mostrarOpcionesProblema = false;
+      this.mostrarOpciones = false;
+      this.mostrarOpcionesCaracteristicas = false;
+      this.mostrarOpcionesAmbitos = false;
+    }
   }
-}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
-  
+
     const idSolucion = +id;
-  
+
     this.storeSolucionesService.getStoreSolucionById(idSolucion).subscribe({
       next: (solucion) => {
         this.solucion = {
@@ -124,7 +155,7 @@ clickFuera(event: MouseEvent) {
           caracteristicas: solucion.caracteristicas || [],
           ambitos: solucion.ambitos || []
         };
-  
+
         forkJoin([
           this.storeSolucionesService.getProblemasBySolucion(idSolucion),
           this.storeSolucionesService.getBeneficiosBySolucion(idSolucion),
@@ -139,7 +170,7 @@ clickFuera(event: MouseEvent) {
           },
           error: (e) => console.error('Error al obtener problemas, beneficios, características o ámbitos:', e)
         });
-  
+
         this.storeSolucionesService.listAmbitos(idSolucion).subscribe({
           next: (res) => {
             this.solucionesAmbitos = res;
@@ -149,7 +180,7 @@ clickFuera(event: MouseEvent) {
       },
       error: (e) => console.error('Error al obtener la solución:', e)
     });
-  
+
     forkJoin([
       this.storeSolucionesService.getAllProblemas(),
       this.storeSolucionesService.getAllBeneficios(),
@@ -276,11 +307,11 @@ clickFuera(event: MouseEvent) {
     this.ambitoSeleccionado = ambito;
     this.nuevoAmbito = { ...ambito };
     this.mostrarOpcionesAmbitos = false;
+  }
 
-    if (this.scrollAmbitos) {
-      this.scrollAmbitos.nativeElement.scrollIntoView({ behavior: 'smooth' });
-    }
-
+  seleccionarSolucionAmbito(solucionAmbito: SolucionAmbito) {
+    this.solucionAmbitoSeleccionado = solucionAmbito;
+    this.mostrarOpcionesSolucionAmbito = false;
   }
 
   agregarBeneficio() {
@@ -541,44 +572,51 @@ clickFuera(event: MouseEvent) {
     }
   }
 
-  /* eliminarAmbito() {
-    if (this.AmbitoAEliminar !== null) {
-      this.storeSolucionesService.deleteAmbito(this.AmbitoAEliminar).subscribe({
-        next: () => {
-          console.log('Ámbito eliminado correctamente de la base de datos');
+  eliminarAmbito() {
+    if (this.AmbitoAEliminar === null) return;
 
-          if (this.solucion && this.solucion.ambitos) {
-            this.ambitos = this.caracteristicas.filter(ambito =>
-              ambito.id_ambito !== this.AmbitoAEliminar
-            );
+    this.storeSolucionesService.deleteAmbito(this.AmbitoAEliminar).subscribe({
+      next: () => {
+        console.error('Ámbito eliminado correctamente de la base de datos');
 
-            this.solucion.ambitos = this.ambitos;
+        this.ambitos = this.ambitos.filter(ambito =>
+          ambito.id_ambito !== this.AmbitoAEliminar
+        );
 
-            if (this.caracteristicas.length === 0) {
-              this.solucion.caracteristicasPragma = null;
-              this.solucion.caracteristicasTitle = null;
-            }
+        this.AmbitoAEliminar = null;
+        this.mostrarModalAmbito = false;
+      },
+      error: (error) => {
+        console.error('Error al eliminar el ámbito:', error);
+        this.mostrarModalAmbito = false;
+      }
+    });
 
-            this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
-              next: () => {
-                console.log('Solución actualizada después de eliminar ámbito');
-              },
-              error: (err) => {
-                console.error('Error al actualizar la solución después de eliminar ámbito:', err);
-              }
-            });
-          }
+  }
 
-          this.AmbitoAEliminar = null;
-          this.mostrarModalAmbito = false;
-        },
-        error: (error) => {
-          console.error('Error al eliminar el ámbito:', error);
-          this.mostrarModalAmbito = false;
-        }
-      });
-    }
-  } */
+  eliminarSolucionAmbito() {
+    if (this.solucionAmbitoAEliminar === null) return;
+
+    const { idAmbito, idSolucion } = this.solucionAmbitoAEliminar;
+
+    this.storeSolucionesService.deleteSolucionAmbito(idSolucion, idAmbito).subscribe({
+      next: () => {
+        console.log('Solución del ámbito eliminada correctamente de la base de datos');
+  
+        this.solucionesAmbitos = this.solucionesAmbitos.filter((ambito) => 
+          ambito.id_ambito !== idAmbito || ambito.id_solucion !== idSolucion
+        );
+  
+        this.solucionAmbitoAEliminar = null;
+        this.mostrarModalSolucionAmbito = false;
+      },
+      error: (error) => {
+        console.error('Error al eliminar la solución del ámbito:', error);
+        this.mostrarModalSolucionAmbito = false;
+      }
+    });
+
+  }
 
   filtrarBeneficios() {
     const filtro = this.buscadorBeneficio.toLowerCase().trim();
@@ -725,36 +763,36 @@ clickFuera(event: MouseEvent) {
   crearNuevoAmbito() {
     this.mostrarCrearAmbito = false;
     this.mostrarBotonCrearAmbito = true;
-  
+
     if (!this.nuevoAmbito || !this.nuevoAmbito.description) {
       console.error('Debe ingresar la descripción del ámbito');
       return;
     }
-  
+
     if (!this.nuevoAmbito.slug) {
       console.error('Debe ingresar el slug del ámbito');
       return;
     }
-  
+
     if (!this.nuevoAmbito.textoweb) {
       console.error('Debe ingresar el texto web del ámbito');
       return;
     }
-  
+
     if (!this.nuevoAmbito.prefijo) {
       console.error('Debe ingresar el prefijo del ámbito');
       return;
     }
-  
+
     if (!this.solucion) {
       console.error('La solución debe estar cargada para asociar el ámbito');
       return;
     }
-  
+
     this.storeSolucionesService.createAmbito(this.solucion.id_solucion, this.nuevoAmbito).subscribe({
       next: (ambitoCreadoResponse) => {
         console.log('Ámbito creado:', ambitoCreadoResponse);
-  
+
         const ambitoCreado: StoreAmbitos = {
           id_ambito: ambitoCreadoResponse.ambito.id_ambito,
           description: this.nuevoAmbito.description,
@@ -762,12 +800,12 @@ clickFuera(event: MouseEvent) {
           prefijo: this.nuevoAmbito.prefijo,
           slug: this.nuevoAmbito.slug
         };
-  
+
         if (this.solucion && this.solucion.id_solucion && ambitoCreado.id_ambito !== undefined) {
           this.storeSolucionesService.asociarAmbitoASolucion(this.solucion.id_solucion, ambitoCreado.id_ambito).subscribe({
             next: () => {
               console.log('Ámbito asociado correctamente a la solución');
-  
+
               this.storeSolucionesService.getAmbitosBySolucion(this.solucion!.id_solucion).subscribe({
                 next: (ambitosActualizados) => {
                   this.solucion!.ambitos = ambitosActualizados;
@@ -778,7 +816,7 @@ clickFuera(event: MouseEvent) {
                   console.error('Error al actualizar los ámbitos de la solución:', error);
                 }
               });
-  
+
               this.nuevoAmbito = { description: '', textoweb: '', prefijo: '', slug: '' };
             },
             error: (error) => {
@@ -794,7 +832,7 @@ clickFuera(event: MouseEvent) {
       }
     });
   }
-  
+
   confirmarEliminarProblema(idProblema: number, event: MouseEvent) {
     event.stopPropagation();
     this.problemaAEliminar = idProblema;
@@ -837,6 +875,17 @@ clickFuera(event: MouseEvent) {
   cancelarEliminarAmbito() {
     this.mostrarModalAmbito = false;
     this.AmbitoAEliminar = null;
+  }
+
+  confirmarEliminarSolucionAmbito(idAmbito: number, idSolucion: number, event: MouseEvent) {
+    event.stopPropagation();
+    this.solucionAmbitoAEliminar = { idAmbito, idSolucion};
+    this.mostrarModalSolucionAmbito = true;
+  }
+
+  cancelarEliminarSolucionAmbito() {
+    this.mostrarModalSolucionAmbito = false;
+    this.solucionAmbitoAEliminar = null;
   }
 
   modificarProblema() {
@@ -922,12 +971,12 @@ clickFuera(event: MouseEvent) {
       this.storeSolucionesService.modifyAmbito(this.solucion!.id_solucion, this.ambitoSeleccionado.id_ambito!, this.nuevoAmbito).subscribe({
         next: (updatedAmbito) => {
           console.log('Ámbito modificado correctamente:', updatedAmbito);
-  
+
           const index = this.solucion!.ambitos.findIndex(a => a.id_ambito === updatedAmbito.id_ambito);
           if (index !== -1) {
             this.solucion!.ambitos[index] = updatedAmbito;
           }
-  
+
           this.mostrarModificarAmbito = false;
           this.mostrarBotonModificarAmbito = true;
         },
@@ -937,33 +986,93 @@ clickFuera(event: MouseEvent) {
       });
     }
   }
-  
+
   editarAmbito(ambito: StoreAmbitos, event?: MouseEvent) {
-    // Prevenir la propagación del evento
     if (event) {
       event.preventDefault();
       event.stopPropagation();
     }
-  
-    // Copia los datos del ámbito seleccionado
+
     this.ambitoSeleccionado = ambito;
-    this.nuevoAmbito = { 
+    this.nuevoAmbito = {
       description: ambito.description,
       textoweb: ambito.textoweb,
       prefijo: ambito.prefijo,
       slug: ambito.slug,
       id_ambito: ambito.id_ambito
     };
-    
-    // Mostrar directamente el formulario de edición
+
     this.mostrarModificarAmbito = true;
     this.mostrarBotonCrearAmbito = false;
     this.mostrarBotonModificarAmbito = true;
     this.mostrarOpcionesAmbitos = false;
-    
-    // Hacer scroll al formulario
+
     if (this.scrollAmbitos) {
       this.scrollAmbitos.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
+
+  }
+
+  modificarSolucionAmbito() {
+    if (this.solucionAmbitoSeleccionado) {
+      this.storeSolucionesService.modifySolucionAmbito(this.solucion!.id_solucion, this.solucionAmbitoSeleccionado.id_ambito!, this.nuevaSolucionAmbito).subscribe({
+        next: (updatedSolucionAmbito) => {
+          console.log('Solución del ámbito modificada correctamente:', updatedSolucionAmbito);
+
+          const index = this.solucion!.ambitos.findIndex(a => a.id_ambito === updatedSolucionAmbito.id_ambito);
+          if (index !== -1) {
+            this.solucion!.solucionAmbito[index] = updatedSolucionAmbito;
+          }
+
+          this.mostrarModificarSolucionAmbito = false;
+          this.mostrarBotonModificarSolucionAmbito = true;
+        },
+        error: (error) => {
+          console.error('Error al modificar la solución del ámbito:', error);
+        }
+      });
+    }
+  }
+
+  editarSolucionAmbito(solucionAmbito: SolucionAmbito, event?: MouseEvent) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    this.solucionAmbitoSeleccionado = solucionAmbito;
+    this.nuevaSolucionAmbito = {
+      description: solucionAmbito.description,
+      title: solucionAmbito.title,
+      subtitle: solucionAmbito.subtitle,
+      icon: solucionAmbito.icon,
+      titleweb: solucionAmbito.titleweb,
+      slug: solucionAmbito.slug,
+      multimediaUri: solucionAmbito.multimediaUri,
+      multimediaTypeId: solucionAmbito.multimediaTypeId,
+      problemaTitle: solucionAmbito.problemaTitle,
+      problemaPragma: solucionAmbito.problemaPragma,
+      solucionTitle: solucionAmbito.solucionTitle,
+      solucionPragma: solucionAmbito.solucionPragma,
+      caracteristicasTitle: solucionAmbito.caracteristicasTitle,
+      caracteristicasPragma: solucionAmbito.caracteristicasPragma,
+      casosdeusoTitle: solucionAmbito.casosdeusoTitle,
+      casosdeusoPragma: solucionAmbito.casosdeusoPragma,
+      firstCtaTitle: solucionAmbito.firstCtaTitle,
+      firstCtaPragma: solucionAmbito.firstCtaPragma,
+      secondCtaTitle: solucionAmbito.secondCtaTitle,
+      secondCtaPragma: solucionAmbito.secondCtaPragma,
+      beneficiosTitle: solucionAmbito.beneficiosTitle,
+      beneficiosPragma: solucionAmbito.beneficiosPragma,
+    };
+
+    this.mostrarModificarSolucionAmbito = true;
+    this.mostrarBotonModificarSolucionAmbito = true;
+    this.mostrarOpcionesSolucionAmbito = false;
+
+    if (this.scrollAmbitos) {
+      this.scrollAmbitos.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+
   }
 }

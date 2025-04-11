@@ -42,6 +42,7 @@ export interface StoreSoluciones {
   problemas: StoreProblemas[];
   caracteristicas: StoreCaracteristicas[];
   ambitos: StoreAmbitos[];
+  solucionAmbito: SolucionAmbito[];
 } 
 
 export interface UpdateStoreSolucionResponse {
@@ -124,6 +125,39 @@ export interface DeleteAmbitoResponse {
   message: string;
 }
 
+/* SolucionAmbito */
+
+export interface SolucionAmbito {
+  id_solucion?: number;
+  id_ambito?: number;
+  description: string;
+  title: string;
+  subtitle: string;
+  icon: string;
+  titleweb: string;
+  slug: string;
+  multimediaUri: string;
+  multimediaTypeId: string;
+  problemaTitle: string;
+  problemaPragma: string;
+  solucionTitle: string;
+  solucionPragma: string;
+  caracteristicasTitle: string;
+  caracteristicasPragma: string;
+  casosdeusoTitle: string;
+  casosdeusoPragma: string;
+  firstCtaTitle: string;
+  firstCtaPragma: string;
+  secondCtaTitle: string;
+  secondCtaPragma: string;
+  beneficiosTitle: string;
+  beneficiosPragma: string;
+}
+
+export interface DeleteSolucionAmbitoResponse {
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -194,7 +228,7 @@ export class StoreSolucionesService {
   }
 
   deleteStoreSolucion(id: number): Observable<DeleteSolucionResponse> {
-    const url = `http://localhost:3009/storeSolucion/deleteStoreSolucion/${id}`;
+    const url = `http://localhost:3009/storeSolucion/deleteSolucion/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete<DeleteSolucionResponse>(url, { headers });
   }
@@ -529,5 +563,48 @@ export class StoreSolucionesService {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<any>(url, { headers });
   }
+
+  /* SolucionAmbito */
+
+  modifySolucionAmbito(idSolucion: number, idAmbito: number, ambito: StoreAmbitos): Observable<SolucionAmbito> {
+    const url = `${this.ambitosUrl}/modifyAmbitos/${idSolucion}/${idAmbito}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    const solucionAmbitoToUpdate = {
+      id_solucion: idSolucion,
+      id_ambito: idAmbito,
+      description: ambito.description,
+      title: ambito.description,
+      subtitle: ambito.description,
+      icon: ambito.description,
+      titleweb: ambito.description,
+      slug: ambito.slug,
+      multimediaUri: ambito.description,
+      multimediaTypeId: ambito.description,
+      problemaTitle: ambito.description,
+      problemaPragma: ambito.description,
+      solucionTitle: ambito.description,
+      solucionPragma: ambito.description,
+      caracteristicasTitle: ambito.description,
+      caracteristicasPragma: ambito.description,
+      casosdeusoTitle: ambito.description,
+      casosdeusoPragma: ambito.description,
+      firstCtaTitle: ambito.description,
+      firstCtaPragma: ambito.description,
+      secondCtaTitle: ambito.description,
+      secondCtaPragma: ambito.description,
+      beneficiosTitle: ambito.description,
+      beneficiosPragma: ambito.description
+    };
+
+    return this.https.put<SolucionAmbito>(url, solucionAmbitoToUpdate, { headers });
+  }
+
+  deleteSolucionAmbito(idSolucion: number, idAmbito: number): Observable<DeleteSolucionAmbitoResponse> {
+    const url = `http://localhost:3009/storeSolucion/removeAmbitoFromSolucion/${idSolucion}/${idAmbito}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.delete<DeleteSolucionAmbitoResponse>(url, { headers });
+  }
+
 
 }

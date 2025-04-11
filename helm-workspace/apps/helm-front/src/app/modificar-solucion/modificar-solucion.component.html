@@ -424,17 +424,19 @@
 
         <div *ngIf="mostrarModificarAmbito === true" class="subseccion">
           <h3 class="titulo-subseccion">Modificar ámbito</h3>
-        
+
           <form (ngSubmit)="modificarAmbito()">
             <div class="grid-container">
               <div class="form-group col-6">
                 <label for="nuevoAmbitoDescription">Descripción:</label>
                 <textarea id="nuevoAmbitoDescription" [(ngModel)]="nuevoAmbito.description"
-                  name="nuevoAmbitoDescription" required placeholder="Descripción del ámbito" pInputText variant="filled"></textarea>
+                  name="nuevoAmbitoDescription" required placeholder="Descripción del ámbito" pInputText
+                  variant="filled"></textarea>
               </div>
               <div class="form-group col-6">
                 <label for="nuevoTextoweb">Textoweb:</label>
-                <textarea id="nuevoTextoweb" [(ngModel)]="nuevoAmbito.textoweb" name="nuevoTextoweb" required></textarea>
+                <textarea id="nuevoTextoweb" [(ngModel)]="nuevoAmbito.textoweb" name="nuevoTextoweb"
+                  required></textarea>
               </div>
               <div class="form-group col-6">
                 <label for="nuevoPrefijo">Prefijo:</label>
@@ -447,18 +449,19 @@
             </div>
             <div class="botones-container">
               <button type="submit">Modificar</button>
-              <button type="button" (click)="mostrarModificarAmbito = false; mostrarBotonModificarAmbito = true">Cancelar</button>
+              <button type="button"
+                (click)="mostrarModificarAmbito = false; mostrarBotonModificarAmbito = true">Cancelar</button>
             </div>
           </form>
         </div>
-        
+
         <div *ngIf="mostrarCrearAmbito === true" class="subseccion">
           <h3 class="titulo-subseccion">Crear y añadir ámbito</h3>
 
           <form (ngSubmit)="crearNuevoAmbito()">
             <div class="form-group">
               <label for="nuevaDescripcion">Descripción:</label>
-              <textarea id="nuevaDescripcion" [(ngModel)]="nuevoAmbito.description" name="nuevaDescripcion"
+              <textarea id="nuevaDescripcionAmbito" [(ngModel)]="nuevoAmbito.description" name="nuevaDescripcion"
                 required></textarea>
             </div>
             <div class="form-group">
@@ -508,34 +511,30 @@
         <div class="subseccion">
           <h3 class="titulo-subseccion">Ámbitos asociados a la solución: {{ solucion.description }}</h3>
           <div *ngIf="solucion?.ambitos && solucion.ambitos.length">
-            <!-- Sección de ámbitos -->
-<p-table [value]="solucion.ambitos" [paginator]="true" [rows]="5"
-[tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
-<ng-template pTemplate="header">
-  <tr>
-    <th>Descripción</th>
-    <th>Textoweb</th>
-    <th>Prefijo</th>
-    <th>Slug</th>
-    <th>Acciones</th>
-  </tr>
-</ng-template>
+            <p-table [value]="solucion.ambitos" [paginator]="true" [rows]="5"
+              [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Descripción</th>
+                  <th>Textoweb</th>
+                  <th>Prefijo</th>
+                  <th>Slug</th>
+                  <th>Editar</th>
+                  <th>Eliminar</th>
+                </tr>
+              </ng-template>
 
-<!-- En la tabla de ámbitos -->
-<ng-template pTemplate="body" let-ambito>
-  <tr>
-    <td>{{ambito.description}}</td>
-    <td>{{ambito.textoweb}}</td>
-    <td>{{ambito.prefijo}}</td>
-    <td>{{ambito.slug}}</td>
-    <td>
-      <!-- Modificar esta línea -->
-      <span (click)="editarAmbito(ambito)" class="emojis">✏️</span>
-      <span (click)="confirmarEliminarAmbito(ambito.id_ambito!, $event)" class="emojis">🗑️</span>
-    </td>
-  </tr>
-</ng-template>
-</p-table>
+              <ng-template pTemplate="body" let-ambito>
+                <tr>
+                  <td>{{ambito.description}}</td>
+                  <td>{{ambito.textoweb}}</td>
+                  <td>{{ambito.prefijo}}</td>
+                  <td>{{ambito.slug}}</td>
+                  <td><span (click)="editarAmbito(ambito)" class="emojis">✏️</span></td>
+                  <td><span (click)="ambito.id_ambito !== undefined ? confirmarEliminarAmbito(ambito.id_ambito, $event) : null" class="emojis">🗑️</span></td>
+                </tr>
+              </ng-template>
+            </p-table>
           </div>
           <div *ngIf="!solucion?.ambitos || solucion.ambitos.length === 0">
             <p>No hay ámbitos asociados a esta solución.</p>
@@ -603,15 +602,10 @@
                   <td>{{ solucionAmbito.beneficiosTitle }}</td>
                   <td>{{ solucionAmbito.beneficiosPragma }}</td>
                   <td>
-                    <span (click)="editarAmbito({
-                      id_ambito: solucionAmbito.id_ambito,
-                      description: solucionAmbito.ambitoDescription,
-                      textoweb: solucionAmbito.textoweb,
-                      prefijo: solucionAmbito.prefijo,
-                      slug: solucionAmbito.slug
-                    })" class="emojis">✏️</span>
-                    <span (click)="confirmarEliminarAmbito(solucionAmbito.id_ambito!, $event)" class="emojis">🗑️</span>
+                    <span (click)="editarSolucionAmbito(solucionAmbito)" class="emojis">✏️</span>                    
                   </td>
+                  <td><span (click)="confirmarEliminarSolucionAmbito(solucionAmbito.id_ambito!, solucionAmbito.id_solucion!, $event)"
+                    class="emojis">🗑️</span></td>
                 </tr>
               </ng-template>
             </p-table>
@@ -694,8 +688,25 @@
       <p class="warning-text">Esta acción no se puede deshacer.</p>
     </div>
     <div class="modal-footer">
-      <button class="btn-cancelar" (click)="cancelarEliminarCaracteristica()">Cancelar</button>
-      <button class="btn-eliminar" (click)="eliminarCaracteristica()">Eliminar</button>
+      <button class="btn-cancelar" (click)="cancelarEliminarAmbito()">Cancelar</button>
+      <button class="btn-eliminar" (click)="eliminarAmbito()">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para eliminar solucionAmbito -->
+<div class="modal-overlay" *ngIf="mostrarModalSolucionAmbito">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2>Confirmar eliminación</h2>
+    </div>
+    <div class="modal-body">
+      <p>¿Está seguro de que desea eliminar esta solución del ámbito?</p>
+      <p class="warning-text">Esta acción no se puede deshacer.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cancelarEliminarSolucionAmbito()">Cancelar</button>
+      <button class="btn-eliminar" (click)="eliminarSolucionAmbito()">Eliminar</button>
     </div>
   </div>
 </div>
