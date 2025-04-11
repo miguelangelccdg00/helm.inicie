@@ -24,8 +24,15 @@ class StoreAmbitosController
                 slug,
                 idSolucion
             });
-
-            res.status(201).json(resultado);
+            
+            // Obtener el ámbito recién creado para devolverlo completo
+            const ambitoCreado = await StoreAmbitosService.getAmbitoById(resultado.idAmbito);
+            
+            // Devolver el ámbito completo para que el frontend pueda actualizar el selector
+            res.status(201).json({
+                ...resultado,
+                ambito: ambitoCreado
+            });
         } catch (error) {
             console.error('Error en createAmbitos:', error);
             res.status(500).json({ message: 'Error interno del servidor al crear el ámbito.' });
@@ -45,10 +52,15 @@ class StoreAmbitosController
 
             const ambito = await StoreAmbitosService.getAmbitoById(id_ambito);
             const solucion = await storeSolucionesService.getById(id_solucion);
+            
+            // Obtener la lista actualizada de ámbitos para esta solución
+            const ambitosActualizados = await StoreAmbitosService.getByIdAmbitos(id_solucion);
 
             res.status(201).json({
                 message: 'Ámbito asociado a la solución con éxito',
-                asociacion
+                asociacion,
+                ambito,
+                ambitosActualizados
             });
         } catch (error) {
             console.error('Error asociando el ámbito:', error);

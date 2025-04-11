@@ -477,16 +477,42 @@ export class ModificarSolucionComponent implements OnInit {
             next: () => {
               console.log('Ámbito asociado correctamente a la solución');
   
-              this.storeSolucionesService.getAmbitosBySolucion(this.solucion!.id_solucion).subscribe({
-                next: (ambitosActualizados) => {
-                  this.solucion!.ambitos = ambitosActualizados;
-                  this.ambitos = ambitosActualizados;
-                  this.filtrarAmbitos();
-                },
-                error: (error) => {
-                  console.error('Error al actualizar los ámbitos de la solución:', error);
-                }
-              });
+              // Actualizar la lista de ámbitos de la solución
+              this.ambitos.push(ambitoSeleccionado);
+              this.solucion!.ambitos = this.ambitos;
+  
+              // Crear una nueva entrada en solucionesAmbitos
+              const nuevaSolucionAmbito: SolucionAmbito = {
+                id_solucion: this.solucion!.id_solucion,
+                id_ambito: ambitoSeleccionado.id_ambito!,
+                description: ambitoSeleccionado.description,
+                // textoweb: ambitoSeleccionado.textoweb, // Removed as it is not part of SolucionAmbito
+                slug: ambitoSeleccionado.slug,
+                // Añadir los campos necesarios con valores por defecto
+                title: '',
+                subtitle: '',
+                icon: '',
+                titleweb: '',
+                multimediaUri: '',
+                multimediaTypeId: '',
+                problemaTitle: '',
+                problemaPragma: '',
+                solucionTitle: '',
+                solucionPragma: '',
+                caracteristicasTitle: '',
+                caracteristicasPragma: '',
+                casosdeusoTitle: '',
+                casosdeusoPragma: '',
+                firstCtaTitle: '',
+                firstCtaPragma: '',
+                secondCtaTitle: '',
+                secondCtaPragma: '',
+                beneficiosTitle: '',
+                beneficiosPragma: ''
+              };
+  
+              // Actualizar la lista de solucionesAmbitos
+              this.solucionesAmbitos.push(nuevaSolucionAmbito);
   
               this.buscadorAmbito = '';
               this.ambitoSeleccionado = null;
@@ -622,15 +648,34 @@ export class ModificarSolucionComponent implements OnInit {
 
   eliminarAmbito() {
     if (this.AmbitoAEliminar === null) return;
-
+  
     this.storeSolucionesService.deleteAmbito(this.AmbitoAEliminar).subscribe({
       next: () => {
-        console.error('Ámbito eliminado correctamente de la base de datos');
-
+        console.log('Ámbito eliminado correctamente de la base de datos');
+  
+        // Actualizar todas las listas de ámbitos
+        this.allAmbitos = this.allAmbitos.filter(ambito =>
+          ambito.id_ambito !== this.AmbitoAEliminar
+        );
         this.ambitos = this.ambitos.filter(ambito =>
           ambito.id_ambito !== this.AmbitoAEliminar
         );
-
+        this.ambitosFiltrados = this.ambitosFiltrados.filter(ambito =>
+          ambito.id_ambito !== this.AmbitoAEliminar
+        );
+  
+        // Actualizar los ámbitos de la solución actual
+        if (this.solucion && this.solucion.ambitos) {
+          this.solucion.ambitos = this.solucion.ambitos.filter(ambito =>
+            ambito.id_ambito !== this.AmbitoAEliminar
+          );
+        }
+  
+        // Actualizar la lista de asociaciones solucion-ambito
+        this.solucionesAmbitos = this.solucionesAmbitos.filter(ambito =>
+          ambito.id_ambito !== this.AmbitoAEliminar
+        );
+  
         this.AmbitoAEliminar = null;
         this.mostrarModalAmbito = false;
       },
@@ -639,7 +684,6 @@ export class ModificarSolucionComponent implements OnInit {
         this.mostrarModalAmbito = false;
       }
     });
-
   }
 
   eliminarSolucionAmbito() {
@@ -650,11 +694,11 @@ export class ModificarSolucionComponent implements OnInit {
     this.storeSolucionesService.deleteSolucionAmbito(idSolucion, idAmbito).subscribe({
       next: () => {
         console.log('Solución del ámbito eliminada correctamente de la base de datos');
-  
+
         this.solucionesAmbitos = this.solucionesAmbitos.filter((ambito) => 
           ambito.id_ambito !== idAmbito || ambito.id_solucion !== idSolucion
         );
-  
+
         this.solucionAmbitoAEliminar = null;
         this.mostrarModalSolucionAmbito = false;
       },
@@ -811,36 +855,37 @@ export class ModificarSolucionComponent implements OnInit {
   crearNuevoAmbito() {
     this.mostrarCrearAmbito = false;
     this.mostrarBotonCrearAmbito = true;
-
+  
     if (!this.nuevoAmbito || !this.nuevoAmbito.description) {
       console.error('Debe ingresar la descripción del ámbito');
       return;
     }
-
+  
     if (!this.nuevoAmbito.slug) {
       console.error('Debe ingresar el slug del ámbito');
       return;
     }
-
+  
     if (!this.nuevoAmbito.textoweb) {
       console.error('Debe ingresar el texto web del ámbito');
       return;
     }
-
+  
     if (!this.nuevoAmbito.prefijo) {
       console.error('Debe ingresar el prefijo del ámbito');
       return;
     }
-
+  
     if (!this.solucion) {
-      console.error('La solución debe estar cargada para asociar el ámbito');
+      console.error('La solución debe estar cargada');
       return;
     }
-
+  
+    // Solo creamos el ámbito sin asociarlo
     this.storeSolucionesService.createAmbito(this.solucion.id_solucion, this.nuevoAmbito).subscribe({
       next: (ambitoCreadoResponse) => {
         console.log('Ámbito creado:', ambitoCreadoResponse);
-
+  
         const ambitoCreado: StoreAmbitos = {
           id_ambito: ambitoCreadoResponse.ambito.id_ambito,
           description: this.nuevoAmbito.description,
@@ -848,32 +893,15 @@ export class ModificarSolucionComponent implements OnInit {
           prefijo: this.nuevoAmbito.prefijo,
           slug: this.nuevoAmbito.slug
         };
-
-        if (this.solucion && this.solucion.id_solucion && ambitoCreado.id_ambito !== undefined) {
-          this.storeSolucionesService.asociarAmbitoASolucion(this.solucion.id_solucion, ambitoCreado.id_ambito).subscribe({
-            next: () => {
-              console.log('Ámbito asociado correctamente a la solución');
-
-              this.storeSolucionesService.getAmbitosBySolucion(this.solucion!.id_solucion).subscribe({
-                next: (ambitosActualizados) => {
-                  this.solucion!.ambitos = ambitosActualizados;
-                  this.ambitos = ambitosActualizados;
-                  this.filtrarAmbitos();
-                },
-                error: (error) => {
-                  console.error('Error al actualizar los ámbitos de la solución:', error);
-                }
-              });
-
-              this.nuevoAmbito = { description: '', textoweb: '', prefijo: '', slug: '' };
-            },
-            error: (error) => {
-              console.error('Error al asociar el ámbito a la solución:', error);
-            }
-          });
-        } else {
-          console.error('No se pudo asociar el ámbito a la solución. Verifica los datos.');
-        }
+  
+        // Actualizar la lista de ámbitos disponibles
+        this.allAmbitos.push(ambitoCreado);
+        this.filtrarAmbitos();
+        
+        // Limpiar el formulario
+        this.nuevoAmbito = { description: '', textoweb: '', prefijo: '', slug: '' };
+        
+        console.log('Ámbito creado y añadido al listado. Ahora puede seleccionarlo para asociarlo a la solución.');
       },
       error: (error) => {
         console.error('Error al crear el ámbito:', error);
