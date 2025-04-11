@@ -1,5 +1,6 @@
 import { Router } from "express";
 import storeSolucionesController from '../controllers/StoreSolucionesControllers';
+import storeAmbitosController from "../controllers/StoreAmbitosController";
 
 const router = Router();
 
@@ -22,5 +23,10 @@ router.put('/modifyStoreSoluciones/:id', storeSolucionesController.modifyStoreSo
  * @description Eliminacion de una solución específica por su ID
  */
 router.delete('/deleteSolucion/:id', storeSolucionesController.deleteSolucion);
+
+/**
+ * @description Eliminacion de una solución específica por su ID
+ */
+router.delete('/removeAmbitoFromSolucion/:idSolucion/:idAmbito', storeAmbitosController.removeAmbitoFromSolucion);
 
 export default router;
