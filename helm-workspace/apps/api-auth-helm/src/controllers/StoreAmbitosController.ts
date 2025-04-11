@@ -166,11 +166,14 @@ class StoreAmbitosController
         }
     }
 
-    async removeAmbitoFromSolucion(req: Request, res: Response): Promise<void> {
-        try {
+    async removeAmbitoFromSolucion(req: Request, res: Response): Promise<void> 
+    {
+        try 
+        {
             const { idSolucion, idAmbito } = req.params;
 
-            if (!idSolucion || !idAmbito) {
+            if (!idSolucion || !idAmbito) 
+            {
                 res.status(400).json({ message: 'IDs de solución y ambito son requeridos' });
                 return;
             }
@@ -183,7 +186,9 @@ class StoreAmbitosController
             res.status(200).json({
                 message: 'Ambito desasociada de la solución correctamente'
             });
-        } catch (error) {
+        } 
+        catch (error)
+        {
             console.error('Error al desasociar la ambito de la solución:', error);
             res.status(500).json({ message: 'Error interno del servidor' });
         }

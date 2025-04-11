@@ -68,7 +68,8 @@ app.get('/', (req: Request, res: Response): void =>
                         { method: 'GET', path: '/listStoreSoluciones' },
                         { method: 'GET', path: '/listIdStoreSoluciones/:id' },
                         { method: 'PUT', path: '/modifyStoreSoluciones/:id' },
-                        { method: 'DELETE', path: '/deleteSolucion/:id' }
+                        { method: 'DELETE', path: '/deleteSolucion/:id' },
+                        { method: 'DELETE', path: '/removeAmbitoFromSolucion/:idSolucion/idAmbito' }
                     ]
                 }
             },

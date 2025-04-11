@@ -358,9 +358,6 @@ class StoreAmbitosService
         {
             await conn.beginTransaction();
 
-            const [relacionResult]: any = await conn.query(
-                'DELETE FROM storeSolucionesAmbitos WHERE id_ambito = ?',[idAmbito]);
-
             const [ambitoResult]: any = await conn.query(
                 'DELETE FROM storeAmbitos WHERE id_ambito = ?',[idAmbito]);
 
@@ -372,6 +369,32 @@ class StoreAmbitosService
         {
             await conn.rollback();
             console.error('Error al eliminar el ambito:', error);
+            throw error;
+        }
+        finally
+        {
+            conn.release();
+        }
+    }
+
+    async deleteAmbitoSolucion(idSolucion: number, idAmbito: number): Promise<boolean>
+    {
+        const conn = await pool.promise().getConnection();
+
+        try
+        {
+            await conn.beginTransaction();
+
+            const [relacionResult]: any = await conn.query(
+                'DELETE FROM storeSolucionesAmbitos WHERE id_ambito = ? AND id_solucion = ?',[idSolucion, idAmbito]);
+            await conn.commit();
+
+            return relacionResult.affectedRows > 0;
+        }
+        catch (error)
+        {
+            await conn.rollback();
+            console.error('Error al eliminar la relacion del ambito con la solucion:', error);
             throw error;
         }
         finally
