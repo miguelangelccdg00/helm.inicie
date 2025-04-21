@@ -204,6 +204,14 @@ export class ModificarSolucionComponent implements OnInit {
         this.solucion.problemaPragma = this.problemas[0].description;
       }
 
+      if (this.caracteristicas.length > 0 && this.caracteristicas[0].description) {
+        this.solucion.caracteristicasPragma = this.caracteristicas[0].description;
+      }
+      
+      if (this.beneficios.length > 0 && this.beneficios[0].description) {
+        this.solucion.beneficiosPragma = this.beneficios[0].description;
+      }
+
       this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
         next: () => {
           console.log('Solución actualizada correctamente');
@@ -647,7 +655,6 @@ export class ModificarSolucionComponent implements OnInit {
       next: () => {
         console.log('Ámbito eliminado correctamente de la base de datos');
   
-        // Actualizar todas las listas de ámbitos
         this.allAmbitos = this.allAmbitos.filter(ambito =>
           ambito.id_ambito !== this.AmbitoAEliminar
         );
@@ -658,14 +665,12 @@ export class ModificarSolucionComponent implements OnInit {
           ambito.id_ambito !== this.AmbitoAEliminar
         );
   
-        // Actualizar los ámbitos de la solución actual
         if (this.solucion && this.solucion.ambitos) {
           this.solucion.ambitos = this.solucion.ambitos.filter(ambito =>
             ambito.id_ambito !== this.AmbitoAEliminar
           );
         }
   
-        // Actualizar la lista de asociaciones solucion-ambito
         this.solucionesAmbitos = this.solucionesAmbitos.filter(ambito =>
           ambito.id_ambito !== this.AmbitoAEliminar
         );
@@ -875,7 +880,6 @@ export class ModificarSolucionComponent implements OnInit {
       return;
     }
   
-    // Solo creamos el ámbito sin asociarlo
     this.storeSolucionesService.createAmbito(this.solucion.id_solucion, this.nuevoAmbito).subscribe({
       next: (ambitoCreadoResponse) => {
         console.log('Ámbito creado:', ambitoCreadoResponse);
@@ -888,11 +892,9 @@ export class ModificarSolucionComponent implements OnInit {
           slug: this.nuevoAmbito.slug
         };
   
-        // Actualizar la lista de ámbitos disponibles
         this.allAmbitos.push(ambitoCreado);
         this.filtrarAmbitos();
         
-        // Limpiar el formulario
         this.nuevoAmbito = { description: '', textoweb: '', prefijo: '', slug: '' };
         
         console.log('Ámbito creado y añadido al listado. Ahora puede seleccionarlo para asociarlo a la solución.');
@@ -1096,19 +1098,16 @@ export class ModificarSolucionComponent implements OnInit {
       return;
     }
 
-    // Preparar el objeto para actualizar con los IDs necesarios
     const solucionAmbitoActualizada: SolucionAmbito = {
       ...this.nuevaSolucionAmbito,
       id_solucion: idSolucion,
       id_ambito: idAmbito
     };
 
-    // Llamar al servicio con un array que contiene el objeto actualizado
     this.storeSolucionesService.updateSolucionAmbitos(idSolucion, [solucionAmbitoActualizada]).subscribe({
       next: (response) => {
         console.log('Solución por ámbito actualizada correctamente:', response);
         
-        // Actualizar la lista de soluciones por ámbito
         const index = this.solucionesAmbitos.findIndex(
           sa => sa.id_solucion === idSolucion && sa.id_ambito === idAmbito
         );
@@ -1165,13 +1164,10 @@ export class ModificarSolucionComponent implements OnInit {
     this.mostrarBotonModificarSolucionAmbito = true;
     this.mostrarOpcionesSolucionAmbito = false;
 
-    // Primero hacemos scroll a la sección de ámbitos
     if (this.scrollAmbitos) {
       this.scrollAmbitos.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Después de un pequeño retraso, hacemos scroll al formulario específico
-    // para asegurar que el DOM ha sido actualizado y el formulario es visible
     setTimeout(() => {
       if (this.formularioSolucionAmbito) {
         this.formularioSolucionAmbito.nativeElement.scrollIntoView({ behavior: 'smooth' });
