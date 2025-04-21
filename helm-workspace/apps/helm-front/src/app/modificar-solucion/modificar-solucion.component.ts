@@ -255,7 +255,7 @@ export class ModificarSolucionComponent implements OnInit {
             this.router.navigate(['/store-soluciones']);
           }
         },
-        error: (error: any) => console.error('Error al actualizar la solución:', error)
+        error: (error) => console.error('Error al actualizar la solución:', error)
       });
     } else {
       console.error('La solución no está definida');
@@ -359,7 +359,7 @@ export class ModificarSolucionComponent implements OnInit {
             next: () => {
               console.log('Beneficio agregado correctamente a la solución');
             },
-            error: (error: any) => {
+            error: (error) => {
               console.error('Error al agregar beneficio:', error);
             }
           });
@@ -441,7 +441,7 @@ export class ModificarSolucionComponent implements OnInit {
             next: () => {
               console.log('Característica agregada correctamente a la solución');
             },
-            error: (error: any) => {
+            error: (error) => {
               console.error('Error al agregar característica:', error);
             }
           });
