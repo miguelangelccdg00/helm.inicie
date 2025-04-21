@@ -119,7 +119,7 @@
                     (click)="seleccionarProblema(problema)">
                     {{ problema.description }}
                   </div>
-                  <div class="dropdown-item" (click)="mostrarCrearProblema = true; mostrarOpcionesProblema = false">
+                  <div class="dropdown-item" (click)="scrollProblema(); mostrarCrearProblema = true; mostrarOpcionesProblema = false">
                     - Crear y Añadir Problema -
                   </div>
                 </div>
@@ -225,7 +225,7 @@
                     {{ caracteristica.description }}
                   </div>
                   <div class="dropdown-item"
-                    (click)="mostrarCrearCaracteristica = true; mostrarOpcionesCaracteristicas = false">
+                    (click)="scrollCaracteristica(); mostrarCrearCaracteristica = true; mostrarOpcionesCaracteristicas = false">
                     - Crear y Añadir Característica -
                   </div>
                 </div>
@@ -368,7 +368,7 @@
                     (click)="seleccionarBeneficio(beneficio)">
                     {{ beneficio.description }}
                   </div>
-                  <div class="dropdown-item" (click)="mostrarCrearBeneficio = true; mostrarOpciones = false">
+                  <div class="dropdown-item" (click)="scrollBeneficio(); mostrarCrearBeneficio = true; mostrarOpciones = false">
                     - Crear y Añadir Beneficio -
                   </div>
                 </div>
@@ -499,7 +499,7 @@
                     (click)="seleccionarAmbito(ambito)">
                     {{ ambito.description }}
                   </div>
-                  <div class="dropdown-item" (click)="mostrarCrearAmbito = true; mostrarOpcionesAmbitos = false">
+                  <div class="dropdown-item" (click)="scrollAmbito(); mostrarCrearAmbito = true; mostrarOpcionesAmbitos = false">
                     - Crear y Añadir Ámbito -
                   </div>
                 </div>

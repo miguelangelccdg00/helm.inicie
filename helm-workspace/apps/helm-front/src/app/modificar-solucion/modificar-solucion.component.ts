@@ -267,6 +267,30 @@ export class ModificarSolucionComponent implements OnInit {
     this.router.navigate(['/store-soluciones']);
   }
 
+  scrollProblema() {
+    if (this.scrollProblemas) {
+      this.scrollProblemas.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  scrollBeneficio() {
+    if (this.scrollBeneficios) {
+      this.scrollBeneficios.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  scrollCaracteristica() {
+    if (this.scrollCaracteristicas) {
+      this.scrollCaracteristicas.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  scrollAmbito() {
+    if (this.scrollAmbitos) {
+      this.scrollAmbitos.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
   seleccionarBeneficio(beneficio: StoreBeneficios) {
     this.buscadorBeneficio = beneficio.description;
     this.beneficioSeleccionado = beneficio;
