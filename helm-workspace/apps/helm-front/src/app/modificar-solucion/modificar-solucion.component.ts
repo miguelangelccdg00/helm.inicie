@@ -354,73 +354,48 @@ export class ModificarSolucionComponent implements OnInit {
   }
 
   agregarProblema() {
-    if (this.buscadorProblema && this.solucion) {
-      const problemaSeleccionado = this.problemaSeleccionado ||
-        this.allProblemas.find(
-          p => p.description.toLowerCase() === this.buscadorProblema.toLowerCase()
-        );
-
-      if (problemaSeleccionado) {
-        const yaExiste = this.problemas.some(
-          p => p.id_problema === problemaSeleccionado.id_problema
-        );
-
-        if (!yaExiste) {
-          if (problemaSeleccionado.titulo) {
-            this.solucion.problemaTitle = problemaSeleccionado.titulo;
-          }
-
-          this.solucion.problemaPragma = problemaSeleccionado.description;
-          console.log('Estableciendo problemaPragma:', problemaSeleccionado.description);
-
-          this.problemas.push(problemaSeleccionado);
-          this.solucion.problemas = this.problemas;
-
-          this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
-            next: () => {
-              console.log('Problema agregado correctamente a la solución');
-              console.log('Valores actualizados:', {
-                problemaTitle: this.solucion?.problemaTitle,
-                problemaPragma: this.solucion?.problemaPragma
-              });
-
-              if (problemaSeleccionado.id_problema) {
-                this.storeSolucionesService.asociarProblemaASolucion(
-                  this.solucion!.id_solucion,
-                  problemaSeleccionado.id_problema
-                ).subscribe({
-                  next: () => {
-                    console.log('Problema asociado correctamente');
-
-                    this.storeSolucionesService.getStoreSolucionById(this.solucion!.id_solucion).subscribe({
-                      next: (solucionActualizada) => {
-                        console.log('Solución después de asociar problema:', solucionActualizada);
-                      }
-                    });
-                  },
-                  error: (error) => {
-                    console.error('Error al asociar problema:', error);
-                  }
-                });
-              }
-            },
-            error: (error: any) => {
-              console.error('Error al agregar problema:', error);
-            }
-          });
-
-          this.buscadorProblema = '';
-          this.problemaSeleccionado = null;
-        } else {
-          console.error('Este problema ya está agregado');
-        }
-      } else {
-        console.error('Problema no encontrado');
-      }
-    } else {
-      console.error('Debe seleccionar un problema antes de agregarlo');
+    if (!this.buscadorProblema || !this.solucion) {
+      return console.error('Debe seleccionar un problema antes de agregarlo');
     }
+  
+    const problema = this.problemaSeleccionado || this.allProblemas.find(
+      p => p.description.toLowerCase() === this.buscadorProblema.toLowerCase()
+    );
+  
+    if (!problema) return console.error('Problema no encontrado');
+  
+    const yaExiste = this.problemas.some(p => p.id_problema === problema.id_problema);
+    if (yaExiste) return console.error('Este problema ya está agregado');
+  
+    this.solucion.problemaTitle = problema.titulo || '';
+    this.solucion.problemaPragma = problema.description;
+    this.problemas.push(problema);
+    this.solucion.problemas = this.problemas;
+  
+    this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
+      next: () => {
+        console.log('Problema agregado correctamente a la solución');
+        if (!problema.id_problema) return;
+  
+        this.storeSolucionesService.asociarProblemaASolucion(this.solucion!.id_solucion, problema.id_problema).subscribe({
+          next: () => {
+            console.log('Problema asociado correctamente');
+            this.storeSolucionesService.getStoreSolucionById(this.solucion!.id_solucion).subscribe({
+              next: solucionActualizada => {
+                console.log('Solución después de asociar problema:', solucionActualizada);
+              }
+            });
+          },
+          error: err => console.error('Error al asociar problema:', err)
+        });
+      },
+      error: err => console.error('Error al agregar problema:', err)
+    });
+  
+    this.buscadorProblema = '';
+    this.problemaSeleccionado = null;
   }
+  
 
   agregarCaracteristica() {
     if (this.buscadorCaracteristica && this.solucion) {
@@ -477,18 +452,14 @@ export class ModificarSolucionComponent implements OnInit {
             next: () => {
               console.log('Ámbito asociado correctamente a la solución');
   
-              // Actualizar la lista de ámbitos de la solución
               this.ambitos.push(ambitoSeleccionado);
               this.solucion!.ambitos = this.ambitos;
   
-              // Crear una nueva entrada en solucionesAmbitos
               const nuevaSolucionAmbito: SolucionAmbito = {
                 id_solucion: this.solucion!.id_solucion,
                 id_ambito: ambitoSeleccionado.id_ambito!,
                 description: ambitoSeleccionado.description,
-                // textoweb: ambitoSeleccionado.textoweb, // Removed as it is not part of SolucionAmbito
                 slug: ambitoSeleccionado.slug,
-                // Añadir los campos necesarios con valores por defecto
                 title: '',
                 subtitle: '',
                 icon: '',
@@ -511,7 +482,6 @@ export class ModificarSolucionComponent implements OnInit {
                 beneficiosPragma: ''
               };
   
-              // Actualizar la lista de solucionesAmbitos
               this.solucionesAmbitos.push(nuevaSolucionAmbito);
   
               this.buscadorAmbito = '';
