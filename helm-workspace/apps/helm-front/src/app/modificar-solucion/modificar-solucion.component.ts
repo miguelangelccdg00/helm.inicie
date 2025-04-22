@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreSolucionesService, StoreSoluciones, StoreBeneficios, StoreProblemas, StoreCaracteristicas, StoreAmbitos, SolucionAmbito } from '../services/store-soluciones.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -24,6 +24,8 @@ export class ModificarSolucionComponent implements OnInit {
   @ViewChild('scrollCaracteristicas', { static: false }) scrollCaracteristicas: ElementRef | undefined;
   @ViewChild('scrollAmbitos', { static: false }) scrollAmbitos: ElementRef | undefined;
   @ViewChild('formularioSolucionAmbito', { static: false }) formularioSolucionAmbito: ElementRef | undefined;
+
+  
 
   solucion: StoreSoluciones | null = null;
 
@@ -52,6 +54,7 @@ export class ModificarSolucionComponent implements OnInit {
     secondCtaPragma: '',
     beneficiosTitle: '',
     beneficiosPragma: '',
+    
   };
   
   mostrarOpcionesSolucionAmbito: boolean = false;
@@ -122,8 +125,9 @@ export class ModificarSolucionComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private storeSolucionesService: StoreSolucionesService
-  ) { }
+    private storeSolucionesService: StoreSolucionesService,
+    private changeDetectorRef: ChangeDetectorRef 
+) { }
 
   @HostListener('document:click', ['$event'])
   clickFuera(event: MouseEvent) {
@@ -148,55 +152,71 @@ export class ModificarSolucionComponent implements OnInit {
     const idSolucion = +id;
 
     this.storeSolucionesService.getStoreSolucionById(idSolucion).subscribe({
-      next: (solucion) => {
-        this.solucion = {
-          ...solucion,
-          problemas: solucion.problemas || [],
-          beneficios: solucion.beneficios || [],
-          caracteristicas: solucion.caracteristicas || [],
-          ambitos: solucion.ambitos || []
-        };
+        next: (solucion) => {
+            this.solucion = {
+                ...solucion,
+                problemas: solucion.problemas || [],
+                beneficios: solucion.beneficios || [],
+                caracteristicas: solucion.caracteristicas || [],
+                ambitos: solucion.ambitos || []
+            };
 
-        forkJoin([
-          this.storeSolucionesService.getProblemasBySolucion(idSolucion),
-          this.storeSolucionesService.getBeneficiosBySolucion(idSolucion),
-          this.storeSolucionesService.getCaracteristicasBySolucion(idSolucion),
-          this.storeSolucionesService.getAmbitosBySolucion(idSolucion)
-        ]).subscribe({
-          next: ([problemas, beneficios, caracteristicas, ambitos]) => {
-            this.problemas = this.solucion!.problemas = problemas;
-            this.beneficios = this.solucion!.beneficios = beneficios;
-            this.caracteristicas = this.solucion!.caracteristicas = caracteristicas;
-            this.ambitos = this.solucion!.ambitos = ambitos;
-          },
-          error: (e) => console.error('Error al obtener problemas, beneficios, características o ámbitos:', e)
-        });
+            forkJoin([
+                this.storeSolucionesService.getProblemasBySolucion(idSolucion),
+                this.storeSolucionesService.getBeneficiosBySolucion(idSolucion),
+                this.storeSolucionesService.getCaracteristicasBySolucion(idSolucion),
+                this.storeSolucionesService.getAmbitosBySolucion(idSolucion)
+            ]).subscribe({
+                next: ([problemas, beneficios, caracteristicas, ambitos]) => {
+                    this.problemas = this.solucion!.problemas = problemas;
+                    this.beneficios = this.solucion!.beneficios = beneficios;
+                    this.caracteristicas = this.solucion!.caracteristicas = caracteristicas;
+                    this.ambitos = this.solucion!.ambitos = ambitos;
+                    console.log('Ámbitos cargados:', ambitos);
+                    this.changeDetectorRef.detectChanges(); // Force change detection
+                },
+                error: (e) => console.error('Error al obtener problemas, beneficios, características o ámbitos:', e)
+            });
 
-        this.storeSolucionesService.listAmbitos(idSolucion).subscribe({
-          next: (res) => {
-            this.solucionesAmbitos = res;
-          },
-          error: (err) => console.error('Error al obtener soluciones por ámbito:', err)
-        });
-      },
-      error: (e) => console.error('Error al obtener la solución:', e)
+            // Aseguramos que los ámbitos se carguen correctamente con una llamada adicional
+            this.storeSolucionesService.getAmbitosBySolucion(idSolucion).subscribe({
+                next: (ambitos) => {
+                    if (ambitos && ambitos.length > 0) {
+                        this.ambitos = this.solucion!.ambitos = ambitos;
+                        console.log('Ámbitos recargados:', ambitos);
+                        this.changeDetectorRef.detectChanges(); // Force change detection
+                    }
+                },
+                error: (e) => console.error('Error al recargar ámbitos:', e)
+            });
+
+            this.storeSolucionesService.listAmbitos(idSolucion).subscribe({
+                next: (res) => {
+                    this.solucionesAmbitos = res;
+                    this.changeDetectorRef.detectChanges(); // Force change detection
+                },
+                error: (err) => console.error('Error al obtener soluciones por ámbito:', err)
+            });
+        },
+        error: (e) => console.error('Error al obtener la solución:', e)
     });
 
     forkJoin([
-      this.storeSolucionesService.getAllProblemas(),
-      this.storeSolucionesService.getAllBeneficios(),
-      this.storeSolucionesService.getAllCaracteristicas(),
-      this.storeSolucionesService.getAllAmbitos()
+        this.storeSolucionesService.getAllProblemas(),
+        this.storeSolucionesService.getAllBeneficios(),
+        this.storeSolucionesService.getAllCaracteristicas(),
+        this.storeSolucionesService.getAllAmbitos()
     ]).subscribe({
-      next: ([allProblemas, allBeneficios, allCaracteristicas, allAmbitos]) => {
-        this.allProblemas = this.problemasFiltrados = allProblemas;
-        this.allBeneficios = this.beneficiosFiltrados = allBeneficios;
-        this.allCaracteristicas = this.caracteristicasFiltradas = allCaracteristicas;
-        this.allAmbitos = this.ambitosFiltrados = allAmbitos;
-      },
-      error: (e) => console.error('Error al obtener listas globales:', e)
+        next: ([allProblemas, allBeneficios, allCaracteristicas, allAmbitos]) => {
+            this.allProblemas = this.problemasFiltrados = allProblemas;
+            this.allBeneficios = this.beneficiosFiltrados = allBeneficios;
+            this.allCaracteristicas = this.caracteristicasFiltradas = allCaracteristicas;
+            this.allAmbitos = this.ambitosFiltrados = allAmbitos;
+            this.changeDetectorRef.detectChanges(); // Force change detection
+        },
+        error: (e) => console.error('Error al obtener listas globales:', e)
     });
-  }
+}
 
   guardarCambios() {
     if (this.solucion) {

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 /* Interfaces */
 
@@ -501,9 +503,19 @@ export class StoreSolucionesService {
   /* Ámbitos */
 
   getAmbitosBySolucion(idSolucion: number): Observable<StoreAmbitos[]> {
-    const url = `${this.ambitosUrl}/listAmbitos/${idSolucion}`;
+    const url = `${this.ambitosUrl}/listAmbitosSolucion/${idSolucion}?_=${Date.now()}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.get<StoreAmbitos[]>(url, { headers });
+    return this.https.get<StoreAmbitos[]>(url, { headers }).pipe(
+      map(ambitos => {
+        console.log('Ámbitos recuperados:', ambitos);
+        // Asegurarse de que ambitos sea un array
+        if (!Array.isArray(ambitos)) {
+          console.warn('La respuesta de ámbitos no es un array, convirtiendo:', ambitos);
+          return Array.isArray(ambitos) ? ambitos : (ambitos ? [ambitos] : []);
+        }
+        return ambitos;
+      })
+    );
   }
 
   getAllAmbitos(): Observable<StoreAmbitos[]> {
@@ -561,7 +573,12 @@ export class StoreSolucionesService {
   listAmbitos(idSolucion: number): Observable<any> {
     const url = `${this.ambitosUrl}/listAmbitosSolucion/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.get<any>(url, { headers });
+    return this.https.get<any>(url, { headers }).pipe(
+      map(response => {
+        console.log('Response from listAmbitos:', response);
+        return response;
+      })
+    );
   }
 
   /* SolucionAmbito */

@@ -132,34 +132,44 @@
           </div>
         </div>
 
-        <p-table [value]="solucion.problemas" [paginator]="true" [rows]="5"
-          [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
+        <div class="subseccion">
+          <h3 class="titulo-subseccion">Problemas asociados a la solución: {{ solucion.description }}</h3>
+          <div>
+            <p-table [value]="solucion?.problemas || []" [paginator]="true" [rows]="5"
+              [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
 
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Descripción del Problema</th>
-              <th>Editar</th>
-              <th>Eliminar</th>
-            </tr>
-          </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Descripción del Problema</th>
+                  <th>Editar</th>
+                  <th>Eliminar</th>
+                </tr>
+              </ng-template>
 
-          <ng-template pTemplate="body" let-problema>
-            <tr>
-              <td>{{ problema.description }}</td>
-              <td>
-                <span (click)="seleccionarProblema(problema); mostrarModificarProblema = true" class="emojis">
-                  ✏️
-                </span>
-              </td>
-              <td>
-                <span class="emojis"
-                  (click)="problema.id_problema !== undefined ? confirmarEliminarProblema(problema.id_problema, $event) : null">
-                  🗑️
-                </span>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
+              <ng-template pTemplate="body" let-problema>
+                <tr>
+                  <td>{{ problema.description }}</td>
+                  <td>
+                    <span (click)="seleccionarProblema(problema); mostrarModificarProblema = true" class="emojis">
+                      ✏️
+                    </span>
+                  </td>
+                  <td>
+                    <span class="emojis"
+                      (click)="problema.id_problema !== undefined ? confirmarEliminarProblema(problema.id_problema, $event) : null">
+                      🗑️
+                    </span>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="3" style="text-align: center;">No hay problemas asociados a esta solución.</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
 
       </div>
 
@@ -240,8 +250,8 @@
 
         <div class="subseccion">
           <h3 class="titulo-subseccion">Características asociadas a la solución: {{ solucion.description }}</h3>
-          <div *ngIf="solucion?.caracteristicas && solucion.caracteristicas.length">
-            <p-table [value]="solucion.caracteristicas" [paginator]="true" [rows]="5"
+          <div>
+            <p-table [value]="solucion?.caracteristicas || []" [paginator]="true" [rows]="5"
               [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
               <ng-template pTemplate="header">
                 <tr>
@@ -268,10 +278,12 @@
                   </td>
                 </tr>
               </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="3" style="text-align: center;">No hay características asociadas a esta solución.</td>
+                </tr>
+              </ng-template>
             </p-table>
-          </div>
-          <div *ngIf="!solucion?.caracteristicas || solucion.caracteristicas.length === 0">
-            <p>No hay características asociadas a esta solución.</p>
           </div>
         </div>
       </div>
@@ -383,8 +395,8 @@
 
         <div class="subseccion">
           <h3 class="titulo-subseccion">Beneficios asociados a la solución: {{ solucion.description }}</h3>
-          <div *ngIf="solucion?.beneficios && solucion.beneficios.length">
-            <p-table [value]="solucion.beneficios" [paginator]="true" [rows]="5"
+          <div>
+            <p-table [value]="solucion?.beneficios || []" [paginator]="true" [rows]="5"
               [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
               <ng-template pTemplate="header">
                 <tr>
@@ -410,10 +422,12 @@
                   </td>
                 </tr>
               </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="3" style="text-align: center;">No hay beneficios asociados a esta solución.</td>
+                </tr>
+              </ng-template>
             </p-table>
-          </div>
-          <div *ngIf="!solucion?.beneficios || solucion.beneficios.length === 0">
-            <p>No hay beneficios asociados a esta solución.</p>
           </div>
         </div>
       </div>
@@ -514,8 +528,8 @@
 
         <div class="subseccion">
           <h3 class="titulo-subseccion">Ámbitos asociados a la solución: {{ solucion.description }}</h3>
-          <div *ngIf="solucion?.ambitos && solucion.ambitos.length">
-            <p-table [value]="solucion.ambitos" [paginator]="true" [rows]="5"
+          <div>
+            <p-table [value]="solucion?.ambitos || []" [paginator]="true" [rows]="5"
               [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
               <ng-template pTemplate="header">
                 <tr>
@@ -540,10 +554,12 @@
                       class="emojis">🗑️</span></td>
                 </tr>
               </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="6" style="text-align: center;">No hay ámbitos asociados a esta solución.</td>
+                </tr>
+              </ng-template>
             </p-table>
-          </div>
-          <div *ngIf="!solucion?.ambitos || solucion.ambitos.length === 0">
-            <p>No hay ámbitos asociados a esta solución.</p>
           </div>
         </div>
 
