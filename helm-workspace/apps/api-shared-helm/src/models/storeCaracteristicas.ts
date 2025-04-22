@@ -1,5 +1,14 @@
-export interface StoreCaracteristicas
-{
-    idCaracteristica?: number;
-    description: string;   
+export interface StoreCaracteristicas {
+    id_caracteristica?: number;
+    titulo?: string;
+    description: string;
+}
+  
+export interface CreateCaracteristicaResponse {
+    message: string;
+    caracteristica: StoreCaracteristicas;
+}
+
+export interface DeleteCaracteristicaResponse {
+    message: string;
 }
