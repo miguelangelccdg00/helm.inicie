@@ -1,6 +1,12 @@
 import { Component, OnInit, HostListener, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StoreSolucionesService, StoreSoluciones, StoreBeneficios, StoreProblemas, StoreCaracteristicas, StoreAmbitos, SolucionAmbito } from '../services/store-soluciones.service';
+import { StoreSolucionesService } from '../services/store-soluciones.service';
+import { StoreSoluciones } from '@modelos-shared/storeSoluciones';
+import { StoreBeneficios } from '@modelos-shared/storeBeneficios';
+import { StoreProblemas } from '@modelos-shared/storeProblemas';
+import { StoreCaracteristicas } from '@modelos-shared/storeCaracteristicas';
+import { StoreAmbitos } from '@modelos-shared/storeAmbitos';
+import { SolucionAmbito } from '@modelos-shared/solucionAmbito';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MenuComponent } from '../menu/menu.component';

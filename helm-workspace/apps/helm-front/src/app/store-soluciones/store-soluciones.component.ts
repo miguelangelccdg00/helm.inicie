@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StoreSolucionesService, StoreSoluciones } from '../services/store-soluciones.service';
+import { StoreSolucionesService } from '../services/store-soluciones.service';
+import { StoreSoluciones } from '@modelos-shared/storeSoluciones';
 import { MenuComponent } from '../menu/menu.component';
 import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';

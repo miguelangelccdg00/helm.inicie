@@ -528,5 +528,6 @@ export class StoreSolucionesService {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.put<any>(url, solucionAmbitos, { headers });
   }
+  
 
 }
