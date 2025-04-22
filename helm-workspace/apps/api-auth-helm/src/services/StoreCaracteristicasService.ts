@@ -1,218 +1,221 @@
 import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
 import { StoreCaracteristicas } from '../../../api-shared-helm/src/models/storeCaracteristicas.js';
 
-class StoreCaracteristicasService
-{
-    /**
-     * Crea un caracteristica y lo asocia con una solución existente.
-     */
-    async createCaracteristica({ description, titulo, idSolucion }) 
-    {
-        const conn = await pool.promise().getConnection();
+interface CreateCaracteristicaInput {
+  description: string;
+  titulo: string;
+  idSolucion: number;
+}
 
-        try 
-        {
-            await conn.beginTransaction();
-            
-            // Verifica si la solución existe antes de relacionarla
-            const [solucionExiste]: any = await conn.query(
-                `SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?`, 
-                [idSolucion]
-            );
+interface AsociarCaracteristicaOutput {
+  idSolucion: number;
+  idCaracteristica: number;
+  titulo?: string;
+  message: string;
+}
 
-            if (solucionExiste.length === 0) 
-            {
-                throw new Error(`La solución con id ${idSolucion} no existe.`);
-            }
+interface Caracteristica {
+  id_caracteristica: number;
+  description: string;
+}
 
-            // Inserta el caracteristica en la base de datos 
-            const [caracteristicaResult]: any = await conn.query(
-                `INSERT INTO storeCaracteristicas (description) VALUES (?)`, 
-                [description]
-            );
+class StoreCaracteristicasService {
+  /**
+   * Crea una característica y la asocia con una solución existente.
+   */
+  async createCaracteristica({ description, titulo, idSolucion }: CreateCaracteristicaInput): Promise<{
+    idCaracteristica: number;
+    idSolucion: number;
+    description: string;
+    titulo: string;
+    caracteristicasTitle: string;
+    caracteristicasPragma: string;
+  }> {
+    const conn = await pool.promise().getConnection();
 
-            const idCaracteristica = caracteristicaResult.insertId;
+    try {
+      await conn.beginTransaction();
 
-            // Relaciona el caracteristica con la solución
-            await conn.query(
-                `INSERT INTO storeSolucionesCaracteristicas (id_solucion, id_caracteristica) VALUES (?, ?)`, 
-                [idSolucion, idCaracteristica]
-            );
+      const [solucionExiste]: [any[], any] = await conn.query(
+        `SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?`,
+        [idSolucion]
+      );
 
-            // Actualiza los campos caracteristicaTitle y caracteristicaPragma en la solución
-            await conn.query(
-                `UPDATE storeSoluciones SET caracteristicasTitle = ?, caracteristicasPragma = ? WHERE id_solucion = ?`,
-                [titulo, description, idSolucion]
-            );
+      if (solucionExiste.length === 0) {
+        throw new Error(`La solución con id ${idSolucion} no existe.`);
+      }
 
-            await conn.commit();
+      const [caracteristicaResult]: [any, any] = await conn.query(
+        `INSERT INTO storeCaracteristicas (description) VALUES (?)`,
+        [description]
+      );
 
-            return { 
-                idCaracteristica, 
-                idSolucion, 
-                description, 
-                titulo,
-                caracteristicasTitle: titulo,
-                caracteristicasPragma: description
-            };
-        } 
-        catch (error) 
-        {
-            await conn.rollback();
-            console.error("Error al insertar la caracteristica:", error);
-            throw error;
-        } 
-        finally 
-        {
-            conn.release();
-        }
+      const idCaracteristica: number = caracteristicaResult.insertId;
+
+      await conn.query(
+        `INSERT INTO storeSolucionesCaracteristicas (id_solucion, id_caracteristica) VALUES (?, ?)`,
+        [idSolucion, idCaracteristica]
+      );
+
+      await conn.query(
+        `UPDATE storeSoluciones SET caracteristicasTitle = ?, caracteristicasPragma = ? WHERE id_solucion = ?`,
+        [titulo, description, idSolucion]
+      );
+
+      await conn.commit();
+
+      return {
+        idCaracteristica,
+        idSolucion,
+        description,
+        titulo,
+        caracteristicasTitle: titulo,
+        caracteristicasPragma: description
+      };
+    } catch (error) {
+      await conn.rollback();
+      console.error("Error al insertar la característica:", error);
+      throw error;
+    } finally {
+      conn.release();
     }
+  }
 
-    /**
-     * Asocia un caracteristica existente con una solución existente.
-     */
-    async asociarCaracteristica(idSolucion: number, idCaracteristica: number, titulo?: string) 
-    {
-        const conn = await pool.promise().getConnection();
-        try 
-        {
-            await conn.beginTransaction();
+  /**
+   * Asocia una característica existente con una solución existente.
+   */
+  async asociarCaracteristica(idSolucion: number, idCaracteristica: number, titulo?: string): Promise<AsociarCaracteristicaOutput> {
+    const conn = await pool.promise().getConnection();
 
-            // Verifica si la solución existe
-            const [solucionExiste]: any = await conn.query(
-                `SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?`, 
-                [idSolucion]
-            );
+    try {
+      await conn.beginTransaction();
 
-            if (solucionExiste.length === 0) 
-            {
-                throw new Error(`La solución con id ${idSolucion} no existe.`);
-            }
+      const [solucionExiste]: [any[], any] = await conn.query(
+        `SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?`,
+        [idSolucion]
+      );
 
-            // Verifica si el caracteristica existe y obtiene sus datos
-            const [caracteristicaExiste]: any = await conn.query(
-                `SELECT id_caracteristica, description FROM storeCaracteristicas WHERE id_caracteristica = ?`, 
-                [idCaracteristica]
-            );
+      if (solucionExiste.length === 0) {
+        throw new Error(`La solución con id ${idSolucion} no existe.`);
+      }
 
-            if (caracteristicaExiste.length === 0) 
-            {
-                throw new Error(`El caracteristica con id ${idCaracteristica} no existe.`);
-            }
+      const [caracteristicaExiste]: [Caracteristica[], any] = await conn.query(
+        `SELECT id_caracteristica, description FROM storeCaracteristicas WHERE id_caracteristica = ?`,
+        [idCaracteristica]
+      );
 
-            // Verifica si la relación ya existe
-            const [relacionExiste]: any = await conn.query(
-                `SELECT id_solucion, id_caracteristica FROM storeSolucionesCaracteristicas WHERE id_solucion = ? AND id_caracteristica = ?`, 
-                [idSolucion, idCaracteristica]
-            );
+      if (caracteristicaExiste.length === 0) {
+        throw new Error(`La característica con id ${idCaracteristica} no existe.`);
+      }
 
-            if (relacionExiste.length > 0) 
-            {
-                await conn.commit();
-                return { idSolucion, idCaracteristica, message: 'La relación ya existía' };
-            }
+      const [relacionExiste]: [any[], any] = await conn.query(
+        `SELECT id_solucion, id_caracteristica FROM storeSolucionesCaracteristicas WHERE id_solucion = ? AND id_caracteristica = ?`,
+        [idSolucion, idCaracteristica]
+      );
 
-            // Crea la relación entre la solución y el caracteristica
-            await conn.query(
-                `INSERT INTO storeSolucionesCaracteristicas (id_solucion, id_caracteristica) VALUES (?, ?)`, 
-                [idSolucion, idCaracteristica]
-            );
+      if (relacionExiste.length > 0) {
+        await conn.commit();
+        return { idSolucion, idCaracteristica, message: 'La relación ya existía' };
+      }
 
-            // Actualiza los campos caracteristicaTitle y caracteristicaPragma en la solución
-            const caracteristica = caracteristicaExiste[0];
-            await conn.query(
-                `UPDATE storeSoluciones SET caracteristicasTitle = ?, caracteristicasPragma = ? WHERE id_solucion = ?`,
-                [titulo || "caracteristica sin título", caracteristica.description, idSolucion]
-            );
+      await conn.query(
+        `INSERT INTO storeSolucionesCaracteristicas (id_solucion, id_caracteristica) VALUES (?, ?)`,
+        [idSolucion, idCaracteristica]
+      );
 
-            await conn.commit();
+      const caracteristica = caracteristicaExiste[0];
+      await conn.query(
+        `UPDATE storeSoluciones SET caracteristicasTitle = ?, caracteristicasPragma = ? WHERE id_solucion = ?`,
+        [titulo || "característica sin título", caracteristica.description, idSolucion]
+      );
 
-            return { idSolucion, idCaracteristica, titulo, message: 'Relación creada con éxito' };
-        } 
-        catch (error) 
-        {
-            await conn.rollback();
-            console.error("Error al asociar caracteristica:", error);
-            throw error;
-        } 
-        finally 
-        {
-            conn.release();
-        }
+      await conn.commit();
+
+      return { idSolucion, idCaracteristica, titulo, message: 'Relación creada con éxito' };
+    } catch (error) {
+      await conn.rollback();
+      console.error("Error al asociar característica:", error);
+      throw error;
+    } finally {
+      conn.release();
     }
+  }
 
-    /**
-     * Obtiene la lista de todos los caracteristicas registrados.
-     */
-    async listCaracteristicas() 
-    {
-        const [rows] = await pool.promise().query(`SELECT id_caracteristica, description FROM storeCaracteristicas`);
-        return rows;
+  /**
+   * Lista todas las características registradas.
+   */
+  async listCaracteristicas(): Promise<Caracteristica[]> {
+    const [rows]: [Caracteristica[], any] = await pool.promise().query(
+      `SELECT id_caracteristica, description FROM storeCaracteristicas`
+    );
+    return rows;
+  }
+
+  /**
+   * Obtiene una característica específica por su ID.
+   */
+  async getCaracteristicaById(idCaracteristica: number): Promise<Caracteristica | null> {
+    const [rows]: [Caracteristica[], any] = await pool.promise().query(
+      `SELECT id_caracteristica, description FROM storeCaracteristicas WHERE id_caracteristica = ?`,
+      [idCaracteristica]
+    );
+    return rows.length ? rows[0] : null;
+  }
+
+  /**
+   * Obtiene las características asociadas a una solución específica.
+   */
+  async getByIdCaracteristicas(idSolucion: number): Promise<Caracteristica[]> {
+    const [rows]: [Caracteristica[], any] = await pool.promise().query(
+      `SELECT c.id_caracteristica, c.description
+       FROM storeCaracteristicas c
+       JOIN storeSolucionesCaracteristicas sc ON c.id_caracteristica = sc.id_caracteristica
+       WHERE sc.id_solucion = ?`,
+      [idSolucion]
+    );
+    return rows;
+  }
+
+  /**
+   * Actualiza datos de una característica.
+   */
+  async update(id: number, updateData: Partial<StoreCaracteristicas>): Promise<{ message: string }> {
+    await pool.promise().query(
+      'UPDATE storeCaracteristicas SET ? WHERE id_caracteristica = ?',
+      [updateData, id]
+    );
+    return { message: 'Característica actualizada' };
+  }
+
+  /**
+   * Elimina una característica, incluyendo su relación con soluciones.
+   */
+  async deleteCaracteristica(idCaracteristica: number): Promise<boolean> {
+    const conn = await pool.promise().getConnection();
+    try {
+      await conn.beginTransaction();
+
+      await conn.query(
+        'DELETE FROM storeSolucionesCaracteristicas WHERE id_caracteristica = ?',
+        [idCaracteristica]
+      );
+
+      const [caracteristicaResult]: [any, any] = await conn.query(
+        'DELETE FROM storeCaracteristicas WHERE id_caracteristica = ?',
+        [idCaracteristica]
+      );
+
+      await conn.commit();
+
+      return caracteristicaResult.affectedRows > 0;
+    } catch (error) {
+      await conn.rollback();
+      console.error('Error al eliminar la característica:', error);
+      throw error;
+    } finally {
+      conn.release();
     }
-
-    /**
-     * Obtiene un problema específico por su ID.
-     */
-    async getCaracteristicaById(idCaracteristica: number) 
-    {
-        const [rows] = await pool.promise().query(
-            `SELECT id_caracteristica, description FROM storeCaracteristicas WHERE id_caracteristica = ?`, 
-            [idCaracteristica]
-        );
-        return rows.length ? rows[0] : null;
-    }
-
-    /**
-     * Obtiene las caracteristicas asociados a una solución específica.
-     */
-    async getByIdCaracteristicas(idSolucion: Number) 
-    {
-        const [rows] = await pool.promise().query(
-            `SELECT c.id_caracteristica, c.description 
-            FROM storeCaracteristicas c
-            JOIN storeSolucionesCaracteristicas sc ON c.id_caracteristica = sc.id_caracteristica
-            WHERE sc.id_solucion = ?`, 
-            [idSolucion]  
-        );
-        return rows;
-    }
-
-    async update(id: number, updateData: Partial<StoreCaracteristicas>) 
-    {
-        await pool.promise().query('UPDATE storeCaracteristicas SET ? WHERE id_caracteristica = ?', [updateData, id]);
-        return { message: 'Caracteristica actualizada' };
-    }
-
-    async deleteCaracteristica(idCaracteristica: number): Promise<boolean>
-    {
-        const conn = await pool.promise().getConnection();
-
-        try
-        {
-            await conn.beginTransaction();
-
-            const [relacionResult]: any = await conn.query(
-                'DELETE FROM storeSolucionesCaracteristicas WHERE id_caracteristica = ?',[idCaracteristica]);
-
-            const [caracteristicaResult]: any = await conn.query(
-                'DELETE FROM storeCaracteristicas WHERE id_caracteristica = ?',[idCaracteristica]);
-
-            await conn.commit();
-
-            return caracteristicaResult.affectedRows > 0;
-        }
-        catch (error)
-        {
-            await conn.rollback();
-            console.error('Error al eliminar la caracteristica:', error);
-            throw error;
-        }
-        finally
-        {
-            conn.release();
-        }
-    }
-
+  }
 }
 
 export default new StoreCaracteristicasService();

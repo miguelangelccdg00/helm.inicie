@@ -1,160 +1,149 @@
 import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
 import { StoreBeneficios } from '../../../api-shared-helm/src/models/storeBeneficios.js';
 
-class StoreBeneficiosServices 
-{
-    async createBeneficio({ description, idSolucion }) 
-    {
-        const conn = await pool.promise().getConnection();
-        try 
-        {
-            await conn.beginTransaction();
+interface CreateBeneficioDTO {
+  description: string;
+  idSolucion: number;
+}
 
-            // Verifica si la solución existe antes de relacionarla
-            const [solucionExiste]: any = await conn.query(
-                `SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?`, [idSolucion]);
+interface AsociarBeneficioResult {
+  idSolucion: number;
+  idBeneficio: number;
+  message: string;
+}
 
-            if (solucionExiste.length === 0) 
-            {
-                throw new Error(`La solución con id ${idSolucion} no existe.`);
-            }
+class StoreBeneficiosServices {
+  async createBeneficio({ description, idSolucion }: CreateBeneficioDTO): Promise<{ idBeneficio: number; idSolucion: number }> {
+    const conn = await pool.promise().getConnection();
+    try {
+      await conn.beginTransaction();
 
-            const [beneficioResult]: any = await conn.query(
-                `INSERT INTO storeBeneficios (description) VALUES (?)`, [description]);
+      const [solucionExiste]: [{ id_solucion: number }[]] = await conn.query(
+        `SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?`,
+        [idSolucion]
+      );
 
-            const idBeneficio = beneficioResult.insertId;
+      if (solucionExiste.length === 0) {
+        throw new Error(`La solución con id ${idSolucion} no existe.`);
+      }
 
-            await conn.query(
-                `INSERT INTO storeSolucionesBeneficios (id_solucion, id_beneficio) VALUES (?, ?)`, [idSolucion, idBeneficio]);
+      const [beneficioResult]: any = await conn.query(
+        `INSERT INTO storeBeneficios (description) VALUES (?)`,
+        [description]
+      );
 
-            await conn.commit();
+      const idBeneficio = beneficioResult.insertId;
 
-            return { idBeneficio, idSolucion };
-        } 
-        catch (error) 
-        {
-            await conn.rollback();
-            console.error("Error al insertar beneficio:", error);
-            throw error;
-        } 
-        finally 
-        {
-            conn.release();
-        }
+      await conn.query(
+        `INSERT INTO storeSolucionesBeneficios (id_solucion, id_beneficio) VALUES (?, ?)`,
+        [idSolucion, idBeneficio]
+      );
+
+      await conn.commit();
+
+      return { idBeneficio, idSolucion };
+    } catch (error) {
+      await conn.rollback();
+      console.error("Error al insertar beneficio:", error);
+      throw error;
+    } finally {
+      conn.release();
     }
-    async getBeneficio() 
-    {
-        const [rows] = await pool.promise().query(`SELECT id_beneficio, description FROM storeBeneficios `);
-        return rows;
+  }
+
+  async getBeneficio(): Promise<StoreBeneficios[]> {
+    const [rows] = await pool.promise().query(`SELECT id_beneficio, description FROM storeBeneficios`);
+    return rows as StoreBeneficios[];
+  }
+
+  async getByIdBeneficio(idSolucion: number): Promise<StoreBeneficios[]> {
+    const [rows] = await pool.promise().query(
+      `SELECT b.id_beneficio, b.description
+      FROM storeBeneficios b
+      JOIN storeSolucionesBeneficios sb ON b.id_beneficio = sb.id_beneficio
+      WHERE sb.id_solucion = ?`,
+      [idSolucion]
+    );
+
+    return rows as StoreBeneficios[];
+  }
+
+  async update(id: number, updateData: Partial<StoreBeneficios>): Promise<{ message: string }> {
+    await pool.promise().query('UPDATE storeBeneficios SET ? WHERE id_beneficio = ?', [updateData, id]);
+    return { message: 'Beneficio actualizado' };
+  }
+
+  async deleteBeneficio(idBeneficio: number): Promise<boolean> {
+    const conn = await pool.promise().getConnection();
+    try {
+      await conn.beginTransaction();
+
+      const [result]: any = await conn.query(
+        'DELETE FROM storeSolucionesBeneficios WHERE id_beneficio = ?',
+        [idBeneficio]
+      );
+
+      await conn.commit();
+
+      return result.affectedRows > 0;
+    } catch (error) {
+      await conn.rollback();
+      console.error('Error al eliminar la asociación del beneficio:', error);
+      throw error;
+    } finally {
+      conn.release();
     }
+  }
 
-    /** Obtiene los beneficios de una solución por su ID */
-    async getByIdBeneficio(idSolucion: number) 
-    {
-        const [rows] = await pool.promise().query(
-            `SELECT b.id_beneficio, b.description
-            FROM storeBeneficios b
-            JOIN storeSolucionesBeneficios sb ON b.id_beneficio = sb.id_beneficio
-            WHERE sb.id_solucion = ?`, 
-            [idSolucion]
-        );
+  async asociarBeneficio(idSolucion: number, idBeneficio: number): Promise<AsociarBeneficioResult> {
+    const conn = await pool.promise().getConnection();
+    try {
+      await conn.beginTransaction();
 
-        return rows;
+      const [solucionExiste]: [{ id_solucion: number }[]] = await conn.query(
+        `SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?`,
+        [idSolucion]
+      );
+
+      if (solucionExiste.length === 0) {
+        throw new Error(`La solución con id ${idSolucion} no existe.`);
+      }
+
+      const [beneficioExiste]: [{ id_beneficio: number }[]] = await conn.query(
+        `SELECT id_beneficio FROM storeBeneficios WHERE id_beneficio = ?`,
+        [idBeneficio]
+      );
+
+      if (beneficioExiste.length === 0) {
+        throw new Error(`El beneficio con id ${idBeneficio} no existe.`);
+      }
+
+      const [relacionExiste]: [{ id_solucion: number; id_beneficio: number }[]] = await conn.query(
+        `SELECT id_solucion, id_beneficio FROM storeSolucionesBeneficios WHERE id_solucion = ? AND id_beneficio = ?`,
+        [idSolucion, idBeneficio]
+      );
+
+      if (relacionExiste.length > 0) {
+        await conn.commit();
+        return { idSolucion, idBeneficio, message: 'La relación ya existía' };
+      }
+
+      await conn.query(
+        `INSERT INTO storeSolucionesBeneficios (id_solucion, id_beneficio) VALUES (?, ?)`,
+        [idSolucion, idBeneficio]
+      );
+
+      await conn.commit();
+
+      return { idSolucion, idBeneficio, message: 'Relación creada con éxito' };
+    } catch (error) {
+      await conn.rollback();
+      console.error("Error al asociar beneficio:", error);
+      throw error;
+    } finally {
+      conn.release();
     }
-
-    /**
-     * Actualiza una solución específica en la base de datos
-     */
-    async update(id: number, updateData: Partial<StoreBeneficios>) 
-    {
-        await pool.promise().query('UPDATE storeBeneficios SET ? WHERE id_beneficio = ?', [updateData, id]);
-        return { message: 'Beneficio actualizado' };
-    }
-
-
-    async deleteBeneficio(idBeneficio: number): Promise<boolean> 
-    {
-        const conn = await pool.promise().getConnection();
-        try 
-        {
-            await conn.beginTransaction();
-
-            // Solo elimina la relación en storeSolucionesBeneficios
-            const [result]: any = await conn.query('DELETE FROM storeSolucionesBeneficios WHERE id_beneficio = ?', [idBeneficio]);
-
-            await conn.commit();
-
-            // Verifica si se eliminó algún registro
-            return result.affectedRows > 0;
-        } 
-        catch (error) 
-        {
-            await conn.rollback();
-            console.error('Error al eliminar la asociación del beneficio:', error);
-            throw error;
-        }         
-        finally 
-        {
-            conn.release();
-        }
-    }
-
-    async asociarBeneficio(idSolucion: number, idBeneficio: number) 
-    {
-        const conn = await pool.promise().getConnection();
-        try 
-        {
-            await conn.beginTransaction();
-
-            // Verifica si la solución existe
-            const [solucionExiste]: any = await conn.query(
-                `SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?`, [idSolucion]);
-
-            if (solucionExiste.length === 0) 
-            {
-                throw new Error(`La solución con id ${idSolucion} no existe.`);
-            }
-
-            // Verifica si el beneficio existe
-            const [beneficioExiste]: any = await conn.query(
-                `SELECT id_beneficio FROM storeBeneficios WHERE id_beneficio = ?`, [idBeneficio]);
-
-            if (beneficioExiste.length === 0) 
-            {
-                throw new Error(`El beneficio con id ${idBeneficio} no existe.`);
-            }
-            // Verifica si la relación ya existe
-            const [relacionExiste]: any = await conn.query(
-                `SELECT id_solucion, id_beneficio FROM storeSolucionesBeneficios WHERE id_solucion = ? AND id_beneficio = ?`, 
-                [idSolucion, idBeneficio]);
-
-            if (relacionExiste.length > 0) 
-            {
-                // La relación ya existe, no es necesario crearla de nuevo
-                await conn.commit();
-                return { idSolucion, idBeneficio, message: 'La relación ya existía' };
-            }
-
-            // Crea la relación entre la solución y el beneficio
-            await conn.query(
-                `INSERT INTO storeSolucionesBeneficios (id_solucion, id_beneficio) VALUES (?, ?)`, 
-                [idSolucion, idBeneficio]);
-
-            await conn.commit();
-
-            return { idSolucion, idBeneficio, message: 'Relación creada con éxito' };
-        } 
-        catch (error) 
-        {
-            await conn.rollback();
-            console.error("Error al asociar beneficio:", error);
-            throw error;
-        } 
-        finally 
-        {
-            conn.release();
-        }
-    }
+  }
 }
 
 export default new StoreBeneficiosServices();

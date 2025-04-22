@@ -3,22 +3,22 @@ import storeProblemasService from '../services/StoreProblemasService';
 import storeSolucionesService from '../services/StoreSolucionesService';
 import { StoreProblemas } from '../../../api-shared-helm/src/models/storeProblemas';
 
-// DTO para crear problema
+// DTO para crear un problema
 interface CreateStoreProblemaDTO {
-    description: string,
-    titulo: string,
-    idSolucion: number
+  description: string;
+  titulo?: string;
+  idSolucion: number;
 }
 
 /**
  * Controlador para gestionar los problemas asociados a soluciones.
  */
 class StoreProblemasController {
-  
+
   async createProblema(req: Request, res: Response): Promise<void> {
     try {
       const idSolucion = parseInt(req.params.idSolucion, 10);
-      const { description } = req.body as { description: string };
+      const { description, titulo } = req.body as { description: string; titulo?: string };
 
       if (!description || isNaN(idSolucion)) {
         res.status(400).json({ message: 'Faltan datos del problema o ID inválido' });
@@ -26,13 +26,14 @@ class StoreProblemasController {
       }
 
       const problema = await storeProblemasService.createProblema({
-        description,       
-        idSolucion
-      } as CreateStoreProblemaDTO);
+        description,
+        idSolucion,
+        titulo,
+      });
 
       res.status(201).json({
         message: 'Problema creado y relacionado con la solución con éxito',
-        problema
+        problema,
       });
     } catch (error) {
       console.error('Error creando el problema:', error);
@@ -98,7 +99,7 @@ class StoreProblemasController {
       res.json(result);
     } catch (error) {
       console.error('Error modificando storeProblemas:', error);
-      res.status(500).json({ message: 'Error interno en el servidor' });
+      res.status(500).json({ message: 'Error interno del servidor' });
     }
   }
 
@@ -121,7 +122,7 @@ class StoreProblemasController {
       res.status(200).json({ message: 'Problema eliminado correctamente' });
     } catch (error) {
       console.error('Error eliminando problema:', error);
-      res.status(500).json({ message: 'Error interno en el servidor' });
+      res.status(500).json({ message: 'Error interno del servidor' });
     }
   }
 
@@ -143,7 +144,7 @@ class StoreProblemasController {
 
       res.status(201).json({
         message: 'Problema asociado a la solución con éxito',
-        asociacion
+        asociacion,
       });
     } catch (error) {
       console.error('Error asociando problema:', error);

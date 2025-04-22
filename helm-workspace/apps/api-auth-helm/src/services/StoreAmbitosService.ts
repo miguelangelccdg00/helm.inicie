@@ -1,464 +1,217 @@
-import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
-import { StoreAmbitos } from '../../../api-shared-helm/src/models/storeAmbitos.js';
-import { storeSolucionesAmbitos } from '../../../api-shared-helm/src/models/storeSolucionesAmbitos.js';
+import { pool } from '../../../api-shared-helm/src/databases/conexion'; // Ajusta la ruta según corresponda
+import { StoreAmbitos } from '../../../api-shared-helm/src/models/storeAmbitos';
+import { SolucionAmbito } from '../../../api-shared-helm/src/models/solucionAmbito';
 
-class StoreAmbitosService 
-{
-    /**
-     * Crea un ámbito y lo asocia con una solución existente, copiando todos los datos de la solución a la tabla storeSolucionesAmbitos.
-     */
-    async createAmbito({ description, textoweb, prefijo, slug, idSolucion }) 
-    {
-        const conn = await pool.promise().getConnection();
+interface CreateAmbitoParams {
+  description: string;
+  textoweb: string;
+  prefijo: string;
+  slug: string;
+  idSolucion: number;
+}
 
-        try 
-        {
-            await conn.beginTransaction();
+interface AsociarAmbitoParams {
+  id_solucion: number;
+  id_ambito: number;
+}
 
-            // Verifica si la solución existe
-            const [solucionExiste]: any = await conn.query(
-                `SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?`,
-                [idSolucion]
-            );
+class StoreAmbitosService {
+  
+  // Crear un nuevo ámbito
+  async createAmbito({
+    description,
+    textoweb,
+    prefijo,
+    slug,
+    idSolucion
+  }: CreateAmbitoParams): Promise<StoreAmbitos> {
+    try {
+      const [result] = await pool.promise().query(
+        `INSERT INTO storeAmbitos (description, textoweb, prefijo, slug)
+         VALUES (?, ?, ?, ?)`,
+        [description, textoweb, prefijo, slug]
+      );
+      const idAmbito = result.insertId;
 
-            if (solucionExiste.length === 0) 
-            {
-                throw new Error(`La solución con id ${idSolucion} no existe.`);
-            }
+      // Asociamos el nuevo ámbito con la solución proporcionada
+      await pool.promise().query(
+        `INSERT INTO storeSolucionesAmbitos (id_solucion, id_ambito)
+         VALUES (?, ?)`,
+        [idSolucion, idAmbito]
+      );
 
-            // Crear temporalmente la función generate_slug que falta
-            await conn.query(`
-                CREATE FUNCTION IF NOT EXISTS generate_slug(input_string VARCHAR(255))
-                RETURNS VARCHAR(255)
-                DETERMINISTIC
-                BEGIN
-                    DECLARE output_string VARCHAR(255);
-                    SET output_string = LOWER(input_string);
-                    SET output_string = REPLACE(output_string, ' ', '-');
-                    SET output_string = REPLACE(output_string, '.', '-');
-                    SET output_string = REPLACE(output_string, ',', '-');
-                    SET output_string = REPLACE(output_string, ';', '-');
-                    SET output_string = REPLACE(output_string, ':', '-');
-                    SET output_string = REPLACE(output_string, '!', '');
-                    SET output_string = REPLACE(output_string, '?', '');
-                    SET output_string = REPLACE(output_string, 'á', 'a');
-                    SET output_string = REPLACE(output_string, 'é', 'e');
-                    SET output_string = REPLACE(output_string, 'í', 'i');
-                    SET output_string = REPLACE(output_string, 'ó', 'o');
-                    SET output_string = REPLACE(output_string, 'ú', 'u');
-                    SET output_string = REPLACE(output_string, 'ñ', 'n');
-                    RETURN output_string;
-                END
-            `);
-            
-            // Insertar con la función ya disponible
-            const [ambitoResult]: any = await conn.query(
-                `INSERT INTO storeAmbitos (description, textoweb, prefijo, slug) 
-                 VALUES (?, ?, ?, ?)`,
-                [description, textoweb, prefijo, slug]
-            );
-            
-            const idAmbito = ambitoResult.insertId;
-
-            // ... resto del código ...
-
-            // Obtener los datos de la solución
-            const [solucionRows]: any = await conn.query(
-                `SELECT 
-                    description, title, subtitle, icon, titleweb, slug, multimediaUri, multimediaTypeId,
-                    problemaTitle, problemaPragma, solucionTitle, solucionPragma,
-                    caracteristicasTitle, caracteristicasPragma, casosdeusoTitle, casosdeusoPragma,
-                    firstCtaTitle, firstCtaPragma, secondCtaTitle, secondCtaPragma,
-                    titleBeneficio AS beneficiosTitle, beneficiosPragma
-                FROM storeSoluciones
-                WHERE id_solucion = ?`,
-                [idSolucion]
-            );
-
-            if (solucionRows.length === 0) 
-            {
-                throw new Error(`No se pudo obtener los datos de la solución con id ${idSolucion}`);
-            }
-
-            const s = solucionRows[0];
-
-            // Insertar en storeSolucionesAmbitos
-            await conn.query(
-                `INSERT INTO storeSolucionesAmbitos (
-                    id_solucion, id_ambito,
-                    description, title, subtitle, icon, titleweb, slug, multimediaUri, multimediaTypeId,
-                    problemaTitle, problemaPragma, solucionTitle, solucionPragma,
-                    caracteristicasTitle, caracteristicasPragma, casosdeusoTitle, casosdeusoPragma,
-                    firstCtaTitle, firstCtaPragma, secondCtaTitle, secondCtaPragma,
-                    beneficiosTitle, beneficiosPragma
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                [
-                    idSolucion, idAmbito,
-                    s.description, s.title, s.subtitle, s.icon, s.titleweb, s.slug, s.multimediaUri, s.multimediaTypeId,
-                    s.problemaTitle, s.problemaPragma, s.solucionTitle, s.solucionPragma,
-                    s.caracteristicasTitle, s.caracteristicasPragma, s.casosdeusoTitle, s.casosdeusoPragma,
-                    s.firstCtaTitle, s.firstCtaPragma, s.secondCtaTitle, s.secondCtaPragma,
-                    s.beneficiosTitle, s.beneficiosPragma
-                ]
-            );
-
-            await conn.commit();
-
-            return {
-                idAmbito,
-                idSolucion,
-                message: 'Ámbito creado y solución relacionada exitosamente con datos completos.'
-            };
-
-        } 
-        catch (error)
-        {
-            await conn.rollback();
-            console.error("Error al insertar el ámbito:", error);
-            throw error;
-        } finally {
-            conn.release();
-        }
+      return { id_ambito: idAmbito, description, textoweb, prefijo, slug };
+    } catch (error) {
+      console.error('Error al crear el ámbito:', error);
+      throw new Error('Error al crear el ámbito');
     }
+  }
 
-    async asociarAmbito(idSolucion: number, idAmbito: number) 
-    {
-        const conn = await pool.promise().getConnection();
-        
-        try 
-        {
-            await conn.beginTransaction();
+  // Asociar un ámbito con una solución
+  async asociarAmbito(idSolucion: number, idAmbito: number): Promise<void> {
+    try {
+      const [result] = await pool.promise().query(
+        `INSERT INTO storeSolucionesAmbitos (id_solucion, id_ambito) 
+         VALUES (?, ?)`,
+        [idSolucion, idAmbito]
+      );
 
-            const [solucionExiste]: any = await conn.query(
-                `SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?`, 
-                [idSolucion]
-            );
-
-            if (solucionExiste.length === 0) 
-            {
-                throw new Error(`La solución con id ${idSolucion} no existe.`);
-            }
-
-            const [ambitosExiste]: any = await conn.query(
-                `SELECT * FROM storeAmbitos WHERE id_ambito = ?`, 
-                [idAmbito]
-            );
-
-            if (ambitosExiste.length === 0) 
-            {
-                throw new Error(`El ámbito con id ${idAmbito} no existe.`);
-            }
-
-            /**
- */
-
-            const [relacionExiste]: any = await conn.query(
-                `SELECT 
-                    id_solucion,
-                    id_ambito,
-                    description,
-                    title,
-                    subtitle,
-                    icon,
-                    titleweb,
-                    slug,
-                    multimediaUri,
-                    multimediaTypeId,
-                    problemaTitle,
-                    problemaPragma,
-                    solucionTitle,
-                    solucionPragma,
-                    caracteristicasTitle,
-                    caracteristicasPragma,
-                    casosdeusoTitle,
-                    casosdeusoPragma,
-                    firstCtaTitle,
-                    firstCtaPragma,
-                    secondCtaTitle,
-                    secondCtaPragma,
-                    beneficiosTitle,
-                    beneficiosPragma
-                    FROM storeSolucionesAmbitos 
-                    WHERE id_solucion = ? AND id_ambito = ?`, [idSolucion, idAmbito]
-            );
-
-            if (relacionExiste.length > 0) 
-            {
-                await conn.commit();
-                return { idSolucion, idAmbito, message: 'La relación ya existía' };
-            }
-
-            await conn.query(
-                `INSERT INTO storeSolucionesAmbitos (id_solucion, id_ambito) VALUES (?, ?)`, 
-                [idSolucion, idAmbito]
-            );
-
-            await conn.commit();
-
-            return { idSolucion, idAmbito, message: 'Relación creada con éxito' };
-        } 
-        catch (error) 
-        {
-            await conn.rollback();
-            console.error("Error al asociar ámbito:", error);
-            throw error;
-        } 
-        finally 
-        {
-            conn.release();
-        }
+      if (result.affectedRows === 0) {
+        throw new Error('No se pudo asociar el ámbito');
+      }
+    } catch (error) {
+      console.error('Error al asociar el ámbito:', error);
+      throw new Error('Error al asociar el ámbito');
     }
+  }
 
-
-    /**
-     * Obtiene la lista de todos los caracteristicas registrados.
-     */
-    async listAmbitos() 
-    {
-        const [rows] = await pool.promise().query(`SELECT id_ambito, description, textoweb, prefijo, slug FROM storeAmbitos`);
-        return rows;
+  // Obtener todos los ámbitos
+  async listAmbitos(): Promise<StoreAmbitos[]> {
+    try {
+      const [rows] = await pool.promise().query(
+        `SELECT id_ambito, description, textoweb, prefijo, slug
+         FROM storeAmbitos`
+      );
+      return rows;
+    } catch (error) {
+      console.error('Error al listar los ámbitos:', error);
+      throw new Error('Error al listar los ámbitos');
     }
+  }
 
-    /**
-     * Obtiene un problema específico por su ID.
-     */
-    async getAmbitoById(idAmbito: number) 
-    {
-        const [rows] = await pool.promise().query(
-            `SELECT id_ambito, description, textoweb, prefijo, slug FROM storeAmbitos WHERE id_ambito = ?`, [idAmbito]);
-        return rows.length ? rows[0] : null;
+  // Obtener un ámbito por su ID
+  async getAmbitoById(idAmbito: number): Promise<StoreAmbitos | null> {
+    try {
+      const [rows] = await pool.promise().query(
+        `SELECT id_ambito, description, textoweb, prefijo, slug
+         FROM storeAmbitos WHERE id_ambito = ?`,
+        [idAmbito]
+      );
+
+      return rows.length ? rows[0] : null;
+    } catch (error) {
+      console.error('Error al obtener el ámbito por ID:', error);
+      throw new Error('Error al obtener el ámbito');
     }
+  }
 
-    /**
-     * Obtiene los ambitos asociados a una solución específica.
-     */
-    async getByIdAmbitos(idSolucion: Number) 
-    {
-        const [rows] = await pool.promise().query(
-            `SELECT a.id_ambito, a.description, a.textoweb, a.prefijo, a.slug 
-            FROM storeAmbitos a
-            JOIN storeSolucionesAmbitos sc ON a.id_ambito = sc.id_ambito
-            WHERE sc.id_solucion = ?`, 
-            [idSolucion]  
-        );
-        return rows;
+  // Obtener los ámbitos asociados a una solución
+  async getByIdAmbitos(idSolucion: number): Promise<StoreAmbitos[]> {
+    try {
+      const [rows] = await pool.promise().query(
+        `SELECT a.id_ambito, a.description, a.textoweb, a.prefijo, a.slug
+         FROM storeAmbitos a
+         JOIN storeSolucionesAmbitos sa ON a.id_ambito = sa.id_ambito
+         WHERE sa.id_solucion = ?`,
+        [idSolucion]
+      );
+      return rows;
+    } catch (error) {
+      console.error('Error al obtener los ámbitos por ID de solución:', error);
+      throw new Error('Error al obtener los ámbitos');
     }
+  }
 
-    async update(idAmbito: number, idSolucion: number, updateData: { [key: string]: any }) 
-    {
-        const conn = await pool.promise().getConnection();
-    
-        try 
-        {
-            await conn.beginTransaction();
-    
-            // Extract ámbito-specific data
-            const 
-            { 
-                textoweb, 
-                prefijo,
-                // Fields from storeSolucionesAmbitos
-                id_solucion,
-                id_ambito,
-                description,
-                title,
-                subtitle,
-                icon,
-                titleweb,
-                slug,
-                multimediaUri,
-                multimediaTypeId,
-                problemaTitle,
-                problemaPragma,
-                solucionTitle,
-                solucionPragma,
-                caracteristicasTitle,
-                caracteristicasPragma,
-                casosdeusoTitle,
-                casosdeusoPragma,
-                firstCtaTitle,
-                firstCtaPragma,
-                secondCtaTitle,
-                secondCtaPragma,
-                beneficiosTitle,
-                beneficiosPragma,
-                ...restUpdateData
-            } = updateData;
-    
-            // Update storeAmbitos
-            const ambitoUpdate =
-            {
-                description,
-                textoweb,
-                prefijo,
-                slug
-            };
+  // Actualizar un ámbito
+  async update(
+    idAmbito: number,
+    idSolucion: number,
+    updateData: Partial<StoreAmbitos & SolucionAmbito>
+  ): Promise<StoreAmbitos> {
+    try {
+      const { description, textoweb, prefijo, slug } = updateData;
 
-            // Filter out undefined values
-            Object.keys(ambitoUpdate).forEach(key => 
-                ambitoUpdate[key] === undefined && delete ambitoUpdate[key]
-            );
-    
-            if (Object.keys(ambitoUpdate).length > 0) 
-            {
-                await conn.query(
-                    'UPDATE storeAmbitos SET ? WHERE id_ambito = ?',
-                    [ambitoUpdate, idAmbito]
-                );
-            }
-    
-            // Update storeSolucionesAmbitos
-            const solucionUpdateData = 
-            {
-                description,
-                title,
-                subtitle,
-                icon,
-                titleweb,
-                slug,
-                multimediaUri,
-                multimediaTypeId,
-                problemaTitle,
-                problemaPragma,
-                solucionTitle,
-                solucionPragma,
-                caracteristicasTitle,
-                caracteristicasPragma,
-                casosdeusoTitle,
-                casosdeusoPragma,
-                firstCtaTitle,
-                firstCtaPragma,
-                secondCtaTitle,
-                secondCtaPragma,
-                beneficiosTitle,
-                beneficiosPragma
-            };
+      const updateFields = [];
+      const updateValues = [];
 
-            // Filter out undefined values
-            Object.keys(solucionUpdateData).forEach(key => 
-                solucionUpdateData[key] === undefined && delete solucionUpdateData[key]
-            );
+      if (description) {
+        updateFields.push('description = ?');
+        updateValues.push(description);
+      }
+      if (textoweb) {
+        updateFields.push('textoweb = ?');
+        updateValues.push(textoweb);
+      }
+      if (prefijo) {
+        updateFields.push('prefijo = ?');
+        updateValues.push(prefijo);
+      }
+      if (slug) {
+        updateFields.push('slug = ?');
+        updateValues.push(slug);
+      }
 
-            if (Object.keys(solucionUpdateData).length > 0) 
-            {
-                await conn.query(
-                    'UPDATE storeSolucionesAmbitos SET ? WHERE id_ambito = ? AND id_solucion = ?',
-                    [solucionUpdateData, idAmbito, idSolucion]
-                );
-            }
-    
-            // Filter only the fields that exist in storeSoluciones
-            const camposSoluciones = [
-                'description', 'title', 'subtitle', 'icon', 'titleweb', 'slug', 'multimediaUri', 'multimediaTypeId',
-                'problemaTitle', 'problemaPragma', 'solucionTitle', 'solucionPragma',
-                'caracteristicasTitle', 'caracteristicasPragma', 'casosdeusoTitle', 'casosdeusoPragma',
-                'firstCtaTitle', 'firstCtaPragma', 'secondCtaTitle', 'secondCtaPragma',
-                'beneficiosTitle', 'beneficiosPragma'
-            ];
-    
-            const updateDataSolucion: any = {};
-            for (const key of camposSoluciones) 
-            {
-                if (key in updateData) 
-                {
-                    updateDataSolucion[key] = updateData[key];
-                }
-            }
-    
-            if (Object.keys(updateDataSolucion).length > 0) 
-            {
-                await conn.query(
-                    'UPDATE storeSoluciones SET ? WHERE id_solucion = ?',
-                    [updateDataSolucion, idSolucion]
-                );
-            }
-    
-            await conn.commit();
-    
-            return { message: 'Ámbito y solución actualizados correctamente' };
-        }
-        catch (error) 
-        {
-            await conn.rollback();
-            console.error('Error en update:', error);
-            throw error;
-        }
-        finally 
-        {
-            conn.release();
-        }
+      updateValues.push(idAmbito);
+
+      const [result] = await pool.promise().query(
+        `UPDATE storeAmbitos SET ${updateFields.join(', ')}
+         WHERE id_ambito = ?`,
+        updateValues
+      );
+
+      if (result.affectedRows === 0) {
+        throw new Error('No se encontró el ámbito para actualizar');
+      }
+
+      return {
+        id_ambito: idAmbito,
+        description: description || '',
+        textoweb: textoweb || '',
+        prefijo: prefijo || '',
+        slug: slug || ''
+      };
+    } catch (error) {
+      console.error('Error al actualizar el ámbito:', error);
+      throw new Error('Error al actualizar el ámbito');
     }
+  }
 
+  // Eliminar un ámbito
+  async deleteAmbito(idAmbito: number): Promise<boolean> {
+    try {
+      const [result] = await pool.promise().query(
+        `DELETE FROM storeAmbitos WHERE id_ambito = ?`,
+        [idAmbito]
+      );
 
-    async deleteAmbito(idAmbito: number): Promise<boolean>
-    {
-        const conn = await pool.promise().getConnection();
-
-        try
-        {
-            await conn.beginTransaction();
-
-            const [ambitoResult]: any = await conn.query(
-                'DELETE FROM storeAmbitos WHERE id_ambito = ?',[idAmbito]);
-
-            await conn.commit();
-
-            return ambitoResult.affectedRows > 0;
-        }
-        catch (error)
-        {
-            await conn.rollback();
-            console.error('Error al eliminar el ambito:', error);
-            throw error;
-        }
-        finally
-        {
-            conn.release();
-        }
+      return result.affectedRows > 0;
+    } catch (error) {
+      console.error('Error al eliminar el ámbito:', error);
+      throw new Error('Error al eliminar el ámbito');
     }
+  }
 
-    async deleteAmbitoSolucion(idSolucion: number, idAmbito: number): Promise<boolean>
-    {
-        const conn = await pool.promise().getConnection();
+  // Eliminar la relación de un ámbito con una solución
+  async deleteAmbitoSolucion(idSolucion: number, idAmbito: number): Promise<boolean> {
+    try {
+      const [result] = await pool.promise().query(
+        `DELETE FROM storeSolucionesAmbitos WHERE id_solucion = ? AND id_ambito = ?`,
+        [idSolucion, idAmbito]
+      );
 
-        try
-        {
-            await conn.beginTransaction();
-
-            const [relacionResult]: any = await conn.query(
-                'DELETE FROM storeSolucionesAmbitos WHERE id_ambito = ? AND id_solucion = ?',[idSolucion, idAmbito]);
-            await conn.commit();
-
-            return relacionResult.affectedRows > 0;
-        }
-        catch (error)
-        {
-            await conn.rollback();
-            console.error('Error al eliminar la relacion del ambito con la solucion:', error);
-            throw error;
-        }
-        finally
-        {
-            conn.release();
-        }
+      return result.affectedRows > 0;
+    } catch (error) {
+      console.error('Error al eliminar la relación de ámbito-solución:', error);
+      throw new Error('Error al eliminar la relación');
     }
+  }
 
-    /**
-     * Devuelve todas las variantes de una solución para un ámbito específico.
-     */
-    async getVariantesBySolucionAndAmbito(idSolucion: number) 
-    {
-        const [rows] = await pool.promise().query(
-            `SELECT sa.*, a.description AS ambitoDescription 
-            FROM storeSolucionesAmbitos sa
-            JOIN storeAmbitos a ON sa.id_ambito = a.id_ambito
-            WHERE sa.id_solucion = ?`,
-            [idSolucion]
-        );
-    
-        return rows;
+  // Obtener variantes por solución y ámbito
+  async getVariantesBySolucionAndAmbito(idSolucion: number): Promise<any[]> {
+    try {
+      const [rows] = await pool.promise().query(
+        `SELECT v.id_variantes, v.description
+         FROM storeVariantes v
+         JOIN storeAmbitos a ON v.id_ambito = a.id_ambito
+         WHERE a.id_solucion = ?`,
+        [idSolucion]
+      );
+      return rows;
+    } catch (error) {
+      console.error('Error al obtener las variantes por solución y ámbito:', error);
+      throw new Error('Error al obtener las variantes');
     }
-    
+  }
 }
 
 export default new StoreAmbitosService();

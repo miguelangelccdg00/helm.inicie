@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import StoreAmbitosService from '../services/StoreAmbitosService';
 import storeSolucionesService from '../services/StoreSolucionesService';
-import { StoreAmbitos } from '../../../api-shared-helm/src/models/storeAmbitos'; // Ajusta la ruta de importación
+import { StoreAmbitos } from '../../../api-shared-helm/src/models/storeAmbitos';
 
 interface CreateAmbitoBody extends Omit<StoreAmbitos, 'id_ambito'> {}
 interface AsociarAmbitoBody {
@@ -10,7 +10,7 @@ interface AsociarAmbitoBody {
 }
 
 class StoreAmbitosController {
-  
+
   async createAmbitos(req: Request<{ idSolucion: string }, any, CreateAmbitoBody>, res: Response): Promise<void> {
     try {
       const idSolucion = parseInt(req.params.idSolucion, 10);
@@ -29,7 +29,7 @@ class StoreAmbitosController {
         idSolucion
       });
 
-      const ambitoCreado = await StoreAmbitosService.getAmbitoById(resultado.idAmbito);
+      const ambitoCreado = await StoreAmbitosService.getAmbitoById(resultado.id_ambito);
 
       res.status(201).json({
         ...resultado,

@@ -73,8 +73,9 @@ class StoreCaracteristicasController {
       if (caracteristicas) {
         const solucion = await storeSolucionesService.getById(id_solucion);
         if (solucion) {
-          await storeSolucionesService.update(id_solucion, {
-            caracteristicasTitle: caracteristicas.titulo || solucion.caracteristicasTitle,
+          await storeSolucionesService.update(id_solucion, 
+          {
+            caracteristicasTitle:  solucion.caracteristicasTitle,
             caracteristicasPragma: caracteristicas.description || solucion.caracteristicasPragma
           });
         }
