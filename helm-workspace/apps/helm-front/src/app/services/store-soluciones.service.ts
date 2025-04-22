@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { switchMap, map, catchError } from 'rxjs/operators';
 import { ChangeDetectorRef } from '@angular/core';
 
 
@@ -251,7 +251,21 @@ export class StoreSolucionesService {
   getBeneficiosBySolucion(idSolucion: number): Observable<StoreBeneficios[]> {
     const url = `${this.beneficiosUrl}/listBeneficios/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.get<StoreBeneficios[]>(url, { headers });
+    return this.https.get<StoreBeneficios[]>(url, { headers }).pipe(
+      map(beneficios => {
+        console.log('Beneficios recuperados:', beneficios);
+        return Array.isArray(beneficios) ? beneficios : [];
+      }),
+      catchError(error => {
+        console.error(`Error al obtener beneficios para la solución ${idSolucion}:`, error);
+        // Verificar específicamente si es un error 404 (Not Found)
+        if (error.status === 404) {
+          console.log(`No se encontraron beneficios para la solución ${idSolucion}, devolviendo array vacío`);
+        }
+        // Siempre devolver un array vacío en caso de error
+        return of([]);
+      })
+    );
   }
 
   getAllBeneficios(): Observable<StoreBeneficios[]> {
@@ -336,7 +350,21 @@ export class StoreSolucionesService {
   getProblemasBySolucion(idSolucion: number): Observable<StoreProblemas[]> {
     const url = `${this.problemasUrl}/listProblemas/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.get<StoreProblemas[]>(url, { headers });
+    return this.https.get<StoreProblemas[]>(url, { headers }).pipe(
+      map(problemas => {
+        console.log('Problemas recuperados:', problemas);
+        return Array.isArray(problemas) ? problemas : [];
+      }),
+      catchError(error => {
+        console.error(`Error al obtener problemas para la solución ${idSolucion}:`, error);
+        // Verificar específicamente si es un error 404 (Not Found)
+        if (error.status === 404) {
+          console.log(`No se encontraron problemas para la solución ${idSolucion}, devolviendo array vacío`);
+        }
+        // Siempre devolver un array vacío en caso de error
+        return of([]);
+      })
+    );
   }
 
   getAllProblemas(): Observable<StoreProblemas[]> {
@@ -433,7 +461,21 @@ export class StoreSolucionesService {
   getCaracteristicasBySolucion(idSolucion: number): Observable<StoreCaracteristicas[]> {
     const url = `${this.caracteristicasUrl}/listCaracteristicas/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.get<StoreCaracteristicas[]>(url, { headers });
+    return this.https.get<StoreCaracteristicas[]>(url, { headers }).pipe(
+      map(caracteristicas => {
+        console.log('Características recuperadas:', caracteristicas);
+        return Array.isArray(caracteristicas) ? caracteristicas : [];
+      }),
+      catchError(error => {
+        console.error(`Error al obtener características para la solución ${idSolucion}:`, error);
+        // Verificar específicamente si es un error 404 (Not Found)
+        if (error.status === 404) {
+          console.log(`No se encontraron características para la solución ${idSolucion}, devolviendo array vacío`);
+        }
+        // Siempre devolver un array vacío en caso de error
+        return of([]);
+      })
+    );
   }
 
   getAllCaracteristicas(): Observable<StoreCaracteristicas[]> {
@@ -511,9 +553,18 @@ export class StoreSolucionesService {
         // Asegurarse de que ambitos sea un array
         if (!Array.isArray(ambitos)) {
           console.warn('La respuesta de ámbitos no es un array, convirtiendo:', ambitos);
-          return Array.isArray(ambitos) ? ambitos : (ambitos ? [ambitos] : []);
+          return ambitos ? [ambitos] : [];
         }
         return ambitos;
+      }),
+      catchError(error => {
+        console.error(`Error al obtener ámbitos para la solución ${idSolucion}:`, error);
+        // Verificar específicamente si es un error 404 (Not Found)
+        if (error.status === 404) {
+          console.log(`No se encontraron ámbitos para la solución ${idSolucion}, devolviendo array vacío`);
+        }
+        // Siempre devolver un array vacío en caso de error
+        return of([]);
       })
     );
   }
