@@ -1,5 +1,5 @@
 import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
-import { StoreBeneficios } from '../models/storeBeneficios';
+import { StoreBeneficios } from '../../../api-shared-helm/src/models/storeBeneficios.js';
 
 class StoreBeneficiosServices 
 {
@@ -42,10 +42,9 @@ class StoreBeneficiosServices
             conn.release();
         }
     }
-
     async getBeneficio() 
     {
-        const [rows] = await pool.promise().query(`SELECT * FROM storeBeneficios `);
+        const [rows] = await pool.promise().query(`SELECT id_beneficio, description FROM storeBeneficios `);
         return rows;
     }
 
@@ -53,7 +52,7 @@ class StoreBeneficiosServices
     async getByIdBeneficio(idSolucion: number) 
     {
         const [rows] = await pool.promise().query(
-            `SELECT b.* 
+            `SELECT b.id_beneficio, b.description
             FROM storeBeneficios b
             JOIN storeSolucionesBeneficios sb ON b.id_beneficio = sb.id_beneficio
             WHERE sb.id_solucion = ?`, 
@@ -124,10 +123,9 @@ class StoreBeneficiosServices
             {
                 throw new Error(`El beneficio con id ${idBeneficio} no existe.`);
             }
-
             // Verifica si la relación ya existe
             const [relacionExiste]: any = await conn.query(
-                `SELECT * FROM storeSolucionesBeneficios WHERE id_solucion = ? AND id_beneficio = ?`, 
+                `SELECT id_solucion, id_beneficio FROM storeSolucionesBeneficios WHERE id_solucion = ? AND id_beneficio = ?`, 
                 [idSolucion, idBeneficio]);
 
             if (relacionExiste.length > 0) 

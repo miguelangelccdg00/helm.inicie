@@ -1,5 +1,5 @@
 import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
-import { StoreProblemas } from '../models/storeProblemas';
+import { StoreProblemas } from '../../../api-shared-helm/src/models/storeProblemas.js';
 
 class StoreProblemasService 
 {
@@ -60,13 +60,12 @@ class StoreProblemasService
             conn.release();
         }
     }
-
     /**
      * Obtiene la lista de todos los problemas registrados.
      */
     async getProblemas() 
     {
-        const [rows] = await pool.promise().query(`SELECT * FROM storeProblemas`);
+        const [rows] = await pool.promise().query(`SELECT id_problema, description FROM storeProblemas`);
         return rows;
     }
 
@@ -76,7 +75,7 @@ class StoreProblemasService
     async getProblemaById(idProblema: number) 
     {
         const [rows] = await pool.promise().query(
-            `SELECT * FROM storeProblemas WHERE id_problema = ?`, 
+            `SELECT id_problema, description FROM storeProblemas WHERE id_problema = ?`, 
             [idProblema]
         );
         return rows.length ? rows[0] : null;
@@ -88,7 +87,7 @@ class StoreProblemasService
     async getByIdProblemas(idSolucion: Number) 
     {
         const [rows] = await pool.promise().query(
-            `SELECT p.* 
+            `SELECT p.id_problema, p.description
              FROM storeProblemas p
              JOIN storeSolucionesProblemas sp ON p.id_problema = sp.id_problema
              WHERE sp.id_solucion = ?`, 
@@ -120,7 +119,7 @@ class StoreProblemasService
 
             // Verifica si el problema existe y obtiene sus datos
             const [problemaExiste]: any = await conn.query(
-                `SELECT * FROM storeProblemas WHERE id_problema = ?`, 
+                `SELECT id_problema, description FROM storeProblemas WHERE id_problema = ?`, 
                 [idProblema]
             );
 
@@ -131,7 +130,7 @@ class StoreProblemasService
 
             // Verifica si la relación ya existe
             const [relacionExiste]: any = await conn.query(
-                `SELECT * FROM storeSolucionesProblemas WHERE id_solucion = ? AND id_problema = ?`, 
+                `SELECT id_solucion, id_problema FROM storeSolucionesProblemas WHERE id_solucion = ? AND id_problema = ?`, 
                 [idSolucion, idProblema]
             );
 

@@ -1,6 +1,6 @@
 import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
-import { StoreAmbitos } from '../models/storeAmbitos';
-import { storeSolucionesAmbitos } from '../models/storeSolucionesAmbitos.js';
+import { StoreAmbitos } from '../../../api-shared-helm/src/models/storeAmbitos.js';
+import { storeSolucionesAmbitos } from '../../../api-shared-helm/src/models/storeSolucionesAmbitos.js';
 
 class StoreAmbitosService 
 {
@@ -149,9 +149,37 @@ class StoreAmbitosService
                 throw new Error(`El ámbito con id ${idAmbito} no existe.`);
             }
 
+            /**
+ */
+
             const [relacionExiste]: any = await conn.query(
-                `SELECT * FROM storeSolucionesAmbitos WHERE id_solucion = ? AND id_ambito = ?`, 
-                [idSolucion, idAmbito]
+                `SELECT 
+                    id_solucion,
+                    id_ambito,
+                    description,
+                    title,
+                    subtitle,
+                    icon,
+                    titleweb,
+                    slug,
+                    multimediaUri,
+                    multimediaTypeId,
+                    problemaTitle,
+                    problemaPragma,
+                    solucionTitle,
+                    solucionPragma,
+                    caracteristicasTitle,
+                    caracteristicasPragma,
+                    casosdeusoTitle,
+                    casosdeusoPragma,
+                    firstCtaTitle,
+                    firstCtaPragma,
+                    secondCtaTitle,
+                    secondCtaPragma,
+                    beneficiosTitle,
+                    beneficiosPragma
+                    FROM storeSolucionesAmbitos 
+                    WHERE id_solucion = ? AND id_ambito = ?`, [idSolucion, idAmbito]
             );
 
             if (relacionExiste.length > 0) 
@@ -187,7 +215,7 @@ class StoreAmbitosService
      */
     async listAmbitos() 
     {
-        const [rows] = await pool.promise().query(`SELECT * FROM storeAmbitos`);
+        const [rows] = await pool.promise().query(`SELECT id_ambito, description, textoweb, prefijo, slug FROM storeAmbitos`);
         return rows;
     }
 
@@ -197,7 +225,7 @@ class StoreAmbitosService
     async getAmbitoById(idAmbito: number) 
     {
         const [rows] = await pool.promise().query(
-            `SELECT * FROM storeAmbitos WHERE id_ambito = ?`, [idAmbito]);
+            `SELECT id_ambito, description, textoweb, prefijo, slug FROM storeAmbitos WHERE id_ambito = ?`, [idAmbito]);
         return rows.length ? rows[0] : null;
     }
 
@@ -207,7 +235,7 @@ class StoreAmbitosService
     async getByIdAmbitos(idSolucion: Number) 
     {
         const [rows] = await pool.promise().query(
-            `SELECT a.* 
+            `SELECT a.id_ambito, a.description, a.textoweb, a.prefijo, a.slug 
             FROM storeAmbitos a
             JOIN storeSolucionesAmbitos sc ON a.id_ambito = sc.id_ambito
             WHERE sc.id_solucion = ?`, 
@@ -216,14 +244,17 @@ class StoreAmbitosService
         return rows;
     }
 
-    async update(idAmbito: number, idSolucion: number, updateData: { [key: string]: any }) {
+    async update(idAmbito: number, idSolucion: number, updateData: { [key: string]: any }) 
+    {
         const conn = await pool.promise().getConnection();
     
-        try {
+        try 
+        {
             await conn.beginTransaction();
     
             // Extract ámbito-specific data
-            const { 
+            const 
+            { 
                 textoweb, 
                 prefijo,
                 // Fields from storeSolucionesAmbitos
@@ -255,7 +286,8 @@ class StoreAmbitosService
             } = updateData;
     
             // Update storeAmbitos
-            const ambitoUpdate = {
+            const ambitoUpdate =
+            {
                 description,
                 textoweb,
                 prefijo,
@@ -267,7 +299,8 @@ class StoreAmbitosService
                 ambitoUpdate[key] === undefined && delete ambitoUpdate[key]
             );
     
-            if (Object.keys(ambitoUpdate).length > 0) {
+            if (Object.keys(ambitoUpdate).length > 0) 
+            {
                 await conn.query(
                     'UPDATE storeAmbitos SET ? WHERE id_ambito = ?',
                     [ambitoUpdate, idAmbito]
@@ -275,7 +308,8 @@ class StoreAmbitosService
             }
     
             // Update storeSolucionesAmbitos
-            const solucionUpdateData = {
+            const solucionUpdateData = 
+            {
                 description,
                 title,
                 subtitle,
@@ -305,7 +339,8 @@ class StoreAmbitosService
                 solucionUpdateData[key] === undefined && delete solucionUpdateData[key]
             );
 
-            if (Object.keys(solucionUpdateData).length > 0) {
+            if (Object.keys(solucionUpdateData).length > 0) 
+            {
                 await conn.query(
                     'UPDATE storeSolucionesAmbitos SET ? WHERE id_ambito = ? AND id_solucion = ?',
                     [solucionUpdateData, idAmbito, idSolucion]
@@ -322,13 +357,16 @@ class StoreAmbitosService
             ];
     
             const updateDataSolucion: any = {};
-            for (const key of camposSoluciones) {
-                if (key in updateData) {
+            for (const key of camposSoluciones) 
+            {
+                if (key in updateData) 
+                {
                     updateDataSolucion[key] = updateData[key];
                 }
             }
     
-            if (Object.keys(updateDataSolucion).length > 0) {
+            if (Object.keys(updateDataSolucion).length > 0) 
+            {
                 await conn.query(
                     'UPDATE storeSoluciones SET ? WHERE id_solucion = ?',
                     [updateDataSolucion, idSolucion]
@@ -339,12 +377,14 @@ class StoreAmbitosService
     
             return { message: 'Ámbito y solución actualizados correctamente' };
         }
-        catch (error) {
+        catch (error) 
+        {
             await conn.rollback();
             console.error('Error en update:', error);
             throw error;
         }
-        finally {
+        finally 
+        {
             conn.release();
         }
     }

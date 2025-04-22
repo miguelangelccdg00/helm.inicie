@@ -24,7 +24,7 @@ const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) =>
 
     try 
     {
-        // Verificar el token con la clave secreta
+        // Verifica el token con la clave secreta
         const decoded = jwt.verify(token, SECRET_KEY);
         req.user = decoded; 
         next(); 

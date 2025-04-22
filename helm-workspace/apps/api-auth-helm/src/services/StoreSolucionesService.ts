@@ -1,5 +1,5 @@
 import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
-import { StoreSoluciones } from '../models/storeSoluciones';
+import { StoreSoluciones } from '../../../api-shared-helm/src/models/storeSoluciones.js';
 
 class StoreSolucionesService 
 {    
@@ -8,7 +8,7 @@ class StoreSolucionesService
      */
     async getAll() 
     {
-        const [rows] = await pool.promise().query('SELECT * FROM storeSoluciones');
+        const [rows] = await pool.promise().query('SELECT id_solucion,description,title,subtitle,icon,slug,titleweb,multimediaUri,multimediaTypeId, problemaTitle, problemaPragma, solucionTitle,solucionPragma, caracteristicasTitle, caracteristicasPragma,casosdeusoTitle,casosdeusoPragma,firstCtaTitle,firstCtaPragma,secondCtaTitle,secondCtaPragma,beneficiosPragma,titleBeneficio FROM storeSoluciones');
         return rows;
     }
 
@@ -17,7 +17,7 @@ class StoreSolucionesService
      */
     async getById(id: number) 
     {
-        const [rows] = await pool.promise().query('SELECT * FROM storeSoluciones WHERE id_solucion = ?', [id]);
+        const [rows] = await pool.promise().query('SELECT id_solucion,description,title,subtitle,icon,slug,titleweb,multimediaUri,multimediaTypeId, problemaTitle, problemaPragma, solucionTitle,solucionPragma, caracteristicasTitle, caracteristicasPragma,casosdeusoTitle,casosdeusoPragma,firstCtaTitle,firstCtaPragma,secondCtaTitle,secondCtaPragma,beneficiosPragma,titleBeneficio FROM storeSoluciones WHERE id_solucion = ?', [id]);
         return rows.length ? rows[0] : null;
     }
 
@@ -95,7 +95,7 @@ class StoreSolucionesService
      */
     async checkSolucionExists(id: number) 
     {
-        const [rows] = await pool.promise().query('SELECT * FROM storeSoluciones WHERE id_solucion = ?', [id]);
+        const [rows] = await pool.promise().query('id_solucion,description,title,subtitle,icon,slug,titleweb,multimediaUri,multimediaTypeId, problemaTitle, problemaPragma, solucionTitle,solucionPragma, caracteristicasTitle, caracteristicasPragma,casosdeusoTitle,casosdeusoPragma,firstCtaTitle,firstCtaPragma,secondCtaTitle,secondCtaPragma,beneficiosPragma,titleBeneficio FROM storeSoluciones WHERE id_solucion = ?', [id]);
         return rows.length > 0;
     }
 

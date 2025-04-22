@@ -1,5 +1,5 @@
 import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
-import { StoreCaracteristicas } from '../models/storeCaracteristicas';
+import { StoreCaracteristicas } from '../../../api-shared-helm/src/models/storeCaracteristicas.js';
 
 class StoreCaracteristicasService
 {
@@ -91,7 +91,7 @@ class StoreCaracteristicasService
 
             // Verifica si el caracteristica existe y obtiene sus datos
             const [caracteristicaExiste]: any = await conn.query(
-                `SELECT * FROM storeCaracteristicas WHERE id_caracteristica = ?`, 
+                `SELECT id_caracteristica, description FROM storeCaracteristicas WHERE id_caracteristica = ?`, 
                 [idCaracteristica]
             );
 
@@ -102,7 +102,7 @@ class StoreCaracteristicasService
 
             // Verifica si la relación ya existe
             const [relacionExiste]: any = await conn.query(
-                `SELECT * FROM storeSolucionesCaracteristicas WHERE id_solucion = ? AND id_caracteristica = ?`, 
+                `SELECT id_solucion, id_caracteristica FROM storeSolucionesCaracteristicas WHERE id_solucion = ? AND id_caracteristica = ?`, 
                 [idSolucion, idCaracteristica]
             );
 
@@ -146,7 +146,7 @@ class StoreCaracteristicasService
      */
     async listCaracteristicas() 
     {
-        const [rows] = await pool.promise().query(`SELECT * FROM storeCaracteristicas`);
+        const [rows] = await pool.promise().query(`SELECT id_caracteristica, description FROM storeCaracteristicas`);
         return rows;
     }
 
@@ -156,7 +156,7 @@ class StoreCaracteristicasService
     async getCaracteristicaById(idCaracteristica: number) 
     {
         const [rows] = await pool.promise().query(
-            `SELECT * FROM storeCaracteristicas WHERE id_caracteristica = ?`, 
+            `SELECT id_caracteristica, description FROM storeCaracteristicas WHERE id_caracteristica = ?`, 
             [idCaracteristica]
         );
         return rows.length ? rows[0] : null;
@@ -168,7 +168,7 @@ class StoreCaracteristicasService
     async getByIdCaracteristicas(idSolucion: Number) 
     {
         const [rows] = await pool.promise().query(
-            `SELECT c.* 
+            `SELECT c.id_caracteristica, c.description 
             FROM storeCaracteristicas c
             JOIN storeSolucionesCaracteristicas sc ON c.id_caracteristica = sc.id_caracteristica
             WHERE sc.id_solucion = ?`, 

@@ -8,7 +8,7 @@ class AuthService
      */
     async findUserByUsername(username: string) 
     {
-        const [rows]: any = await pool.promise().query('SELECT * FROM store_users WHERE username = ?', [username]);
+        const [rows]: any = await pool.promise().query('SELECT id_user, email, username, pass FROM store_users WHERE username = ?', [username]);
         return rows.length ? rows[0] : null;
     }
 

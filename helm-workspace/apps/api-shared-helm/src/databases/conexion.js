@@ -4,10 +4,10 @@ require('dotenv').config({ path: path.join(process.cwd(), 'apps', 'api-shared-he
 
 // Creación del pool de conexiones
 const pool = mysql.createPool({
-    host: '127.0.0.1',  // Usar IP explícita en lugar de localhost para evitar problemas con IPv6
-    port: 3307,         // Puerto del túnel SSH
+    host: '127.0.0.1',  
+    port: 3307,         
     user: 'practicas',
-    password: 'Normapro2025@',  // Contraseña correcta con el símbolo @
+    password: 'Normapro2025@',  
     database: 'store',
     waitForConnections: true,
     connectionLimit: 10,
