@@ -1,284 +1,178 @@
 import { Request, Response } from 'express';
 import storeProblemasService from '../services/StoreProblemasService';
 import storeSolucionesService from '../services/StoreSolucionesService';
-import StoreProblemasService from '../services/StoreProblemasService';
+import { StoreProblemas } from '../../../api-shared-helm/src/models/storeProblemas';
+
+// DTO para crear problema
+interface CreateStoreProblemaDTO {
+    description: string,
+    titulo: string,
+    idSolucion: number
+}
 
 /**
  * Controlador para gestionar los problemas asociados a soluciones.
  */
-class StoreProblemasController 
-{
-    /**
-     * Crea un nuevo problema y lo asocia a una solución.
-     *
-     * @param {Request} req - Objeto de solicitud HTTP.
-     * @param {string} req.params.idSolucion - ID de la solución con la que se relacionará el problema.
-     * @param {string} req.body.description - Descripción del problema.
-     * @param {string} req.body.titulo - Título del problema.
-     * @param {Response} res - Objeto de respuesta HTTP.
-     */
-    async createProblema(req: Request, res: Response): Promise<void> 
-    {
-        try 
-        {
-            const idSolucion = parseInt(req.params.idSolucion, 10);
-            const { description, titulo } = req.body;
+class StoreProblemasController {
+  
+  async createProblema(req: Request, res: Response): Promise<void> {
+    try {
+      const idSolucion = parseInt(req.params.idSolucion, 10);
+      const { description } = req.body as { description: string };
 
-            if (!description || isNaN(idSolucion)) 
-            {
-                res.status(400).json({ message: 'Faltan datos del problema o ID inválido' });
-                return;
-            }
+      if (!description || isNaN(idSolucion)) {
+        res.status(400).json({ message: 'Faltan datos del problema o ID inválido' });
+        return;
+      }
 
-            const problema = await storeProblemasService.createProblema({
-                description,
-                titulo,
-                idSolucion
-            } as any);
+      const problema = await storeProblemasService.createProblema({
+        description,       
+        idSolucion
+      } as CreateStoreProblemaDTO);
 
-            const solucion = await storeSolucionesService.getById(idSolucion);
-            if (solucion) 
-            {
-                await storeSolucionesService.update(idSolucion, 
-                {
-                    problemaTitle: titulo || solucion.problemaTitle,
-                    problemaPragma: description || solucion.problemaPragma
-                });
-            }
-
-            res.status(201).json({
-                message: 'Problema creado y relacionado con la solución con éxito',
-                problema
-            });
-        } 
-        catch (error) 
-        {
-            console.error('Error creando el problema:', error);
-            res.status(500).json({ message: 'Error interno del servidor' });
-        }
+      res.status(201).json({
+        message: 'Problema creado y relacionado con la solución con éxito',
+        problema
+      });
+    } catch (error) {
+      console.error('Error creando el problema:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
     }
+  }
 
-    /**
-     * Lista todos los problemas disponibles.
-     *
-     * @param {Request} req - Objeto de solicitud HTTP.
-     * @param {Response} res - Objeto de respuesta HTTP.
-     */
-    async listProblema(req: Request, res: Response): Promise<void> 
-    {
-        try
-        {
-            const listProblema = await storeProblemasService.getProblemas();
+  async listProblemas(req: Request, res: Response): Promise<void> {
+    try {
+      const listProblema: StoreProblemas[] = await storeProblemasService.getProblemas();
 
-            if (!listProblema.length) 
-            {
-                res.status(404).json({ message: 'No existen problemas' });
-                return;
-            }
+      if (!listProblema.length) {
+        res.status(404).json({ message: 'No existen problemas' });
+        return;
+      }
 
-            res.status(200).json(listProblema);
-        } 
-        catch (error) 
-        {
-            console.error('Error listando los problemas:', error);
-            res.status(500).json({ message: 'Error interno del servidor' });
-        }
+      res.status(200).json(listProblema);
+    } catch (error) {
+      console.error('Error listando problemas:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
     }
+  }
 
-    /**
-     * Lista los problemas relacionados a una solución específica.
-     *
-     * @param {Request} req - Objeto de solicitud HTTP.
-     * @param {string} req.params.idSolucion - ID de la solución.
-     * @param {Response} res - Objeto de respuesta HTTP.
-     */
-    async listIdProblema(req: Request, res: Response): Promise<void> 
-    {
-        try 
-        {
-            const { idSolucion } = req.params;
+  async listProblemasBySolucion(req: Request, res: Response): Promise<void> {
+    try {
+      const { idSolucion } = req.params;
 
-            if (!idSolucion || isNaN(Number(idSolucion))) 
-            {
-                res.status(400).json({ message: 'ID de la solución no válido' });
-                return;
-            }
+      if (!idSolucion || isNaN(Number(idSolucion))) {
+        res.status(400).json({ message: 'ID de la solución no válido' });
+        return;
+      }
 
-            const problemasSolucion = await storeProblemasService.getByIdProblemas(Number(idSolucion));
+      const problemasSolucion: StoreProblemas[] = await storeProblemasService.getByIdProblemas(Number(idSolucion));
 
-            if (!problemasSolucion.length) 
-            {
-                res.status(404).json({ message: 'No se encontraron problemas para esta solución' });
-                return;
-            }
+      if (!problemasSolucion.length) {
+        res.status(404).json({ message: 'No se encontraron problemas para esta solución' });
+        return;
+      }
 
-            res.status(200).json(problemasSolucion);
-        } 
-        catch (error) 
-        {
-            console.error('Error obteniendo los problemas:', error);
-            res.status(500).json({ message: 'Error interno del servidor' });
-        }
+      res.status(200).json(problemasSolucion);
+    } catch (error) {
+      console.error('Error obteniendo problemas por solución:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
     }
+  }
 
-    /**
-     * Asocia un problema existente a una solución.
-     *
-     * @param {Request} req - Objeto de solicitud HTTP.
-     * @param {number} req.body.id_solucion - ID de la solución.
-     * @param {number} req.body.id_problema - ID del problema.
-     * @param {Response} res - Objeto de respuesta HTTP.
-     */
-    async asociarProblema(req: Request, res: Response): Promise<void> 
-    {
-        try 
-        {
-            const { id_solucion, id_problema } = req.body;
+  async modifyStoreProblemas(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const updateData = req.body as Partial<StoreProblemas>;
 
-            if (!id_solucion || !id_problema) 
-            {
-                res.status(400).json({ message: 'Faltan datos para la asociación' });
-                return;
-            }
+      if (!id) {
+        res.status(400).json({ message: 'ID no proporcionado' });
+        return;
+      }
 
-            const asociacion = await storeProblemasService.asociarProblema(id_solucion, id_problema);
+      if (!Object.keys(updateData).length) {
+        res.status(400).json({ message: 'No se proporcionaron datos' });
+        return;
+      }
 
-            const problema = await storeProblemasService.getProblemaById(id_problema);
-
-            if (problema) 
-            {
-                const solucion = await storeSolucionesService.getById(id_solucion);
-                if (solucion) 
-                {
-                    await storeSolucionesService.update(id_solucion, 
-                    {
-                        problemaTitle: problema.titulo || solucion.problemaTitle,
-                        problemaPragma: problema.description || solucion.problemaPragma
-                    });
-                }
-            }
-
-            res.status(201).json({
-                message: 'Problema asociado a la solución con éxito',
-                asociacion
-            });
-        } 
-        catch (error) 
-        {
-            console.error('Error asociando el problema:', error);
-            res.status(500).json({ message: 'Error interno del servidor' });
-        }
+      const result = await storeProblemasService.update(Number(id), updateData);
+      res.json(result);
+    } catch (error) {
+      console.error('Error modificando storeProblemas:', error);
+      res.status(500).json({ message: 'Error interno en el servidor' });
     }
+  }
 
-    /**
-     * Elimina un problema existente por su ID.
-     *
-     * @param {Request} req - Objeto de solicitud HTTP.
-     * @param {string} req.params.idProblema - ID del problema a eliminar.
-     * @param {Response} res - Objeto de respuesta HTTP.
-     */
-    async deleteProblema(req: Request, res: Response): Promise<void> 
-    {
-        try
-        {
-            const { idProblema } = req.params;
+  async deleteProblema(req: Request, res: Response): Promise<void> {
+    try {
+      const { idProblema } = req.params;
 
-            if (!idProblema || isNaN(Number(idProblema))) 
-            {
-                res.status(400).json({ message: 'ID inválido' });
-                return;
-            }
+      if (!idProblema || isNaN(Number(idProblema))) {
+        res.status(400).json({ message: 'ID no proporcionado o inválido' });
+        return;
+      }
 
-            const wasDeleted = await storeProblemasService.deleteProblema(Number(idProblema));
+      const wasDeleted = await storeProblemasService.deleteProblema(Number(idProblema));
 
-            if (!wasDeleted) 
-            {
-                res.status(404).json({ message: 'Problema no encontrado o ya eliminado' });
-                return;
-            }
+      if (!wasDeleted) {
+        res.status(404).json({ message: 'Problema no encontrado o ya eliminado' });
+        return;
+      }
 
-            res.status(200).json({ message: 'Problema eliminado correctamente' });
-        } 
-        catch (error) 
-        {
-            console.error('Error al eliminar el problema:', error);
-            res.status(500).json({ message: 'Error interno en el servidor' });
-        }
+      res.status(200).json({ message: 'Problema eliminado correctamente' });
+    } catch (error) {
+      console.error('Error eliminando problema:', error);
+      res.status(500).json({ message: 'Error interno en el servidor' });
     }
+  }
 
-    /**
-     * Modifica una caracteristica almacenada en la base de datos.
-     * 
-     * @param {Request} req - Objeto de solicitud HTTP que contiene el parámetro `id` en los parámetros de la URL y los datos a modificar en el cuerpo de la solicitud.
-     * @param {string} req.params.id - El ID de la solución que se desea modificar.
-     * @param {Object} req.body - El objeto que contiene los datos para actualizar la solución.
-     * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
-     * 
-     * @returns {Promise<void>} Devuelve el resultado de la actualización de la solución.
-     */
-    async modifyStoreProblemas(req: Request, res: Response): Promise<void> 
-    {
-        try 
-        {
-            const { id } = req.params;
-            const updateData = req.body;
+  async asociarProblema(req: Request, res: Response): Promise<void> {
+    try {
+      const { id_solucion, id_problema } = req.body as { id_solucion: number; id_problema: number };
 
-            if (!id) 
-            {
-                res.status(400).json({ message: 'ID no proporcionado' });
-                return;
-            }
+      if (!id_solucion) {
+        res.status(401).json({ message: 'Falta el id_solucion para la asociación' });
+        return;
+      }
 
-            if (!Object.keys(updateData).length) 
-            {
-                res.status(400).json({ message: 'No se proporcionaron datos' });
-                return;
-            }
+      if (!id_problema) {
+        res.status(402).json({ message: 'Falta el id_problema para la asociación' });
+        return;
+      }
 
-            const result = await StoreProblemasService.update(Number(id), updateData);
-            res.json(result);
-        } 
-        catch (error) 
-        {
-            console.error('Error al modificar storeProblemas:', error);
-            res.status(500).json({ message: 'Error interno en el servidor' });
-        }
+      const asociacion = await storeProblemasService.asociarProblema(id_solucion, id_problema);
+
+      res.status(201).json({
+        message: 'Problema asociado a la solución con éxito',
+        asociacion
+      });
+    } catch (error) {
+      console.error('Error asociando problema:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
     }
-    /**
-     * Desasocia un problema de una solución sin eliminarlo.
-     *
-     * @param {Request} req - Objeto de solicitud HTTP.
-     * @param {string} req.params.idSolucion - ID de la solución.
-     * @param {string} req.params.idProblema - ID del problema a desasociar.
-     * @param {Response} res - Objeto de respuesta HTTP.
-     */
-    async removeProblemaFromSolucion(req: Request, res: Response): Promise<void>
-    {
-        try 
-        {
-            const { idSolucion, idProblema } = req.params;
+  }
 
-            if (!idSolucion || !idProblema) 
-            {
-                res.status(400).json({ message: 'IDs de solución y problema son requeridos' });
-                return;
-            }
+  async removeProblemaFromSolucion(req: Request, res: Response): Promise<void> {
+    try {
+      const { idSolucion, idProblema } = req.params;
 
-            await storeSolucionesService.removeProblemaFromSolucion(
-                Number(idSolucion),
-                Number(idProblema)
-            );
+      if (!idSolucion || !idProblema) {
+        res.status(400).json({ message: 'IDs de solución y problema son requeridos' });
+        return;
+      }
 
-            res.status(200).json({
-                message: 'Problema desasociado de la solución correctamente'
-            });
-        } 
-        catch (error) 
-        {
-            console.error('Error al desasociar el problema de la solución:', error);
-            res.status(500).json({ message: 'Error interno en el servidor' });
-        }
+      await storeSolucionesService.removeProblemaFromSolucion(
+        Number(idSolucion),
+        Number(idProblema)
+      );
+
+      res.status(200).json({
+        message: 'Problema desasociado de la solución correctamente'
+      });
+    } catch (error) {
+      console.error('Error desasociando problema de solución:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
     }
+  }
 }
 
 export default new StoreProblemasController();

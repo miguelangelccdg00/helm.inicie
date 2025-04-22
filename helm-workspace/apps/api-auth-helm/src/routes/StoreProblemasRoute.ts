@@ -5,12 +5,12 @@ const router = Router();
 
 /**
  * @description Listado de problemas  */
-router.get('/listCompleteProblemas', storeProblemasController.listProblema);
+router.get('/listCompleteProblemas', storeProblemasController.listProblemas);
 
 /**
  * @description Obtencion de problemas por solución específica de su ID
  */
-router.get('/listProblemas/:idSolucion', storeProblemasController.listIdProblema);
+router.get('/listProblemas/:idSolucion', storeProblemasController.listProblemasBySolucion);
 
 /**
  * @description Insercion de problemas por solución específica de su ID

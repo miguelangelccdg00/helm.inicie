@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import StoreSolucionesService from '../services/StoreSolucionesService';
+import { StoreSoluciones } from '../../../api-shared-helm/src/models/storeSoluciones'; 
 
 class StoreSolucionesController 
 {
@@ -11,17 +12,17 @@ class StoreSolucionesController
      * 
      * @returns {Promise<void>} Devuelve un arreglo de soluciones almacenadas en la base de datos.
      */
-    async listStoreSoluciones(req: Request, res: Response): Promise<void> 
+    async listStoreSoluciones(req: Request, res: Response<StoreSoluciones[]>): Promise<void> 
     {
         try 
         {
-            const soluciones = await StoreSolucionesService.getAll();
+            const soluciones: StoreSoluciones[] = await StoreSolucionesService.getAll();
             res.json(soluciones);
         } 
         catch (error) 
         {
             console.error('Error al listar storeSoluciones:', error);
-            res.status(500).json({ message: 'Error interno en el servidor' });
+            res.status(500).json({ message: 'Error interno en el servidor' } as any);
         }
     }
 
@@ -34,22 +35,22 @@ class StoreSolucionesController
      * 
      * @returns {Promise<void>} Devuelve la solución encontrada o un mensaje de error si no se encuentra.
      */
-    async listIdStoreSoluciones(req: Request, res: Response): Promise<void> 
+    async listIdStoreSoluciones(req: Request<{ id: string }>, res: Response<StoreSoluciones | { message: string }>): Promise<void> 
     {
         try 
         {
             const { id } = req.params;
 
             if (!id) 
-                {
+            {
                 res.status(400).json({ message: 'ID no proporcionado' });
                 return;
             }
 
-            const solucion = await StoreSolucionesService.getById(Number(id));
+            const solucion: StoreSoluciones | null = await StoreSolucionesService.getById(Number(id));
 
             if (!solucion) 
-                {
+            {
                 res.status(404).json({ message: 'Solución no encontrada' });
                 return;
             }
@@ -73,12 +74,12 @@ class StoreSolucionesController
      * 
      * @returns {Promise<void>} Devuelve el resultado de la actualización de la solución.
      */
-    async modifyStoreSoluciones(req: Request, res: Response): Promise<void> 
+    async modifyStoreSoluciones(req: Request<{ id: string }, any, Partial<StoreSoluciones>>, res: Response<any>): Promise<void> 
     {
         try 
         {
             const { id } = req.params;
-            const updateData = req.body;
+            const updateData: Partial<StoreSoluciones> = req.body;
 
             if (!id) 
             {
@@ -111,7 +112,7 @@ class StoreSolucionesController
      * 
      * @returns {Promise<void>} Devuelve el resultado de la eliminación de la solución.
      */
-    async deleteSolucion(req: Request, res: Response): Promise<void> 
+    async deleteSolucion(req: Request<{ id: string }>, res: Response<{ message: string } | any>): Promise<void> 
     {
         try 
         {
@@ -140,7 +141,6 @@ class StoreSolucionesController
         }
     }
 
-
     /**
      * Actualiza los ámbitos de una solución específica.
      * 
@@ -151,12 +151,12 @@ class StoreSolucionesController
      * 
      * @returns {Promise<void>} Devuelve el resultado de la actualización de los ámbitos de la solución.
      */
-    async updateSolucionAmbitos(req: Request, res: Response): Promise<void> 
+    async updateSolucionAmbitos(req: Request<{ id: string }, any, any[]>, res: Response<any>): Promise<void> 
     {
         try 
         {
             const { id } = req.params;
-            const solucionAmbitos = req.body;
+            const solucionAmbitos: any[] = req.body;
 
             if (!id) 
             {
