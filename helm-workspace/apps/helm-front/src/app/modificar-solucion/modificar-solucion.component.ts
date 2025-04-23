@@ -828,6 +828,30 @@ export class ModificarSolucionComponent implements OnInit {
     });
   }
 
+  eliminarSolucionSector() {
+    if (this.solucionSectorAEliminar === null) return;
+
+    const { idSector, idSolucion } = this.solucionSectorAEliminar;
+
+    this.storeSolucionesService.deleteSolucionAmbito(idSolucion, idSector).subscribe({
+      next: () => {
+        console.log('Solución del sector eliminada correctamente de la base de datos');
+
+        this.solucionesSectores = this.solucionesSectores.filter((sector) => 
+          sector.id_sector !== idSector || sector.id_solucion !== idSolucion
+        );
+
+        this.solucionSectorAEliminar = null;
+        this.mostrarModalSolucionSector = false;
+      },
+      error: (error) => {
+        console.error('Error al eliminar la solución del sector:', error);
+        this.mostrarModalSolucionSector = false;
+      }
+    });
+
+  }
+
   filtrarBeneficios() {
     const filtro = this.buscadorBeneficio.toLowerCase().trim();
     this.beneficiosFiltrados = this.allBeneficios.filter(beneficio =>

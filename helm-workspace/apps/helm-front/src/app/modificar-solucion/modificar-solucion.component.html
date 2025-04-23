@@ -742,7 +742,7 @@
       </div>
 
       <!-- Sección de sectores -->
-      <!-- <div class="seccion" #scrollSectores>
+      <div class="seccion" #scrollSectores>
         <h2 class="titulo-seccion">Sectores</h2>
 
         <div *ngIf="mostrarModificarSector === true" class="subseccion">
@@ -905,7 +905,7 @@
         <div class="subseccion">
           <h3 class="titulo-subseccion">Solución: ({{ solucion.description }}) según cada sector</h3>
 
-          Formulario para modificar solución por sector
+          <!-- Formulario para modificar solución por sector -->
           <div *ngIf="mostrarModificarSolucionSector" class="subseccion" #formularioSolucionSector>
             <h3 class="titulo-subseccion">Modificar solución por sector</h3>
 
@@ -964,7 +964,7 @@
           </div>
         </div>
 
-      </div> -->
+      </div>
 
       <div class="botones-container2">
         <button type="submit">Guardar Cambios</button>
@@ -1060,7 +1060,7 @@
 </div>
 
 <!-- Modal de confirmación para eliminar sector -->
-<!-- <div class="modal-overlay" *ngIf="mostrarModalSector">
+<div class="modal-overlay" *ngIf="mostrarModalSector">
   <div class="modal-container">
     <div class="modal-header">
       <h2>Confirmar eliminación</h2>
@@ -1074,10 +1074,10 @@
       <button class="btn-eliminar" (click)="eliminarSector()">Eliminar</button>
     </div>
   </div>
-</div> -->
+</div>
 
 <!-- Modal de confirmación para eliminar solucionSector -->
-<!-- <div class="modal-overlay" *ngIf="mostrarModalSolucionSector">
+<div class="modal-overlay" *ngIf="mostrarModalSolucionSector">
   <div class="modal-container">
     <div class="modal-header">
       <h2>Confirmar eliminación</h2>
@@ -1091,4 +1091,4 @@
       <button class="btn-eliminar" (click)="eliminarSolucionSector()">Eliminar</button>
     </div>
   </div>
-</div> -->
+</div>

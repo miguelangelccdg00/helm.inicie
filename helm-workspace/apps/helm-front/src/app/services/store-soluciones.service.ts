@@ -9,7 +9,7 @@ import { StoreCaracteristicas, CreateCaracteristicaResponse, DeleteCaracteristic
 import { StoreAmbitos, CreateAmbitoResponse, DeleteAmbitoResponse } from '@modelos-shared/storeAmbitos';
 import { SolucionAmbito, DeleteSolucionAmbitoResponse } from '@modelos-shared/solucionAmbito';
 import { StoreSectores, CreateSectorResponse, DeleteSectorResponse } from '@modelos-shared/storeSectores';
-import { SolucionSector } from '@modelos-shared/solucionSector';
+import { SolucionSector, DeleteSolucionSectorResponse } from '@modelos-shared/solucionSector';
 
 @Injectable({
   providedIn: 'root'
@@ -641,10 +641,10 @@ export class StoreSolucionesService {
     return this.https.put<SolucionSector>(url, solucionSectorToUpdate, { headers });
   }
 
-  /* deleteSolucionSector(idSolucion: number, idSector: number): Observable<DeleteSolucionSectorResponse> {
-    const url = `http://localhost:3009/storeSolucion/removeAmbitoFromSolucion/${idSolucion}/${idAmbito}`;
+  deleteSolucionSector(idSolucion: number, idSector: number): Observable<DeleteSolucionSectorResponse> {
+    const url = `${this.sectoresUrl}/deleteSectorSolucion/${idSolucion}/${idSector}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete<DeleteSolucionSectorResponse>(url, { headers });
-  } */
+  }
 
 }
