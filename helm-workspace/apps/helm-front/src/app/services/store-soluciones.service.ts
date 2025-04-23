@@ -554,12 +554,16 @@ export class StoreSolucionesService {
   }
 
   getSectoresBySolucion(idSolucion: number): Observable<StoreSectores[]> {
-    const url = `${this.sectoresUrl}/listSectores/${idSolucion}`;
+    const url = `${this.ambitosUrl}/listSectoresSolucion/${idSolucion}?_=${Date.now()}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<StoreSectores[]>(url, { headers }).pipe(
-      map(sector => {
-        console.log('Sectores recuperados:', sector);
-        return Array.isArray(sector) ? sector : [];
+      map(sectores => {
+        console.log('Sectores recuperados:', sectores);
+        if (!Array.isArray(sectores)) {
+          console.warn('La respuesta de sectores no es un array, convirtiendo:', sectores);
+          return sectores ? [sectores] : [];
+        }
+        return sectores;
       }),
       catchError(error => {
         console.error(`Error al obtener sectores para la solución ${idSolucion}:`, error);
@@ -567,6 +571,17 @@ export class StoreSolucionesService {
           console.log(`No se encontraron sectores para la solución ${idSolucion}, devolviendo array vacío`);
         }
         return of([]);
+      })
+    );
+  }
+
+  listSectores(idSolucion: number): Observable<any> {
+    const url = `${this.sectoresUrl}/listSectoresSolucion/${idSolucion}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.get<any>(url, { headers }).pipe(
+      map(response => {
+        console.log('Response from listSectores:', response);
+        return response;
       })
     );
   }
