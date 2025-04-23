@@ -741,6 +741,231 @@
 
       </div>
 
+      <!-- Sección de sectores -->
+      <!-- <div class="seccion" #scrollSectores>
+        <h2 class="titulo-seccion">Sectores</h2>
+
+        <div *ngIf="mostrarModificarSector === true" class="subseccion">
+          <h3 class="titulo-subseccion">Modificar sector</h3>
+
+          <form (ngSubmit)="modificarSector()">
+            <div class="grid-container">
+              <div class="form-group col-6">
+                <label for="nuevaDescripcionSector">description:</label>
+                <textarea id="nuevaDescripcionSector" [(ngModel)]="nuevoSector.description"
+                  name="nuevaDescripcionSector" required placeholder="Descripción del sector" pInputText
+                  variant="filled"></textarea>
+              </div>
+              <div class="form-group col-6">
+                <label for="nuevoTextoweb">textoweb:</label>
+                <textarea id="nuevoTextoweb" [(ngModel)]="nuevoSector.textoweb" name="nuevoTextoweb"
+                  required></textarea>
+              </div>
+              <div class="form-group col-6">
+                <label for="nuevoPrefijo">prefijo:</label>
+                <textarea id="nuevoPrefijo" [(ngModel)]="nuevoSector.prefijo" name="nuevoPrefijo" required></textarea>
+              </div>
+              <div class="form-group col-6">
+                <label for="nuevoSlug">slug:</label>
+                <textarea id="nuevoSlug" [(ngModel)]="nuevoSector.slug" name="nuevoSlug" required></textarea>
+              </div>
+              <div class="form-group col-6">
+                <label for="nuevaDescriptionWeb">descriptionweb:</label>
+                <textarea id="nuevaDescriptionWeb" [(ngModel)]="nuevoSector.descriptionweb" name="nuevaDescriptionWeb" required></textarea>
+              </div>
+              <div class="form-group col-6">
+                <label for="nuevoTitleWeb">titleweb:</label>
+                <textarea id="nuevoTitleWeb" [(ngModel)]="nuevoSector.titleweb" name="nuevoTitleWeb" required></textarea>
+              </div>
+              <div class="form-group col-6">
+                <label for="nuevaBackgroundImage">backgroundImage:</label>
+                <textarea id="nuevaBackgroundImage" [(ngModel)]="nuevoSector.backgroundImage" name="nuevaBackgroundImage" required></textarea>
+              </div>
+            </div>
+            <div class="botones-container">
+              <button type="submit">Modificar</button>
+              <button type="button"
+                (click)="mostrarModificarSector = false; mostrarBotonModificarSector = true">Cancelar</button>
+            </div>
+          </form>
+        </div>
+
+        <div *ngIf="mostrarCrearSector === true" class="subseccion">
+          <h3 class="titulo-subseccion">Crear y añadir sector</h3>
+
+          <form (ngSubmit)="crearNuevoSector()">
+            <div class="form-group">
+              <label for="nuevaDescripcionSector">description:</label>
+              <textarea id="nuevaDescripcionSector" [(ngModel)]="nuevoSector.description" name="nuevaDescripcionSector"
+                required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="nuevoTextoweb">textoweb:</label>
+              <textarea id="nuevoTextoweb" [(ngModel)]="nuevoSector.textoweb" name="nuevoTextoweb" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="nuevoPrefijo">prefijo:</label>
+              <textarea id="nuevoPrefijo" [(ngModel)]="nuevoSector.prefijo" name="nuevoPrefijo" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="nuevoSlug">slug:</label>
+              <textarea id="nuevoSlug" [(ngModel)]="nuevoSector.slug" name="nuevoSlug" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="nuevaDescriptionWeb">descriptionweb:</label>
+              <textarea id="nuevaDescriptionWeb" [(ngModel)]="nuevoSector.descriptionweb" name="nuevaDescriptionWeb" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="nuevoTitleWeb">titleweb:</label>
+              <textarea id="nuevoTitleWeb" [(ngModel)]="nuevoSector.titleweb" name="nuevoTitleWeb" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="nuevaBackgroundImage">backgroundImage:</label>
+              <textarea id="nuevaBackgroundImage" [(ngModel)]="nuevoSector.backgroundImage" name="nuevaBackgroundImage" required></textarea>
+            </div>
+            <div class="botones-container">
+              <button type="submit">Crear y Añadir</button>
+              <button type="button"
+                (click)="mostrarCrearSector = false; mostrarBotonCrearSector = true">Cancelar</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="subseccion">
+          <h3 class="titulo-subseccion">Añadir sectores a la solución: {{ solucion.description }}</h3>
+          <div class="buscador-selector-container">
+            <div class="form-group col-12">
+              <label for="buscadorSector">Seleccionar sector:</label>
+              <div class="custom-select">
+                <input type="text" id="buscadorSector" [(ngModel)]="buscadorSector" name="buscadorSector"
+                  (input)="filtrarSectores()" (focus)="mostrarOpcionesSectores = true"
+                  (click)="mostrarOpcionesSectores = true" placeholder="Buscar y seleccionar sector..." pInputText
+                  variant="filled" />
+                <div class="dropdown-menu" *ngIf="mostrarOpcionesSectores">
+                  <div *ngFor="let sector of sectoresFiltrados" class="dropdown-item"
+                    (click)="seleccionarSector(sector)">
+                    {{ sector.description }}
+                  </div>
+                  <div class="dropdown-item" (click)="scrollSector(); mostrarCrearSector = true; mostrarOpcionesSectores = false">
+                    - Crear y Añadir Sector -
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="botones-container">
+            <button type="button" (click)="agregarSector()">Añadir Sector</button>
+          </div>
+        </div>
+
+        <div class="subseccion">
+          <h3 class="titulo-subseccion">Sectores asociados a la solución: {{ solucion.description }}</h3>
+          <div>
+            <p-table [value]="solucion?.sectores || []" [paginator]="true" [rows]="5"
+              [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>description</th>
+                  <th>textoweb</th>
+                  <th>prefijo</th>
+                  <th>slug</th>
+                  <th>descriptionweb</th>
+                  <th>titleweb</th>
+                  <th>backgroundImage</th>
+                  <th>Editar</th>
+                  <th>Eliminar</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-sector>
+                <tr>
+                  <td>{{sector.description}}</td>
+                  <td>{{sector.textoweb}}</td>
+                  <td>{{sector.prefijo}}</td>
+                  <td>{{sector.slug}}</td>
+                  <td>{{sector.descriptionweb}}</td>
+                  <td>{{sector.titleweb}}</td>
+                  <td>{{sector.backgroundImage}}</td>
+                  <td><span (click)="editarSector(sector)" class="emojis">✏️</span></td>
+                  <td><span
+                      (click)="sector.id_sector !== undefined ? confirmarEliminarSector(sector.id_sector, $event) : null"
+                      class="emojis">🗑️</span></td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="6" style="text-align: center;">No hay sectores asociados a esta solución.</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+
+        <div class="subseccion">
+          <h3 class="titulo-subseccion">Solución: ({{ solucion.description }}) según cada sector</h3>
+
+          Formulario para modificar solución por sector
+          <div *ngIf="mostrarModificarSolucionSector" class="subseccion" #formularioSolucionSector>
+            <h3 class="titulo-subseccion">Modificar solución por sector</h3>
+
+            <form (ngSubmit)="modificarSolucionSector()">
+              <div class="grid-container">
+                <div class="form-group col-6">
+                  <label for="descalternativa">descalternativa:</label>
+                  <input id="descalternativa" [(ngModel)]="nuevaSolucionSector.descalternativa" name="descalternativa" placeholder="descalternativa" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="textoalternativo">textoalternativo:</label>
+                  <input id="textoalternativo" [(ngModel)]="nuevaSolucionSector.textoalternativo" name="textoalternativo" placeholder="textoalternativo" pInputText variant="filled">
+                </div>
+              </div>
+              <div class="botones-container">
+                <button type="submit">Modificar</button>
+                <button type="button"
+                  (click)="mostrarModificarSolucionSector = false; mostrarBotonModificarSolucionSector = true">Cancelar</button>
+              </div>
+            </form>
+          </div>
+
+          <div *ngIf="solucion?.sectores && solucion.sectores.length">
+            <p-table [value]="solucionesSectores" [paginator]="true" [rows]="5"
+              [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>ID solucion</th>
+                  <th>ID sector</th>
+                  <th>descalternativa</th>
+                  <th>textoalternativo</th>
+                  <th>Editar</th>
+                  <th>Eliminar</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-solucionSector>
+                <tr>
+                  <td>{{ solucionSector.id_solucion }}</td>
+                  <td>{{ solucionSector.id_sector }}</td>
+                  <td>{{ solucionSector.descalternativa }}</td>
+                  <td>{{ solucionSector.textoalternativo }}</td>
+                  <td>
+                    <span (click)="editarSolucionSector(solucionSector)" class="emojis">✏️</span>
+                  </td>
+                  <td><span
+                      (click)="confirmarEliminarSolucionSector(solucionSector.id_sector!, solucionSector.id_solucion!, $event)"
+                      class="emojis">🗑️</span></td>
+                </tr>
+              </ng-template>
+            </p-table>
+
+          </div>
+          <div *ngIf="!solucion?.sectores || solucion.sectores.length === 0">
+            <p>No hay sectores asociados a esta solución.</p>
+          </div>
+        </div>
+
+      </div> -->
+
       <div class="botones-container2">
         <button type="submit">Guardar Cambios</button>
         <button type="button" class="btn-secondary" (click)="cancelar()">Cancelar</button>
@@ -833,3 +1058,37 @@
     </div>
   </div>
 </div>
+
+<!-- Modal de confirmación para eliminar sector -->
+<!-- <div class="modal-overlay" *ngIf="mostrarModalSector">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2>Confirmar eliminación</h2>
+    </div>
+    <div class="modal-body">
+      <p>¿Está seguro de que desea eliminar este sector?</p>
+      <p class="warning-text">Esta acción no se puede deshacer.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cancelarEliminarSector()">Cancelar</button>
+      <button class="btn-eliminar" (click)="eliminarSector()">Eliminar</button>
+    </div>
+  </div>
+</div> -->
+
+<!-- Modal de confirmación para eliminar solucionSector -->
+<!-- <div class="modal-overlay" *ngIf="mostrarModalSolucionSector">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2>Confirmar eliminación</h2>
+    </div>
+    <div class="modal-body">
+      <p>¿Está seguro de que desea eliminar esta solución del sector?</p>
+      <p class="warning-text">Esta acción no se puede deshacer.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cancelarEliminarSolucionSector()">Cancelar</button>
+      <button class="btn-eliminar" (click)="eliminarSolucionSector()">Eliminar</button>
+    </div>
+  </div>
+</div> -->
