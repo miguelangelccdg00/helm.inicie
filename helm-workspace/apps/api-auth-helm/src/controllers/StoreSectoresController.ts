@@ -189,6 +189,61 @@ class storeSectoresControllers
       res.status(500).json({ message: 'Error interno en el servidor' });
     }
   }
+
+  async deleteSector(req: Request<{ idSector: string }>, res: Response): Promise<void> 
+  {
+    try
+    {
+      const { idSector } = req.params;
+
+      if (!idSector) 
+      {
+        res.status(401).json({ message: 'ID no proporcionado' });
+        return;
+      }
+
+      const wasDeleted = await StoreSectoresService.deleteSector(Number(idSector));
+
+      if (!wasDeleted)
+      {
+        res.status(404).json({ message: 'Sector no encontrado o ya eliminado' });
+        return;
+      }
+
+      res.status(201).json({ message: 'Sector eliminado correctamente' });
+    } 
+    catch (error) 
+    {
+      console.error('Error al eliminar el Sector:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
+
+  async removeSectorFromSolucion(req: Request<{ idSolucion: string; idSector: string }>, res: Response): Promise<void> 
+  {
+    try 
+    {
+      const { idSolucion, idSector } = req.params;
+
+      if (!idSolucion || !idSector) 
+      {
+        res.status(400).json({ message: 'IDs de solución y sector son requeridos' });
+        return;
+      }
+
+      await StoreSolucionesService.removeSectorFromSolucion(Number(idSolucion), Number(idSector));
+
+      res.status(200).json({
+        message: 'Sector desasociada de la solución correctamente'
+      });
+    } 
+    catch (error) 
+    {
+      console.error('Error al desasociar la sector de la solución:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
+
 }
 
 export default new storeSectoresControllers();

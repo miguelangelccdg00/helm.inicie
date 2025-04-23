@@ -227,6 +227,44 @@ class StoreSectoresService
         }
     }
 
+  // Eliminar un sector
+  async deleteSector(idSector: number): Promise<boolean> 
+  {
+    try 
+    {
+      const [result] = await pool.promise().query(
+        `DELETE FROM storeSectores WHERE id_sector = ?`,
+        [idSector]
+      );
+
+      return result.affectedRows > 0;
+    } 
+    catch (error) 
+    {
+      console.error('Error al eliminar el sector:', error);
+      throw new Error('Error al eliminar el sector');
+    }
+  }
+
+  // Eliminar la relación de un sector con una solución
+  async deleteAmbitoSolucion(idSolucion: number, idSector: number): Promise<boolean> 
+  {
+    try 
+    {
+      const [result] = await pool.promise().query(
+        `DELETE FROM storeSolucionesSectores WHERE id_solucion = ? AND id_sector = ?`,
+        [idSolucion, idSector]
+      );
+
+      return result.affectedRows > 0;
+    } 
+    catch (error)
+    {
+      console.error('Error al eliminar la relación de sector-solución:', error);
+      throw new Error('Error al eliminar la relación');
+    }
+  }
+
 }
 
 export  default new StoreSectoresService();

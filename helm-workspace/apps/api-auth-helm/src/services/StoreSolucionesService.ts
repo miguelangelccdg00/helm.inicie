@@ -67,6 +67,39 @@ class StoreSolucionesService
     }
 
     /**
+     * Actualiza los ámbitos de una solución
+     */
+    async updateSolucionSector(idSolucion: number, solucionSectores: any[]): Promise<{ message: string }> 
+    {
+        const conn = await pool.promise().getConnection();
+        try 
+        {
+            await conn.beginTransaction();
+
+            for (const solucionSector of solucionSectores)
+            {
+                await conn.query(
+                    'UPDATE storeSolucionesSectores SET ? WHERE id_solucion = ? AND id_sector = ?',
+                    [solucionSector, idSolucion, solucionSector.id_sector]
+                );
+            }
+
+            await conn.commit();
+            return { message: 'Solución por sectores actualizada correctamente' };
+        } 
+        catch (error) 
+        {
+            await conn.rollback();
+            throw error;
+        } 
+        finally 
+        {
+            conn.release();
+        }
+    }
+
+
+    /**
      * Elimina una solución específica de la base de datos
      */
     async deleteSolucion(id: number): Promise<{ message: string }> 
@@ -147,6 +180,19 @@ class StoreSolucionesService
             [idSolucion, idAmbito]
         );
         return { message: 'Asociación entre ambito y solución eliminada correctamente' };
+    }
+
+    /**
+     * Elimina la asociación entre una solución y un ámbito
+     */
+    async removeSectorFromSolucion(idSolucion: number, idSector: number): Promise<{ message: string }> 
+    {
+         // Elimina solo la asociación en la tabla de relaciones
+         await pool.promise().query(
+            'DELETE FROM storeSolucionesSectores WHERE id_solucion = ? AND id_sector = ?', 
+            [idSolucion, idSector]
+        );
+        return { message: 'Asociación entre sector y solución eliminada correctamente' };
     }
 }
 

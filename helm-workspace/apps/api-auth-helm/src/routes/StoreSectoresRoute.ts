@@ -34,4 +34,15 @@ router.post('/asociarSectores', StoreSectoresController.asociarSector);
 
 router.put('/modifySectores/:idSolucion/:idSector', StoreSectoresController.modifyStoreSectores)
 
+
+/**
+ * @description Actualiza los ámbitos de una solución
+ */
+router.put('/modifySolucionSectores/:id', storeSolucionesController.updateSolucionSectores);
+
+/**
+ * @description Eliminacion de un ambito específico por su ID
+ */
+router.delete('/deleteSectores/:idSectores', StoreSectoresController.deleteSector);
+
 export default router;
