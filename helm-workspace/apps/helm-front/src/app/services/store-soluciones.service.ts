@@ -8,7 +8,8 @@ import { StoreProblemas, CreateProblemaResponse, DeleteProblemaResponse } from '
 import { StoreCaracteristicas, CreateCaracteristicaResponse, DeleteCaracteristicaResponse } from '@modelos-shared/storeCaracteristicas';
 import { StoreAmbitos, CreateAmbitoResponse, DeleteAmbitoResponse } from '@modelos-shared/storeAmbitos';
 import { SolucionAmbito, DeleteSolucionAmbitoResponse } from '@modelos-shared/solucionAmbito';
-import { StoreSectores, CreateSectorResponse } from '@modelos-shared/storeSectores';
+import { StoreSectores, CreateSectorResponse, DeleteSectorResponse } from '@modelos-shared/storeSectores';
+import { SolucionSector } from '@modelos-shared/solucionSector';
 
 @Injectable({
   providedIn: 'root'
@@ -480,8 +481,6 @@ export class StoreSolucionesService {
     );
   }
 
-  /* SolucionAmbito */
-
   modifySolucionAmbito(idSolucion: number, idAmbito: number, ambito: StoreAmbitos): Observable<SolucionAmbito> {
     const url = `${this.ambitosUrl}/modifyAmbitos/${idSolucion}/${idAmbito}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -554,7 +553,7 @@ export class StoreSolucionesService {
   }
 
   getSectoresBySolucion(idSolucion: number): Observable<StoreSectores[]> {
-    const url = `${this.ambitosUrl}/listSectoresSolucion/${idSolucion}?_=${Date.now()}`;
+    const url = `${this.sectoresUrl}/listSectoresSolucion/${idSolucion}?_=${Date.now()}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<StoreSectores[]>(url, { headers }).pipe(
       map(sectores => {
@@ -615,5 +614,37 @@ export class StoreSolucionesService {
     return this.https.put<StoreSectores>(url, sectorToUpdate, { headers });
 
   }
+  
+  updateSolucionSectores(idSolucion: number, solucionSectores: SolucionSector[]): Observable<any> {
+    const url = `${this.sectoresUrl}/modifySolucionSectores/${idSolucion}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.put<any>(url, solucionSectores, { headers });
+  }
+
+  deleteSector(idSector: number): Observable<DeleteSectorResponse> {
+    const url = `${this.sectoresUrl}/deleteSectores/${idSector}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.delete<DeleteSectorResponse>(url, { headers });
+  }
+
+  modifySolucionSector(idSolucion: number, idSector: number, sector: StoreSectores): Observable<SolucionSector> {
+    const url = `${this.sectoresUrl}/modifySolucionSectores/${idSolucion}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    const solucionSectorToUpdate = {
+      id_solucion: idSolucion,
+      id_sector: idSector,
+      descalternativa: sector.description,
+      textoalternativo: sector.description
+    };
+
+    return this.https.put<SolucionSector>(url, solucionSectorToUpdate, { headers });
+  }
+
+  /* deleteSolucionSector(idSolucion: number, idSector: number): Observable<DeleteSolucionSectorResponse> {
+    const url = `http://localhost:3009/storeSolucion/removeAmbitoFromSolucion/${idSolucion}/${idAmbito}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.delete<DeleteSolucionSectorResponse>(url, { headers });
+  } */
 
 }

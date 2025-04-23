@@ -33,6 +33,7 @@ export class ModificarSolucionComponent implements OnInit {
   @ViewChild('scrollAmbitos', { static: false }) scrollAmbitos: ElementRef | undefined;
   @ViewChild('formularioSolucionAmbito', { static: false }) formularioSolucionAmbito: ElementRef | undefined;
   @ViewChild('scrollSectores', { static: false }) scrollSectores: ElementRef | undefined;
+  @ViewChild('formularioSolucionSector', { static: false }) formularioSolucionSector: ElementRef | undefined;
   
   solucion: StoreSoluciones | null = null;
 
@@ -76,6 +77,12 @@ export class ModificarSolucionComponent implements OnInit {
   solucionAmbitoAEliminar: { idAmbito: number, idSolucion: number } | null = null;
   mostrarModificarSolucionAmbito: boolean = false;
   mostrarBotonModificarSolucionAmbito: boolean = false;
+
+  mostrarOpcionesSolucionSector: boolean = false;
+  solucionSectorSeleccionado: SolucionSector | null = null;
+  solucionSectorAEliminar: { idSector: number, idSolucion: number } | null = null;
+  mostrarModificarSolucionSector: boolean = false;
+  mostrarBotonModificarSolucionSector: boolean = false;
 
   nuevoProblema: StoreProblemas = { titulo: '', description: '' };
   buscadorProblema: string = '';
@@ -784,6 +791,43 @@ export class ModificarSolucionComponent implements OnInit {
 
   }
 
+  eliminarSector() {
+    if (this.sectorAEliminar === null) return;
+  
+    this.storeSolucionesService.deleteSector(this.sectorAEliminar).subscribe({
+      next: () => {
+        console.log('Sector eliminado correctamente de la base de datos');
+  
+        this.allSectores = this.allSectores.filter(sector =>
+          sector.id_sector !== this.sectorAEliminar
+        );
+        this.sectores = this.sectores.filter(sector =>
+          sector.id_sector !== this.sectorAEliminar
+        );
+        this.sectoresFiltrados = this.sectoresFiltrados.filter(sector =>
+          sector.id_sector !== this.sectorAEliminar
+        );
+  
+        if (this.solucion && this.solucion.sectores) {
+          this.solucion.sectores = this.solucion.sectores.filter(sector =>
+            sector.id_sector !== this.sectorAEliminar
+          );
+        }
+  
+        this.solucionesSectores = this.solucionesSectores.filter(sector =>
+          sector.id_sector !== this.sectorAEliminar
+        );
+  
+        this.sectorAEliminar = null;
+        this.mostrarModalSector = false;
+      },
+      error: (error) => {
+        console.error('Error al eliminar el sector:', error);
+        this.mostrarModalSector = false;
+      }
+    });
+  }
+
   filtrarBeneficios() {
     const filtro = this.buscadorBeneficio.toLowerCase().trim();
     this.beneficiosFiltrados = this.allBeneficios.filter(beneficio =>
@@ -1116,6 +1160,28 @@ export class ModificarSolucionComponent implements OnInit {
     this.solucionAmbitoAEliminar = null;
   }
 
+  confirmarEliminarSector(idSector: number, event: MouseEvent) {
+    event.stopPropagation();
+    this.sectorAEliminar = idSector;
+    this.mostrarModalAmbito = true;
+  }
+
+  cancelarEliminarSector() {
+    this.mostrarModalSector = false;
+    this.sectorAEliminar = null;
+  }
+
+  confirmarEliminarSolucionSector(idSector: number, idSolucion: number, event: MouseEvent) {
+    event.stopPropagation();
+    this.solucionSectorAEliminar = { idSector, idSolucion};
+    this.mostrarModalSolucionSector = true;
+  }
+
+  cancelarEliminarSolucionSector() {
+    this.mostrarModalSolucionSector = false;
+    this.solucionSectorAEliminar = null;
+  }
+
   modificarProblema() {
     console.log('Modificando problema...', this.nuevoProblema, this.problemaSeleccionado);
 
@@ -1375,6 +1441,77 @@ export class ModificarSolucionComponent implements OnInit {
     setTimeout(() => {
       if (this.formularioSolucionAmbito) {
         this.formularioSolucionAmbito.nativeElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  }
+
+  modificarSolucionSector() {
+    if (!this.solucion || !this.solucionAmbitoSeleccionado) {
+      console.error('No hay solución o solución por sector seleccionada');
+      return;
+    }
+
+    const idSolucion = this.solucion.id_solucion;
+    const idSector = this.solucionAmbitoSeleccionado.id_ambito;
+
+    if (!idSolucion || !idSector) {
+      console.error('ID de solución o ID de sector no disponibles');
+      return;
+    }
+
+    const solucionSectorActualizada: SolucionSector = {
+      ...this.nuevaSolucionSector,
+      id_solucion: idSolucion,
+      id_sector: idSector
+    };
+
+    this.storeSolucionesService.updateSolucionSectores(idSolucion, [solucionSectorActualizada]).subscribe({
+      next: (response) => {
+        console.log('Solución por sector actualizada correctamente:', response);
+        
+        const index = this.solucionesSectores.findIndex(
+          ss => ss.id_solucion === idSolucion && ss.id_sector === idSector
+        );
+        
+        if (index !== -1) {
+          this.solucionesSectores[index] = {
+            ...this.solucionesSectores[index],
+            ...this.nuevaSolucionSector
+          };
+        }
+        
+        this.mostrarModificarSolucionSector = false;
+        this.solucionSectorSeleccionado = null;
+      },
+      error: (error) => {
+        console.error('Error al actualizar la solución por sector:', error);
+      }
+    });
+  }
+
+  editarSolucionSector(solucionSector: SolucionSector, event?: MouseEvent) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    this.solucionSectorSeleccionado = solucionSector;
+    this.nuevaSolucionSector = {
+      descalternativa: solucionSector.descalternativa,
+      textoalternativo: solucionSector.textoalternativo,
+    };
+
+    this.mostrarModificarSolucionSector = true;
+    this.mostrarBotonModificarSolucionSector = true;
+    this.mostrarOpcionesSolucionSector = false;
+
+    if (this.scrollSectores) {
+      this.scrollSectores.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    setTimeout(() => {
+      if (this.formularioSolucionSector) {
+        this.formularioSolucionSector.nativeElement.scrollIntoView({ behavior: 'smooth' });
       }
     }, 100);
   }
