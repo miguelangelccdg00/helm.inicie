@@ -1,5 +1,6 @@
 import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
 import { StoreSoluciones } from '../../../api-shared-helm/src/models/storeSoluciones.js';
+import { SolucionAmbitoSector } from '../../../api-shared-helm/src/models/solucionAmbitoSector.js';
 
 class StoreSolucionesService 
 {
@@ -97,6 +98,44 @@ class StoreSolucionesService
             conn.release();
         }
     }
+
+    /**
+     * Actualiza los ámbitos de una solución
+     */
+    async updateSolucionAmbitosSector(idSolucion: number, solucionAmbitosSectores: SolucionAmbitoSector[]): Promise<{ message: string }> 
+    {
+        const conn = await pool.promise().getConnection();
+        try 
+        {
+            await conn.beginTransaction();
+
+            for (const solucionAmbitoSector of solucionAmbitosSectores) 
+            {
+                await conn.query(
+                    'UPDATE storeSolucionesAmbitosSectores SET ? WHERE id_solucion = ? AND id_ambito = ? AND id_sector = ?',
+                    [
+                        solucionAmbitoSector,
+                        idSolucion,
+                        solucionAmbitoSector.id_ambito,
+                        solucionAmbitoSector.id_sector
+                    ]
+                );
+            }
+
+            await conn.commit();
+            return { message: 'Solución por ámbitos actualizada correctamente' };
+        } 
+        catch (error) 
+        {
+            await conn.rollback();
+            throw error;
+        } 
+        finally 
+        {
+            conn.release();
+        }
+    }
+
 
 
     /**

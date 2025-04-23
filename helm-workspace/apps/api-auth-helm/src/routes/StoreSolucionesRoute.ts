@@ -20,6 +20,11 @@ router.get('/listIdStoreSoluciones/:id', storeSolucionesController.listIdStoreSo
 router.put('/modifyStoreSoluciones/:id', storeSolucionesController.modifyStoreSoluciones);
 
 /**
+ * @description Modifica una solución específica por su ID
+ */
+router.put('/modifySolucionAmbitosSectores/:id', storeSolucionesController.updateSolucionAmbitosSectores);
+
+/**
  * @description Eliminacion de una solución específica por su ID
  */
 router.delete('/deleteSolucion/:id', storeSolucionesController.deleteSolucion);
