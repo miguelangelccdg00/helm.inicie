@@ -8,6 +8,7 @@ import { StoreProblemas, CreateProblemaResponse, DeleteProblemaResponse } from '
 import { StoreCaracteristicas, CreateCaracteristicaResponse, DeleteCaracteristicaResponse } from '@modelos-shared/storeCaracteristicas';
 import { StoreAmbitos, CreateAmbitoResponse, DeleteAmbitoResponse } from '@modelos-shared/storeAmbitos';
 import { SolucionAmbito, DeleteSolucionAmbitoResponse } from '@modelos-shared/solucionAmbito';
+import { StoreSectores, CreateSectorResponse } from '@modelos-shared/storeSectores';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,7 @@ export class StoreSolucionesService {
   private problemasUrl = 'http://localhost:3009/storeProblemas';
   private caracteristicasUrl = 'http://localhost:3009/storeCaracteristicas';
   private ambitosUrl = 'http://localhost:3009/storeAmbitos';
+  private sectoresUrl = 'http://localhost:3009/storeSectores';
 
   constructor(private https: HttpClient) { }
 
@@ -399,7 +401,6 @@ export class StoreSolucionesService {
     return this.https.get<StoreAmbitos[]>(url, { headers }).pipe(
       map(ambitos => {
         console.log('Ámbitos recuperados:', ambitos);
-        // Asegurarse de que ambitos sea un array
         if (!Array.isArray(ambitos)) {
           console.warn('La respuesta de ámbitos no es un array, convirtiendo:', ambitos);
           return ambitos ? [ambitos] : [];
@@ -408,11 +409,9 @@ export class StoreSolucionesService {
       }),
       catchError(error => {
         console.error(`Error al obtener ámbitos para la solución ${idSolucion}:`, error);
-        // Verificar específicamente si es un error 404 (Not Found)
         if (error.status === 404) {
           console.log(`No se encontraron ámbitos para la solución ${idSolucion}, devolviendo array vacío`);
         }
-        // Siempre devolver un array vacío en caso de error
         return of([]);
       })
     );
@@ -528,6 +527,60 @@ export class StoreSolucionesService {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.put<any>(url, solucionAmbitos, { headers });
   }
-  
+
+  /* Sectores */
+
+  createSector(idSolucion: number, sector: StoreSectores): Observable<CreateSectorResponse> {
+    const url = `${this.sectoresUrl}/createSector/${idSolucion}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    const sectorToCreate = {
+      description: sector.description,
+      textoweb: sector.textoweb,
+      prefijo: sector.prefijo,
+      slug: sector.slug,
+      descriptionweb: sector.descriptionweb,
+      titleweb: sector.titleweb,
+      backgroundImage: sector.backgroundImage,
+    };
+
+    return this.https.post<CreateSectorResponse>(url, sectorToCreate, { headers });
+  }
+
+  getAllSectores(): Observable<StoreSectores[]> {
+    const url = `${this.sectoresUrl}/listCompleteSectores`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.get<StoreSectores[]>(url, { headers });
+  }
+
+  getSectoresBySolucion(idSolucion: number): Observable<StoreSectores[]> {
+    const url = `${this.sectoresUrl}/listSectores/${idSolucion}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.get<StoreSectores[]>(url, { headers }).pipe(
+      map(sector => {
+        console.log('Sectores recuperados:', sector);
+        return Array.isArray(sector) ? sector : [];
+      }),
+      catchError(error => {
+        console.error(`Error al obtener sectores para la solución ${idSolucion}:`, error);
+        if (error.status === 404) {
+          console.log(`No se encontraron sectores para la solución ${idSolucion}, devolviendo array vacío`);
+        }
+        return of([]);
+      })
+    );
+  }
+
+  asociarSectorASolucion(idSolucion: number, idSector: number): Observable<any> {
+    const url = `${this.sectoresUrl}/asociarSectores`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    const relacion = {
+      id_solucion: idSolucion,
+      id_sector: idSector
+    };
+
+    return this.https.post<any>(url, relacion, { headers });
+  }
 
 }

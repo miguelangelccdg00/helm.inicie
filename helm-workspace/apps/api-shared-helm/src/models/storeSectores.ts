@@ -2,7 +2,7 @@ export interface StoreSectores
 {
     id_sector?: number;
     description: string;
-    textoWeb: string;
+    textoweb: string;
     prefijo: string;
     slug: string;
     descriptionweb: string;
