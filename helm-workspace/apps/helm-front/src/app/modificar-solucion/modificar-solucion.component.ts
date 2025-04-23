@@ -32,7 +32,7 @@ export class ModificarSolucionComponent implements OnInit {
   @ViewChild('scrollCaracteristicas', { static: false }) scrollCaracteristicas: ElementRef | undefined;
   @ViewChild('scrollAmbitos', { static: false }) scrollAmbitos: ElementRef | undefined;
   @ViewChild('formularioSolucionAmbito', { static: false }) formularioSolucionAmbito: ElementRef | undefined;
-
+  @ViewChild('scrollSectores', { static: false }) scrollSectores: ElementRef | undefined;
   
   solucion: StoreSoluciones | null = null;
 
@@ -231,6 +231,17 @@ export class ModificarSolucionComponent implements OnInit {
           },
           error: (err) => console.error('Error al obtener soluciones por ámbito:', err)
         });
+
+        this.storeSolucionesService.getSectoresBySolucion(idSolucion).subscribe({
+          next: (sectores) => {
+            if (sectores && sectores.length > 0) {
+              this.sectores = this.solucion!.sectores = sectores;
+              console.log('Sectores recargados:', sectores);
+              this.changeDetectorRef.detectChanges();
+            }
+          },
+          error: (e) => console.error('Error al recargar ámbitos:', e)
+        });
   
         this.storeSolucionesService.listSectores(idSolucion).subscribe({
           next: (res) => {
@@ -239,6 +250,7 @@ export class ModificarSolucionComponent implements OnInit {
           },
           error: (err) => console.error('Error al obtener soluciones por sector:', err)
         });
+
       },
       error: (e) => console.error('Error al obtener la solución:', e)
     });
@@ -1225,6 +1237,54 @@ export class ModificarSolucionComponent implements OnInit {
 
     if (this.scrollAmbitos) {
       this.scrollAmbitos.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  modificarSector() {
+    if (this.sectorSeleccionado) {
+      this.storeSolucionesService.modifySector(this.solucion!.id_solucion, this.sectorSeleccionado.id_sector!, this.nuevoSector).subscribe({
+        next: (updatedSector) => {
+          console.log('Sector modificado correctamente:', updatedSector);
+
+          const index = this.solucion!.sectores.findIndex(a => a.id_sector === updatedSector.id_sector);
+          if (index !== -1) {
+            this.solucion!.sectores[index] = updatedSector;
+          }
+
+          this.mostrarModificarSector = false;
+          this.mostrarBotonModificarSector = true;
+        },
+        error: (error) => {
+          console.error('Error al modificar el sector:', error);
+        }
+      });
+    }
+  }
+
+  editarSector(sector: StoreSectores, event?: MouseEvent) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    this.sectorSeleccionado = sector;
+    this.nuevoSector = {
+      description: sector.description,
+      textoweb: sector.textoweb,
+      prefijo: sector.prefijo,
+      slug: sector.slug,
+      descriptionweb: sector.descriptionweb,
+      titleweb: sector.titleweb,
+      backgroundImage: sector.backgroundImage
+    };
+
+    this.mostrarModificarSector = true;
+    this.mostrarBotonCrearSector = false;
+    this.mostrarBotonModificarSector = true;
+    this.mostrarOpcionesSectores = false;
+
+    if (this.scrollSectores) {
+      this.scrollSectores.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
   }
 

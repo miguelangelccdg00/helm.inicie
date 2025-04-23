@@ -598,4 +598,22 @@ export class StoreSolucionesService {
     return this.https.post<any>(url, relacion, { headers });
   }
 
+  modifySector(idSolucion: number, idSector: number, sector: StoreSectores): Observable<StoreSectores> {
+    const url = `${this.sectoresUrl}/modifySectores/${idSolucion}/${idSector}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    const sectorToUpdate = {
+      description: sector.description,
+      textoweb: sector.textoweb,
+      prefijo: sector.prefijo,
+      slug: sector.slug,
+      descriptionweb: sector.descriptionweb,
+      titleweb: sector.titleweb,
+      backgroundImage: sector.backgroundImage,
+    };
+
+    return this.https.put<StoreSectores>(url, sectorToUpdate, { headers });
+
+  }
+
 }
