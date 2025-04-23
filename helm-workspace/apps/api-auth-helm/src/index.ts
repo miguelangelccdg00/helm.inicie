@@ -10,6 +10,7 @@ import storeBeneficiosRoute from './routes/StoreBeneficiosRoute';
 import storeProblemasRoute from './routes/StoreProblemasRoute';
 import storeCaracteristicasRoute from './routes/StoreCaracteristicasRoute';
 import storeAmbitosRoute from './routes/StoreAmbitosRoute';
+import storeSectoresRoute from './routes/StoreSectoresRoute';
 import menuRoutes from './routes/MenuRoute';
 import tokenRoute from './routes/TokenRoute';
 
@@ -35,6 +36,7 @@ app.use('/storeBeneficios', storeBeneficiosRoute);
 app.use('/storeProblemas', storeProblemasRoute);
 app.use('/storeCaracteristicas', storeCaracteristicasRoute);
 app.use('/storeAmbitos', storeAmbitosRoute);
+app.use('/storeSectores', storeSectoresRoute);
 app.use('/menu', menuRoutes);
 app.use('/token', tokenRoute);
 
@@ -44,7 +46,6 @@ app.use('/token', tokenRoute);
 app.get('/', (req: Request, res: Response): void =>
 {
     res.json({
-        message: 'Bienvenido a la API de Tickets (autenticado)',
         endpoints: [
             {
                 login:
@@ -122,6 +123,19 @@ app.get('/', (req: Request, res: Response): void =>
                         { method: 'POST', path: '/createAmbitos/:idSolucion' },
                         { method: 'PUT', path: '/modifyAmbitos/:idSolucion/:idAmbito' },
                         { method: 'DELETE', path: '/deleteAmbitos/:idAmbito' }
+                    ]
+                }
+            },
+            {
+                storeSectores:
+                {
+                    base: 'storeSectores',
+                    operations: [
+                        { method: 'GET', path: '/listCompleteSectores' },
+                        { method: 'GET', path: '/listSectores/:idSolucion' },
+                        { method: 'POST', path: '/createSectores/:idSolucion' },
+                        { method: 'PUT', path: '/modifySectores/:idSolucion/:idAmbito' },
+                        { method: 'DELETE', path: '/deleteSectores/:idAmbito' }
                     ]
                 }
             },
