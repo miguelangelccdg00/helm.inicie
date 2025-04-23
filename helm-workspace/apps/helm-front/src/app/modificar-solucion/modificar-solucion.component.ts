@@ -381,6 +381,12 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  scrollSector() {
+    if (this.scrollSectores) {
+      this.scrollSectores.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
   seleccionarBeneficio(beneficio: StoreBeneficios) {
     this.buscadorBeneficio = beneficio.description;
     this.beneficioSeleccionado = beneficio;
@@ -427,6 +433,18 @@ export class ModificarSolucionComponent implements OnInit {
   seleccionarSolucionAmbito(solucionAmbito: SolucionAmbito) {
     this.solucionAmbitoSeleccionado = solucionAmbito;
     this.mostrarOpcionesSolucionAmbito = false;
+  }
+
+  seleccionarSector(sector: StoreSectores) {
+    this.buscadorSector = sector.description;
+    this.sectorSeleccionado = sector;
+    this.nuevoSector = { ...sector };
+    this.mostrarOpcionesSectores = false;
+  }
+
+  seleccionarSolucionSector(solucionSector: SolucionSector) {
+    this.solucionSectorSeleccionado = solucionSector;
+    this.mostrarOpcionesSolucionSector = false;
   }
 
   agregarBeneficio() {
@@ -615,8 +633,74 @@ export class ModificarSolucionComponent implements OnInit {
       console.error('Debe seleccionar un ámbito antes de agregarlo');
     }
   }
-  
 
+  /* agregarSector() {
+    if (this.buscadorSector && this.solucion) {
+      const sectorSeleccionado = this.sectorSeleccionado ||
+        this.allAmbitos.find(
+          a => a.description.toLowerCase() === this.buscadorSector.toLowerCase()
+        );
+  
+      if (sectorSeleccionado) {
+        const yaExiste = this.sectores.some(
+          s => s.id_sector === sectorSeleccionado.id_sector
+        );
+  
+        if (!yaExiste) {
+          this.storeSolucionesService.asociarSectorASolucion(this.solucion.id_solucion, sectorSeleccionado.id_sector!).subscribe({
+            next: () => {
+              console.log('Sector asociado correctamente a la solución');
+  
+              this.sectores.push(sectorSeleccionado);
+              this.solucion!.sectores = this.sectores;
+  
+              const nuevaSolucionSector: SolucionSector = {
+                id_solucion: this.solucion!.id_solucion,
+                id_ambito: sectorSeleccionado.id_ambito!,
+                description: sectorSeleccionado.description,
+                slug: sectorSeleccionado.slug,
+                desca: '',
+                subtitle: '',
+                icon: '',
+                titleweb: '',
+                multimediaUri: '',
+                multimediaTypeId: '',
+                problemaTitle: '',
+                problemaPragma: '',
+                solucionTitle: '',
+                solucionPragma: '',
+                caracteristicasTitle: '',
+                caracteristicasPragma: '',
+                casosdeusoTitle: '',
+                casosdeusoPragma: '',
+                firstCtaTitle: '',
+                firstCtaPragma: '',
+                secondCtaTitle: '',
+                secondCtaPragma: '',
+                beneficiosTitle: '',
+                beneficiosPragma: ''
+              };
+  
+              this.solucionesSectores.push(nuevaSolucionSector);
+  
+              this.buscadorSector = '';
+              this.sectorSeleccionado = null;
+            },
+            error: (error) => {
+              console.error('Error al asociar el sector a la solución:', error);
+            }
+          });
+        } else {
+          console.error('Este sector ya está agregado');
+        }
+      } else {
+        console.error('Sector no encontrado');
+      }
+    } else {
+      console.error('Debe seleccionar un sector antes de agregarlo');
+    }
+  } */
+  
   eliminarBeneficio() {
     if (this.beneficioAEliminar !== null) {
       this.storeSolucionesService.deleteBeneficio(this.beneficioAEliminar).subscribe({
