@@ -7,6 +7,8 @@ import { StoreProblemas } from '@modelos-shared/storeProblemas';
 import { StoreCaracteristicas } from '@modelos-shared/storeCaracteristicas';
 import { StoreAmbitos } from '@modelos-shared/storeAmbitos';
 import { SolucionAmbito } from '@modelos-shared/solucionAmbito';
+import { StoreSectores } from '@modelos-shared/storeSectores';
+import { SolucionSector } from '@modelos-shared/solucionSector';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MenuComponent } from '../menu/menu.component';
@@ -32,7 +34,6 @@ export class ModificarSolucionComponent implements OnInit {
   @ViewChild('formularioSolucionAmbito', { static: false }) formularioSolucionAmbito: ElementRef | undefined;
 
   
-
   solucion: StoreSoluciones | null = null;
 
   solucionesAmbitos: SolucionAmbito[] = [];
@@ -60,7 +61,14 @@ export class ModificarSolucionComponent implements OnInit {
     secondCtaPragma: '',
     beneficiosTitle: '',
     beneficiosPragma: '',
-    
+
+  };
+
+  solucionesSectores: SolucionSector[] = [];
+
+  nuevaSolucionSector: SolucionSector = {
+    descalternativa: '',
+    textoalternativo: ''
   };
   
   mostrarOpcionesSolucionAmbito: boolean = false;
@@ -121,12 +129,26 @@ export class ModificarSolucionComponent implements OnInit {
   mostrarBotonModificarAmbito: boolean = false;
   AmbitoAEliminar: number | null = null;
 
+  nuevoSector: StoreSectores = { description: '', textoweb: '', prefijo: '', slug: '', descriptionweb: '', titleweb: '', backgroundImage: '' };    
+  buscadorSector: string = '';
+  sectores: StoreSectores[] = [];
+  allSectores: StoreSectores[] = [];
+  sectoresFiltrados: StoreSectores[] = [];
+  sectorSeleccionado: StoreSectores | null = null;
+  mostrarCrearSector: boolean = false;
+  mostrarModificarSector: boolean = false;
+  mostrarOpcionesSectores: boolean = false;
+  mostrarBotonCrearSector: boolean = true;
+  mostrarBotonModificarSector: boolean = false;
+  sectorAEliminar: number | null = null;
 
   mostrarModalProblema: boolean = false;
   mostrarModalBeneficio: boolean = false;
   mostrarModalCaracteristica: boolean = false;
   mostrarModalAmbito: boolean = false;
   mostrarModalSolucionAmbito: boolean = false;
+  mostrarModalSector: boolean = false;
+  mostrarModalSolucionSector: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -148,81 +170,97 @@ export class ModificarSolucionComponent implements OnInit {
       this.mostrarOpciones = false;
       this.mostrarOpcionesCaracteristicas = false;
       this.mostrarOpcionesAmbitos = false;
+      this.mostrarOpcionesSectores = false;
     }
   }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
-
+  
     const idSolucion = +id;
-
+  
     this.storeSolucionesService.getStoreSolucionById(idSolucion).subscribe({
-        next: (solucion) => {
-            this.solucion = {
-                ...solucion,
-                problemas: solucion.problemas || [],
-                beneficios: solucion.beneficios || [],
-                caracteristicas: solucion.caracteristicas || [],
-                ambitos: solucion.ambitos || []
-            };
-
-            forkJoin([
-                this.storeSolucionesService.getProblemasBySolucion(idSolucion),
-                this.storeSolucionesService.getBeneficiosBySolucion(idSolucion),
-                this.storeSolucionesService.getCaracteristicasBySolucion(idSolucion),
-                this.storeSolucionesService.getAmbitosBySolucion(idSolucion)
-            ]).subscribe({
-                next: ([problemas, beneficios, caracteristicas, ambitos]) => {
-                    this.problemas = this.solucion!.problemas = problemas;
-                    this.beneficios = this.solucion!.beneficios = beneficios;
-                    this.caracteristicas = this.solucion!.caracteristicas = caracteristicas;
-                    this.ambitos = this.solucion!.ambitos = ambitos;
-                    console.log('Ámbitos cargados:', ambitos);
-                    this.changeDetectorRef.detectChanges(); // Force change detection
-                },
-                error: (e) => console.error('Error al obtener problemas, beneficios, características o ámbitos:', e)
-            });
-
-            // Aseguramos que los ámbitos se carguen correctamente con una llamada adicional
-            this.storeSolucionesService.getAmbitosBySolucion(idSolucion).subscribe({
-                next: (ambitos) => {
-                    if (ambitos && ambitos.length > 0) {
-                        this.ambitos = this.solucion!.ambitos = ambitos;
-                        console.log('Ámbitos recargados:', ambitos);
-                        this.changeDetectorRef.detectChanges(); // Force change detection
-                    }
-                },
-                error: (e) => console.error('Error al recargar ámbitos:', e)
-            });
-
-            this.storeSolucionesService.listAmbitos(idSolucion).subscribe({
-                next: (res) => {
-                    this.solucionesAmbitos = res;
-                    this.changeDetectorRef.detectChanges(); // Force change detection
-                },
-                error: (err) => console.error('Error al obtener soluciones por ámbito:', err)
-            });
-        },
-        error: (e) => console.error('Error al obtener la solución:', e)
+      next: (solucion) => {
+        this.solucion = {
+          ...solucion,
+          problemas: solucion.problemas || [],
+          beneficios: solucion.beneficios || [],
+          caracteristicas: solucion.caracteristicas || [],
+          ambitos: solucion.ambitos || [],
+          sectores: solucion.sectores || []
+        };
+  
+        forkJoin([
+          this.storeSolucionesService.getProblemasBySolucion(idSolucion),
+          this.storeSolucionesService.getBeneficiosBySolucion(idSolucion),
+          this.storeSolucionesService.getCaracteristicasBySolucion(idSolucion),
+          this.storeSolucionesService.getAmbitosBySolucion(idSolucion),
+          this.storeSolucionesService.getSectoresBySolucion(idSolucion)
+        ]).subscribe({
+          next: ([problemas, beneficios, caracteristicas, ambitos, sectores]) => {
+            this.problemas = this.solucion!.problemas = problemas;
+            this.beneficios = this.solucion!.beneficios = beneficios;
+            this.caracteristicas = this.solucion!.caracteristicas = caracteristicas;
+            this.ambitos = this.solucion!.ambitos = ambitos;
+            this.sectores = this.solucion!.sectores = sectores;
+  
+            console.log('Ámbitos cargados:', ambitos);
+            console.log('Sectores cargados:', sectores);
+  
+            this.changeDetectorRef.detectChanges();
+          },
+          error: (e) => console.error('Error al obtener entidades relacionadas:', e)
+        });
+  
+        this.storeSolucionesService.getAmbitosBySolucion(idSolucion).subscribe({
+          next: (ambitos) => {
+            if (ambitos && ambitos.length > 0) {
+              this.ambitos = this.solucion!.ambitos = ambitos;
+              console.log('Ámbitos recargados:', ambitos);
+              this.changeDetectorRef.detectChanges();
+            }
+          },
+          error: (e) => console.error('Error al recargar ámbitos:', e)
+        });
+  
+        this.storeSolucionesService.listAmbitos(idSolucion).subscribe({
+          next: (res) => {
+            this.solucionesAmbitos = res;
+            this.changeDetectorRef.detectChanges();
+          },
+          error: (err) => console.error('Error al obtener soluciones por ámbito:', err)
+        });
+  
+        this.storeSolucionesService.listSectores(idSolucion).subscribe({
+          next: (res) => {
+            this.solucionesSectores = res;
+            this.changeDetectorRef.detectChanges();
+          },
+          error: (err) => console.error('Error al obtener soluciones por sector:', err)
+        });
+      },
+      error: (e) => console.error('Error al obtener la solución:', e)
     });
-
+  
     forkJoin([
-        this.storeSolucionesService.getAllProblemas(),
-        this.storeSolucionesService.getAllBeneficios(),
-        this.storeSolucionesService.getAllCaracteristicas(),
-        this.storeSolucionesService.getAllAmbitos()
+      this.storeSolucionesService.getAllProblemas(),
+      this.storeSolucionesService.getAllBeneficios(),
+      this.storeSolucionesService.getAllCaracteristicas(),
+      this.storeSolucionesService.getAllAmbitos(),
+      this.storeSolucionesService.getAllSectores()
     ]).subscribe({
-        next: ([allProblemas, allBeneficios, allCaracteristicas, allAmbitos]) => {
-            this.allProblemas = this.problemasFiltrados = allProblemas;
-            this.allBeneficios = this.beneficiosFiltrados = allBeneficios;
-            this.allCaracteristicas = this.caracteristicasFiltradas = allCaracteristicas;
-            this.allAmbitos = this.ambitosFiltrados = allAmbitos;
-            this.changeDetectorRef.detectChanges(); // Force change detection
-        },
-        error: (e) => console.error('Error al obtener listas globales:', e)
+      next: ([allProblemas, allBeneficios, allCaracteristicas, allAmbitos, allSectores]) => {
+        this.allProblemas = allProblemas;
+        this.allBeneficios = allBeneficios;
+        this.allCaracteristicas = allCaracteristicas;
+        this.allAmbitos = allAmbitos;
+        this.allSectores = allSectores;
+      },
+      error: (e) => console.error('Error al cargar todos los elementos:', e)
     });
-}
+  }
+  
 
   guardarCambios() {
     if (this.solucion) {
@@ -295,7 +333,6 @@ export class ModificarSolucionComponent implements OnInit {
       console.error('La solución no está definida');
     }
   }
-
 
   cancelar() {
     this.router.navigate(['/store-soluciones']);
@@ -763,6 +800,13 @@ export class ModificarSolucionComponent implements OnInit {
     );
   }
 
+  filtrarSectores() {
+    const filtro = this.buscadorSector.toLowerCase().trim();
+    this.sectoresFiltrados = this.allSectores.filter(sector =>
+      sector.description.toLowerCase().includes(filtro)
+    );
+  }
+
   crearNuevoBeneficio() {
     this.mostrarCrearBeneficio = false;
     this.mostrarBotonCrear = true;
@@ -930,6 +974,80 @@ export class ModificarSolucionComponent implements OnInit {
       }
     });
   }
+
+  crearNuevoSector() {
+    this.mostrarCrearSector = false;
+    this.mostrarBotonCrearSector = true;
+  
+    if (!this.nuevoSector || !this.nuevoSector.description) {
+      console.error('Debe ingresar la descripción del sector');
+      return;
+    }
+  
+    if (!this.nuevoSector.textoweb) {
+      console.error('Debe ingresar el texto web del sector');
+      return;
+    }
+  
+    if (!this.nuevoSector.prefijo) {
+      console.error('Debe ingresar el prefijo del sector');
+      return;
+    }
+
+    if (!this.nuevoSector.slug) {
+      console.error('Debe ingresar el slug del sector');
+      return;
+    }
+
+    if (!this.nuevoSector.descriptionweb) {
+      console.error('Debe ingresar la descripción web del sector');
+      return;
+    }
+
+    if (!this.nuevoSector.titleweb) {
+      console.error('Debe ingresar el título web del sector');
+      return;
+    }
+
+    if (!this.nuevoSector.backgroundImage) {
+      console.error('Debe ingresar la background image del sector');
+      return;
+    }
+  
+
+    if (!this.solucion) {
+      console.error('La solución debe estar cargada');
+      return;
+    }
+  
+    this.storeSolucionesService.createSector(this.solucion.id_solucion, this.nuevoSector).subscribe({
+      next: (sectorCreadoResponse) => {
+        console.log('Sector creado:', sectorCreadoResponse);
+  
+        const sectorCreado: StoreSectores = {
+          id_sector: sectorCreadoResponse.sector.id_sector,
+          description: this.nuevoSector.description,
+          textoweb: this.nuevoSector.textoweb,
+          prefijo: this.nuevoSector.prefijo,
+          slug: this.nuevoSector.slug,
+          descriptionweb: this.nuevoSector.descriptionweb,
+          titleweb: this.nuevoSector.titleweb,
+          backgroundImage: this.nuevoSector.backgroundImage
+        };
+  
+        this.allSectores.push(sectorCreado);
+        this.filtrarSectores();
+        
+        this.nuevoSector = { description: '', textoweb: '', prefijo: '', slug: '', descriptionweb: '', titleweb: '', backgroundImage: '' };
+        
+        console.log('Sector creado y añadido al listado. Ahora puede seleccionarlo para asociarlo a la solución.');
+      },
+      error: (error) => {
+        console.error('Error al crear el sector:', error);
+      }
+    });
+  }
+
 
   confirmarEliminarProblema(idProblema: number, event: MouseEvent) {
     event.stopPropagation();

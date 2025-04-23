@@ -3,6 +3,8 @@ import { StoreProblemas } from './storeProblemas';
 import { StoreCaracteristicas } from './storeCaracteristicas';
 import { StoreAmbitos } from './storeAmbitos';
 import { SolucionAmbito } from './solucionAmbito';
+import { StoreSectores } from './storeSectores';
+import { SolucionSector } from './solucionSector';
 
 export interface StoreSoluciones {
     id_solucion: number;
@@ -40,6 +42,8 @@ export interface StoreSoluciones {
     caracteristicas: StoreCaracteristicas[];
     ambitos: StoreAmbitos[];
     solucionAmbito: SolucionAmbito[];
+    sectores: StoreSectores[];
+    solucionSector: SolucionSector[];
 }
 
 export interface UpdateStoreSolucionResponse {
