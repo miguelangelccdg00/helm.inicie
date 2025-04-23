@@ -44,5 +44,11 @@ router.put('/modifySolucionSectores/:id', storeSolucionesController.updateSoluci
  * @description Eliminacion de un ambito específico por su ID
  */
 router.delete('/deleteSectores/:idSectores', StoreSectoresController.deleteSector);
+/**deleteSectorSolucion */
+
+/**
+ * @description Eliminacion de un ambito específico por su ID
+ */
+router.delete('/deleteSectorSolucion/:idSolucion/:idSectores', StoreSectoresController.removeSectorFromSolucion);
 
 export default router;

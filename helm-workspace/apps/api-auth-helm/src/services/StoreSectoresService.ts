@@ -247,7 +247,7 @@ class StoreSectoresService
   }
 
   // Eliminar la relación de un sector con una solución
-  async deleteAmbitoSolucion(idSolucion: number, idSector: number): Promise<boolean> 
+  async deleteSectorSolucion(idSolucion: number, idSector: number): Promise<boolean> 
   {
     try 
     {
