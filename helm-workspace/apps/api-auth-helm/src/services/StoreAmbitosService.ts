@@ -18,13 +18,7 @@ interface AsociarAmbitoParams {
 class StoreAmbitosService {
   
   // Crear un nuevo ámbito
-  async createAmbito({
-    description,
-    textoweb,
-    prefijo,
-    slug,
-    idSolucion
-  }: CreateAmbitoParams): Promise<StoreAmbitos> {
+  async createAmbito({description,textoweb,prefijo,slug,idSolucion }: CreateAmbitoParams): Promise<StoreAmbitos> {
     try {
       const [result] = await pool.promise().query(
         `INSERT INTO storeAmbitos (description, textoweb, prefijo, slug)

@@ -43,11 +43,15 @@ class StoreProblemasService {
       await conn.commit();
 
       return { idProblema, idSolucion, description, titulo };
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       await conn.rollback();
       console.error('Error al insertar el problema:', error);
       throw error;
-    } finally {
+    } 
+    finally 
+    {
       conn.release();
     }
   }
