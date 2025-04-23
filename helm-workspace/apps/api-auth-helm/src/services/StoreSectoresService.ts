@@ -1,10 +1,11 @@
 import { pool } from '../../../api-shared-helm/src/databases/conexion';
 import { StoreSectores } from '../../../api-shared-helm/src/models/storeSectores';
+import { SolucionSector } from '../../../api-shared-helm/src/models/solucionSector';
 
 interface CreateSectorParams
 {
     description: string;
-    textoWeb: string;
+    textoweb: string;
     prefijo: string;
     slug: string;
     descriptionweb: string;
@@ -22,12 +23,12 @@ interface AsociarSectorParams
 class StoreSectoresService
 {
     // Crear un nuevo sector
-    async createSector({description,textoWeb,prefijo,slug,descriptionweb,titleweb,backgroundImage,idSolucion }: CreateSectorParams): Promise<StoreSectores> {
+    async createSector({description,textoweb,prefijo,slug,descriptionweb,titleweb,backgroundImage,idSolucion }: CreateSectorParams): Promise<StoreSectores> {
         try {
             const [result] = await pool.promise().query(
             `INSERT INTO storeSectores (description,textoWeb,prefijo,slug,descriptionweb,titleweb,backgroundImage)
                 VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            [description, textoWeb, prefijo, slug, descriptionweb, titleweb, backgroundImage]
+            [description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage]
             );
             const idSector = result.insertId;
 
@@ -38,7 +39,7 @@ class StoreSectoresService
             [idSolucion, idSector]
             );
 
-            return { id_sector: idSector, description, textoWeb, prefijo, slug, descriptionweb, titleweb, backgroundImage};
+            return { id_sector: idSector, description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage};
         } 
         catch (error) 
         {
@@ -146,6 +147,83 @@ class StoreSectoresService
         {
             console.error('Error al obtener las variantes por solución y sector:', error);
             throw new Error('Error al obtener las variantes');
+        }
+    }
+
+    // Actualizar un sector
+    async update(idSector: number, idSolucion: number,updateData: Partial<StoreSectores & SolucionSector>): Promise<StoreSectores> 
+    {
+        try 
+        {
+            const { description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage } = updateData;
+
+            const updateFields = [];
+            const updateValues = [];
+
+            if (description) 
+            {
+            updateFields.push('description = ?');
+            updateValues.push(description);
+            }
+            if (textoweb) 
+            {
+            updateFields.push('textoweb = ?');
+            updateValues.push(textoweb);
+            }
+            if (prefijo) 
+            {
+            updateFields.push('prefijo = ?');
+            updateValues.push(prefijo);
+            }
+            if (slug) 
+            {
+            updateFields.push('slug = ?');
+            updateValues.push(slug);
+            }
+
+            if (descriptionweb) 
+            {
+            updateFields.push('descriptionweb = ?');
+            updateValues.push(descriptionweb);
+            }
+            if (titleweb) 
+            {
+            updateFields.push('titleweb = ?');
+            updateValues.push(titleweb);
+            }
+            if (backgroundImage) 
+            {
+            updateFields.push('backgroundImage = ?');
+            updateValues.push(backgroundImage);
+            }
+
+            updateValues.push(idSector);
+
+            const [result] = await pool.promise().query(
+            `UPDATE storeAmbitos SET ${updateFields.join(', ')}
+                WHERE id_sector = ?`,
+            updateValues
+            );
+
+            if (result.affectedRows === 0) 
+            {
+            throw new Error('No se encontró el sector para actualizar');
+            }
+            return {
+                id_sector: idSector,
+                description: description || '',
+                textoweb: textoweb || '',
+                prefijo: prefijo || '',
+                slug: slug || '',
+                descriptionweb: descriptionweb || '',
+                titleweb: titleweb || '',
+                backgroundImage: backgroundImage || ''
+            };
+        } 
+        catch (error) 
+        {
+            console.error('Error al actualizar el sector:', error);
+            throw new Error('Error al actualizar el sector');
         }
     }
 

@@ -28,4 +28,10 @@ router.post('/createSectores/:idSolucion', StoreSectoresController.createSectore
  */
 router.post('/asociarSectores', StoreSectoresController.asociarSector);
 
+/**
+ * @description Modificacion de un sector de una solucion especifica
+ */
+
+router.put('/modifySectores/:idSolucion/:idSector', StoreSectoresController.modifyStoreSectores)
+
 export default router;
