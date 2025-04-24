@@ -14,11 +14,6 @@ router.get('/listCompleteSectores', StoreSectoresController.listSectores);
 router.get('/listSectores/:idSolucion', StoreSectoresController.listIdSector);
 
 /**
- * @description Obtencion de sectores por solución específica de su ID
- */
-router.get('/listSectoresSolucion/:idSolucion', StoreSectoresController.getVariantesSolucionPorSector);
-
-/**
  * @description Insercion de sectores por solución específica de su ID
  */
 router.post('/createSectores/:idSolucion', StoreSectoresController.createSectores);
