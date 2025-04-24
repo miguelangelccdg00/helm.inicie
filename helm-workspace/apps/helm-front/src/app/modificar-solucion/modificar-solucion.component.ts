@@ -898,18 +898,21 @@ export class ModificarSolucionComponent implements OnInit {
   }
 
   eliminarSolucionSector() {
-    if (this.solucionSectorAEliminar === null) return;
-
+    if (!this.solucionSectorAEliminar) return;
+  
     const { idSector, idSolucion } = this.solucionSectorAEliminar;
-
-    this.storeSolucionesService.deleteSolucionAmbito(idSolucion, idSector).subscribe({
+  
+    if (idSolucion == null || idSector == null) {
+      console.error('idSolucion o idSector son inválidos:', idSolucion, idSector);
+      return;
+    }
+  
+    this.storeSolucionesService.deleteSolucionSector(idSolucion, idSector).subscribe({
       next: () => {
         console.log('Solución del sector eliminada correctamente de la base de datos');
-
-        this.solucionesSectores = this.solucionesSectores.filter((sector) => 
+        this.solucionesSectores = this.solucionesSectores.filter((sector) =>
           sector.id_sector !== idSector || sector.id_solucion !== idSolucion
         );
-
         this.solucionSectorAEliminar = null;
         this.mostrarModalSolucionSector = false;
       },
@@ -918,8 +921,8 @@ export class ModificarSolucionComponent implements OnInit {
         this.mostrarModalSolucionSector = false;
       }
     });
-
   }
+  
 
   filtrarBeneficios() {
     const filtro = this.buscadorBeneficio.toLowerCase().trim();
@@ -1256,7 +1259,7 @@ export class ModificarSolucionComponent implements OnInit {
   confirmarEliminarSector(idSector: number, event: MouseEvent) {
     event.stopPropagation();
     this.sectorAEliminar = idSector;
-    this.mostrarModalAmbito = true;
+    this.mostrarModalSector = true;
   }
 
   cancelarEliminarSector() {
@@ -1266,7 +1269,7 @@ export class ModificarSolucionComponent implements OnInit {
 
   confirmarEliminarSolucionSector(idSector: number, idSolucion: number, event: MouseEvent) {
     event.stopPropagation();
-    this.solucionSectorAEliminar = { idSector, idSolucion};
+    this.solucionSectorAEliminar = { idSector, idSolucion };
     this.mostrarModalSolucionSector = true;
   }
 
@@ -1539,13 +1542,13 @@ export class ModificarSolucionComponent implements OnInit {
   }
 
   modificarSolucionSector() {
-    if (!this.solucion || !this.solucionAmbitoSeleccionado) {
+    if (!this.solucion || !this.solucionSectorSeleccionado) {
       console.error('No hay solución o solución por sector seleccionada');
       return;
     }
 
     const idSolucion = this.solucion.id_solucion;
-    const idSector = this.solucionAmbitoSeleccionado.id_ambito;
+    const idSector = this.solucionSectorSeleccionado.id_sector;
 
     if (!idSolucion || !idSector) {
       console.error('ID de solución o ID de sector no disponibles');

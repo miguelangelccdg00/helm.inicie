@@ -530,7 +530,7 @@ export class StoreSolucionesService {
   /* Sectores */
 
   createSector(idSolucion: number, sector: StoreSectores): Observable<CreateSectorResponse> {
-    const url = `${this.sectoresUrl}/createSector/${idSolucion}`;
+    const url = `${this.sectoresUrl}/createSectores/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     const sectorToCreate = {
@@ -642,7 +642,7 @@ export class StoreSolucionesService {
   }
 
   deleteSolucionSector(idSolucion: number, idSector: number): Observable<DeleteSolucionSectorResponse> {
-    const url = `${this.sectoresUrl}/deleteSectorSolucion/${idSolucion}/${idSector}`;
+    const url = `${this.sectoresUrl}/deleteSectores/${idSolucion}/${idSector}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete<DeleteSolucionSectorResponse>(url, { headers });
   }
