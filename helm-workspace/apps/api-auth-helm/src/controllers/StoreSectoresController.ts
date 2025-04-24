@@ -190,34 +190,6 @@ class storeSectoresControllers
     }
   }
 
-  async removeSectorFromSolucion(req: Request, res: Response): Promise<void> 
-  {
-    try 
-    {
-      const { idSolucion, idSector } = req.params;
-
-      if (!idSolucion || !idSector) 
-      {
-        res.status(400).json({ message: 'IDs de solución y idSector son requeridos' });
-        return;
-      }
-
-      await StoreSolucionesService.removeSectorFromSolucion(
-        Number(idSolucion),
-        Number(idSector)
-      );
-
-      res.status(200).json({
-        message: 'Error desasociado de la solución correctamente'
-      });
-    } 
-    catch (error) 
-    {
-      console.error('Error desasociando sector de solución:', error);
-      res.status(500).json({ message: 'Error interno del servidor' });
-    }
-  }
-
 }
 
 export default new storeSectoresControllers();
