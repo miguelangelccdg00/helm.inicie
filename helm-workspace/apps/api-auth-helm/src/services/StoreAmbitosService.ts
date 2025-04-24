@@ -189,23 +189,6 @@ class StoreAmbitosService {
       throw new Error('Error al eliminar la relación');
     }
   }
-
-  // Obtener variantes por solución y ámbito
-  async getVariantesBySolucionAndAmbito(idSolucion: number): Promise<any[]> {
-    try {
-      const [rows] = await pool.promise().query(
-        `SELECT v.id_variantes, v.description
-         FROM storeVariantes v
-         JOIN storeAmbitos a ON v.id_ambito = a.id_ambito
-         WHERE a.id_solucion = ?`,
-        [idSolucion]
-      );
-      return rows;
-    } catch (error) {
-      console.error('Error al obtener las variantes por solución y ámbito:', error);
-      throw new Error('Error al obtener las variantes');
-    }
-  }
 }
 
 export default new StoreAmbitosService();
