@@ -209,22 +209,30 @@ class StoreSectoresService
 
   // Eliminar un sector
   async deleteSector(idSector: number): Promise<boolean> 
-  {
+    {
     try 
     {
-      const [result] = await pool.promise().query(
+        // Eliminar todas las relaciones con soluciones
+        await pool.promise().query(
+        `DELETE FROM storeSolucionesSectores WHERE id_sector = ?`,
+        [idSector]
+        );
+
+        // Luego eliminar el sector
+        const [result] = await pool.promise().query(
         `DELETE FROM storeSectores WHERE id_sector = ?`,
         [idSector]
-      );
+        );
 
-      return result.affectedRows > 0;
+        return result.affectedRows > 0;
     } 
     catch (error) 
     {
-      console.error('Error al eliminar el sector:', error);
-      throw new Error('Error al eliminar el sector');
+        console.error('Error al eliminar el sector:', error);
+        throw new Error('Error al eliminar el sector');
     }
-  }
+    }
+
 
   // Eliminar la relación de un sector con una solución
   async deleteSectorSolucion(idSolucion: number, idSector: number): Promise<boolean> 
