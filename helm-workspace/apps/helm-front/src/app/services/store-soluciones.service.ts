@@ -642,11 +642,23 @@ export class StoreSolucionesService {
   }
 
   deleteSolucionSector(idSolucion: number, idSector: number): Observable<DeleteSolucionSectorResponse> {
-    const url = `${this.sectoresUrl}/deleteSectores/${idSolucion}/${idSector}`;
+    // Cambiamos la URL para usar un endpoint específico para eliminar la relación
+    const url = `${this.sectoresUrl}/deleteSolucionSector/${idSolucion}/${idSector}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.delete<DeleteSolucionSectorResponse>(url, { headers });
+    
+    console.log('Eliminando relación sector-solución:', url);
+    
+    return this.https.delete<DeleteSolucionSectorResponse>(url, { headers }).pipe(
+      map(response => {
+        console.log('Respuesta al eliminar relación:', response);
+        return response;
+      }),
+      catchError(error => {
+        console.error('Error al eliminar la relación:', error);
+        throw error;
+      })
+    );
   }
-
 }
 
 

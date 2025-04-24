@@ -129,6 +129,23 @@ class StoreSectoresService
             throw new Error('Error al obtener los sectores');
         }
     }
+
+    // Eliminar solo la relación entre sector y solución
+    async deleteSolucionSector(idSolucion: number, idSector: number): Promise<boolean> {
+        try {
+            // Solo eliminamos la relación en la tabla de relaciones
+            const [result] = await pool.promise().query(
+                `DELETE FROM storeSolucionesSectores 
+                 WHERE id_solucion = ? AND id_sector = ?`,
+                [idSolucion, idSector]
+            );
+
+            return result.affectedRows > 0;
+        } catch (error) {
+            console.error('Error al eliminar la relación sector-solución:', error);
+            throw new Error('Error al eliminar la relación sector-solución');
+        }
+    }
     
     // Actualizar un sector
     async update(idSector: number, idSolucion: number,updateData: Partial<StoreSectores & SolucionSector>): Promise<StoreSectores> 

@@ -31,14 +31,13 @@ router.put('/modifySectores/:idSolucion/:idSector', StoreSectoresController.modi
 
 
 /**
- * @description Actualiza los ámbitos de una solución
+ * @description Eliminación de la relación entre un sector y una solución
  */
-router.put('/modifySolucionSectores/:id', storeSolucionesController.updateSolucionSectores);
+router.delete('/deleteSolucionSector/:idSolucion/:idSector', StoreSectoresController.deleteSolucionSector);
 
 /**
- * @description Eliminacion de un ambito específico por su ID
+ * @description Eliminacion de un sector específico por su ID
  */
 router.delete('/deleteSectores/:idSolucion/:idSector', StoreSectoresController.deleteSector);
-
 
 export default router;

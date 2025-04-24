@@ -951,9 +951,8 @@
                   <td>
                     <span (click)="editarSolucionSector(solucionSector)" class="emojis">✏️</span>
                   </td>
-                  <td><span
-                      (click)="confirmarEliminarSolucionSector(solucionSector.id_sector!, solucionSector.id_solucion!, $event)"
-                      class="emojis">🗑️</span></td>
+                  <td><span (click)="confirmarEliminarSolucionSector(solucionSector.id_sector!, solucion.id_solucion!, $event)" 
+                    class="emojis">🗑️</span></td>
                 </tr>
               </ng-template>
             </p-table>

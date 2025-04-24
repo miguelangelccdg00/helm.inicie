@@ -161,6 +161,34 @@ class storeSectoresControllers
     }
   }
 
+  async deleteSolucionSector(req: Request<{ idSolucion: string; idSector: string }>, res: Response): Promise<void> {
+    try {
+      const { idSolucion, idSector } = req.params;
+  
+      if (!idSolucion || !idSector) {
+        res.status(400).json({ message: 'IDs no proporcionados' });
+        return;
+      }
+  
+      const wasDeleted = await StoreSectoresService.deleteSolucionSector(
+        Number(idSolucion), 
+        Number(idSector)
+      );
+  
+      if (!wasDeleted) {
+        res.status(404).json({ message: 'Relación sector-solución no encontrada' });
+        return;
+      }
+  
+      res.status(200).json({ 
+        message: 'Relación sector-solución eliminada correctamente' 
+      });
+    } catch (error) {
+      console.error('Error al eliminar la relación sector-solución:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
+
   async deleteSector(req: Request<{ idSolucion: string; idSector: string }>, res: Response): Promise<void> 
   {
     try

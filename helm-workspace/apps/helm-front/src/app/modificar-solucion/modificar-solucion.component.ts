@@ -898,26 +898,43 @@ export class ModificarSolucionComponent implements OnInit {
   }
 
   eliminarSolucionSector() {
-    if (!this.solucionSectorAEliminar) return;
+    if (!this.solucionSectorAEliminar) {
+      console.error('No hay sector-solución para eliminar');
+      return;
+    }
   
     const { idSector, idSolucion } = this.solucionSectorAEliminar;
   
     if (idSolucion == null || idSector == null) {
-      console.error('idSolucion o idSector son inválidos:', idSolucion, idSector);
+      console.error('idSolucion o idSector son inválidos:', { idSolucion, idSector });
       return;
     }
   
     this.storeSolucionesService.deleteSolucionSector(idSolucion, idSector).subscribe({
       next: () => {
-        console.log('Solución del sector eliminada correctamente de la base de datos');
-        this.solucionesSectores = this.solucionesSectores.filter((sector) =>
-          sector.id_sector !== idSector || sector.id_solucion !== idSolucion
+        console.log('Relación sector-solución eliminada correctamente');
+        
+        // Solo eliminamos la relación de solucionesSectores
+        this.solucionesSectores = this.solucionesSectores.filter(
+          solucionSector => !(solucionSector.id_sector === idSector && 
+                             solucionSector.id_solucion === idSolucion)
         );
+  
+        // Quitamos el sector de la lista de sectores asociados a esta solución
+        if (this.solucion && this.solucion.sectores) {
+          this.solucion.sectores = this.solucion.sectores.filter(
+            sector => sector.id_sector !== idSector
+          );
+        }
+  
+        // NO eliminamos el sector de allSectores ni sectoresFiltrados
+        // ya que estos contienen todos los sectores disponibles
+        
         this.solucionSectorAEliminar = null;
         this.mostrarModalSolucionSector = false;
       },
       error: (error) => {
-        console.error('Error al eliminar la solución del sector:', error);
+        console.error('Error al eliminar la relación sector-solución:', error);
         this.mostrarModalSolucionSector = false;
       }
     });
@@ -1269,6 +1286,7 @@ export class ModificarSolucionComponent implements OnInit {
 
   confirmarEliminarSolucionSector(idSector: number, idSolucion: number, event: MouseEvent) {
     event.stopPropagation();
+    console.log('Confirmar eliminar - idSector:', idSector, 'idSolucion:', idSolucion);
     this.solucionSectorAEliminar = { idSector, idSolucion };
     this.mostrarModalSolucionSector = true;
   }
