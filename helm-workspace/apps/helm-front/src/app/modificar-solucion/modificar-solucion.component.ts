@@ -637,8 +637,8 @@ export class ModificarSolucionComponent implements OnInit {
   /* agregarSector() {
     if (this.buscadorSector && this.solucion) {
       const sectorSeleccionado = this.sectorSeleccionado ||
-        this.allAmbitos.find(
-          a => a.description.toLowerCase() === this.buscadorSector.toLowerCase()
+        this.allSectores.find(
+          s => s.description.toLowerCase() === this.buscadorSector.toLowerCase()
         );
   
       if (sectorSeleccionado) {
@@ -656,29 +656,9 @@ export class ModificarSolucionComponent implements OnInit {
   
               const nuevaSolucionSector: SolucionSector = {
                 id_solucion: this.solucion!.id_solucion,
-                id_ambito: sectorSeleccionado.id_ambito!,
-                description: sectorSeleccionado.description,
-                slug: sectorSeleccionado.slug,
-                desca: '',
-                subtitle: '',
-                icon: '',
-                titleweb: '',
-                multimediaUri: '',
-                multimediaTypeId: '',
-                problemaTitle: '',
-                problemaPragma: '',
-                solucionTitle: '',
-                solucionPragma: '',
-                caracteristicasTitle: '',
-                caracteristicasPragma: '',
-                casosdeusoTitle: '',
-                casosdeusoPragma: '',
-                firstCtaTitle: '',
-                firstCtaPragma: '',
-                secondCtaTitle: '',
-                secondCtaPragma: '',
-                beneficiosTitle: '',
-                beneficiosPragma: ''
+                id_sector: sectorSeleccionado.id_sector!,
+                descalternativa: '',
+                textoalternativo: '',
               };
   
               this.solucionesSectores.push(nuevaSolucionSector);
