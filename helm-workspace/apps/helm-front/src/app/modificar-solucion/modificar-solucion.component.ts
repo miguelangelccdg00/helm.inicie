@@ -277,6 +277,7 @@ export class ModificarSolucionComponent implements OnInit {
         this.allCaracteristicas = allCaracteristicas;
         this.allAmbitos = allAmbitos;
         this.allSectores = allSectores;
+        this.sectoresFiltrados = allSectores;
       },
       error: (e) => console.error('Error al cargar todos los elementos:', e)
     });
