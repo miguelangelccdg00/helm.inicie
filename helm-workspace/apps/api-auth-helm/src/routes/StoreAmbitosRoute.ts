@@ -14,11 +14,6 @@ router.get('/listCompleteAmbitos', storeAmbitosController.listAmbitos);
 router.get('/listAmbitos/:idSolucion', storeAmbitosController.listIdAmbito);
 
 /**
- * @description Obtencion de ambitos por solución específica de su ID
- */
-router.get('/listAmbitosSolucion/:idSolucion', storeAmbitosController.getVariantesSolucionPorAmbito);
-
-/**
  * @description Insercion de ambitos por solución específica de su ID
  */
 router.post('/createAmbito/:idSolucion', storeAmbitosController.createAmbitos);
