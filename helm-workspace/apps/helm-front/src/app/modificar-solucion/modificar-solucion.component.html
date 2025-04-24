@@ -529,7 +529,7 @@
         <div class="subseccion">
           <h3 class="titulo-subseccion">Ámbitos asociados a la solución: {{ solucion.description }}</h3>
           <div>
-            <p-table [value]="solucion?.ambitos || []" [paginator]="true" [rows]="5"
+            <p-table [value]="solucionesSectores || []" [paginator]="true" [rows]="5"
               [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
               <ng-template pTemplate="header">
                 <tr>
@@ -742,7 +742,7 @@
       </div>
 
       <!-- Sección de sectores -->
-      <div class="seccion" #scrollSectores>
+      <!-- <div class="seccion" #scrollSectores>
         <h2 class="titulo-seccion">Sectores</h2>
 
         <div *ngIf="mostrarModificarSector === true" class="subseccion">
@@ -757,8 +757,8 @@
                   variant="filled"></textarea>
               </div>
               <div class="form-group col-6">
-                <label for="nuevoTextoweb">textoweb:</label>
-                <textarea id="nuevoTextoweb" [(ngModel)]="nuevoSector.textoweb" name="nuevoTextoweb"
+                <label for="nuevoTextoweb">textoWeb:</label>
+                <textarea id="nuevoTextoweb" [(ngModel)]="nuevoSector.textoWeb" name="nuevoTextoweb"
                   required></textarea>
               </div>
               <div class="form-group col-6">
@@ -800,8 +800,8 @@
                 required></textarea>
             </div>
             <div class="form-group">
-              <label for="nuevoTextoweb">textoweb:</label>
-              <textarea id="nuevoTextoweb" [(ngModel)]="nuevoSector.textoweb" name="nuevoTextoweb" required></textarea>
+              <label for="nuevoTextoweb">textoWeb:</label>
+              <textarea id="nuevoTextoweb" [(ngModel)]="nuevoSector.textoWeb" name="nuevoTextoweb" required></textarea>
             </div>
             <div class="form-group">
               <label for="nuevoPrefijo">prefijo:</label>
@@ -862,7 +862,7 @@
         <div class="subseccion">
           <h3 class="titulo-subseccion">Sectores asociados a la solución: {{ solucion.description }}</h3>
           <div>
-            <p-table [value]="solucion?.sectores || []" [paginator]="true" [rows]="5"
+            <p-table [value]="solucionesSectores || []" [paginator]="true" [rows]="5"
               [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
               <ng-template pTemplate="header">
                 <tr>
@@ -881,7 +881,7 @@
               <ng-template pTemplate="body" let-sector>
                 <tr>
                   <td>{{sector.description}}</td>
-                  <td>{{sector.textoweb}}</td>
+                  <td>{{sector.textoWeb}}</td>
                   <td>{{sector.prefijo}}</td>
                   <td>{{sector.slug}}</td>
                   <td>{{sector.descriptionweb}}</td>
@@ -905,7 +905,7 @@
         <div class="subseccion">
           <h3 class="titulo-subseccion">Solución: ({{ solucion.description }}) según cada sector</h3>
 
-          <!-- Formulario para modificar solución por sector -->
+          Formulario para modificar solución por sector
           <div *ngIf="mostrarModificarSolucionSector" class="subseccion" #formularioSolucionSector>
             <h3 class="titulo-subseccion">Modificar solución por sector</h3>
 
@@ -928,7 +928,7 @@
             </form>
           </div>
 
-          <div *ngIf="solucion?.sectores && solucion.sectores.length">
+          <div *ngIf="solucionesSectores && solucionesSectores.length">
             <p-table [value]="solucionesSectores" [paginator]="true" [rows]="5"
               [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
               <ng-template pTemplate="header">
@@ -959,12 +959,12 @@
             </p-table>
 
           </div>
-          <div *ngIf="!solucion?.sectores || solucion.sectores.length === 0">
+          <div *ngIf="!solucionesSectores || solucionesSectores.length === 0">
             <p>No hay sectores asociados a esta solución.</p>
           </div>
         </div>
 
-      </div>
+      </div> -->
 
       <div class="botones-container2">
         <button type="submit">Guardar Cambios</button>

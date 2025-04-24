@@ -16,6 +16,8 @@ import { forkJoin, Observable } from 'rxjs';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { tap } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-modificar-solucion',
@@ -280,6 +282,8 @@ export class ModificarSolucionComponent implements OnInit {
     });
   }
   
+
+
 
   guardarCambios() {
     if (this.solucion) {
