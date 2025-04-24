@@ -553,7 +553,7 @@ export class StoreSolucionesService {
   }
 
   getSectoresBySolucion(idSolucion: number): Observable<StoreSectores[]> {
-    const url = `${this.sectoresUrl}/listSectoresSolucion/${idSolucion}?_=${Date.now()}`;
+    const url = `${this.sectoresUrl}/listSectores/${idSolucion}?_=${Date.now()}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<StoreSectores[]>(url, { headers }).pipe(
       map(sectores => {
@@ -575,7 +575,7 @@ export class StoreSolucionesService {
   }
 
   listSectores(idSolucion: number): Observable<any> {
-    const url = `${this.sectoresUrl}/listSectoresSolucion/${idSolucion}`;
+    const url = `${this.sectoresUrl}/listSectores/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<any>(url, { headers }).pipe(
       map(response => {

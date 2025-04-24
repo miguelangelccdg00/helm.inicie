@@ -634,7 +634,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
-  /* agregarSector() {
+  agregarSector() {
     if (this.buscadorSector && this.solucion) {
       const sectorSeleccionado = this.sectorSeleccionado ||
         this.allSectores.find(
@@ -679,7 +679,7 @@ export class ModificarSolucionComponent implements OnInit {
     } else {
       console.error('Debe seleccionar un sector antes de agregarlo');
     }
-  } */
+  }
   
   eliminarBeneficio() {
     if (this.beneficioAEliminar !== null) {
