@@ -180,7 +180,7 @@ class StoreSectoresService
             updateValues.push(idSector);
 
             const [result] = await pool.promise().query(
-            `UPDATE storeAmbitos SET ${updateFields.join(', ')}
+            `UPDATE storeSectores SET ${updateFields.join(', ')}
                 WHERE id_sector = ?`,
             updateValues
             );
