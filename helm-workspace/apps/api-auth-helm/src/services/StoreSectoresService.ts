@@ -208,14 +208,14 @@ class StoreSectoresService
     }
 
   // Eliminar un sector
-  async deleteSector(idSector: number): Promise<boolean> 
+  async deleteSector(idSolucion: number, idSector: number): Promise<boolean> 
     {
     try 
     {
         // Eliminar todas las relaciones con soluciones
         await pool.promise().query(
-        `DELETE FROM storeSolucionesSectores WHERE id_sector = ?`,
-        [idSector]
+        `DELETE FROM storeSolucionesSectores WHERE id_solucion = ? AND id_sector = ?`,
+        [idSolucion, idSector]
         );
 
         // Luego eliminar el sector

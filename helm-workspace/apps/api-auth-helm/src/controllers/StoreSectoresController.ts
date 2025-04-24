@@ -161,19 +161,19 @@ class storeSectoresControllers
     }
   }
 
-  async deleteSector(req: Request<{ idSector: string }>, res: Response): Promise<void> 
+  async deleteSector(req: Request<{ idSolucion: string; idSector: string }>, res: Response): Promise<void> 
   {
     try
     {
-      const { idSector } = req.params;
+      const { idSolucion, idSector } = req.params;
 
-      if (!idSector) 
+      if (!idSolucion || !idSector) 
       {
         res.status(401).json({ message: 'ID no proporcionado' });
         return;
       }
 
-      const wasDeleted = await StoreSectoresService.deleteSector(Number(idSector));
+      const wasDeleted = await StoreSectoresService.deleteSector(Number(idSolucion), Number(idSector));
 
       if (!wasDeleted)
       {
