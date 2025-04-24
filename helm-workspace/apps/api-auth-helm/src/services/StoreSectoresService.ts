@@ -129,27 +129,7 @@ class StoreSectoresService
             throw new Error('Error al obtener los sectores');
         }
     }
-    // Obtener variantes por solución y sector
-    async getVariantesBySolucionAndSector(idSolucion: number): Promise<any[]> 
-    {
-        try 
-        {
-            const [rows] = await pool.promise().query(
-                `SELECT v.id_variantes, v.description
-                FROM storeVariantes v
-                JOIN storeSectores a ON v.id_sector = a.id_sector
-                WHERE a.id_solucion = ?`,
-                [idSolucion]
-            );
-            return rows;
-        } 
-        catch (error) 
-        {
-            console.error('Error al obtener las variantes por solución y sector:', error);
-            throw new Error('Error al obtener las variantes');
-        }
-    }
-
+    
     // Actualizar un sector
     async update(idSector: number, idSolucion: number,updateData: Partial<StoreSectores & SolucionSector>): Promise<StoreSectores> 
     {

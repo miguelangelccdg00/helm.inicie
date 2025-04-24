@@ -126,35 +126,6 @@ class storeSectoresControllers
     }
   }
 
-  async getVariantesSolucionPorSector(req: Request<{ idSolucion: string }>, res: Response): Promise<void> 
-  {
-    try 
-    {
-      const { idSolucion } = req.params;
-
-      if (!idSolucion)
-      {
-        res.status(400).json({ message: 'ID de solución es requerido' });
-        return;
-      }
-
-      const variantes = await StoreSectoresService.getVariantesBySolucionAndSector(Number(idSolucion));
-
-      if (!variantes.length) 
-      {
-        res.status(404).json({ message: 'No se encontraron variantes para la combinación dada' });
-        return;
-      }
-
-      res.status(200).json(variantes);
-    } 
-    catch (error) 
-    {
-      console.error('Error obteniendo las variantes:', error);
-      res.status(500).json({ message: 'Error interno del servidor' });
-    }
-  }
-
   async modifyStoreSectores(req: Request<{ idSolucion: string; idSector: string }, any, Partial<StoreSectores>>, res: Response): Promise<void> 
   {
     try 
