@@ -38,4 +38,6 @@ router.put('/modifyAmbitos/:id', storeSolucionesController.updateSolucionAmbitos
  */
 router.delete('/deleteAmbito/:idAmbito', storeAmbitosController.deleteAmbito);
 
+
+
 export default router;

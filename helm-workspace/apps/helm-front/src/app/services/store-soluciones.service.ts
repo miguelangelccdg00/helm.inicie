@@ -397,7 +397,7 @@ export class StoreSolucionesService {
   /* Ámbitos */
 
   getAmbitosBySolucion(idSolucion: number): Observable<StoreAmbitos[]> {
-    const url = `${this.ambitosUrl}/listAmbitosSolucion/${idSolucion}?_=${Date.now()}`;
+    const url = `${this.ambitosUrl}/listAmbitos/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<StoreAmbitos[]>(url, { headers }).pipe(
       map(ambitos => {
@@ -470,13 +470,20 @@ export class StoreSolucionesService {
     return this.https.delete<DeleteAmbitoResponse>(url, { headers });
   }
 
-  listAmbitos(idSolucion: number): Observable<any> {
-    const url = `${this.ambitosUrl}/listAmbitosSolucion/${idSolucion}`;
+  listAmbitos(idSolucion: number): Observable<SolucionAmbito[]> {
+    const url = `${this.ambitosUrl}/listAmbitos/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.get<any>(url, { headers }).pipe(
+    
+    console.log('Solicitando ámbitos por solución:', url);
+    
+    return this.https.get<SolucionAmbito[]>(url, { headers }).pipe(
       map(response => {
-        console.log('Response from listAmbitos:', response);
+        console.log('Respuesta de ámbitos por solución:', response);
         return response;
+      }),
+      catchError(error => {
+        console.error('Error al obtener ámbitos por solución:', error);
+        return of([]);
       })
     );
   }
@@ -565,7 +572,7 @@ export class StoreSolucionesService {
         return sectores;
       }),
       catchError(error => {
-        console.error(`Error al obtener sectores para la solución ${idSolucion}:`, error);
+        console.warn(`Error al obtener sectores para la solución ${idSolucion}:`, error);
         if (error.status === 404) {
           console.log(`No se encontraron sectores para la solución ${idSolucion}, devolviendo array vacío`);
         }
@@ -621,8 +628,8 @@ export class StoreSolucionesService {
     return this.https.put<any>(url, solucionSectores, { headers });
   }
 
-  deleteSector(idSector: number): Observable<DeleteSectorResponse> {
-    const url = `${this.sectoresUrl}/deleteSectores/${idSector}`;
+  deleteSector(idSolucion: number,idSector: number): Observable<DeleteSectorResponse> {
+    const url = `${this.sectoresUrl}/deleteSectores/${idSolucion}/${idSector}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete<DeleteSectorResponse>(url, { headers });
   }

@@ -373,7 +373,7 @@
               <label for="buscadorBeneficio">Seleccionar Beneficio:</label>
               <div class="custom-select">
                 <input type="text" id="buscadorBeneficio" [(ngModel)]="buscadorBeneficio" name="buscadorBeneficio"
-                  (input)="filtrarBeneficios()" (focus)="mostrarOpciones = true" (click)="mostrarOpciones = true"
+                  (input)="filtrarBeneficios()" (focus)="mostrarOpciones = true; beneficiosFiltrados = allBeneficios" (click)="mostrarOpciones = true"
                   placeholder="Buscar y seleccionar beneficio..." pInputText variant="filled" />
                 <div class="dropdown-menu" *ngIf="mostrarOpciones">
                   <div *ngFor="let beneficio of beneficiosFiltrados" class="dropdown-item"
@@ -505,7 +505,7 @@
               <label for="buscadorAmbito">Seleccionar Ámbito:</label>
               <div class="custom-select">
                 <input type="text" id="buscadorAmbito" [(ngModel)]="buscadorAmbito" name="buscadorAmbito"
-                  (input)="filtrarAmbitos()" (focus)="mostrarOpcionesAmbitos = true"
+                  (input)="filtrarAmbitos()" (focus)="mostrarOpcionesAmbitos = true; ambitosFiltrados = allAmbitos"
                   (click)="mostrarOpcionesAmbitos = true" placeholder="Buscar y seleccionar ámbito..." pInputText
                   variant="filled" />
                 <div class="dropdown-menu" *ngIf="mostrarOpcionesAmbitos">
@@ -526,42 +526,45 @@
           </div>
         </div>
 
-        <div class="subseccion">
-          <h3 class="titulo-subseccion">Ámbitos asociados a la solución: {{ solucion.description }}</h3>
-          <div>
-            <p-table [value]="solucionesSectores || []" [paginator]="true" [rows]="5"
-              [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>Descripción</th>
-                  <th>Textoweb</th>
-                  <th>Prefijo</th>
-                  <th>Slug</th>
-                  <th>Editar</th>
-                  <th>Eliminar</th>
-                </tr>
-              </ng-template>
+        <!-- Tabla de ámbitos asociados -->
+<div class="subseccion">
+  <h3 class="titulo-subseccion">Ámbitos asociados a la solución: {{ solucion.description }}</h3>
+  <div *ngIf="ambitos && ambitos.length">
+    <p-table [value]="ambitos" [paginator]="true" [rows]="5"
+      [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
+      
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Descripción</th>
+          <th>Textoweb</th>
+          <th>Prefijo</th>
+          <th>Slug</th>
+          <th>Editar</th>
+          <th>Eliminar</th>
+        </tr>
+      </ng-template>
 
-              <ng-template pTemplate="body" let-ambito>
-                <tr>
-                  <td>{{ambito.description}}</td>
-                  <td>{{ambito.textoweb}}</td>
-                  <td>{{ambito.prefijo}}</td>
-                  <td>{{ambito.slug}}</td>
-                  <td><span (click)="editarAmbito(ambito)" class="emojis">✏️</span></td>
-                  <td><span
-                      (click)="ambito.id_ambito !== undefined ? confirmarEliminarAmbito(ambito.id_ambito, $event) : null"
-                      class="emojis">🗑️</span></td>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="emptymessage">
-                <tr>
-                  <td colspan="6" style="text-align: center;">No hay ámbitos asociados a esta solución.</td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </div>
-        </div>
+      <ng-template pTemplate="body" let-ambito>
+        <tr>
+          <td>{{ ambito.description }}</td>
+          <td>{{ ambito.textoweb }}</td>
+          <td>{{ ambito.prefijo }}</td>
+          <td>{{ ambito.slug }}</td>
+          <td>
+            <span (click)="editarAmbito(ambito)" class="emojis">✏️</span>
+          </td>
+          <td>
+            <span (click)="confirmarEliminarSolucionAmbito(ambito.id_ambito!, solucion.id_solucion!, $event)" 
+              class="emojis">🗑️</span>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div *ngIf="!ambitos || ambitos.length === 0">
+    <p>No hay ámbitos asociados a esta solución.</p>
+  </div>
+</div>
 
         <div class="subseccion">
           <h3 class="titulo-subseccion">Solución: ({{ solucion.description }}) según cada ámbito</h3>

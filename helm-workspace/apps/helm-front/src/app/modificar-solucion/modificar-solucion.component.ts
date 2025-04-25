@@ -184,6 +184,7 @@ export class ModificarSolucionComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.ambitosFiltrados = this.allAmbitos;
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
   
@@ -257,7 +258,7 @@ export class ModificarSolucionComponent implements OnInit {
             this.solucionesSectores = res;
             this.changeDetectorRef.detectChanges();
           },
-          error: (err) => console.error('Error al obtener soluciones por sector:', err)
+          error: (err) => console.warn('Error al obtener soluciones por sector:', err)
         });
 
       },
@@ -863,7 +864,7 @@ export class ModificarSolucionComponent implements OnInit {
   eliminarSector() {
     if (this.sectorAEliminar === null) return;
   
-    this.storeSolucionesService.deleteSector(this.sectorAEliminar).subscribe({
+    this.storeSolucionesService.deleteSector(this.solucion!.id_solucion, this.sectorAEliminar).subscribe({
       next: () => {
         console.log('Sector eliminado correctamente de la base de datos');
   
@@ -964,9 +965,15 @@ export class ModificarSolucionComponent implements OnInit {
 
   filtrarAmbitos() {
     const filtro = this.buscadorAmbito.toLowerCase().trim();
-    this.ambitosFiltrados = this.allAmbitos.filter(ambito =>
-      ambito.description.toLowerCase().includes(filtro)
-    );
+
+    if (!filtro) {
+      this.ambitosFiltrados = this.allAmbitos;
+    } else {
+      
+      this.ambitosFiltrados = this.allAmbitos.filter(ambito =>
+        ambito.description.toLowerCase().includes(filtro)
+      );
+    }
   }
 
   filtrarSectores() {
@@ -1148,7 +1155,7 @@ export class ModificarSolucionComponent implements OnInit {
     this.mostrarCrearSector = false;
     this.mostrarBotonCrearSector = true;
   
-    if (!this.nuevoSector || !this.nuevoSector.description) {
+    /* if (!this.nuevoSector || !this.nuevoSector.description) {
       console.error('Debe ingresar la descripción del sector');
       return;
     }
@@ -1181,13 +1188,13 @@ export class ModificarSolucionComponent implements OnInit {
     if (!this.nuevoSector.backgroundImage) {
       console.error('Debe ingresar la background image del sector');
       return;
-    }
+    }*/
   
 
     if (!this.solucion) {
-      console.error('La solución debe estar cargada');
+      // console.error('La solución debe estar cargada');
       return;
-    }
+    } 
   
     this.storeSolucionesService.createSector(this.solucion.id_solucion, this.nuevoSector).subscribe({
       next: (sectorCreadoResponse) => {
