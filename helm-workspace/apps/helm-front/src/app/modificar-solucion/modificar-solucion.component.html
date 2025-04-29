@@ -111,7 +111,7 @@
               <label for="buscadorProblema">Seleccionar Problema:</label>
               <div class="custom-select">
                 <input type="text" id="buscadorProblema" [(ngModel)]="buscadorProblema" name="buscadorProblema"
-                  (input)="filtrarProblemas()" (focus)="mostrarOpcionesProblema = true"
+                  (input)="filtrarProblemas()" (focus)="mostrarOpcionesProblema = true ; problemasFiltrados = allProblemas"
                   (click)="mostrarOpcionesProblema = true" placeholder="Buscar y seleccionar problema..." pInputText
                   variant="filled" />
                 <div class="dropdown-menu" *ngIf="mostrarOpcionesProblema">
@@ -227,7 +227,7 @@
               <div class="custom-select">
                 <input type="text" id="buscadorCaracteristica" [(ngModel)]="buscadorCaracteristica"
                   name="buscadorCaracteristica" (input)="filtrarCaracteristicas()"
-                  (focus)="mostrarOpcionesCaracteristicas = true" (click)="mostrarOpcionesCaracteristicas = true"
+                  (focus)="mostrarOpcionesCaracteristicas = true ; caracteristicasFiltradas = allCaracteristicas" (click)="mostrarOpcionesCaracteristicas = true"
                   placeholder="Buscar y seleccionar característica..." pInputText variant="filled" />
                 <div class="dropdown-menu" *ngIf="mostrarOpcionesCaracteristicas">
                   <div *ngFor="let caracteristica of caracteristicasFiltradas" class="dropdown-item"

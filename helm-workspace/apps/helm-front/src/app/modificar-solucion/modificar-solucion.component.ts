@@ -184,105 +184,69 @@ export class ModificarSolucionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.ambitosFiltrados = this.allAmbitos;
-    const id = this.route.snapshot.paramMap.get('id');
-    if (!id) return;
-  
-    const idSolucion = +id;
-  
-    this.storeSolucionesService.getStoreSolucionById(idSolucion).subscribe({
-      next: (solucion) => {
-        this.solucion = {
-          ...solucion,
-          problemas: solucion.problemas || [],
-          beneficios: solucion.beneficios || [],
-          caracteristicas: solucion.caracteristicas || [],
-          ambitos: solucion.ambitos || [],
-          sectores: solucion.sectores || []
-        };
-  
-        forkJoin([
-          this.storeSolucionesService.getProblemasBySolucion(idSolucion),
-          this.storeSolucionesService.getBeneficiosBySolucion(idSolucion),
-          this.storeSolucionesService.getCaracteristicasBySolucion(idSolucion),
-          this.storeSolucionesService.getAmbitosBySolucion(idSolucion),
-          this.storeSolucionesService.getSectoresBySolucion(idSolucion)
-        ]).subscribe({
-          next: ([problemas, beneficios, caracteristicas, ambitos, sectores]) => {
-            this.problemas = this.solucion!.problemas = problemas;
-            this.beneficios = this.solucion!.beneficios = beneficios;
-            this.caracteristicas = this.solucion!.caracteristicas = caracteristicas;
-            this.ambitos = this.solucion!.ambitos = ambitos;
-            this.sectores = this.solucion!.sectores = sectores;
-  
-            console.log('Ámbitos cargados:', ambitos);
-            console.log('Sectores cargados:', sectores);
-  
-            this.changeDetectorRef.detectChanges();
-          },
-          error: (e) => console.error('Error al obtener entidades relacionadas:', e)
-        });
-  
-        this.storeSolucionesService.getAmbitosBySolucion(idSolucion).subscribe({
-          next: (ambitos) => {
-            if (ambitos && ambitos.length > 0) {
-              this.ambitos = this.solucion!.ambitos = ambitos;
-              console.log('Ámbitos recargados:', ambitos);
-              this.changeDetectorRef.detectChanges();
-            }
-          },
-          error: (e) => console.error('Error al recargar ámbitos:', e)
-        });
-  
-        this.storeSolucionesService.listAmbitos(idSolucion).subscribe({
-          next: (res) => {
-            this.solucionesAmbitos = res;
-            this.changeDetectorRef.detectChanges();
-          },
-          error: (err) => console.error('Error al obtener soluciones por ámbito:', err)
-        });
+  this.ambitosFiltrados = this.allAmbitos;
+  const id = this.route.snapshot.paramMap.get('id');
+  if (!id) return;
 
-        this.storeSolucionesService.getSectoresBySolucion(idSolucion).subscribe({
-          next: (sectores) => {
-            if (sectores && sectores.length > 0) {
-              this.sectores = this.solucion!.sectores = sectores;
-              console.log('Sectores recargados:', sectores);
-              this.changeDetectorRef.detectChanges();
-            }
-          },
-          error: (e) => console.error('Error al recargar ámbitos:', e)
-        });
-  
-        this.storeSolucionesService.listSectores(idSolucion).subscribe({
-          next: (res) => {
-            this.solucionesSectores = res;
-            this.changeDetectorRef.detectChanges();
-          },
-          error: (err) => console.warn('Error al obtener soluciones por sector:', err)
-        });
+  const idSolucion = +id;
 
-      },
-      error: (e) => console.error('Error al obtener la solución:', e)
-    });
-  
-    forkJoin([
-      this.storeSolucionesService.getAllProblemas(),
-      this.storeSolucionesService.getAllBeneficios(),
-      this.storeSolucionesService.getAllCaracteristicas(),
-      this.storeSolucionesService.getAllAmbitos(),
-      this.storeSolucionesService.getAllSectores()
-    ]).subscribe({
-      next: ([allProblemas, allBeneficios, allCaracteristicas, allAmbitos, allSectores]) => {
-        this.allProblemas = allProblemas;
-        this.allBeneficios = allBeneficios;
-        this.allCaracteristicas = allCaracteristicas;
-        this.allAmbitos = allAmbitos;
-        this.allSectores = allSectores;
-        this.sectoresFiltrados = allSectores;
-      },
-      error: (e) => console.error('Error al cargar todos los elementos:', e)
-    });
-  }
+  this.storeSolucionesService.getStoreSolucionById(idSolucion).subscribe({
+    next: (solucion) => {
+      this.solucion = {
+        ...solucion,
+        problemas: solucion.problemas || [],
+        beneficios: solucion.beneficios || [],
+        caracteristicas: solucion.caracteristicas || [],
+        ambitos: solucion.ambitos || [],
+        sectores: solucion.sectores || []
+      };
+
+      forkJoin([
+        this.storeSolucionesService.getProblemasBySolucion(idSolucion),
+        this.storeSolucionesService.getBeneficiosBySolucion(idSolucion),
+        this.storeSolucionesService.getCaracteristicasBySolucion(idSolucion),
+        this.storeSolucionesService.getAmbitosBySolucion(idSolucion),
+        this.storeSolucionesService.getSectoresBySolucion(idSolucion)
+      ]).subscribe({
+        next: ([problemas, beneficios, caracteristicas, ambitos, sectores]) => {
+          this.problemas = this.solucion!.problemas = problemas;
+          this.beneficios = this.solucion!.beneficios = beneficios;
+          this.caracteristicas = this.solucion!.caracteristicas = caracteristicas;
+          this.ambitos = this.solucion!.ambitos = ambitos;
+          this.sectores = this.solucion!.sectores = sectores;
+          this.changeDetectorRef.detectChanges();
+        },
+        error: (e) => console.warn('⚠️ Error al obtener entidades relacionadas:', e)
+      });
+
+      // Eliminamos los siguientes bloques ya que son redundantes
+      // this.storeSolucionesService.getAmbitosBySolucion()...
+      // this.storeSolucionesService.listAmbitos()...
+      // this.storeSolucionesService.getSectoresBySolucion()...
+      // this.storeSolucionesService.listSectores()...
+
+    },
+    error: (e) => console.warn('⚠️ Error al obtener la solución:', e)
+  });
+
+  forkJoin([
+    this.storeSolucionesService.getAllProblemas(),
+    this.storeSolucionesService.getAllBeneficios(),
+    this.storeSolucionesService.getAllCaracteristicas(),
+    this.storeSolucionesService.getAllAmbitos(),
+    this.storeSolucionesService.getAllSectores()
+  ]).subscribe({
+    next: ([allProblemas, allBeneficios, allCaracteristicas, allAmbitos, allSectores]) => {
+      this.allProblemas = allProblemas;
+      this.allBeneficios = allBeneficios;
+      this.allCaracteristicas = allCaracteristicas;
+      this.allAmbitos = allAmbitos;
+      this.allSectores = allSectores;
+      this.sectoresFiltrados = allSectores;
+    },
+    error: (e) => console.warn('⚠️ Error al cargar todos los elementos:', e)
+  });
+}
   
 
 

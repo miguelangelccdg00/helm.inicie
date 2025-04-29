@@ -50,7 +50,8 @@ class StoreBeneficiosControllers {
       const beneficiosSolucion: StoreBeneficios[] = await storeBeneficiosService.getByIdBeneficio(Number(idSolucion));
 
       if (!beneficiosSolucion.length) {
-        res.status(404).json({ message: 'No se encontraron beneficios para esta solución' });
+        console.info(`ℹ️ No se encontraron beneficios para la solución ${idSolucion}, devolviendo lista vacía.`);
+        res.status(200).json([]); // Devolver 200 OK con un array vacío para evitar el error 404
         return;
       }
 

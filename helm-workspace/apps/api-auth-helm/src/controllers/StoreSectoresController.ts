@@ -38,7 +38,7 @@ class storeSectoresControllers
     } 
     catch (error) 
     {
-      console.error('Error en createSectores:', error);
+      console.warn('⚠️ Error en createSectores:', error);
       res.status(500).json({ message: 'Error interno del servidor al crear el sector.' });
     }
   }
@@ -70,7 +70,7 @@ class storeSectoresControllers
       } 
       catch (error) 
       {
-          console.error('Error asociando el sector:', error);
+          console.warn('⚠️ Error asociando el sector:', error);
           res.status(500).json({ message: 'Error interno del servidor' });
       }
   }
@@ -91,7 +91,7 @@ class storeSectoresControllers
     } 
     catch (error) 
     {
-      console.error('Error listando los sectores:', error);
+      console.warn('⚠️ Error listando los sectores:', error);
       res.status(500).json({ message: 'Error interno del servidor' });
     }
   }
@@ -104,6 +104,7 @@ class storeSectoresControllers
 
       if (!idSolucion) 
       {
+        console.info('ℹ️ ID de la solución no proporcionado');
         res.status(400).json({ message: 'ID de la solución no proporcionado' });
         return;
       }
@@ -112,16 +113,18 @@ class storeSectoresControllers
 
       if (!sectorSolucion || sectorSolucion.length === 0) 
       {
-        res.status(404).json({ message: 'No se encontraron sectores para esta solución' });
+        console.info(`ℹ️ No se encontraron sectores para la solución ${idSolucion}, devolviendo lista vacía.`);
+        res.status(200).json([]); // Devolver 200 OK con un array vacío para evitar el error 404
         return;
       }
 
+      console.log(`✅ Sectores recuperados correctamente para la solución ${idSolucion}`);
       res.status(200).json(sectorSolucion);
 
     } 
     catch (error) 
     {
-      console.error('Error obteniendo los sectores:', error);
+      console.warn('⚠️ Error obteniendo los sectores:', error);
       res.status(500).json({ message: 'Error interno del servidor' });
     }
   }
@@ -176,6 +179,7 @@ class storeSectoresControllers
       );
   
       if (!wasDeleted) {
+        console.info('ℹ️ Relación sector-solución no encontrada');
         res.status(404).json({ message: 'Relación sector-solución no encontrada' });
         return;
       }
@@ -184,7 +188,7 @@ class storeSectoresControllers
         message: 'Relación sector-solución eliminada correctamente' 
       });
     } catch (error) {
-      console.error('Error al eliminar la relación sector-solución:', error);
+      console.warn('⚠️ Error al eliminar la relación sector-solución:', error);
       res.status(500).json({ message: 'Error interno del servidor' });
     }
   }
@@ -213,7 +217,7 @@ class storeSectoresControllers
     } 
     catch (error) 
     {
-      console.error('Error al eliminar el Sector:', error);
+      console.warn('⚠️ Error al eliminar el Sector:', error);
       res.status(500).json({ message: 'Error interno del servidor' });
     }
   }

@@ -103,18 +103,24 @@ export class StoreSolucionesService {
   getBeneficiosBySolucion(idSolucion: number): Observable<StoreBeneficios[]> {
     const url = `${this.beneficiosUrl}/listBeneficios/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    
+    console.info('ℹ️ Consultando beneficios asociados...');
+    
     return this.https.get<StoreBeneficios[]>(url, { headers }).pipe(
       map(beneficios => {
-        console.log('Beneficios recuperados:', beneficios);
+        if (beneficios && beneficios.length > 0) {
+          console.log('✅ Beneficios recuperados correctamente');
+        } else {
+          console.info('ℹ️ No hay beneficios asociados');
+        }
         return Array.isArray(beneficios) ? beneficios : [];
       }),
       catchError(error => {
-        console.error(`Error al obtener beneficios para la solución ${idSolucion}:`, error);
-        // Verificar específicamente si es un error 404 (Not Found)
         if (error.status === 404) {
-          console.log(`No se encontraron beneficios para la solución ${idSolucion}, devolviendo array vacío`);
+          console.info('ℹ️ Sin beneficios para mostrar');
+        } else {
+          console.warn('⚠️ Error al consultar beneficios');
         }
-        // Siempre devolver un array vacío en caso de error
         return of([]);
       })
     );
@@ -202,18 +208,24 @@ export class StoreSolucionesService {
   getProblemasBySolucion(idSolucion: number): Observable<StoreProblemas[]> {
     const url = `${this.problemasUrl}/listProblemas/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    
+    console.info('ℹ️ Consultando problemas asociados...');
+    
     return this.https.get<StoreProblemas[]>(url, { headers }).pipe(
       map(problemas => {
-        console.log('Problemas recuperados:', problemas);
+        if (problemas && problemas.length > 0) {
+          console.log('✅ Problemas recuperados correctamente');
+        } else {
+          console.info('ℹ️ No hay problemas asociados');
+        }
         return Array.isArray(problemas) ? problemas : [];
       }),
       catchError(error => {
-        console.error(`Error al obtener problemas para la solución ${idSolucion}:`, error);
-        // Verificar específicamente si es un error 404 (Not Found)
         if (error.status === 404) {
-          console.log(`No se encontraron problemas para la solución ${idSolucion}, devolviendo array vacío`);
+          console.info('ℹ️ Sin problemas para mostrar');
+        } else {
+          console.warn('⚠️ Error al consultar problemas');
         }
-        // Siempre devolver un array vacío en caso de error
         return of([]);
       })
     );
@@ -313,18 +325,24 @@ export class StoreSolucionesService {
   getCaracteristicasBySolucion(idSolucion: number): Observable<StoreCaracteristicas[]> {
     const url = `${this.caracteristicasUrl}/listCaracteristicas/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    
+    console.info('ℹ️ Consultando características asociadas...');
+    
     return this.https.get<StoreCaracteristicas[]>(url, { headers }).pipe(
       map(caracteristicas => {
-        console.log('Características recuperadas:', caracteristicas);
+        if (caracteristicas && caracteristicas.length > 0) {
+          console.log('✅ Características recuperadas correctamente');
+        } else {
+          console.info('ℹ️ No hay características asociadas');
+        }
         return Array.isArray(caracteristicas) ? caracteristicas : [];
       }),
       catchError(error => {
-        console.error(`Error al obtener características para la solución ${idSolucion}:`, error);
-        // Verificar específicamente si es un error 404 (Not Found)
         if (error.status === 404) {
-          console.log(`No se encontraron características para la solución ${idSolucion}, devolviendo array vacío`);
+          console.info('ℹ️ Sin características para mostrar');
+        } else {
+          console.warn('⚠️ Error al consultar características');
         }
-        // Siempre devolver un array vacío en caso de error
         return of([]);
       })
     );
@@ -398,20 +416,30 @@ export class StoreSolucionesService {
 
   getAmbitosBySolucion(idSolucion: number): Observable<StoreAmbitos[]> {
     const url = `${this.ambitosUrl}/listAmbitos/${idSolucion}`;
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.get<StoreAmbitos[]>(url, { headers }).pipe(
-      map(ambitos => {
-        console.log('Ámbitos recuperados:', ambitos);
-        if (!Array.isArray(ambitos)) {
-          console.warn('La respuesta de ámbitos no es un array, convirtiendo:', ambitos);
-          return ambitos ? [ambitos] : [];
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json, text/plain, */*');
+    
+    console.info('ℹ️ Consultando ámbitos asociados...');
+    
+    return this.https.get<StoreAmbitos[]>(url, { 
+      headers,
+      observe: 'response',
+      responseType: 'json'
+    }).pipe(
+      map(response => {
+        if (response.body && response.body.length > 0) {
+          console.log('✅ Ámbitos recuperados correctamente');
+        } else {
+          console.info('ℹ️ No hay ámbitos asociados');
         }
-        return ambitos;
+        return response.body || [];
       }),
       catchError(error => {
-        console.error(`Error al obtener ámbitos para la solución ${idSolucion}:`, error);
         if (error.status === 404) {
-          console.log(`No se encontraron ámbitos para la solución ${idSolucion}, devolviendo array vacío`);
+          console.info('ℹ️ Sin ámbitos para mostrar');
+        } else {
+          console.warn('⚠️ Error al consultar ámbitos');
         }
         return of([]);
       })
@@ -474,15 +502,23 @@ export class StoreSolucionesService {
     const url = `${this.ambitosUrl}/listAmbitos/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     
-    console.log('Solicitando ámbitos por solución:', url);
+    console.info('ℹ️ Solicitando ámbitos por solución:', url);
     
     return this.https.get<SolucionAmbito[]>(url, { headers }).pipe(
       map(response => {
-        console.log('Respuesta de ámbitos por solución:', response);
+        if (!response || response.length === 0) {
+          console.info(`ℹ️ No se encontraron ámbitos para la solución ${idSolucion}`);
+        } else {
+          console.log('✅ Ámbitos recuperados correctamente:', response);
+        }
         return response;
       }),
       catchError(error => {
-        console.error('Error al obtener ámbitos por solución:', error);
+        if (error.status === 404) {
+          console.info(`ℹ️ No se encontraron ámbitos para la solución ${idSolucion}`);
+        } else {
+          console.warn('⚠️ Error al obtener ámbitos por solución:', error);
+        }
         return of([]);
       })
     );
@@ -554,27 +590,63 @@ export class StoreSolucionesService {
   }
 
   getAllSectores(): Observable<StoreSectores[]> {
-    const url = `${this.sectoresUrl}/listCompleteSectores`;
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.get<StoreSectores[]>(url, { headers });
-  }
+  const url = `${this.sectoresUrl}/listCompleteSectores`;
+  const headers = new HttpHeaders()
+    .set('Content-Type', 'application/json')
+    .set('Accept', 'application/json, text/plain, */*');
+  
+  console.info('ℹ️ Consultando listado completo de sectores...');
+  
+  return this.https.get<StoreSectores[]>(url, { 
+    headers,
+    observe: 'response',
+    responseType: 'json'
+  }).pipe(
+    map(response => {
+      if (response.body && response.body.length > 0) {
+        console.log('✅ Listado de sectores recuperado correctamente');
+      } else {
+        console.info('ℹ️ No hay sectores disponibles en el sistema');
+      }
+      return response.body || [];
+    }),
+    catchError(error => {
+      if (error.status === 404) {
+        console.info('ℹ️ Sin sectores para mostrar');
+      } else {
+        console.warn('⚠️ Error al consultar el listado de sectores:', error.message);
+      }
+      return of([]);
+    })
+  );
+}
 
   getSectoresBySolucion(idSolucion: number): Observable<StoreSectores[]> {
-    const url = `${this.sectoresUrl}/listSectores/${idSolucion}?_=${Date.now()}`;
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.get<StoreSectores[]>(url, { headers }).pipe(
-      map(sectores => {
-        console.log('Sectores recuperados:', sectores);
-        if (!Array.isArray(sectores)) {
-          console.warn('La respuesta de sectores no es un array, convirtiendo:', sectores);
-          return sectores ? [sectores] : [];
+    const url = `${this.sectoresUrl}/listSectores/${idSolucion}`;
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json, text/plain, */*');
+    
+    console.info('ℹ️ Consultando sectores asociados...');
+    
+    return this.https.get<StoreSectores[]>(url, { 
+      headers,
+      observe: 'response',
+      responseType: 'json'
+    }).pipe(
+      map(response => {
+        if (response.body && response.body.length > 0) {
+          console.log('✅ Sectores recuperados correctamente');
+        } else {
+          console.info('ℹ️ No hay sectores asociados');
         }
-        return sectores;
+        return response.body || [];
       }),
       catchError(error => {
-        console.warn(`Error al obtener sectores para la solución ${idSolucion}:`, error);
         if (error.status === 404) {
-          console.log(`No se encontraron sectores para la solución ${idSolucion}, devolviendo array vacío`);
+          console.info('ℹ️ Sin sectores para mostrar');
+        } else {
+          console.warn('⚠️ Error al consultar sectores');
         }
         return of([]);
       })
@@ -584,10 +656,21 @@ export class StoreSolucionesService {
   listSectores(idSolucion: number): Observable<any> {
     const url = `${this.sectoresUrl}/listSectores/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    
+    console.info('ℹ️ Consultando sectores de la solución:', idSolucion);
+    
     return this.https.get<any>(url, { headers }).pipe(
       map(response => {
-        console.log('Response from listSectores:', response);
+        console.log('✅ Listado de sectores obtenido correctamente');
         return response;
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          console.info(`ℹ️ No se encontraron sectores para consultar`);
+        } else {
+          console.warn('⚠️ Error en la consulta de sectores:', error);
+        }
+        return of([]);
       })
     );
   }
