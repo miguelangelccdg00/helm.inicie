@@ -669,7 +669,7 @@
           </div>
 
           <div *ngIf="solucion?.ambitos && solucion.ambitos.length">
-            <p-table [value]="solucionesAmbitos" [paginator]="true" [rows]="5"
+            <p-table [value]="solucion.ambitos" [paginator]="true" [rows]="5"
               [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
               <ng-template pTemplate="header">
                 <tr>
@@ -703,8 +703,8 @@
 
               <ng-template pTemplate="body" let-solucionAmbito>
                 <tr>
-                  <td>{{ solucionAmbito.ambitoDescription }}</td>
-                  <td>{{ solucionAmbito.description }}</td>
+                  <td>{{ ambitosDictionary[solucionAmbito.id_ambito!]?.description || 'No disponible' }}</td>
+                  <td>{{ solucion.description }}</td>
                   <td>{{ solucionAmbito.title }}</td>
                   <td>{{ solucionAmbito.subtitle }}</td>
                   <td>{{ solucionAmbito.icon }}</td>
@@ -865,7 +865,7 @@
         <div class="subseccion">
           <h3 class="titulo-subseccion">Sectores asociados a la solución: {{ solucion.description }}</h3>
           <div>
-            <p-table [value]="solucionesSectores || []" [paginator]="true" [rows]="5"
+            <p-table [value]="solucion.sectores || []" [paginator]="true" [rows]="5"
               [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
               <ng-template pTemplate="header">
                 <tr>
@@ -880,7 +880,7 @@
                   <th>Eliminar</th>
                 </tr>
               </ng-template>
-
+        
               <ng-template pTemplate="body" let-sector>
                 <tr>
                   <td>{{sector.description}}</td>
@@ -898,7 +898,7 @@
               </ng-template>
               <ng-template pTemplate="emptymessage">
                 <tr>
-                  <td colspan="6" style="text-align: center;">No hay sectores asociados a esta solución.</td>
+                  <td colspan="9" style="text-align: center;">No hay sectores asociados a esta solución.</td>
                 </tr>
               </ng-template>
             </p-table>
@@ -908,7 +908,7 @@
         <div class="subseccion">
           <h3 class="titulo-subseccion">Solución: ({{ solucion.description }}) según cada sector</h3>
 
-          Formulario para modificar solución por sector
+          <!-- Formulario para modificar solución por sector -->
           <div *ngIf="mostrarModificarSolucionSector" class="subseccion" #formularioSolucionSector>
             <h3 class="titulo-subseccion">Modificar solución por sector</h3>
 
@@ -944,7 +944,7 @@
                   <th>Eliminar</th>
                 </tr>
               </ng-template>
-
+          
               <ng-template pTemplate="body" let-solucionSector>
                 <tr>
                   <td>{{ solucionSector.id_solucion }}</td>
@@ -954,13 +954,15 @@
                   <td>
                     <span (click)="editarSolucionSector(solucionSector)" class="emojis">✏️</span>
                   </td>
-                  <td><span (click)="confirmarEliminarSolucionSector(solucionSector.id_sector!, solucion.id_solucion!, $event)" 
-                    class="emojis">🗑️</span></td>
+                  <td>
+                    <span (click)="confirmarEliminarSolucionSector(solucionSector.id_sector!, solucion.id_solucion!, $event)" 
+                      class="emojis">🗑️</span>
+                  </td>
                 </tr>
               </ng-template>
             </p-table>
-
           </div>
+          
           <div *ngIf="!solucionesSectores || solucionesSectores.length === 0">
             <p>No hay sectores asociados a esta solución.</p>
           </div>

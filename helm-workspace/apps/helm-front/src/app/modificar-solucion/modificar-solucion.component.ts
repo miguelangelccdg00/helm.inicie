@@ -159,6 +159,10 @@ export class ModificarSolucionComponent implements OnInit {
   mostrarModalSector: boolean = false;
   mostrarModalSolucionSector: boolean = false;
 
+  ambitosDictionary: { [key: number]: StoreAmbitos } = {};
+  sectoresDictionary: { [key: number]: StoreSectores } = {};
+  
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -184,69 +188,100 @@ export class ModificarSolucionComponent implements OnInit {
   }
 
   ngOnInit() {
-  this.ambitosFiltrados = this.allAmbitos;
-  const id = this.route.snapshot.paramMap.get('id');
-  if (!id) return;
-
-  const idSolucion = +id;
-
-  this.storeSolucionesService.getStoreSolucionById(idSolucion).subscribe({
-    next: (solucion) => {
-      this.solucion = {
-        ...solucion,
-        problemas: solucion.problemas || [],
-        beneficios: solucion.beneficios || [],
-        caracteristicas: solucion.caracteristicas || [],
-        ambitos: solucion.ambitos || [],
-        sectores: solucion.sectores || []
-      };
-
-      forkJoin([
-        this.storeSolucionesService.getProblemasBySolucion(idSolucion),
-        this.storeSolucionesService.getBeneficiosBySolucion(idSolucion),
-        this.storeSolucionesService.getCaracteristicasBySolucion(idSolucion),
-        this.storeSolucionesService.getAmbitosBySolucion(idSolucion),
-        this.storeSolucionesService.getSectoresBySolucion(idSolucion)
-      ]).subscribe({
-        next: ([problemas, beneficios, caracteristicas, ambitos, sectores]) => {
-          this.problemas = this.solucion!.problemas = problemas;
-          this.beneficios = this.solucion!.beneficios = beneficios;
-          this.caracteristicas = this.solucion!.caracteristicas = caracteristicas;
-          this.ambitos = this.solucion!.ambitos = ambitos;
-          this.sectores = this.solucion!.sectores = sectores;
-          this.changeDetectorRef.detectChanges();
-        },
-        error: (e) => console.warn('⚠️ Error al obtener entidades relacionadas:', e)
-      });
-
-      // Eliminamos los siguientes bloques ya que son redundantes
-      // this.storeSolucionesService.getAmbitosBySolucion()...
-      // this.storeSolucionesService.listAmbitos()...
-      // this.storeSolucionesService.getSectoresBySolucion()...
-      // this.storeSolucionesService.listSectores()...
-
-    },
-    error: (e) => console.warn('⚠️ Error al obtener la solución:', e)
-  });
-
-  forkJoin([
-    this.storeSolucionesService.getAllProblemas(),
-    this.storeSolucionesService.getAllBeneficios(),
-    this.storeSolucionesService.getAllCaracteristicas(),
-    this.storeSolucionesService.getAllAmbitos(),
-    this.storeSolucionesService.getAllSectores()
-  ]).subscribe({
-    next: ([allProblemas, allBeneficios, allCaracteristicas, allAmbitos, allSectores]) => {
-      this.allProblemas = allProblemas;
-      this.allBeneficios = allBeneficios;
-      this.allCaracteristicas = allCaracteristicas;
-      this.allAmbitos = allAmbitos;
-      this.allSectores = allSectores;
-      this.sectoresFiltrados = allSectores;
-    },
-    error: (e) => console.warn('⚠️ Error al cargar todos los elementos:', e)
-  });
-}
+    this.ambitosFiltrados = this.allAmbitos;
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) return;
+  
+    const idSolucion = +id;
+  
+    // Primera suscripción: Obtener la solución principal
+    this.storeSolucionesService.getStoreSolucionById(idSolucion).subscribe({
+      next: (solucion) => {
+        this.solucion = {
+          ...solucion,
+          problemas: solucion.problemas || [],
+          beneficios: solucion.beneficios || [],
+          caracteristicas: solucion.caracteristicas || [],
+          ambitos: solucion.ambitos || [],
+          sectores: solucion.sectores || []
+        };
+  
+        // Obtener datos relacionados con la solución
+        forkJoin([
+          this.storeSolucionesService.getProblemasBySolucion(idSolucion),
+          this.storeSolucionesService.getBeneficiosBySolucion(idSolucion),
+          this.storeSolucionesService.getCaracteristicasBySolucion(idSolucion),
+          this.storeSolucionesService.getAmbitosBySolucion(idSolucion),
+          this.storeSolucionesService.getSectoresBySolucion(idSolucion),
+          this.storeSolucionesService.listAmbitos(idSolucion),
+          this.storeSolucionesService.listSectores(idSolucion)
+        ]).subscribe({
+          next: ([problemas, beneficios, caracteristicas, ambitos, sectores, solucionesAmbitos, solucionesSectores]) => {
+            this.problemas = this.solucion!.problemas = problemas;
+            this.beneficios = this.solucion!.beneficios = beneficios;
+            this.caracteristicas = this.solucion!.caracteristicas = caracteristicas;
+            this.ambitos = this.solucion!.ambitos = ambitos;
+            this.sectores = this.solucion!.sectores = sectores;
+            this.solucionesAmbitos = solucionesAmbitos;
+            this.solucionesSectores = solucionesSectores;
+  
+            console.log('SolucionesSectores cargados:', this.solucionesSectores); // Debug log
+  
+            // Obtener todos los ámbitos y sectores para los diccionarios
+            forkJoin({
+              ambitos: this.storeSolucionesService.getAllAmbitos(),
+              sectores: this.storeSolucionesService.getAllSectores()
+            }).subscribe({
+              next: (response) => {
+                // Crear diccionario de ámbitos
+                this.ambitosDictionary = response.ambitos.reduce((acc, ambito) => {
+                  if (ambito.id_ambito) {
+                    acc[ambito.id_ambito] = ambito;
+                  }
+                  return acc;
+                }, {} as { [key: number]: StoreAmbitos });
+  
+                // Crear diccionario de sectores
+                this.sectoresDictionary = response.sectores.reduce((acc, sector) => {
+                  if (sector.id_sector) {
+                    acc[sector.id_sector] = sector;
+                  }
+                  return acc;
+                }, {} as { [key: number]: StoreSectores });
+  
+                console.log('Diccionario de sectores:', this.sectoresDictionary); // Debug log
+                
+                this.changeDetectorRef.detectChanges();
+              },
+              error: (e) => console.warn('⚠️ Error al obtener diccionarios:', e)
+            });
+          },
+          error: (e) => console.warn('⚠️ Error al obtener entidades relacionadas:', e)
+        });
+      },
+      error: (e) => console.warn('⚠️ Error al obtener la solución:', e)
+    });
+  
+    // Segunda suscripción: Obtener todos los elementos para los selectores
+    forkJoin([
+      this.storeSolucionesService.getAllProblemas(),
+      this.storeSolucionesService.getAllBeneficios(),
+      this.storeSolucionesService.getAllCaracteristicas(),
+      this.storeSolucionesService.getAllAmbitos(),
+      this.storeSolucionesService.getAllSectores()
+    ]).subscribe({
+      next: ([allProblemas, allBeneficios, allCaracteristicas, allAmbitos, allSectores]) => {
+        this.allProblemas = allProblemas;
+        this.allBeneficios = allBeneficios;
+        this.allCaracteristicas = allCaracteristicas;
+        this.allAmbitos = allAmbitos;
+        this.allSectores = allSectores;
+        this.sectoresFiltrados = allSectores;
+        this.ambitosFiltrados = allAmbitos;
+      },
+      error: (e) => console.warn('⚠️ Error al cargar todos los elementos:', e)
+    });
+  }
   
 
 

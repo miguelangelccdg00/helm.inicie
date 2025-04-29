@@ -10,6 +10,13 @@ export interface StoreSectores
     backgroundImage: string;
 }
 
+export interface SolucionSector {
+    id_solucion: number;
+    id_sector: number;
+    descalternativa: string;
+    textoalternativo: string;
+}
+
 export interface CreateSectorResponse
 {
     message: string;

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import StoreSectoresService from '../services/StoreSectoresService';
 import StoreSolucionesService from '../services/StoreSolucionesService';
-import { StoreSectores } from '../../../api-shared-helm/src/models/storeSectores';
+import { StoreSectores, SolucionSector } from '../../../api-shared-helm/src/models/storeSectores';
 
 interface CreateSectorBody extends Omit<StoreSectores, 'id_sector'> {}
 
@@ -163,6 +163,39 @@ class storeSectoresControllers
       res.status(500).json({ message: 'Error interno en el servidor' });
     }
   }
+
+  async modifySolucionSectores(req: Request<{ idSolucion: string }, any, SolucionSector>, res: Response): Promise<void> {
+    try {
+      const idSolucion = parseInt(req.params.idSolucion, 10);
+      const solucionSector = req.body;
+
+      if (!idSolucion) {
+        res.status(400).json({ message: 'ID de solución no proporcionado' });
+        return;
+      }
+
+      if (!solucionSector) {
+        res.status(400).json({ message: 'No se proporcionaron datos para actualizar' });
+        return;
+      }
+
+      const result = await StoreSectoresService.updateSolucionSectores(
+        idSolucion, 
+        solucionSector
+      );
+
+      res.status(200).json({
+        message: 'Sector de solución actualizado correctamente',
+        data: result
+      });
+    } catch (error) {
+      console.error('❌ Error al modificar sector de solución:', error);
+      res.status(500).json({ 
+        message: 'Error interno del servidor al modificar el sector de solución' 
+      });
+    }
+  }
+
 
   async deleteSolucionSector(req: Request<{ idSolucion: string; idSector: string }>, res: Response): Promise<void> {
     try {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { StoreSoluciones, UpdateStoreSolucionResponse, DeleteSolucionResponse } from '@modelos-shared/storeSoluciones'
 import { StoreBeneficios, CreateBeneficioResponse, DeleteBeneficioResponse } from '@modelos-shared/storeBeneficios';
@@ -757,16 +757,28 @@ export class StoreSolucionesService {
     );
   }
 
-  listSectores(idSolucion: number): Observable<any> {
+  listSectores(idSolucion: number): Observable<SolucionSector[]> {
     const url = `${this.sectoresUrl}/listSectores/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     
     console.info('ℹ️ Consultando sectores de la solución:', idSolucion);
     
-    return this.https.get<any>(url, { headers }).pipe(
+    return this.https.get<any[]>(url, { headers }).pipe(
       map(response => {
-        console.log('✅ Listado de sectores obtenido correctamente');
-        return response;
+        console.log('Respuesta sin procesar:', response);
+        // Asegurarse de que response sea un array
+        const sectoresArray = Array.isArray(response) ? response : [response];
+        
+        return sectoresArray.map(sector => ({
+          id_solucion: sector.id_solucion || idSolucion,
+          id_sector: sector.id_sector,
+          descalternativa: sector.dawdawd || sector.descalternativa || '', // Agregamos dawdawd como posible valor
+          textoalternativo: sector.textoalternativo || sector.null || '' // Agregamos null como posible valor
+        }));
+      }),
+      map((mappedResponse: SolucionSector[]) => {
+        console.log('✅ Sectores mapeados:', mappedResponse);
+        return mappedResponse;
       }),
       catchError(error => {
         if (error.status === 404) {
@@ -812,7 +824,28 @@ export class StoreSolucionesService {
   updateSolucionSectores(idSolucion: number, solucionSectores: SolucionSector[]): Observable<any> {
     const url = `${this.sectoresUrl}/modifySolucionSectores/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.put<any>(url, solucionSectores, { headers });
+    
+    console.log('⌛ Actualizando sectores de la solución:', {
+      url,
+      idSolucion,
+      solucionSectores
+    });
+  
+    return this.https.put<any>(url, solucionSectores, { headers }).pipe(
+      map(response => {
+        console.log('✅ Sectores actualizados correctamente:', response);
+        return response;
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          console.error('❌ Ruta no encontrada:', url);
+          console.error('Detalles del error:', error);
+        } else {
+          console.error('❌ Error al actualizar sectores:', error);
+        }
+        return throwError(() => new Error(`Error al actualizar sectores: ${error.message}`));
+      })
+    );
   }
 
   deleteSector(idSolucion: number,idSector: number): Observable<DeleteSectorResponse> {
@@ -821,22 +854,30 @@ export class StoreSolucionesService {
     return this.https.delete<DeleteSectorResponse>(url, { headers });
   }
 
-  modifySolucionSector(idSolucion: number, idSector: number, sector: StoreSectores): Observable<SolucionSector> {
-    const url = `${this.sectoresUrl}/modifySolucionSectores/${idSolucion}`;
+  modifySolucionSector(idSolucion: number, idSector: number, solucionSector: SolucionSector): Observable<SolucionSector> {
+    const url = `${this.sectoresUrl}/modifySectores/${idSolucion}/${idSector}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-
-    const solucionSectorToUpdate = {
+  
+    const solucionSectorToUpdate: SolucionSector = {
       id_solucion: idSolucion,
       id_sector: idSector,
-      descalternativa: sector.description,
-      textoalternativo: sector.description
+      descalternativa: solucionSector.descalternativa,
+      textoalternativo: solucionSector.textoalternativo
     };
-
-    return this.https.put<SolucionSector>(url, solucionSectorToUpdate, { headers });
+  
+    return this.https.put<SolucionSector>(url, solucionSectorToUpdate, { headers }).pipe(
+      map(response => {
+        console.log('✅ Sector actualizado correctamente:', response);
+        return response;
+      }),
+      catchError(error => {
+        console.error('❌ Error al actualizar sector:', error);
+        return throwError(() => new Error(`Error al actualizar sector: ${error.message}`));
+      })
+    );
   }
 
   deleteSolucionSector(idSolucion: number, idSector: number): Observable<DeleteSolucionSectorResponse> {
-    // Cambiamos la URL para usar un endpoint específico para eliminar la relación
     const url = `${this.sectoresUrl}/deleteSolucionSector/${idSolucion}/${idSector}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     

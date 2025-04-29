@@ -29,6 +29,11 @@ router.post('/asociarSectores', StoreSectoresController.asociarSector);
 
 router.put('/modifySectores/:idSolucion/:idSector', StoreSectoresController.modifyStoreSectores)
 
+/**
+ * @description Modificación de los sectores asociados a una solución
+ */
+router.put('/modifySolucionSectores/:idSolucion', StoreSectoresController.modifySolucionSectores);
+
 
 /**
  * @description Eliminación de la relación entre un sector y una solución

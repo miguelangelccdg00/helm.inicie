@@ -224,6 +224,50 @@ class StoreSectoresService
         }
     }
 
+    async updateSolucionSectores(idSolucion: number, solucionSector: SolucionSector): Promise<SolucionSector> {
+        try {
+            const { id_sector, descalternativa, textoalternativo } = solucionSector;
+
+            // First check if the relationship exists
+            const [rows] = await pool.promise().query(
+                `SELECT * FROM storeSolucionesSectores 
+                 WHERE id_solucion = ? AND id_sector = ?`,
+                [idSolucion, id_sector]
+            ) as any[];
+
+            if (!rows || rows.length === 0) {
+                // Create new relationship
+                await pool.promise().query(
+                    `INSERT INTO storeSolucionesSectores 
+                     (id_solucion, id_sector, dawdawd, \`null\`) 
+                     VALUES (?, ?, ?, ?)`,
+                    [idSolucion, id_sector, descalternativa || '', textoalternativo || '']
+                );
+            } else {
+                // Update existing relationship
+                await pool.promise().query(
+                    `UPDATE storeSolucionesSectores 
+                     SET dawdawd = ?, \`null\` = ?
+                     WHERE id_solucion = ? AND id_sector = ?`,
+                    [descalternativa || '', textoalternativo || '', idSolucion, id_sector]
+                );
+            }
+
+            // Return updated data
+            return {
+                id_solucion: idSolucion,
+                id_sector: id_sector,
+                descalternativa: descalternativa || '',
+                textoalternativo: textoalternativo || ''
+            };
+        } catch (error) {
+            console.error('Error al actualizar la relación sector-solución:', error);
+            throw new Error('Error al actualizar la relación sector-solución');
+        }
+    }
+
+    
+
   // Eliminar un sector
   async deleteSector(idSolucion: number, idSector: number): Promise<boolean> 
     {
