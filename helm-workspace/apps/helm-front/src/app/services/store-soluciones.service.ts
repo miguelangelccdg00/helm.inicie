@@ -821,19 +821,19 @@ export class StoreSolucionesService {
 
   }
   
-  updateSolucionSectores(idSolucion: number, solucionSectores: SolucionSector[]): Observable<any> {
+  updateSolucionSectores(idSolucion: number, solucionSector: SolucionSector): Observable<any> {
     const url = `${this.sectoresUrl}/modifySolucionSectores/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     
-    console.log('⌛ Actualizando sectores de la solución:', {
+    console.log('⌛ Actualizando sector de la solución:', {
       url,
       idSolucion,
-      solucionSectores
+      solucionSector
     });
   
-    return this.https.put<any>(url, solucionSectores, { headers }).pipe(
+    return this.https.put<any>(url, solucionSector, { headers }).pipe(
       map(response => {
-        console.log('✅ Sectores actualizados correctamente:', response);
+        console.log('✅ Sector actualizado correctamente:', response);
         return response;
       }),
       catchError(error => {
@@ -841,9 +841,9 @@ export class StoreSolucionesService {
           console.error('❌ Ruta no encontrada:', url);
           console.error('Detalles del error:', error);
         } else {
-          console.error('❌ Error al actualizar sectores:', error);
+          console.error('❌ Error al actualizar sector:', error);
         }
-        return throwError(() => new Error(`Error al actualizar sectores: ${error.message}`));
+        return throwError(() => new Error(`Error al actualizar sector: ${error.message}`));
       })
     );
   }

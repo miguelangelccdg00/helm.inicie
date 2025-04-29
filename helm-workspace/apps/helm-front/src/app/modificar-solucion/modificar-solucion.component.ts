@@ -1585,21 +1585,21 @@ export class ModificarSolucionComponent implements OnInit {
       id_sector: idSector
     };
 
-    this.storeSolucionesService.updateSolucionSectores(idSolucion, [solucionSectorActualizada]).subscribe({
+    this.storeSolucionesService.updateSolucionSectores(idSolucion, solucionSectorActualizada).subscribe({
       next: (response) => {
         console.log('Solución por sector actualizada correctamente:', response);
-        
+    
         const index = this.solucionesSectores.findIndex(
           ss => ss.id_solucion === idSolucion && ss.id_sector === idSector
         );
-        
+    
         if (index !== -1) {
           this.solucionesSectores[index] = {
             ...this.solucionesSectores[index],
             ...this.nuevaSolucionSector
           };
         }
-        
+    
         this.mostrarModificarSolucionSector = false;
         this.solucionSectorSeleccionado = null;
       },
