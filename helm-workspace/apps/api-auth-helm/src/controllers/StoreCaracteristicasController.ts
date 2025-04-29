@@ -119,7 +119,8 @@ class StoreCaracteristicasController {
       const caracteristicaSolucion: StoreCaracteristicas[] = await StoreCaracteristicasService.getByIdCaracteristicas(Number(idSolucion));
 
       if (!caracteristicaSolucion.length) {
-        res.status(404).json({ message: 'No se encontraron características para esta solución' });
+        console.info(`ℹ️ No se encontraron ámbitos para la solución ${idSolucion}, devolviendo lista vacía.`);
+        res.status(200).json([]); // Devolver 200 OK con un array vacío para evitar el error 404
         return;
       }
 

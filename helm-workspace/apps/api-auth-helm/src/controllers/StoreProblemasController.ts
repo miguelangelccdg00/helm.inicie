@@ -43,10 +43,12 @@ class StoreProblemasController {
 
   async listProblemas(req: Request, res: Response): Promise<void> {
     try {
+      const { idSolucion } = req.params;
       const listProblema: StoreProblemas[] = await storeProblemasService.getProblemas();
 
       if (!listProblema.length) {
-        res.status(404).json({ message: 'No existen problemas' });
+        console.info(`ℹ️ No se encontraron beneficios para la solución ${idSolucion}, devolviendo lista vacía.`);
+        res.status(200).json([]); // Devolver 200 OK con un array vacío para evitar el error 404
         return;
       }
 
@@ -69,7 +71,8 @@ class StoreProblemasController {
       const problemasSolucion: StoreProblemas[] = await storeProblemasService.getByIdProblemas(Number(idSolucion));
 
       if (!problemasSolucion.length) {
-        res.status(404).json({ message: 'No se encontraron problemas para esta solución' });
+        console.info(`ℹ️ No se encontraron problemas para la solución ${idSolucion}, devolviendo lista vacía.`);
+        res.status(200).json([]); // Devolver 200 OK con un array vacío para evitar el error 404
         return;
       }
 

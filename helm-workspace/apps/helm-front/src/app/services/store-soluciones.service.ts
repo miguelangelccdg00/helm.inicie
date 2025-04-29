@@ -128,8 +128,34 @@ export class StoreSolucionesService {
 
   getAllBeneficios(): Observable<StoreBeneficios[]> {
     const url = `${this.beneficiosUrl}/listCompleteBeneficios`;
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.get<StoreBeneficios[]>(url, { headers });
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json, text/plain, */*');
+    
+    console.info('ℹ️ Consultando listado completo de beneficios...');
+    
+    return this.https.get<StoreBeneficios[]>(url, { 
+      headers,
+      observe: 'response',
+      responseType: 'json'
+    }).pipe(
+      map(response => {
+        if (response.body && response.body.length > 0) {
+          console.log('✅ Listado de beneficios recuperado correctamente');
+        } else {
+          console.info('ℹ️ No hay beneficios disponibles en el sistema');
+        }
+        return response.body || [];
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          console.info('ℹ️ Sin beneficios para mostrar');
+        } else {
+          console.warn('⚠️ Error al consultar el listado de beneficios:', error.message);
+        }
+        return of([]);
+      })
+    );
   }
 
   createBeneficio(idSolucion: number, beneficio: StoreBeneficios): Observable<CreateBeneficioResponse> {
@@ -233,8 +259,34 @@ export class StoreSolucionesService {
 
   getAllProblemas(): Observable<StoreProblemas[]> {
     const url = `${this.problemasUrl}/listCompleteProblemas`;
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.get<StoreProblemas[]>(url, { headers });
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json, text/plain, */*');
+    
+    console.info('ℹ️ Consultando listado completo de problemas...');
+    
+    return this.https.get<StoreProblemas[]>(url, { 
+      headers,
+      observe: 'response',
+      responseType: 'json'
+    }).pipe(
+      map(response => {
+        if (response.body && response.body.length > 0) {
+          console.log('✅ Listado de problemas recuperado correctamente');
+        } else {
+          console.info('ℹ️ No hay problemas disponibles en el sistema');
+        }
+        return response.body || [];
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          console.info('ℹ️ Sin problemas para mostrar');
+        } else {
+          console.warn('⚠️ Error al consultar el listado de problemas:', error.message);
+        }
+        return of([]);
+      })
+    );
   }
 
   updateProblemaAndAsociar(idSolucion: number, problema: StoreProblemas): Observable<any> {
@@ -350,8 +402,34 @@ export class StoreSolucionesService {
 
   getAllCaracteristicas(): Observable<StoreCaracteristicas[]> {
     const url = `${this.caracteristicasUrl}/listCompleteCaracteristicas`;
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.get<StoreCaracteristicas[]>(url, { headers });
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json, text/plain, */*');
+    
+    console.info('ℹ️ Consultando listado completo de características...');
+    
+    return this.https.get<StoreCaracteristicas[]>(url, { 
+      headers,
+      observe: 'response',
+      responseType: 'json'
+    }).pipe(
+      map(response => {
+        if (response.body && response.body.length > 0) {
+          console.log('✅ Listado de características recuperado correctamente');
+        } else {
+          console.info('ℹ️ No hay características disponibles en el sistema');
+        }
+        return response.body || [];
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          console.info('ℹ️ Sin características para mostrar');
+        } else {
+          console.warn('⚠️ Error al consultar el listado de características:', error.message);
+        }
+        return of([]);
+      })
+    );
   }
 
   asociarCaracteristicaASolucion(idSolucion: number, idCaracteristica: number, titulo?: string): Observable<any> {
@@ -448,8 +526,34 @@ export class StoreSolucionesService {
 
   getAllAmbitos(): Observable<StoreAmbitos[]> {
     const url = `${this.ambitosUrl}/listCompleteAmbitos`;
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.get<StoreAmbitos[]>(url, { headers });
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json, text/plain, */*');
+    
+    console.info('ℹ️ Consultando listado completo de ámbitos...');
+    
+    return this.https.get<StoreAmbitos[]>(url, { 
+      headers,
+      observe: 'response',
+      responseType: 'json'
+    }).pipe(
+      map(response => {
+        if (response.body && response.body.length > 0) {
+          console.log('✅ Listado de ámbitos recuperado correctamente');
+        } else {
+          console.info('ℹ️ No hay ámbitos disponibles en el sistema');
+        }
+        return response.body || [];
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          console.info('ℹ️ Sin ámbitos para mostrar');
+        } else {
+          console.warn('⚠️ Error al consultar el listado de ámbitos:', error.message);
+        }
+        return of([]);
+      })
+    );
   }
 
   createAmbito(idSolucion: number, ambito: StoreAmbitos): Observable<CreateAmbitoResponse> {

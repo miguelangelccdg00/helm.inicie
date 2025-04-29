@@ -95,7 +95,8 @@ class StoreAmbitosController {
       const ambitoSolucion: StoreAmbitos[] = await StoreAmbitosService.getByIdAmbitos(Number(idSolucion));
 
       if (!ambitoSolucion || ambitoSolucion.length === 0) {
-        res.status(404).json({ message: 'No se encontraron ambitos para esta solución' });
+        console.info(`ℹ️ No se encontraron ámbitos para la solución ${idSolucion}, devolviendo lista vacía.`);
+        res.status(200).json([]); // Devolver 200 OK con un array vacío para evitar el error 404
         return;
       }
 
