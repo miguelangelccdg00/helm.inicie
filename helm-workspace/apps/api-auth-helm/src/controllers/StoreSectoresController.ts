@@ -42,6 +42,34 @@ class storeSectoresControllers
       res.status(500).json({ message: 'Error interno del servidor al crear el sector.' });
     }
   }
+
+  async createStoreSectores(req: Request<CreateSectorBody>, res: Response): Promise<void> 
+  {
+    try 
+    {
+      const { description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage } = req.body;
+
+      /* if (!description || !textoweb || !prefijo || !slug || !descriptionweb || !titleweb || !backgroundImage || isNaN(idSolucion)) 
+      {
+        res.status(400).json({ message: 'Faltan datos requeridos para crear el sector.' });
+        return;
+      } */
+
+      const resultado = await StoreSectoresService.createStoreSector({description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage});
+
+      const sectorCreado = await StoreSectoresService.getSectorById(resultado.id_sector);
+
+      res.status(201).json({
+        ...resultado,
+        sector: sectorCreado
+      });
+    } 
+    catch (error) 
+    {
+      console.warn('⚠️ Error en createSectores:', error);
+      res.status(500).json({ message: 'Error interno del servidor al crear el sector.' });
+    }
+  }
   
   async asociarSector(req: Request<any, any, AsociarSectorBody>, res: Response): Promise<void> 
   {
@@ -73,6 +101,21 @@ class storeSectoresControllers
           console.warn('⚠️ Error asociando el sector:', error);
           res.status(500).json({ message: 'Error interno del servidor' });
       }
+  }
+
+  async asociarMasivamente (req: Request, res: Response): Promise<void>
+  {
+    try 
+    {
+      await StoreSectoresService.asociarTodosSectoresConTodasSoluciones();
+
+      res.status(200).json({ message: 'Todas las soluciones fueron asociadas con todos los sectores correctamente' });
+    } 
+    catch (error) 
+    {
+      console.error('Error al asociar sector con solucion:', error);
+      res.status(500).json({ message: 'Error interno del servidor al hacer la asociación masiva.' });
+    }
   }
 
   async listSectores(req: Request, res: Response): Promise<void> 

@@ -19,9 +19,19 @@ router.get('/listSectores/:idSolucion', StoreSectoresController.listIdSector);
 router.post('/createSectores/:idSolucion', StoreSectoresController.createSectores);
 
 /**
+ * @description Insercion de sectores por solución específica de su ID
+ */
+router.post('/createStoreSectores', StoreSectoresController.createStoreSectores);
+
+/**
  * @description Asociar un sectores existente a una solución
  */
 router.post('/asociarSectores', StoreSectoresController.asociarSector);
+
+/**
+ * @description Asociar un ambito existente a una solución
+ */
+router.post('/asociarMasivamenteSectorSolucion', StoreSectoresController.asociarMasivamente);
 
 /**
  * @description Modificacion de un sector de una solucion especifica

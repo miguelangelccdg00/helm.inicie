@@ -14,6 +14,17 @@ interface CreateSectorParams
     idSolucion: number;
 }
 
+interface SectorParams
+{
+    description: string;
+    textoweb: string;
+    prefijo: string;
+    slug: string;
+    descriptionweb: string;
+    titleweb: string;
+    backgroundImage: string;
+}
+
 interface AsociarSectorParams 
 {
     id_solucion: number;
@@ -48,6 +59,27 @@ class StoreSectoresService
         }
     }
 
+    // Crear un nuevo sector
+    async createStoreSector({description,textoweb,prefijo,slug,descriptionweb,titleweb,backgroundImage }: SectorParams): Promise<StoreSectores> 
+    {
+        try 
+        {
+            const [result] = await pool.promise().query(
+            `INSERT INTO storeSectores (description,textoWeb,prefijo,slug,descriptionweb,titleweb,backgroundImage)
+                VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage]);
+
+            const idSector = result.insertId;
+
+            return { id_sector: idSector, description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage};
+        } 
+        catch (error) 
+        {
+            console.error('Error al crear el sector:', error);
+            throw new Error('Error al crear el sector');
+        }
+    }
+
     // Asociar un sector con una solución
     async asociarSector(idSolucion: number, idSector: number): Promise<void> 
     {
@@ -68,6 +100,39 @@ class StoreSectoresService
         {
             console.error('Error al asociar el sector:', error);
             throw new Error('Error al asociar el sector');
+        }
+    }
+
+    async asociarTodosSectoresConTodasSoluciones(): Promise<void> 
+    {
+        try 
+        {
+          // Ejecutamos la consulta para asociar los sectores con las soluciones
+          const [result] = await pool.promise().query(`
+            INSERT INTO storeSolucionesSectores (id_solucion, id_sector)
+            SELECT s.id_solucion, se.id_sector
+            FROM storeSoluciones s
+            CROSS JOIN storeSectores se
+            WHERE NOT EXISTS (
+              SELECT 1 
+              FROM storeSolucionesSectores ss
+              WHERE ss.id_solucion = s.id_solucion 
+              AND ss.id_sector = se.id_sector
+            )`);
+    
+          if (result.affectedRows > 0) 
+          {
+            console.log(`Asociaciones de sectores con soluciones fueron exitosas.`);
+          } 
+          else 
+          {
+            console.log('No se realizaron nuevas asociaciones. Puede que todos los sectores ya estén asociados.');
+          }
+        } 
+        catch (error) 
+        {
+          console.error('Error al asociar todos los sectores con todas las soluciones:', error);
+          throw new Error('Error en la asociación masiva de sectores con soluciones.');
         }
     }
     
