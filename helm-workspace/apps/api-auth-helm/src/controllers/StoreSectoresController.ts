@@ -164,7 +164,8 @@ class storeSectoresControllers
     }
   }
 
-  async modifySolucionSectores(req: Request<{ idSolucion: string }, any, SolucionSector>, res: Response): Promise<void> {
+  async modifySolucionSectores(req: Request<{ idSolucion: string }, any, SolucionSector>, res: Response): Promise<void> 
+  {
     try {
       const idSolucion = parseInt(req.params.idSolucion, 10);
       const solucionSector = req.body;

@@ -160,6 +160,142 @@ class StoreAmbitosService {
     }
   }
 
+  async updateSolucionAmbitos(idSolucion: number, solucionAmbito: SolucionAmbito): Promise<SolucionAmbito> 
+  {
+    try 
+    {
+      const 
+      {
+        id_ambito,
+        description,
+        title,
+        subtitle,
+        icon,
+        titleweb,
+        slug,
+        multimediaUri,
+        multimediaTypeId,
+        problemaTitle,
+        problemaPragma,
+        solucionTitle,
+        solucionPragma,
+        caracteristicasTitle,
+        caracteristicasPragma,
+        casosdeusoTitle,
+        casosdeusoPragma,
+        firstCtaTitle,
+        firstCtaPragma,
+        secondCtaTitle,
+        secondCtaPragma,
+        beneficiosTitle,
+        beneficiosPragma
+      } = solucionAmbito;
+  
+      if (!idSolucion || !id_ambito) 
+      {
+        throw new Error('Faltan id_solucion o id_ambito para actualizar la relación');
+      }
+  
+      const [rows] = await pool.promise().query(
+        `SELECT * FROM storeSolucionesSectores 
+         WHERE id_solucion = ? AND id_ambito = ?`,
+        [idSolucion, id_ambito]
+      ) as any[];
+  
+      if (!rows || rows.length === 0) 
+      {
+        throw new Error('No existe la relación ambito-solución para actualizar');
+      }
+  
+      await pool.promise().query(
+        `UPDATE storeSolucionesSectores 
+         SET 
+           description = ?,
+           title = ?,
+           subtitle = ?,
+           icon = ?,
+           titleweb = ?,
+           slug = ?,
+           multimediaUri = ?,
+           multimediaTypeId = ?,
+           problemaTitle = ?,
+           problemaPragma = ?,
+           solucionTitle = ?,
+           solucionPragma = ?,
+           caracteristicasTitle = ?,
+           caracteristicasPragma = ?,
+           casosdeusoTitle = ?,
+           casosdeusoPragma = ?,
+           firstCtaTitle = ?,
+           firstCtaPragma = ?,
+           secondCtaTitle = ?,
+           secondCtaPragma = ?,
+           beneficiosTitle = ?,
+           beneficiosPragma = ?
+         WHERE id_solucion = ? AND id_ambito = ?`,
+        [
+          description || '',
+          title || '',
+          subtitle || '',
+          icon || '',
+          titleweb || '',
+          slug || '',
+          multimediaUri || '',
+          multimediaTypeId || '',
+          problemaTitle || '',
+          problemaPragma || '',
+          solucionTitle || '',
+          solucionPragma || '',
+          caracteristicasTitle || '',
+          caracteristicasPragma || '',
+          casosdeusoTitle || '',
+          casosdeusoPragma || '',
+          firstCtaTitle || '',
+          firstCtaPragma || '',
+          secondCtaTitle || '',
+          secondCtaPragma || '',
+          beneficiosTitle || '',
+          beneficiosPragma || '',
+          idSolucion,
+          id_ambito
+        ]
+      );
+  
+      return {
+        id_solucion: idSolucion,
+        id_ambito: id_ambito,
+        description: description || '',
+        title: title || '',
+        subtitle: subtitle || '',
+        icon: icon || '',
+        titleweb: titleweb || '',
+        slug: slug || '',
+        multimediaUri: multimediaUri || '',
+        multimediaTypeId: multimediaTypeId || '',
+        problemaTitle: problemaTitle || '',
+        problemaPragma: problemaPragma || '',
+        solucionTitle: solucionTitle || '',
+        solucionPragma: solucionPragma || '',
+        caracteristicasTitle: caracteristicasTitle || '',
+        caracteristicasPragma: caracteristicasPragma || '',
+        casosdeusoTitle: casosdeusoTitle || '',
+        casosdeusoPragma: casosdeusoPragma || '',
+        firstCtaTitle: firstCtaTitle || '',
+        firstCtaPragma: firstCtaPragma || '',
+        secondCtaTitle: secondCtaTitle || '',
+        secondCtaPragma: secondCtaPragma || '',
+        beneficiosTitle: beneficiosTitle || '',
+        beneficiosPragma: beneficiosPragma || ''
+      };
+    } 
+    catch (error) 
+    {
+      console.error('Error al actualizar la relación ambito-solución:', error);
+      throw new Error('Error al actualizar la relación ambito-solución');
+    }
+  }
+  
+
   // Eliminar un ámbito
   async deleteAmbito(idAmbito: number): Promise<boolean> {
     try {

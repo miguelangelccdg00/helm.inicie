@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import StoreAmbitosService from '../services/StoreAmbitosService';
 import storeSolucionesService from '../services/StoreSolucionesService';
 import { StoreAmbitos } from '../../../api-shared-helm/src/models/storeAmbitos';
+import { SolucionAmbito } from '@modelos-shared/solucionAmbito';
 
 interface CreateAmbitoBody extends Omit<StoreAmbitos, 'id_ambito'> {}
 interface AsociarAmbitoBody {
@@ -132,6 +133,44 @@ class StoreAmbitosController {
     } catch (error) {
       console.error('Error al modificar storeAmbitos:', error);
       res.status(500).json({ message: 'Error interno en el servidor' });
+    }
+  }
+
+  async modifySolucionAmbitos(req: Request<{ idSolucion: string }, any, SolucionAmbito>, res: Response): Promise<void> 
+  {
+    try 
+    {
+      const idSolucion = parseInt(req.params.idSolucion, 10);
+      const solucionAmbito = req.body;
+
+      if (!idSolucion) 
+      {
+        res.status(400).json({ message: 'ID de solución no proporcionado' });
+        return;
+      }
+
+      if (!solucionAmbito) 
+      {
+        res.status(400).json({ message: 'No se proporcionaron datos para actualizar' });
+        return;
+      }
+
+      const result = await StoreAmbitosService.updateSolucionAmbitos(
+        idSolucion, 
+        solucionAmbito
+      );
+
+      res.status(200).json({
+        message: 'Ambito de solución actualizado correctamente',
+        data: result
+      });
+    } 
+    catch (error) 
+    {
+      console.error('❌ Error al modificar ambito de solución:', error);
+      res.status(500).json({ 
+        message: 'Error interno del servidor al modificar el ambito de solución' 
+      });
     }
   }
 

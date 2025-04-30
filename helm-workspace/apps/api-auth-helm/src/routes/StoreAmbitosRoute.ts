@@ -31,7 +31,7 @@ router.put('/modifyAmbitos/:idSolucion/:idAmbito', storeAmbitosController.modify
 /**
  * @description Actualiza los ámbitos de una solución
  */
-router.put('/modifyAmbitos/:id', storeSolucionesController.updateSolucionAmbitos);
+router.put('/modifySolucionAmbitos/:idSolucion', storeAmbitosController.modifySolucionAmbitos);
 
 /**
  * @description Eliminacion de un ambito específico por su ID
