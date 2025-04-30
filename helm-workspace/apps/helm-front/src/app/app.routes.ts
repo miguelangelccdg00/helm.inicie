@@ -4,10 +4,25 @@ import { MenuComponent } from './menu/menu.component';
 import { authGuard } from './auth.guard';
 import { StoreSolucionesComponent } from './store-soluciones/store-soluciones.component';
 import { ModificarSolucionComponent } from './modificar-solucion/modificar-solucion.component';
+import { SectoresComponent } from './sectores/sectores.component';
+import { AmbitosComponent } from './ambitos/ambitos.component';
+import { MainLayoutComponent } from './menu/main_layout.component';
 
 export const appRoutes: Route[] = [
-    {path: '', component: HomeComponent},
-    {path: 'menu', component: MenuComponent, canActivate: [authGuard]},
-    {path: 'store-soluciones', component: StoreSolucionesComponent},
-    {path: 'modificar-solucion/:id', component: ModificarSolucionComponent}
+  // Página principal (sin menú)
+  { path: '', component: HomeComponent },
+
+  // Rutas protegidas con menú
+  {
+    path: '',
+    component: MainLayoutComponent,
+    canActivate: [authGuard],
+    children: [
+      { path: 'menu', component: MenuComponent, canActivate: [authGuard] },
+      { path: 'store-soluciones', component: StoreSolucionesComponent },
+      { path: 'modificar-solucion/:id', component: ModificarSolucionComponent },
+      { path: 'ambitos', component: AmbitosComponent },
+      { path: 'sectores', component: SectoresComponent }
+    ]
+  }
 ];
