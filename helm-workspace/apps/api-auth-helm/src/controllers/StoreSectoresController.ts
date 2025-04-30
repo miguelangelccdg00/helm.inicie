@@ -118,6 +118,21 @@ class storeSectoresControllers
     }
   }
 
+  async asociarMasivamenteSectorAmbitoSolucion (req: Request, res: Response): Promise<void>
+  {
+    try 
+    {
+      await StoreSectoresService.asociarSectoresAmbitosSoluciones();
+
+      res.status(200).json({ message: 'Todas las soluciones fueron asociadas con todos los sectores correctamente y con los ambitos' });
+    } 
+    catch (error) 
+    {
+      console.error('Error al asociar sector y el ambito con solucion:', error);
+      res.status(500).json({ message: 'Error interno del servidor al hacer la asociación masiva.' });
+    }
+  }
+
   async listSectores(req: Request, res: Response): Promise<void> 
   {
     try 
