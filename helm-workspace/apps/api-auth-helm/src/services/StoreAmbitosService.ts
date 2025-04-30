@@ -197,7 +197,7 @@ class StoreAmbitosService {
       }
   
       const [rows] = await pool.promise().query(
-        `SELECT * FROM storeSolucionesSectores 
+        `SELECT * FROM storeSolucionesAmbitos 
          WHERE id_solucion = ? AND id_ambito = ?`,
         [idSolucion, id_ambito]
       ) as any[];
@@ -208,7 +208,7 @@ class StoreAmbitosService {
       }
   
       await pool.promise().query(
-        `UPDATE storeSolucionesSectores 
+        `UPDATE storeSolucionesAmbitos 
          SET 
            description = ?,
            title = ?,
