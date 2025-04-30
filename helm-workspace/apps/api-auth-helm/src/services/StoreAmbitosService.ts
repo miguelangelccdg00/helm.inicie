@@ -355,15 +355,19 @@ class StoreAmbitosService {
   
 
   // Eliminar un ámbito
-  async deleteAmbito(idAmbito: number): Promise<boolean> {
-    try {
+  async deleteAmbito(idAmbito: number): Promise<boolean> 
+  {
+    try 
+    {
       const [result] = await pool.promise().query(
         `DELETE FROM storeAmbitos WHERE id_ambito = ?`,
         [idAmbito]
       );
 
       return result.affectedRows > 0;
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error('Error al eliminar el ámbito:', error);
       throw new Error('Error al eliminar el ámbito');
     }

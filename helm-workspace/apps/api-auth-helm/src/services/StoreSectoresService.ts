@@ -326,6 +326,24 @@ class StoreSectoresService
             throw new Error('Error al eliminar el sector');
         }
     }
+
+    async deleteSectorById(idSector: number): Promise<boolean> 
+    {
+        try 
+        {
+            const [result] = await pool.promise().query(
+                `DELETE FROM storeSectores WHERE id_sector = ?`,
+                [idSector]
+            );
+
+            return result.affectedRows > 0;
+        } 
+        catch (error) 
+        {
+            console.error('Error al eliminar el sector:', error);
+            throw new Error('Error al eliminar el sector');
+        }
+    }
 }
 
 export default new StoreSectoresService();

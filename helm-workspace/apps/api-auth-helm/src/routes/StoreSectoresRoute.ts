@@ -60,4 +60,9 @@ router.delete('/deleteSolucionSector/:idSolucion/:idSector', StoreSectoresContro
  */
 router.delete('/deleteSectores/:idSolucion/:idSector', StoreSectoresController.deleteSector);
 
+/**
+ * @description Eliminacion de un sector específico por su ID
+ */
+router.delete('/deleteSectorById/:idSector', StoreSectoresController.deleteSectorById);
+
 export default router;

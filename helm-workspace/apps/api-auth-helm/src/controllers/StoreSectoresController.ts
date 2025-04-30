@@ -314,6 +314,35 @@ class storeSectoresControllers
     }
   }
 
+  async deleteSectorById(req: Request<{idSector: string }>, res: Response): Promise<void> 
+  {
+    try
+    {
+      const { idSector } = req.params;
+
+      if (!idSector) 
+      {
+        res.status(401).json({ message: 'ID no proporcionado' });
+        return;
+      }
+
+      const wasDeleted = await StoreSectoresService.deleteSectorById(Number(idSector));
+
+      if (!wasDeleted)
+      {
+        res.status(404).json({ message: 'Sector no encontrado o ya eliminado' });
+        return;
+      }
+
+      res.status(201).json({ message: 'Sector eliminado correctamente' });
+    } 
+    catch (error) 
+    {
+      console.warn('⚠️ Error al eliminar el Sector:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
+
 }
 
 export default new storeSectoresControllers();
