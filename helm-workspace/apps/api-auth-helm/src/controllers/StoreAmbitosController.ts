@@ -5,19 +5,24 @@ import { StoreAmbitos } from '../../../api-shared-helm/src/models/storeAmbitos';
 import { SolucionAmbito } from '@modelos-shared/solucionAmbito';
 
 interface CreateAmbitoBody extends Omit<StoreAmbitos, 'id_ambito'> {}
+
 interface AsociarAmbitoBody {
   id_solucion: number;
   id_ambito: number;
 }
 
-class StoreAmbitosController {
+class StoreAmbitosController 
+{
 
-  async createAmbitos(req: Request<{ idSolucion: string }, any, CreateAmbitoBody>, res: Response): Promise<void> {
-    try {
+  async createAmbitos(req: Request<{ idSolucion: string }, any, CreateAmbitoBody>, res: Response): Promise<void> 
+  {
+    try 
+    {
       const idSolucion = parseInt(req.params.idSolucion, 10);
       const { description, textoweb, prefijo, slug } = req.body;
 
-      if (!description || !textoweb || !prefijo || !slug || isNaN(idSolucion)) {
+      if (!description || !textoweb || !prefijo || !slug || isNaN(idSolucion)) 
+      {
         res.status(400).json({ message: 'Faltan datos requeridos para crear el ámbito.' });
         return;
       }
@@ -36,11 +41,47 @@ class StoreAmbitosController {
         ...resultado,
         ambito: ambitoCreado
       });
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error('Error en createAmbitos:', error);
       res.status(500).json({ message: 'Error interno del servidor al crear el ámbito.' });
     }
   }
+
+  async createStoreAmbitos(req: Request, res: Response): Promise<void>
+  {
+    try 
+    {
+      const { description, textoweb, prefijo, slug } = req.body;
+  
+      if (!description || !textoweb || !prefijo || !slug) 
+      {
+        res.status(400).json({ message: 'Faltan datos requeridos para crear el ámbito.' });
+        return;
+      }
+  
+      const resultado = await StoreAmbitosService.createStoreAmbito({
+        description,
+        textoweb,
+        prefijo,
+        slug
+      });
+  
+      const ambitoCreado = await StoreAmbitosService.getAmbitoById(resultado.id_ambito);
+  
+      res.status(201).json({
+        ...resultado,
+        ambito: ambitoCreado
+      });
+    } 
+    catch (error) 
+    {
+      console.error('Error en createAmbitos:', error);
+      res.status(500).json({ message: 'Error interno del servidor al crear el ámbito.' });
+    }
+  }
+  
 
   async asociarAmbito(req: Request<any, any, AsociarAmbitoBody>, res: Response): Promise<void> {
     try {
@@ -68,17 +109,37 @@ class StoreAmbitosController {
     }
   }
 
-  async listAmbitos(req: Request, res: Response): Promise<void> {
-    try {
+  async asociarMasivamente (req: Request, res: Response): Promise<void>
+  {
+    try 
+    {
+      await StoreAmbitosService.asociarTodasLasSolucionesTodosAmbitos();
+
+      res.status(200).json({ message: 'Todas las soluciones fueron asociadas con todos los ámbitos correctamente' });
+    } 
+    catch (error) 
+    {
+      console.error('Error al asociar ambito con solucion:', error);
+      res.status(500).json({ message: 'Error interno del servidor al hacer la asociación masiva.' });
+    }
+  }
+
+  async listAmbitos(req: Request, res: Response): Promise<void> 
+  {
+    try 
+    {
       const listAmbitos: StoreAmbitos[] = await StoreAmbitosService.listAmbitos();
 
-      if (!listAmbitos.length) {
+      if (!listAmbitos.length) 
+        {
         res.status(404).json({ message: 'No existen ambitos' });
         return;
       }
 
       res.status(202).json(listAmbitos);
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error('Error listando los ambitos:', error);
       res.status(500).json({ message: 'Error interno del servidor' });
     }

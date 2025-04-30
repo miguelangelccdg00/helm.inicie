@@ -10,6 +10,13 @@ interface CreateAmbitoParams {
   idSolucion: number;
 }
 
+interface AmbitosParams {
+  description: string;
+  textoweb: string;
+  prefijo: string;
+  slug: string;
+}
+
 interface AsociarAmbitoParams {
   id_solucion: number;
   id_ambito: number;
@@ -41,6 +48,32 @@ class StoreAmbitosService {
     }
   }
 
+  async createStoreAmbito({ description, textoweb, prefijo, slug }: AmbitosParams): Promise<StoreAmbitos> 
+  {
+    try 
+    {
+      const [result]: any = await pool.promise().query(
+        `INSERT INTO storeAmbitos (description, textoweb, prefijo, slug)
+         VALUES (?, ?, ?, ?)`,
+        [description, textoweb, prefijo, slug]
+      );
+  
+      return {
+        id_ambito: result.insertId,
+        description,
+        textoweb,
+        prefijo,
+        slug
+      };
+    } 
+    catch (error) 
+    {
+      console.error('Error al crear el ámbito:', error);
+      throw new Error('Error al crear el ámbito');
+    }
+  }
+  
+
   // Asociar un ámbito con una solución
   async asociarAmbito(idSolucion: number, idAmbito: number): Promise<void> {
     try {
@@ -58,6 +91,31 @@ class StoreAmbitosService {
       throw new Error('Error al asociar el ámbito');
     }
   }
+
+  // Asocia todas las soluciones con todos los ámbitos 
+  async asociarTodasLasSolucionesTodosAmbitos(): Promise<void> 
+  {
+    try 
+    {
+      const [result] = await pool.promise().query(`
+        INSERT INTO storeSolucionesAmbitos (id_solucion, id_ambito)
+        SELECT s.id_solucion, a.id_ambito
+        FROM storeSoluciones s
+        CROSS JOIN storeAmbitos a
+        WHERE NOT EXISTS (
+          SELECT 1 FROM storeSolucionesAmbitos sa
+          WHERE sa.id_solucion = s.id_solucion AND sa.id_ambito = a.id_ambito
+        )`);
+
+      console.log('Asociaciones creadas:', result.affectedRows);
+    } 
+    catch (error) 
+    {
+      console.error('Error al asociar masivamente ámbitos y soluciones:', error);
+      throw new Error('Error en asociación masiva');
+    }
+  }
+
 
   // Obtener todos los ámbitos
   async listAmbitos(): Promise<StoreAmbitos[]> {
