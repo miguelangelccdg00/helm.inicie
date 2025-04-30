@@ -1,9 +1,33 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { StoreAmbitos, DeleteAmbitoResponse } from '@modelos-shared/storeAmbitos';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AmbitosService {
 
-  constructor() { }
+  private ambitosUrl = 'http://localhost:3009/storeAmbitos';
+
+  constructor(private https: HttpClient) { }
+
+  getStoreAmbitos(): Observable<StoreAmbitos[]> {
+    const url = `${this.ambitosUrl}/listCompleteAmbitos`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.get<StoreAmbitos[]>(url, { headers });
+  }
+
+  deleteStoreAmbito(idAmbito: number): Observable<DeleteAmbitoResponse> {
+    const url = `${this.ambitosUrl}/deleteAmbito/${idAmbito}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.delete<DeleteAmbitoResponse>(url, { headers });
+  }
+
+  createStoreAmbito(ambito: StoreAmbitos): Observable<StoreAmbitos> {
+    const url = `${this.ambitosUrl}/createStoreAmbito`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.https.post<StoreAmbitos>(url, ambito, { headers });
+  }
+
 }
