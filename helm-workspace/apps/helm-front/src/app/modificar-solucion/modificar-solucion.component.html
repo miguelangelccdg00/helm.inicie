@@ -111,7 +111,8 @@
               <label for="buscadorProblema">Seleccionar Problema:</label>
               <div class="custom-select">
                 <input type="text" id="buscadorProblema" [(ngModel)]="buscadorProblema" name="buscadorProblema"
-                  (input)="filtrarProblemas()" (focus)="mostrarOpcionesProblema = true ; problemasFiltrados = allProblemas"
+                  (input)="filtrarProblemas()"
+                  (focus)="mostrarOpcionesProblema = true ; problemasFiltrados = allProblemas"
                   (click)="mostrarOpcionesProblema = true" placeholder="Buscar y seleccionar problema..." pInputText
                   variant="filled" />
                 <div class="dropdown-menu" *ngIf="mostrarOpcionesProblema">
@@ -119,7 +120,8 @@
                     (click)="seleccionarProblema(problema)">
                     {{ problema.description }}
                   </div>
-                  <div class="dropdown-item" (click)="scrollProblema(); mostrarCrearProblema = true; mostrarOpcionesProblema = false">
+                  <div class="dropdown-item"
+                    (click)="scrollProblema(); mostrarCrearProblema = true; mostrarOpcionesProblema = false">
                     - Crear y Añadir Problema -
                   </div>
                 </div>
@@ -227,8 +229,9 @@
               <div class="custom-select">
                 <input type="text" id="buscadorCaracteristica" [(ngModel)]="buscadorCaracteristica"
                   name="buscadorCaracteristica" (input)="filtrarCaracteristicas()"
-                  (focus)="mostrarOpcionesCaracteristicas = true ; caracteristicasFiltradas = allCaracteristicas" (click)="mostrarOpcionesCaracteristicas = true"
-                  placeholder="Buscar y seleccionar característica..." pInputText variant="filled" />
+                  (focus)="mostrarOpcionesCaracteristicas = true ; caracteristicasFiltradas = allCaracteristicas"
+                  (click)="mostrarOpcionesCaracteristicas = true" placeholder="Buscar y seleccionar característica..."
+                  pInputText variant="filled" />
                 <div class="dropdown-menu" *ngIf="mostrarOpcionesCaracteristicas">
                   <div *ngFor="let caracteristica of caracteristicasFiltradas" class="dropdown-item"
                     (click)="seleccionarCaracteristica(caracteristica)">
@@ -373,14 +376,16 @@
               <label for="buscadorBeneficio">Seleccionar Beneficio:</label>
               <div class="custom-select">
                 <input type="text" id="buscadorBeneficio" [(ngModel)]="buscadorBeneficio" name="buscadorBeneficio"
-                  (input)="filtrarBeneficios()" (focus)="mostrarOpciones = true; beneficiosFiltrados = allBeneficios" (click)="mostrarOpciones = true"
-                  placeholder="Buscar y seleccionar beneficio..." pInputText variant="filled" />
+                  (input)="filtrarBeneficios()" (focus)="mostrarOpciones = true; beneficiosFiltrados = allBeneficios"
+                  (click)="mostrarOpciones = true" placeholder="Buscar y seleccionar beneficio..." pInputText
+                  variant="filled" />
                 <div class="dropdown-menu" *ngIf="mostrarOpciones">
                   <div *ngFor="let beneficio of beneficiosFiltrados" class="dropdown-item"
                     (click)="seleccionarBeneficio(beneficio)">
                     {{ beneficio.description }}
                   </div>
-                  <div class="dropdown-item" (click)="scrollBeneficio(); mostrarCrearBeneficio = true; mostrarOpciones = false">
+                  <div class="dropdown-item"
+                    (click)="scrollBeneficio(); mostrarCrearBeneficio = true; mostrarOpciones = false">
                     - Crear y Añadir Beneficio -
                   </div>
                 </div>
@@ -513,7 +518,8 @@
                     (click)="seleccionarAmbito(ambito)">
                     {{ ambito.description }}
                   </div>
-                  <div class="dropdown-item" (click)="scrollAmbito(); mostrarCrearAmbito = true; mostrarOpcionesAmbitos = false">
+                  <div class="dropdown-item"
+                    (click)="scrollAmbito(); mostrarCrearAmbito = true; mostrarOpcionesAmbitos = false">
                     - Crear y Añadir Ámbito -
                   </div>
                 </div>
@@ -527,44 +533,44 @@
         </div>
 
         <!-- Tabla de ámbitos asociados -->
-<div class="subseccion">
-  <h3 class="titulo-subseccion">Ámbitos asociados a la solución: {{ solucion.description }}</h3>
-  <div *ngIf="ambitos && ambitos.length">
-    <p-table [value]="ambitos" [paginator]="true" [rows]="5"
-      [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
-      
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Descripción</th>
-          <th>Textoweb</th>
-          <th>Prefijo</th>
-          <th>Slug</th>
-          <th>Editar</th>
-          <th>Eliminar</th>
-        </tr>
-      </ng-template>
+        <div class="subseccion">
+          <h3 class="titulo-subseccion">Ámbitos asociados a la solución: {{ solucion.description }}</h3>
+          <div *ngIf="ambitos && ambitos.length">
+            <p-table [value]="ambitos" [paginator]="true" [rows]="5"
+              [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
 
-      <ng-template pTemplate="body" let-ambito>
-        <tr>
-          <td>{{ ambito.description }}</td>
-          <td>{{ ambito.textoweb }}</td>
-          <td>{{ ambito.prefijo }}</td>
-          <td>{{ ambito.slug }}</td>
-          <td>
-            <span (click)="editarAmbito(ambito)" class="emojis">✏️</span>
-          </td>
-          <td>
-            <span (click)="confirmarEliminarSolucionAmbito(ambito.id_ambito!, solucion.id_solucion!, $event)" 
-              class="emojis">🗑️</span>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
-  <div *ngIf="!ambitos || ambitos.length === 0">
-    <p>No hay ámbitos asociados a esta solución.</p>
-  </div>
-</div>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Descripción</th>
+                  <th>Textoweb</th>
+                  <th>Prefijo</th>
+                  <th>Slug</th>
+                  <th>Editar</th>
+                  <th>Eliminar</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-ambito>
+                <tr>
+                  <td>{{ ambito.description }}</td>
+                  <td>{{ ambito.textoweb }}</td>
+                  <td>{{ ambito.prefijo }}</td>
+                  <td>{{ ambito.slug }}</td>
+                  <td>
+                    <span (click)="editarAmbito(ambito)" class="emojis">✏️</span>
+                  </td>
+                  <td>
+                    <span (click)="confirmarEliminarSolucionAmbito(ambito.id_ambito!, solucion.id_solucion!, $event)"
+                      class="emojis">🗑️</span>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+          <div *ngIf="!ambitos || ambitos.length === 0">
+            <p>No hay ámbitos asociados a esta solución.</p>
+          </div>
+        </div>
 
         <div class="subseccion">
           <h3 class="titulo-subseccion">Solución: ({{ solucion.description }}) según cada ámbito</h3>
@@ -577,87 +583,109 @@
               <div class="grid-container">
                 <div class="form-group col-6">
                   <label for="title">title:</label>
-                  <input id="title" [(ngModel)]="nuevaSolucionAmbito.title" name="title" placeholder="title" pInputText variant="filled">
+                  <input id="title" [(ngModel)]="nuevaSolucionAmbito.title" name="title" placeholder="title" pInputText
+                    variant="filled">
                 </div>
                 <div class="form-group col-6">
                   <label for="subtitle">subtitle:</label>
-                  <input id="subtitle" [(ngModel)]="nuevaSolucionAmbito.subtitle" name="subtitle" placeholder="subtitle" pInputText variant="filled">
+                  <input id="subtitle" [(ngModel)]="nuevaSolucionAmbito.subtitle" name="subtitle" placeholder="subtitle"
+                    pInputText variant="filled">
                 </div>
                 <div class="form-group col-6">
                   <label for="icon">icon:</label>
-                  <input id="icon" [(ngModel)]="nuevaSolucionAmbito.icon" name="icon" placeholder="icon" pInputText variant="filled">
+                  <input id="icon" [(ngModel)]="nuevaSolucionAmbito.icon" name="icon" placeholder="icon" pInputText
+                    variant="filled">
                 </div>
                 <div class="form-group col-6">
                   <label for="titleweb">titleweb:</label>
-                  <input id="titleweb" [(ngModel)]="nuevaSolucionAmbito.titleweb" name="titleweb" placeholder="titleweb" pInputText variant="filled">
+                  <input id="titleweb" [(ngModel)]="nuevaSolucionAmbito.titleweb" name="titleweb" placeholder="titleweb"
+                    pInputText variant="filled">
                 </div>
                 <div class="form-group col-6">
                   <label for="slug">slug:</label>
-                  <input id="slug" [(ngModel)]="nuevaSolucionAmbito.slug" name="slug" placeholder="slug" pInputText variant="filled">
+                  <input id="slug" [(ngModel)]="nuevaSolucionAmbito.slug" name="slug" placeholder="slug" pInputText
+                    variant="filled">
                 </div>
                 <div class="form-group col-6">
                   <label for="multimediaUri">multimediaUri:</label>
-                  <input id="multimediaUri" [(ngModel)]="nuevaSolucionAmbito.multimediaUri" name="multimediaUri" placeholder="multimediaUri" pInputText variant="filled">
+                  <input id="multimediaUri" [(ngModel)]="nuevaSolucionAmbito.multimediaUri" name="multimediaUri"
+                    placeholder="multimediaUri" pInputText variant="filled">
                 </div>
                 <div class="form-group col-6">
                   <label for="multimediaTypeId">multimediaTypeId:</label>
-                  <input id="multimediaTypeId" [(ngModel)]="nuevaSolucionAmbito.multimediaTypeId" name="multimediaTypeId" placeholder="multimediaTypeId" pInputText variant="filled">
+                  <input id="multimediaTypeId" [(ngModel)]="nuevaSolucionAmbito.multimediaTypeId"
+                    name="multimediaTypeId" placeholder="multimediaTypeId" pInputText variant="filled">
                 </div>
                 <div class="form-group col-6">
                   <label for="problemaTitle">problemaTitle:</label>
-                  <input id="problemaTitle" [(ngModel)]="nuevaSolucionAmbito.problemaTitle" name="problemaTitle" placeholder="problemaTitle" pInputText variant="filled">
+                  <input id="problemaTitle" [(ngModel)]="nuevaSolucionAmbito.problemaTitle" name="problemaTitle"
+                    placeholder="problemaTitle" pInputText variant="filled">
                 </div>
                 <div class="form-group col-6">
                   <label for="problemaPragma">problemaPragma:</label>
-                  <textarea id="problemaPragma" [(ngModel)]="nuevaSolucionAmbito.problemaPragma" name="problemaPragma" placeholder="problemaPragma" pInputText variant="filled"></textarea>
+                  <textarea id="problemaPragma" [(ngModel)]="nuevaSolucionAmbito.problemaPragma" name="problemaPragma"
+                    placeholder="problemaPragma" pInputText variant="filled"></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="solucionTitle">solucionTitle:</label>
-                  <input id="solucionTitle" [(ngModel)]="nuevaSolucionAmbito.solucionTitle" name="solucionTitle" placeholder="solucionTitle" pInputText variant="filled">
+                  <input id="solucionTitle" [(ngModel)]="nuevaSolucionAmbito.solucionTitle" name="solucionTitle"
+                    placeholder="solucionTitle" pInputText variant="filled">
                 </div>
                 <div class="form-group col-6">
                   <label for="solucionPragma">solucionPragma:</label>
-                  <textarea id="solucionPragma" [(ngModel)]="nuevaSolucionAmbito.solucionPragma" name="solucionPragma" placeholder="solucionPragma" pInputText variant="filled"></textarea>
+                  <textarea id="solucionPragma" [(ngModel)]="nuevaSolucionAmbito.solucionPragma" name="solucionPragma"
+                    placeholder="solucionPragma" pInputText variant="filled"></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="caracteristicasTitle">caracteristicasTitle:</label>
-                  <input id="caracteristicasTitle" [(ngModel)]="nuevaSolucionAmbito.caracteristicasTitle" name="caracteristicasTitle" placeholder="caracteristicasTitle" pInputText variant="filled">
+                  <input id="caracteristicasTitle" [(ngModel)]="nuevaSolucionAmbito.caracteristicasTitle"
+                    name="caracteristicasTitle" placeholder="caracteristicasTitle" pInputText variant="filled">
                 </div>
                 <div class="form-group col-6">
                   <label for="caracteristicasPragma">caracteristicasPragma:</label>
-                  <textarea id="caracteristicasPragma" [(ngModel)]="nuevaSolucionAmbito.caracteristicasPragma" name="caracteristicasPragma" placeholder="caracteristicasPragma" pInputText variant="filled"></textarea>
+                  <textarea id="caracteristicasPragma" [(ngModel)]="nuevaSolucionAmbito.caracteristicasPragma"
+                    name="caracteristicasPragma" placeholder="caracteristicasPragma" pInputText
+                    variant="filled"></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="casosdeusoTitle">casosdeusoTitle:</label>
-                  <input id="casosdeusoTitle" [(ngModel)]="nuevaSolucionAmbito.casosdeusoTitle" name="casosdeusoTitle" placeholder="casosdeusoTitle" pInputText variant="filled">
+                  <input id="casosdeusoTitle" [(ngModel)]="nuevaSolucionAmbito.casosdeusoTitle" name="casosdeusoTitle"
+                    placeholder="casosdeusoTitle" pInputText variant="filled">
                 </div>
                 <div class="form-group col-6">
                   <label for="casosdeusoPragma">casosdeusoPragma:</label>
-                  <textarea id="casosdeusoPragma" [(ngModel)]="nuevaSolucionAmbito.casosdeusoPragma" name="casosdeusoPragma" placeholder="casosdeusoPragma" pInputText variant="filled"></textarea>
+                  <textarea id="casosdeusoPragma" [(ngModel)]="nuevaSolucionAmbito.casosdeusoPragma"
+                    name="casosdeusoPragma" placeholder="casosdeusoPragma" pInputText variant="filled"></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="firstCtaTitle">firstCtaTitle:</label>
-                  <input id="firstCtaTitle" [(ngModel)]="nuevaSolucionAmbito.firstCtaTitle" name="firstCtaTitle" placeholder="firstCtaTitle" pInputText variant="filled">
+                  <input id="firstCtaTitle" [(ngModel)]="nuevaSolucionAmbito.firstCtaTitle" name="firstCtaTitle"
+                    placeholder="firstCtaTitle" pInputText variant="filled">
                 </div>
                 <div class="form-group col-6">
                   <label for="firstCtaPragma">firstCtaPragma:</label>
-                  <textarea id="firstCtaPragma" [(ngModel)]="nuevaSolucionAmbito.firstCtaPragma" name="firstCtaPragma" placeholder="firstCtaPragma" pInputText variant="filled"></textarea>
+                  <textarea id="firstCtaPragma" [(ngModel)]="nuevaSolucionAmbito.firstCtaPragma" name="firstCtaPragma"
+                    placeholder="firstCtaPragma" pInputText variant="filled"></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="secondCtaTitle">secondCtaTitle:</label>
-                  <input id="secondCtaTitle" [(ngModel)]="nuevaSolucionAmbito.secondCtaTitle" name="secondCtaTitle" placeholder="secondCtaTitle" pInputText variant="filled">
+                  <input id="secondCtaTitle" [(ngModel)]="nuevaSolucionAmbito.secondCtaTitle" name="secondCtaTitle"
+                    placeholder="secondCtaTitle" pInputText variant="filled">
                 </div>
                 <div class="form-group col-6">
                   <label for="secondCtaPragma">secondCtaPragma:</label>
-                  <textarea id="secondCtaPragma" [(ngModel)]="nuevaSolucionAmbito.secondCtaPragma" name="secondCtaPragma" placeholder="secondCtaPragma" pInputText variant="filled"></textarea>
+                  <textarea id="secondCtaPragma" [(ngModel)]="nuevaSolucionAmbito.secondCtaPragma"
+                    name="secondCtaPragma" placeholder="secondCtaPragma" pInputText variant="filled"></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="beneficiosTitle">beneficiosTitle:</label>
-                  <input id="beneficiosTitle" [(ngModel)]="nuevaSolucionAmbito.beneficiosTitle" name="beneficiosTitle" placeholder="beneficiosTitle" pInputText variant="filled">
+                  <input id="beneficiosTitle" [(ngModel)]="nuevaSolucionAmbito.beneficiosTitle" name="beneficiosTitle"
+                    placeholder="beneficiosTitle" pInputText variant="filled">
                 </div>
                 <div class="form-group col-6">
                   <label for="beneficiosPragma">beneficiosPragma:</label>
-                  <textarea id="beneficiosPragma" [(ngModel)]="nuevaSolucionAmbito.beneficiosPragma" name="beneficiosPragma" placeholder="beneficiosPragma" pInputText variant="filled"></textarea>
+                  <textarea id="beneficiosPragma" [(ngModel)]="nuevaSolucionAmbito.beneficiosPragma"
+                    name="beneficiosPragma" placeholder="beneficiosPragma" pInputText variant="filled"></textarea>
                 </div>
               </div>
               <div class="botones-container">
@@ -745,7 +773,7 @@
       </div>
 
       <!-- Sección de sectores -->
-       <div class="seccion" #scrollSectores>
+      <div class="seccion" #scrollSectores>
         <h2 class="titulo-seccion">Sectores</h2>
 
         <div *ngIf="mostrarModificarSector === true" class="subseccion">
@@ -762,7 +790,7 @@
               <div class="form-group col-6">
                 <label for="nuevoTextoweb">textoWeb:</label>
                 <textarea id="nuevoTextoweb" [(ngModel)]="nuevoSector.textoweb" name="nuevoTextoweb"
-                required></textarea>
+                  required></textarea>
               </div>
               <div class="form-group col-6">
                 <label for="nuevoPrefijo">prefijo:</label>
@@ -774,15 +802,18 @@
               </div>
               <div class="form-group col-6">
                 <label for="nuevaDescriptionWeb">descriptionweb:</label>
-                <textarea id="nuevaDescriptionWeb" [(ngModel)]="nuevoSector.descriptionweb" name="nuevaDescriptionWeb" required></textarea>
+                <textarea id="nuevaDescriptionWeb" [(ngModel)]="nuevoSector.descriptionweb" name="nuevaDescriptionWeb"
+                  required></textarea>
               </div>
               <div class="form-group col-6">
                 <label for="nuevoTitleWeb">titleweb:</label>
-                <textarea id="nuevoTitleWeb" [(ngModel)]="nuevoSector.titleweb" name="nuevoTitleWeb" required></textarea>
+                <textarea id="nuevoTitleWeb" [(ngModel)]="nuevoSector.titleweb" name="nuevoTitleWeb"
+                  required></textarea>
               </div>
               <div class="form-group col-6">
                 <label for="nuevaBackgroundImage">backgroundImage:</label>
-                <textarea id="nuevaBackgroundImage" [(ngModel)]="nuevoSector.backgroundImage" name="nuevaBackgroundImage" required></textarea>
+                <textarea id="nuevaBackgroundImage" [(ngModel)]="nuevoSector.backgroundImage"
+                  name="nuevaBackgroundImage" required></textarea>
               </div>
             </div>
             <div class="botones-container">
@@ -816,7 +847,8 @@
             </div>
             <div class="form-group">
               <label for="nuevaDescriptionWeb">descriptionweb:</label>
-              <textarea id="nuevaDescriptionWeb" [(ngModel)]="nuevoSector.descriptionweb" name="nuevaDescriptionWeb" required></textarea>
+              <textarea id="nuevaDescriptionWeb" [(ngModel)]="nuevoSector.descriptionweb" name="nuevaDescriptionWeb"
+                required></textarea>
             </div>
             <div class="form-group">
               <label for="nuevoTitleWeb">titleweb:</label>
@@ -824,7 +856,8 @@
             </div>
             <div class="form-group">
               <label for="nuevaBackgroundImage">backgroundImage:</label>
-              <textarea id="nuevaBackgroundImage" [(ngModel)]="nuevoSector.backgroundImage" name="nuevaBackgroundImage" required></textarea>
+              <textarea id="nuevaBackgroundImage" [(ngModel)]="nuevoSector.backgroundImage" name="nuevaBackgroundImage"
+                required></textarea>
             </div>
             <div class="botones-container">
               <button type="submit">Crear y Añadir</button>
@@ -849,7 +882,8 @@
                     (click)="seleccionarSector(sector)">
                     {{ sector.description }}
                   </div>
-                  <div class="dropdown-item" (click)="scrollSector(); mostrarCrearSector = true; mostrarOpcionesSectores = false">
+                  <div class="dropdown-item"
+                    (click)="scrollSector(); mostrarCrearSector = true; mostrarOpcionesSectores = false">
                     - Crear y Añadir Sector -
                   </div>
                 </div>
@@ -880,7 +914,7 @@
                   <th>Eliminar</th>
                 </tr>
               </ng-template>
-        
+
               <ng-template pTemplate="body" let-sector>
                 <tr>
                   <td>{{sector.description}}</td>
@@ -905,6 +939,8 @@
           </div>
         </div>
 
+        <br>
+
         <div class="subseccion">
           <h3 class="titulo-subseccion">Solución: ({{ solucion.description }}) según cada sector</h3>
 
@@ -916,11 +952,13 @@
               <div class="grid-container">
                 <div class="form-group col-6">
                   <label for="descalternativa">descalternativa:</label>
-                  <input id="descalternativa" [(ngModel)]="nuevaSolucionSector.descalternativa" name="descalternativa" placeholder="descalternativa" pInputText variant="filled">
+                  <input id="descalternativa" [(ngModel)]="nuevaSolucionSector.descalternativa" name="descalternativa"
+                    placeholder="descalternativa" pInputText variant="filled">
                 </div>
                 <div class="form-group col-6">
                   <label for="textoalternativo">textoalternativo:</label>
-                  <input id="textoalternativo" [(ngModel)]="nuevaSolucionSector.textoalternativo" name="textoalternativo" placeholder="textoalternativo" pInputText variant="filled">
+                  <input id="textoalternativo" [(ngModel)]="nuevaSolucionSector.textoalternativo"
+                    name="textoalternativo" placeholder="textoalternativo" pInputText variant="filled">
                 </div>
               </div>
               <div class="botones-container">
@@ -944,7 +982,7 @@
                   <th>Eliminar</th>
                 </tr>
               </ng-template>
-          
+
               <ng-template pTemplate="body" let-solucionSector>
                 <tr>
                   <td>{{ solucionSector.id_solucion }}</td>
@@ -955,14 +993,15 @@
                     <span (click)="editarSolucionSector(solucionSector)" class="emojis">✏️</span>
                   </td>
                   <td>
-                    <span (click)="confirmarEliminarSolucionSector(solucionSector.id_sector!, solucion.id_solucion!, $event)" 
+                    <span
+                      (click)="confirmarEliminarSolucionSector(solucionSector.id_sector!, solucion.id_solucion!, $event)"
                       class="emojis">🗑️</span>
                   </td>
                 </tr>
               </ng-template>
             </p-table>
           </div>
-          
+
           <div *ngIf="!solucionesSectores || solucionesSectores.length === 0">
             <p>No hay sectores asociados a esta solución.</p>
           </div>
