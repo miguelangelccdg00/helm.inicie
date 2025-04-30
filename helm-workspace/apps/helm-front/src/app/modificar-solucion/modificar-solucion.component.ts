@@ -1494,7 +1494,7 @@ export class ModificarSolucionComponent implements OnInit {
       id_ambito: idAmbito
     };
 
-    this.storeSolucionesService.updateSolucionAmbitos(idSolucion, [solucionAmbitoActualizada]).subscribe({
+    this.storeSolucionesService.updateSolucionAmbitos(idSolucion, solucionAmbitoActualizada).subscribe({
       next: (response) => {
         console.log('Solución por ámbito actualizada correctamente:', response);
         

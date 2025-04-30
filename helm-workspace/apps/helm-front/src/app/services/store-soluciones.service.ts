@@ -668,10 +668,31 @@ export class StoreSolucionesService {
     return this.https.delete<DeleteSolucionAmbitoResponse>(url, { headers });
   }
 
-  updateSolucionAmbitos(idSolucion: number, solucionAmbitos: SolucionAmbito[]): Observable<any> {
-    const url = `${this.ambitosUrl}/modifyAmbitos/${idSolucion}`;
+  updateSolucionAmbitos(idSolucion: number, solucionAmbito: SolucionAmbito): Observable<any> {
+    const url = `${this.ambitosUrl}/modifySolucionAmbitos/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.put<any>(url, solucionAmbitos, { headers });
+    
+    console.log('⌛ Actualizando ámbito de la solución:', {
+      url,
+      idSolucion,
+      solucionAmbito
+    });
+  
+    return this.https.put<any>(url, solucionAmbito, { headers }).pipe(
+      map(response => {
+        console.log('✅ Ámbito actualizado correctamente:', response);
+        return response;
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          console.error('❌ Ruta no encontrada:', url);
+          console.error('Detalles del error:', error);
+        } else {
+          console.error('❌ Error al actualizar ámbito:', error);
+        }
+        return throwError(() => new Error(`Error al actualizar ámbito: ${error.message}`));
+      })
+    );
   }
 
   /* Sectores */
