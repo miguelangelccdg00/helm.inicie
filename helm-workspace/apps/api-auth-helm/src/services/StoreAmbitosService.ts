@@ -186,7 +186,6 @@ class StoreAmbitosService
   // Actualizar un ámbito
   async update(
     idAmbito: number,
-    idSolucion: number,
     updateData: Partial<StoreAmbitos & SolucionAmbito>
   ): Promise<StoreAmbitos> {
     try {

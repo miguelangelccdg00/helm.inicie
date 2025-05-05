@@ -31,7 +31,7 @@ router.post('/asociarAmbito', storeAmbitosController.asociarAmbito);
 /**
  * @description Modifica un ambito específico por su ID
  */
-router.put('/modifyAmbitos/:idSolucion/:idAmbito', storeAmbitosController.modifyStoreAmbitos);
+router.put('/modifyAmbitos/:idAmbito', storeAmbitosController.modifyStoreAmbitos);
 
 /**
  * @description Actualiza los ámbitos de una solución

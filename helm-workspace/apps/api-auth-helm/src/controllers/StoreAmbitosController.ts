@@ -170,13 +170,8 @@ class StoreAmbitosController
 
   async modifyStoreAmbitos(req: Request<{ idSolucion: string; idAmbito: string }, any, Partial<StoreAmbitos>>, res: Response): Promise<void> {
     try {
-      const { idSolucion, idAmbito } = req.params;
+      const { idAmbito } = req.params;
       const updateData = req.body;
-
-      if (!idSolucion) {
-        res.status(400).json({ message: 'ID de solucion no proporcionado' });
-        return;
-      }
 
       if (!idAmbito) {
         res.status(400).json({ message: 'ID de ambito no proporcionado' });
@@ -188,7 +183,7 @@ class StoreAmbitosController
         return;
       }
 
-      const result = await StoreAmbitosService.update(Number(idAmbito), Number(idSolucion), updateData);
+      const result = await StoreAmbitosService.update(Number(idAmbito), updateData);
       res.json(result);
     } catch (error) {
       console.error('Error al modificar storeAmbitos:', error);
