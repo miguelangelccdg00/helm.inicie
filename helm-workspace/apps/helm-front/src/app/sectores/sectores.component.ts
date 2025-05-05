@@ -1,21 +1,22 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreSectores } from '@modelos-shared/storeSectores';
-/* import { SectoresService } from '../services/sectores.service'; */
+import { SectoresService } from '../services/sectores.service';
 import { Router } from '@angular/router';
 import { debounceTime } from 'rxjs/operators';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { MenuComponent } from '../menu/menu.component';
 
 @Component({
   selector: 'app-sectores',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MenuComponent, FormsModule, ReactiveFormsModule],
   templateUrl: './sectores.component.html',
   styleUrl: './sectores.component.sass',
 })
 export class SectoresComponent {
 
-  /* storeSectores: StoreSectores[] = [];
+  storeSectores: StoreSectores[] = [];
   sectoresFiltrados: StoreSectores[] = [];
   filtroDescripcion = new FormControl('');
 
@@ -28,7 +29,10 @@ export class SectoresComponent {
     description: '',
     textoweb: '',
     prefijo: '',
-    slug: ''
+    slug: '',
+    descriptionweb: '',
+    titleweb: '',
+    backgroundImage: '',
   };
 
   constructor(private storeSectoresService: SectoresService, private router: Router) {}
@@ -42,7 +46,7 @@ export class SectoresComponent {
   }
 
   cargarSectores() {
-    this.storeSectoresService.getStoresSectores().subscribe({
+    this.storeSectoresService.getStoreSectores().subscribe({
       next: (response) => {
         console.log('StoreSectores obtenidos: ', response);
         this.storeSectores = response;
@@ -110,13 +114,13 @@ export class SectoresComponent {
         console.log('Sector creado:', sectorCreado);
         this.storeSectores.push(sectorCreado);
         this.filtrarSectores(this.filtroDescripcion.value || '');
-        this.nuevoSector = { description: '', textoweb: '', prefijo: '', slug: '' };
+        this.nuevoSector = { description: '', textoweb: '', prefijo: '', slug: '', descriptionweb: '', titleweb: '', backgroundImage: '' };
         this.mostrarFormularioCrear = false;
       },
       error: (error) => {
         console.error('Error al crear sector:', error);
       }
     });
-  } */
+  }
 
 }

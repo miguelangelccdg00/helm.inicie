@@ -18,8 +18,8 @@ export class SectoresService {
       return this.https.get<StoreSectores[]>(url, { headers });
     }
   
-    deleteStoreSector(idSector: number, idSolucion: number): Observable<DeleteSectorResponse> {
-      const url = `${this.sectoresUrl}/deleteSectores/${idSolucion}/${idSector}`;
+    deleteStoreSector(idSector: number): Observable<DeleteSectorResponse> {
+      const url = `${this.sectoresUrl}/deleteSectorById/${idSector}`;
       const headers = new HttpHeaders().set('Content-Type', 'application/json');
       return this.https.delete<DeleteSectorResponse>(url, { headers });
     }
