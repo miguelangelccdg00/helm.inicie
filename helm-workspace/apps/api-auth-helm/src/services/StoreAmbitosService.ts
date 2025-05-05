@@ -18,8 +18,7 @@ interface AmbitosParams
   slug: string;
 }
 
-interface AsociarAmbitoParams 
-{
+interface AsociarAmbitoParams {
   id_solucion: number;
   id_ambito: number;
 }
@@ -111,31 +110,6 @@ class StoreAmbitosService
     }
   }
 
-  // Asocia todas las soluciones con todos los ámbitos 
-  async asociarTodasLasSolucionesTodosAmbitos(): Promise<void> 
-  {
-    try 
-    {
-      const [result] = await pool.promise().query(`
-        INSERT INTO storeSolucionesAmbitos (id_solucion, id_ambito)
-        SELECT s.id_solucion, a.id_ambito
-        FROM storeSoluciones s
-        CROSS JOIN storeAmbitos a
-        WHERE NOT EXISTS (
-          SELECT 1 FROM storeSolucionesAmbitos sa
-          WHERE sa.id_solucion = s.id_solucion AND sa.id_ambito = a.id_ambito
-        )`);
-
-      console.log('Asociaciones creadas:', result.affectedRows);
-    } 
-    catch (error) 
-    {
-      console.error('Error al asociar masivamente ámbitos y soluciones:', error);
-      throw new Error('Error en asociación masiva');
-    }
-  }
-
-
   // Obtener todos los ámbitos
   async listAmbitos(): Promise<StoreAmbitos[]> {
     try {
@@ -184,29 +158,32 @@ class StoreAmbitosService
   }
 
   // Actualizar un ámbito
-  async update(
-    idAmbito: number,
-    updateData: Partial<StoreAmbitos & SolucionAmbito>
-  ): Promise<StoreAmbitos> {
-    try {
+  async update(idAmbito: number,idSolucion: number,updateData: Partial<StoreAmbitos & SolucionAmbito>): Promise<StoreAmbitos> 
+  {
+    try 
+    {
       const { description, textoweb, prefijo, slug } = updateData;
 
       const updateFields = [];
       const updateValues = [];
 
-      if (description) {
+      if (description) 
+      {
         updateFields.push('description = ?');
         updateValues.push(description);
       }
-      if (textoweb) {
+      if (textoweb)
+      {
         updateFields.push('textoweb = ?');
         updateValues.push(textoweb);
       }
-      if (prefijo) {
+      if (prefijo) 
+      {
         updateFields.push('prefijo = ?');
         updateValues.push(prefijo);
       }
-      if (slug) {
+      if (slug) 
+      {
         updateFields.push('slug = ?');
         updateValues.push(slug);
       }
@@ -219,7 +196,8 @@ class StoreAmbitosService
         updateValues
       );
 
-      if (result.affectedRows === 0) {
+      if (result.affectedRows === 0) 
+      {
         throw new Error('No se encontró el ámbito para actualizar');
       }
 
@@ -230,7 +208,68 @@ class StoreAmbitosService
         prefijo: prefijo || '',
         slug: slug || ''
       };
-    } catch (error) {
+    } 
+    catch (error) 
+    {
+      console.error('Error al actualizar el ámbito:', error);
+      throw new Error('Error al actualizar el ámbito');
+    }
+  }
+
+  // Actualizar un ámbito
+  async updateAmbito(idAmbito: number,updateData: Partial<StoreAmbitos & SolucionAmbito>): Promise<StoreAmbitos> 
+  {
+    try 
+    {
+      const { description, textoweb, prefijo, slug } = updateData;
+
+      const updateFields = [];
+      const updateValues = [];
+
+      if (description) 
+      {
+        updateFields.push('description = ?');
+        updateValues.push(description);
+      }
+      if (textoweb) 
+      {
+        updateFields.push('textoweb = ?');
+        updateValues.push(textoweb);
+      }
+      if (prefijo) 
+      {
+        updateFields.push('prefijo = ?');
+        updateValues.push(prefijo);
+      }
+      if (slug) 
+      {
+        updateFields.push('slug = ?');
+        updateValues.push(slug);
+      }
+
+      updateValues.push(idAmbito);
+
+      const [result] = await pool.promise().query(
+        `UPDATE storeAmbitos SET ${updateFields.join(', ')}
+         WHERE id_ambito = ?`,
+        updateValues
+      );
+
+      if (result.affectedRows === 0) 
+      {
+        throw new Error('No se encontró el ámbito para actualizar');
+      }
+
+      return {
+        id_ambito: idAmbito,
+        description: description || '',
+        textoweb: textoweb || '',
+        prefijo: prefijo || '',
+        slug: slug || ''
+      };
+    } 
+    catch (error) 
+    {
       console.error('Error al actualizar el ámbito:', error);
       throw new Error('Error al actualizar el ámbito');
     }

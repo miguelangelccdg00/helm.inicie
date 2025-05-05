@@ -108,21 +108,6 @@ class StoreAmbitosController
     }
   }
 
-  async asociarMasivamente (req: Request, res: Response): Promise<void>
-  {
-    try 
-    {
-      await StoreAmbitosService.asociarTodasLasSolucionesTodosAmbitos();
-
-      res.status(200).json({ message: 'Todas las soluciones fueron asociadas con todos los ámbitos correctamente' });
-    } 
-    catch (error) 
-    {
-      console.error('Error al asociar ambito con solucion:', error);
-      res.status(500).json({ message: 'Error interno del servidor al hacer la asociación masiva.' });
-    }
-  }
-
   async listAmbitos(req: Request, res: Response): Promise<void> 
   {
     try 
@@ -170,8 +155,13 @@ class StoreAmbitosController
 
   async modifyStoreAmbitos(req: Request<{ idSolucion: string; idAmbito: string }, any, Partial<StoreAmbitos>>, res: Response): Promise<void> {
     try {
-      const { idAmbito } = req.params;
+      const { idSolucion, idAmbito } = req.params;
       const updateData = req.body;
+
+      if (!idSolucion) {
+        res.status(400).json({ message: 'ID de solucion no proporcionado' });
+        return;
+      }
 
       if (!idAmbito) {
         res.status(400).json({ message: 'ID de ambito no proporcionado' });
@@ -183,9 +173,38 @@ class StoreAmbitosController
         return;
       }
 
-      const result = await StoreAmbitosService.update(Number(idAmbito), updateData);
+      const result = await StoreAmbitosService.update(Number(idAmbito), Number(idSolucion), updateData);
       res.json(result);
     } catch (error) {
+      console.error('Error al modificar storeAmbitos:', error);
+      res.status(500).json({ message: 'Error interno en el servidor' });
+    }
+  }
+
+  async modifyAmbitos(req: Request<{idAmbito: string }, any, Partial<StoreAmbitos>>, res: Response): Promise<void> 
+  {
+    try 
+    {
+      const { idAmbito } = req.params;
+      const updateData = req.body;
+
+      if (!idAmbito) 
+      {
+        res.status(400).json({ message: 'ID de ambito no proporcionado' });
+        return;
+      }
+
+      if (!Object.keys(updateData).length) 
+      {
+        res.status(400).json({ message: 'No se proporcionaron datos' });
+        return;
+      }
+
+      const result = await StoreAmbitosService.updateAmbito(Number(idAmbito), updateData);
+      res.json(result);
+    } 
+    catch (error) 
+    {
       console.error('Error al modificar storeAmbitos:', error);
       res.status(500).json({ message: 'Error interno en el servidor' });
     }

@@ -45,6 +45,12 @@ router.post('/asociarMasivamenteSectorAmbitoSolucion', StoreSectoresController.a
 router.put('/modifySectores/:idSolucion/:idSector', StoreSectoresController.modifyStoreSectores)
 
 /**
+ * @description Modificacion de un sector de una solucion especifica
+ */
+
+router.put('/modifySectores/:idSector', StoreSectoresController.modifySector)
+
+/**
  * @description Modificación de los sectores asociados a una solución
  */
 router.put('/modifySolucionSectores/:idSolucion', StoreSectoresController.modifySolucionSectores);

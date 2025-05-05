@@ -240,6 +240,11 @@
                   "glob": "**/*",
                   "input": "apps/helm-front/src/app/store-soluciones/assets",
                   "output": "assets"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "apps/helm-front/src/app/sectores/assets",
+                  "output": "assets"
                 }
               ],
               "styles": [
@@ -4186,5 +4191,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1746432115667
+  "computedAt": 1746433773058
 }

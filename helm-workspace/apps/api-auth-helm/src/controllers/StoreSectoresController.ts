@@ -222,6 +222,35 @@ class storeSectoresControllers
     }
   }
 
+  async modifySector(req: Request<{ idSector: string }, any, Partial<StoreSectores>>, res: Response): Promise<void> 
+  {
+    try 
+    {
+      const { idSector } = req.params;
+      const updateData = req.body;
+
+      if (!idSector) 
+      {
+        res.status(400).json({ message: 'ID de sector no proporcionado' });
+        return;
+      }
+
+      if (!Object.keys(updateData).length) 
+      {
+        res.status(400).json({ message: 'No se proporcionaron datos' });
+        return;
+      }
+
+      const result = await StoreSectoresService.updateSector(Number(idSector), updateData);
+      res.json(result);
+    } 
+    catch (error) 
+    {
+      console.error('Error al modificar storeSectores:', error);
+      res.status(500).json({ message: 'Error interno en el servidor' });
+    }
+  }
+
   async modifySolucionSectores(req: Request<{ idSolucion: string }, any, SolucionSector>, res: Response): Promise<void> 
   {
     try {

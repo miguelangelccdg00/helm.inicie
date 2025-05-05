@@ -271,6 +271,54 @@ class StoreSectoresService
         }
     }
 
+    async updateSector(idSector: number, updateData: Partial<StoreSectores & SolucionSector>): Promise<StoreSectores> 
+    {
+        try 
+        {
+            const { description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage } = updateData;
+
+            const updateFields = [];
+            const updateValues = [];
+
+            if (description) { updateFields.push('description = ?'); updateValues.push(description); }
+            if (textoweb) { updateFields.push('textoweb = ?'); updateValues.push(textoweb); }
+            if (prefijo) { updateFields.push('prefijo = ?'); updateValues.push(prefijo); }
+            if (slug) { updateFields.push('slug = ?'); updateValues.push(slug); }
+            if (descriptionweb) { updateFields.push('descriptionweb = ?'); updateValues.push(descriptionweb); }
+            if (titleweb) { updateFields.push('titleweb = ?'); updateValues.push(titleweb); }
+            if (backgroundImage) { updateFields.push('backgroundImage = ?'); updateValues.push(backgroundImage); }
+
+            updateValues.push(idSector);
+
+            const [result] = await pool.promise().query(
+                `UPDATE storeSectores SET ${updateFields.join(', ')}
+                 WHERE id_sector = ?`,
+                updateValues
+            );
+
+            if (result.affectedRows === 0)
+            {
+                throw new Error('No se encontró el sector para actualizar');
+            }
+
+            return {
+                id_sector: idSector,
+                description: description || '',
+                textoweb: textoweb || '',
+                prefijo: prefijo || '',
+                slug: slug || '',
+                descriptionweb: descriptionweb || '',
+                titleweb: titleweb || '',
+                backgroundImage: backgroundImage || ''
+            };
+        } 
+        catch (error) 
+        {
+            console.error('Error al actualizar el sector:', error);
+            throw new Error('Error al actualizar el sector');
+        }
+    }
+
     async updateSolucionSectores(idSolucion: number, solucionSector: SolucionSector): Promise<SolucionSector> {
         try {
             const { id_sector, descalternativa, textoalternativo } = solucionSector;
