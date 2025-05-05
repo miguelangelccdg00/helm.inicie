@@ -22,8 +22,10 @@ export class SectoresComponent {
 
   mostrarModal: boolean = false;
   sectorAEliminar: number | null = null;
+  sectorAEditar: StoreSectores | null = null;
 
   mostrarFormularioCrear: boolean = false;
+  mostrarFormularioEditar: boolean = false;
 
   nuevoSector: StoreSectores = {
     description: '',
@@ -122,5 +124,31 @@ export class SectoresComponent {
       }
     });
   }
+
+  mostrarFormularioEditarSector(sector: StoreSectores) {
+    this.sectorAEditar = { ...sector };
+    this.mostrarFormularioEditar = true;
+    this.mostrarFormularioCrear = false;
+  }
+  
+  guardarCambiosSector() {
+    if (!this.sectorAEditar?.id_sector) return;
+  
+    this.storeSectoresService.modifySector(1, this.sectorAEditar.id_sector, this.sectorAEditar).subscribe({
+      next: (sectorActualizado) => {
+        const index = this.storeSectores.findIndex(s => s.id_sector === sectorActualizado.id_sector);
+        if (index !== -1) {
+          this.storeSectores[index] = sectorActualizado;
+          this.filtrarSectores(this.filtroDescripcion.value || '');
+        }
+        this.mostrarFormularioEditar = false;
+        this.sectorAEditar = null;
+      },
+      error: (err) => {
+        console.error('Error al modificar el sector:', err);
+      }
+    });
+  }
+  
 
 }

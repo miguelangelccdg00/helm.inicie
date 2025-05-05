@@ -39,6 +39,11 @@
             "glob": "**/*",
             "input": "apps/helm-front/src/app/store-soluciones/assets",
             "output": "assets"
+          },
+          {
+            "glob": "**/*",
+            "input": "apps/helm-front/src/app/sectores/assets",
+            "output": "assets"
           }
         ],
         "styles": [
