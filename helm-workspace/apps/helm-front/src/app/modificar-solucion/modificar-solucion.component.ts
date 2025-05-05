@@ -16,8 +16,6 @@ import { forkJoin, Observable } from 'rxjs';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { tap } from 'rxjs/operators';
-
 
 @Component({
   selector: 'app-modificar-solucion',
@@ -261,15 +259,15 @@ export class ModificarSolucionComponent implements OnInit {
     });
   }
   
-  private createDictionary(items: any[]): { [key: number]: any } {
+  private createDictionary<T extends { id_ambito?: number; id_sector?: number }>(items: T[]): { [key: number]: T } {
     return items.reduce((acc, item) => {
-      if (item.id_ambito || item.id_sector) {
-        acc[item.id_ambito || item.id_sector] = item;
+      const id = (item as { id_ambito: number; id_sector: number }).id_ambito || (item as { id_ambito: number; id_sector: number }).id_sector;
+      if (id !== undefined) {
+        acc[id] = item;
       }
       return acc;
-    }, {});
-  }
-  
+    }, {} as { [key: number]: T });
+  }  
   
   guardarCambios() {
     if (this.solucion) {
