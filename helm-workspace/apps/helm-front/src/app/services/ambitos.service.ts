@@ -30,4 +30,19 @@ export class AmbitosService {
     return this.https.post<StoreAmbitos>(url, ambito, { headers });
   }
 
+  modifyAmbito(idAmbito: number, ambito: StoreAmbitos): Observable<StoreAmbitos> {
+    const url = `${this.ambitosUrl}/modifyAmbitos/${idAmbito}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    const ambitoToUpdate = {
+      description: ambito.description,
+      textoweb: ambito.textoweb,
+      prefijo: ambito.prefijo,
+      slug: ambito.slug,
+    };
+
+    return this.https.put<StoreAmbitos>(url, ambitoToUpdate, { headers });
+
+  }
+
 }

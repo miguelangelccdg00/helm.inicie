@@ -1,125 +1,140 @@
 <div class="layout-container">
-    <app-menu class="menu-lateral"></app-menu>
+  <app-menu class="menu-lateral"></app-menu>
 
-    <div class="contenido-principal">
+  <div class="contenido-principal">
 
-        <div class="header">
-            <h1>Ámbitos</h1>
+    <div class="header">
+      <h1>Ámbitos</h1>
 
-            <div class="flex">
-                <input type="text" placeholder="Buscar ámbito por descripción..." class="buscador"
-                    [formControl]="filtroDescripcion">
-                <button (click)="mostrarFormularioCrear = true" id="boton">Crear ámbito</button>
-            </div>
-        </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>description</th>
-                    <th>textoweb</th>
-                    <th>prefijo</th>
-                    <th>slug</th>
-                    <th class="text-center">Eliminar</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let ambito of ambitosFiltrados; trackBy: trackByAmbitoId">
-                    <td>{{ambito.description}}</td>
-                    <td>{{ambito.textoweb}}</td>
-                    <td>{{ambito.prefijo}}</td>
-                    <td>{{ambito.slug}}</td>
-                    <td class="text-center">
-                        <button class="delete-btn" (click)="confirmarEliminarAmbito(ambito.id_ambito!, $event)"
-                            title="Eliminar ámbito">
-                            <img src="assets/papelera.png" alt="papelera" width="25px" height="25px">
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="no-data-message" *ngIf="ambitosFiltrados.length === 0">
-            No se encontraron ámbitos disponibles.
-        </div>
-
-        <div *ngIf="mostrarFormularioCrear" class="form-crear">
-            <h3>Crear nuevo ámbito</h3>
-          
-            <form (ngSubmit)="crearAmbito()" class="formulario-ambito">
-              <div class="campo-formulario">
-                <label for="description">Descripción:</label>
-                <input
-                  type="text"
-                  id="description"
-                  [(ngModel)]="nuevoAmbito.description"
-                  name="description"
-                  required
-                  placeholder="Introduce una descripción"
-                />
-              </div>
-          
-              <div class="campo-formulario">
-                <label for="textoweb">Texto Web:</label>
-                <input
-                  type="text"
-                  id="textoweb"
-                  [(ngModel)]="nuevoAmbito.textoweb"
-                  name="textoweb"
-                  required
-                  placeholder="Introduce el texto web"
-                />
-              </div>
-          
-              <div class="campo-formulario">
-                <label for="prefijo">Prefijo:</label>
-                <input
-                  type="text"
-                  id="prefijo"
-                  [(ngModel)]="nuevoAmbito.prefijo"
-                  name="prefijo"
-                  required
-                  placeholder="Introduce el prefijo"
-                />
-              </div>
-          
-              <div class="campo-formulario">
-                <label for="slug">Slug:</label>
-                <input
-                  type="text"
-                  id="slug"
-                  [(ngModel)]="nuevoAmbito.slug"
-                  name="slug"
-                  required
-                  placeholder="Introduce el slug"
-                />
-              </div>
-          
-              <div class="botones-formulario">
-                <button type="submit" class="btn-submit">Crear</button>
-                <button type="button" class="btn-cancelar" (click)="mostrarFormularioCrear = false">Cancelar</button>
-              </div>
-            </form>
-          </div>
-          
-
-
+      <div class="flex">
+        <input type="text" placeholder="Buscar ámbito por descripción..." class="buscador"
+          [formControl]="filtroDescripcion">
+        <button (click)="mostrarFormularioCrear = true; mostrarFormularioEditar = false" id="boton">Crear ámbito</button>
+      </div>
     </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>description</th>
+          <th>textoweb</th>
+          <th>prefijo</th>
+          <th>slug</th>
+          <th class="text-center">Editar</th>
+          <th class="text-center">Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ambito of ambitosFiltrados; trackBy: trackByAmbitoId">
+          <td>{{ambito.description}}</td>
+          <td>{{ambito.textoweb}}</td>
+          <td>{{ambito.prefijo}}</td>
+          <td>{{ambito.slug}}</td>
+          <td class="text-center">
+            <button class="btn" (click)="mostrarFormularioEditarAmbito(ambito)" title="Modificar ámbito">
+              <img src="assets/pencil.png" alt="lápiz" width="25px" height="25px">
+            </button>
+          </td>
+          <td class="text-center">
+            <button class="btn" (click)="confirmarEliminarAmbito(ambito.id_ambito!, $event)"
+              title="Eliminar ámbito">
+              <img src="assets/papelera.png" alt="papelera" width="25px" height="25px">
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="no-data-message" *ngIf="ambitosFiltrados.length === 0">
+      No se encontraron ámbitos disponibles.
+    </div>
+
+    <div *ngIf="mostrarFormularioCrear" class="form-crear">
+      <h3>Crear nuevo ámbito</h3>
+
+      <form (ngSubmit)="crearAmbito()" class="formulario-ambito">
+        <div class="campo-formulario">
+          <label for="description">Descripción:</label>
+          <input type="text" id="description" [(ngModel)]="nuevoAmbito.description" name="description" required
+            placeholder="Introduce una descripción" />
+        </div>
+
+        <div class="campo-formulario">
+          <label for="textoweb">Texto Web:</label>
+          <input type="text" id="textoweb" [(ngModel)]="nuevoAmbito.textoweb" name="textoweb" required
+            placeholder="Introduce el texto web" />
+        </div>
+
+        <div class="campo-formulario">
+          <label for="prefijo">Prefijo:</label>
+          <input type="text" id="prefijo" [(ngModel)]="nuevoAmbito.prefijo" name="prefijo" required
+            placeholder="Introduce el prefijo" />
+        </div>
+
+        <div class="campo-formulario">
+          <label for="slug">Slug:</label>
+          <input type="text" id="slug" [(ngModel)]="nuevoAmbito.slug" name="slug" required
+            placeholder="Introduce el slug" />
+        </div>
+
+        <div class="botones-formulario">
+          <button type="submit" class="btn-submit">Crear</button>
+          <button type="button" class="btn-cancelar" (click)="mostrarFormularioCrear = false">Cancelar</button>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="mostrarFormularioEditar" class="form-crear">
+      <h3>Modificar ámbito</h3>
+    
+      <form (ngSubmit)="guardarCambiosAmbito()" class="formulario-ambito">
+        <div class="campo-formulario">
+          <label for="description">Descripción:</label>
+          <input type="text" id="description" [(ngModel)]="ambitoAEditar!.description" name="edit_description" required
+            placeholder="Introduce una descripción" />
+        </div>
+    
+        <div class="campo-formulario">
+          <label for="textoweb">Texto Web:</label>
+          <input type="text" id="textoweb" [(ngModel)]="ambitoAEditar!.textoweb" name="edit_textoweb" required
+            placeholder="Introduce el texto web" />
+        </div>
+    
+        <div class="campo-formulario">
+          <label for="prefijo">Prefijo:</label>
+          <input type="text" id="prefijo" [(ngModel)]="ambitoAEditar!.prefijo" name="edit_prefijo" required
+            placeholder="Introduce el prefijo" />
+        </div>
+    
+        <div class="campo-formulario">
+          <label for="slug">Slug:</label>
+          <input type="text" id="slug" [(ngModel)]="ambitoAEditar!.slug" name="edit_slug" required
+            placeholder="Introduce el slug" />
+        </div>
+    
+        <div class="botones-formulario">
+          <button type="submit" class="btn-submit">Guardar cambios</button>
+          <button type="button" class="btn-cancelar" (click)="mostrarFormularioEditar = false">Cancelar</button>
+        </div>
+      </form>
+    </div>
+    
+  </div>
 </div>
 
 <!-- Modal de confirmación para eliminar ámbito -->
 <div class="modal-overlay" *ngIf="mostrarModal">
-    <div class="modal-container">
-        <div class="modal-header">
-            <h2>Confirmar eliminación</h2>
-        </div>
-        <div class="modal-body">
-            <p>¿Está seguro de que desea eliminar este ámbito?</p>
-            <p class="warning-text">Esta acción no se puede deshacer.</p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn-cancelar" (click)="cancelarEliminarAmbito()">Cancelar</button>
-            <button class="btn-eliminar" (click)="eliminarAmbito()">Eliminar</button>
-        </div>
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2>Confirmar eliminación</h2>
     </div>
+    <div class="modal-body">
+      <p>¿Está seguro de que desea eliminar este ámbito?</p>
+      <p class="warning-text">Esta acción no se puede deshacer.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cancelarEliminarAmbito()">Cancelar</button>
+      <button class="btn-eliminar" (click)="eliminarAmbito()">Eliminar</button>
+    </div>
+  </div>
 </div>
