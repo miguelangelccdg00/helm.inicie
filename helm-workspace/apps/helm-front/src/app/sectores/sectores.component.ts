@@ -111,6 +111,9 @@ export class SectoresComponent {
   }
 
   crearSector() {
+
+    this.mostrarFormularioEditar = false;
+
     this.storeSectoresService.createStoreSector(this.nuevoSector).subscribe({
       next: (sectorCreado) => {
         console.log('Sector creado:', sectorCreado);
@@ -134,7 +137,7 @@ export class SectoresComponent {
   guardarCambiosSector() {
     if (!this.sectorAEditar?.id_sector) return;
   
-    this.storeSectoresService.modifySector(1, this.sectorAEditar.id_sector, this.sectorAEditar).subscribe({
+    this.storeSectoresService.modifySector(this.sectorAEditar.id_sector, this.sectorAEditar).subscribe({
       next: (sectorActualizado) => {
         const index = this.storeSectores.findIndex(s => s.id_sector === sectorActualizado.id_sector);
         if (index !== -1) {
@@ -150,5 +153,4 @@ export class SectoresComponent {
     });
   }
   
-
 }

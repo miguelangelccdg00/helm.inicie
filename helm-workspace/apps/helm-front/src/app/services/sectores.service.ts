@@ -30,8 +30,8 @@ export class SectoresService {
       return this.https.post<StoreSectores>(url, sector, { headers });
     }
 
-    modifySector(idSolucion: number, idSector: number, sector: StoreSectores): Observable<StoreSectores> {
-      const url = `${this.sectoresUrl}/modifySectores/${idSolucion}/${idSector}`;
+    modifySector(idSector: number, sector: StoreSectores): Observable<StoreSectores> {
+      const url = `${this.sectoresUrl}/modifySectores/${idSector}`;
       const headers = new HttpHeaders().set('Content-Type', 'application/json');
   
       const sectorToUpdate = {
