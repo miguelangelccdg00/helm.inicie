@@ -2,51 +2,70 @@ import { pool } from '../../../api-shared-helm/src/databases/conexion'; // Ajust
 import { StoreAmbitos } from '../../../api-shared-helm/src/models/storeAmbitos';
 import { SolucionAmbito } from '../../../api-shared-helm/src/models/solucionAmbito';
 
-interface CreateAmbitoParams {
-  description: string;
-  textoweb: string;
-  prefijo: string;
-  slug: string;
-  idSolucion: number;
-}
-
-interface AmbitosParams {
+interface CreateAmbitoParams 
+{
   description: string;
   textoweb: string;
   prefijo: string;
   slug: string;
 }
 
-interface AsociarAmbitoParams {
+interface AmbitosParams 
+{
+  description: string;
+  textoweb: string;
+  prefijo: string;
+  slug: string;
+}
+
+interface AsociarAmbitoParams 
+{
   id_solucion: number;
   id_ambito: number;
 }
 
-class StoreAmbitosService {
+class StoreAmbitosService 
+{
   
-  // Crear un nuevo ámbito
-  async createAmbito({description,textoweb,prefijo,slug,idSolucion }: CreateAmbitoParams): Promise<StoreAmbitos> {
-    try {
-      const [result] = await pool.promise().query(
+  // Crea un nuevo ámbito
+  async createAmbito({description,textoweb,prefijo,slug}: Omit<CreateAmbitoParams, 'idSoluciones'>): Promise<StoreAmbitos> 
+  {
+    try 
+    {
+      const [result]: any = await pool.promise().query(
         `INSERT INTO storeAmbitos (description, textoweb, prefijo, slug)
          VALUES (?, ?, ?, ?)`,
         [description, textoweb, prefijo, slug]
       );
+  
       const idAmbito = result.insertId;
-
-      // Asociamos el nuevo ámbito con la solución proporcionada
-      await pool.promise().query(
-        `INSERT INTO storeSolucionesAmbitos (id_solucion, id_ambito)
-         VALUES (?, ?)`,
-        [idSolucion, idAmbito]
-      );
-
-      return { id_ambito: idAmbito, description, textoweb, prefijo, slug };
-    } catch (error) {
-      console.error('Error al crear el ámbito:', error);
-      throw new Error('Error al crear el ámbito');
+  
+      // Asocia el nuevo ámbito con todas las soluciones existentes
+      await pool.promise().query(`
+        INSERT INTO storeSolucionesAmbitos (id_solucion, id_ambito)
+        SELECT s.id_solucion, ?
+        FROM storeSoluciones s
+        WHERE NOT EXISTS (
+          SELECT 1 FROM storeSolucionesAmbitos sa
+          WHERE sa.id_solucion = s.id_solucion AND sa.id_ambito = ?
+        )
+      `, [idAmbito, idAmbito]);
+  
+      return {
+        id_ambito: idAmbito,
+        description,
+        textoweb,
+        prefijo,
+        slug
+      };
+    } 
+    catch (error) 
+    {
+      console.error('Error al crear el ámbito y asociarlo a todas las soluciones:', error);
+      throw new Error('Error al crear el ámbito y hacer las asociaciones');
     }
   }
+  
 
   async createStoreAmbito({ description, textoweb, prefijo, slug }: AmbitosParams): Promise<StoreAmbitos> 
   {

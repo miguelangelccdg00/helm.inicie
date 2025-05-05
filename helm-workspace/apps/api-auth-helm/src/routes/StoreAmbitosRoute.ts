@@ -16,7 +16,7 @@ router.get('/listAmbitos/:idSolucion', storeAmbitosController.listIdAmbito);
 /**
  * @description Insercion de ambitos por solución específica de su ID
  */
-router.post('/createAmbito/:idSolucion', storeAmbitosController.createAmbitos);
+router.post('/createAmbito', storeAmbitosController.createAmbitos);
 
 /**
  * @description Insercion de ambitos por solución específica de su ID
@@ -27,11 +27,6 @@ router.post('/createStoreAmbito', storeAmbitosController.createStoreAmbitos);
  * @description Asociar un ambito existente a una solución
  */
 router.post('/asociarAmbito', storeAmbitosController.asociarAmbito);
-
-/**
- * @description Asociar un ambito existente a una solución
- */
-router.post('/asociarMasivamenteAmbitoSolucion', storeAmbitosController.asociarMasivamente);
 
 /**
  * @description Modifica un ambito específico por su ID

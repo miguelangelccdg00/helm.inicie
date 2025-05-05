@@ -14,29 +14,27 @@ interface AsociarAmbitoBody {
 class StoreAmbitosController 
 {
 
-  async createAmbitos(req: Request<{ idSolucion: string }, any, CreateAmbitoBody>, res: Response): Promise<void> 
+  async createAmbitos(req: Request, res: Response): Promise<void> 
   {
     try 
     {
-      const idSolucion = parseInt(req.params.idSolucion, 10);
       const { description, textoweb, prefijo, slug } = req.body;
-
-      if (!description || !textoweb || !prefijo || !slug || isNaN(idSolucion)) 
+  
+      if (!description || !textoweb || !prefijo || !slug) 
       {
         res.status(400).json({ message: 'Faltan datos requeridos para crear el ámbito.' });
         return;
       }
-
+  
       const resultado = await StoreAmbitosService.createAmbito({
         description,
         textoweb,
         prefijo,
-        slug,
-        idSolucion
+        slug
       });
-
+  
       const ambitoCreado = await StoreAmbitosService.getAmbitoById(resultado.id_ambito);
-
+  
       res.status(201).json({
         ...resultado,
         ambito: ambitoCreado
@@ -48,6 +46,7 @@ class StoreAmbitosController
       res.status(500).json({ message: 'Error interno del servidor al crear el ámbito.' });
     }
   }
+  
 
   async createStoreAmbitos(req: Request, res: Response): Promise<void>
   {

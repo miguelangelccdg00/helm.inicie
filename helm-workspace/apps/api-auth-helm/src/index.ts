@@ -120,7 +120,7 @@ app.get('/', (req: Request, res: Response): void =>
                     operations: [
                         { method: 'GET', path: '/listCompleteAmbitos' },
                         { method: 'GET', path: '/listAmbitos/:idSolucion' },
-                        { method: 'POST', path: '/createAmbitos/:idSolucion' },
+                        { method: 'POST', path: '/createAmbito' },
                         { method: 'POST', path: '/createStoreAmbitos' },
                         { method: 'PUT', path: '/modifyAmbitos/:idSolucion/:idAmbito' },
                         { method: 'DELETE', path: '/deleteAmbitos/:idAmbito' }
