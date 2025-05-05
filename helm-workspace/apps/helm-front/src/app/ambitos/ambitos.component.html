@@ -9,7 +9,7 @@
       <div class="flex">
         <input type="text" placeholder="Buscar ámbito por descripción..." class="buscador"
           [formControl]="filtroDescripcion">
-        <button (click)="mostrarFormularioCrear = true; mostrarFormularioEditar = false" id="boton">Crear ámbito</button>
+        <button (click)="mostrarFormularioCrear = true; mostrarFormularioEditar = false; scrollCrear()" id="boton">Crear ámbito</button>
       </div>
     </div>
 
@@ -49,7 +49,7 @@
       No se encontraron ámbitos disponibles.
     </div>
 
-    <div *ngIf="mostrarFormularioCrear" class="form-crear">
+    <div *ngIf="mostrarFormularioCrear" class="form-crear" #crearForm>
       <h3>Crear nuevo ámbito</h3>
 
       <form (ngSubmit)="crearAmbito()" class="formulario-ambito">
@@ -84,7 +84,7 @@
       </form>
     </div>
 
-    <div *ngIf="mostrarFormularioEditar" class="form-crear">
+    <div *ngIf="mostrarFormularioEditar" class="form-crear" #editarForm>
       <h3>Modificar ámbito</h3>
     
       <form (ngSubmit)="guardarCambiosAmbito()" class="formulario-ambito">

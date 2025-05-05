@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { StoreAmbitos } from '@modelos-shared/storeAmbitos';
@@ -17,6 +17,9 @@ import { MenuComponent } from '../menu/menu.component';
 })
 
 export class AmbitosComponent {
+
+  @ViewChild('crearForm') crearFormRef!: ElementRef;
+  @ViewChild('editarForm') editarFormRef!: ElementRef;
 
   storeAmbitos: StoreAmbitos[] = [];
   ambitosFiltrados: StoreAmbitos[] = [];
@@ -116,7 +119,7 @@ export class AmbitosComponent {
         console.log('Ámbito creado:', ambitoCreado);
         this.storeAmbitos.push(ambitoCreado);
         this.filtrarAmbitos(this.filtroDescripcion.value || '');
-        this.nuevoAmbito = { description: '', textoweb: '', prefijo: '', slug: '' }; // Limpiar formulario
+        this.nuevoAmbito = { description: '', textoweb: '', prefijo: '', slug: '' };
         this.mostrarFormularioCrear = false;
       },
       error: (error) => {
@@ -125,10 +128,21 @@ export class AmbitosComponent {
     });
   }
 
+  scrollCrear() {
+    setTimeout(() => {
+      this.crearFormRef?.nativeElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
   mostrarFormularioEditarAmbito(ambito: StoreAmbitos) {
     this.ambitoAEditar = { ...ambito };
     this.mostrarFormularioEditar = true;
     this.mostrarFormularioCrear = false;
+
+    setTimeout(() => {
+      this.editarFormRef?.nativeElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
   }
 
   guardarCambiosAmbito() {

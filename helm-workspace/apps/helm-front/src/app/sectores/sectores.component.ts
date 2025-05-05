@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreSectores } from '@modelos-shared/storeSectores';
 import { SectoresService } from '../services/sectores.service';
@@ -15,6 +15,9 @@ import { MenuComponent } from '../menu/menu.component';
   styleUrl: './sectores.component.sass',
 })
 export class SectoresComponent {
+
+  @ViewChild('crearForm') crearFormRef!: ElementRef;
+  @ViewChild('editarForm') editarFormRef!: ElementRef;
 
   storeSectores: StoreSectores[] = [];
   sectoresFiltrados: StoreSectores[] = [];
@@ -128,10 +131,21 @@ export class SectoresComponent {
     });
   }
 
+  scrollCrear() {
+    setTimeout(() => {
+      this.crearFormRef?.nativeElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
   mostrarFormularioEditarSector(sector: StoreSectores) {
     this.sectorAEditar = { ...sector };
     this.mostrarFormularioEditar = true;
     this.mostrarFormularioCrear = false;
+
+    setTimeout(() => {
+      this.editarFormRef?.nativeElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    
   }
   
   guardarCambiosSector() {

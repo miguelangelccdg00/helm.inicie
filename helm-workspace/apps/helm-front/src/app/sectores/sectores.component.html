@@ -9,7 +9,7 @@
       <div class="flex">
         <input type="text" placeholder="Buscar sector por descripción..." class="buscador"
           [formControl]="filtroDescripcion">
-        <button (click)="mostrarFormularioCrear = true; mostrarFormularioEditar = false" id="boton">Crear sector</button>
+        <button (click)="mostrarFormularioCrear = true; mostrarFormularioEditar = false; scrollCrear()" id="boton">Crear sector</button>
       </div>
     </div>
 
@@ -57,7 +57,7 @@
     <div *ngIf="mostrarFormularioCrear" class="form-crear">
       <h3>Crear nuevo sector</h3>
 
-      <form (ngSubmit)="crearSector()" class="formulario-sector">
+      <form (ngSubmit)="crearSector()" class="formulario-sector" #crearForm>
         <div class="campo-formulario">
           <label for="description">Descripción:</label>
           <input type="text" id="description" [(ngModel)]="nuevoSector.description" name="description" required
@@ -110,7 +110,7 @@
     <div *ngIf="mostrarFormularioEditar" class="form-crear">
       <h3>Modificar sector</h3>
 
-      <form (ngSubmit)="guardarCambiosSector()" class="formulario-sector">
+      <form (ngSubmit)="guardarCambiosSector()" class="formulario-sector" #editarForm>
         <div class="campo-formulario">
           <label for="description">Descripción:</label>
           <input type="text" id="description" [(ngModel)]="sectorAEditar!.description" name="edit_description"
