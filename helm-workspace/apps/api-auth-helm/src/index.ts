@@ -135,7 +135,7 @@ app.get('/', (req: Request, res: Response): void =>
                     operations: [
                         { method: 'GET', path: '/listCompleteSectores' },
                         { method: 'GET', path: '/listSectores/:idSolucion' },
-                        { method: 'POST', path: '/createSectores/:idSolucion' },
+                        { method: 'POST', path: '/createSectores' },
                         { method: 'POST', path: '/createStoreSectores' },
                         { method: 'PUT', path: '/modifySectores/:idSolucion/:idSector' },
                         { method: 'PUT', path: '/modifySector/:idSector' },

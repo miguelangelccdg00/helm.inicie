@@ -17,17 +17,23 @@ class storeSectoresControllers
   {
     try 
     {
-      const idSolucion = parseInt(req.params.idSolucion, 10);
       const { description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage } = req.body;
 
-      /* if (!description || !textoweb || !prefijo || !slug || !descriptionweb || !titleweb || !backgroundImage || isNaN(idSolucion)) 
+      if (!description || !textoweb || !prefijo || !slug || !descriptionweb || !titleweb || !backgroundImage) 
       {
         res.status(400).json({ message: 'Faltan datos requeridos para crear el sector.' });
         return;
-      } */
+      } 
 
       const resultado = await StoreSectoresService.createSector({
-        description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage,idSolucion});
+        description, 
+        textoweb, 
+        prefijo, 
+        slug, 
+        descriptionweb, 
+        titleweb, 
+        backgroundImage
+      });
 
       const sectorCreado = await StoreSectoresService.getSectorById(resultado.id_sector);
 

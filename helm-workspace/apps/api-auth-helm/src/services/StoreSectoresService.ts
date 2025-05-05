@@ -10,7 +10,6 @@ interface CreateSectorParams {
     descriptionweb: string;
     titleweb: string;
     backgroundImage: string;
-    idSolucion: number;
 }
 
 interface SectorParams {
@@ -25,8 +24,10 @@ interface SectorParams {
 
 class StoreSectoresService 
 {
-    async createSector({ description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage, idSolucion }: CreateSectorParams): Promise<StoreSectores> {
-        try {
+    async createSector({ description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage }: Omit<CreateSectorParams, 'idSoluciones'>): Promise<StoreSectores> 
+    {
+        try 
+        {
             const [result] = await pool.promise().query(
                 `INSERT INTO storeSectores (description, textoWeb, prefijo, slug, descriptionweb, titleweb, backgroundImage)
                  VALUES (?, ?, ?, ?, ?, ?, ?)`,
@@ -34,14 +35,21 @@ class StoreSectoresService
             );
             const idSector = result.insertId;
 
-            await pool.promise().query(
-                `INSERT INTO storeSolucionesSectores (id_solucion, id_sector, descalternativa, textoalternativo)
-                 VALUES (?, ?, ?, ?)`,
-                [idSolucion, idSector, '', '']
-            );
+            // Asocia el nuevo ámbito con todas las soluciones existentes
+            await pool.promise().query(`
+                INSERT INTO storeSolucionesSectores (id_solucion, id_sector, descalternativa, textoalternativo)
+                SELECT s.id_solucion, ?, '', ''
+                FROM storeSoluciones s
+                WHERE NOT EXISTS (
+                  SELECT 1 FROM storeSolucionesSectores sa
+                  WHERE sa.id_solucion = s.id_solucion AND sa.id_sector = ?
+                )`, [idSector, idSector]);
+              
 
             return { id_sector: idSector, description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage };
-        } catch (error) {
+        } 
+        catch (error) 
+        {
             console.error('Error al crear el sector:', error);
             throw new Error('Error al crear el sector');
         }
