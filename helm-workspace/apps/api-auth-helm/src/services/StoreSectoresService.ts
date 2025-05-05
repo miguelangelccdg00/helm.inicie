@@ -24,36 +24,60 @@ interface SectorParams {
 
 class StoreSectoresService 
 {
-    async createSector({ description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage }: Omit<CreateSectorParams, 'idSoluciones'>): Promise<StoreSectores> 
+    async createSector({ description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage }: Omit<CreateSectorParams, 'idSoluciones'>): Promise<StoreSectores>
     {
-        try 
+        try
         {
-            const [result] = await pool.promise().query(
-                `INSERT INTO storeSectores (description, textoWeb, prefijo, slug, descriptionweb, titleweb, backgroundImage)
-                 VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                [description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage]
+            const [result]: any = await pool.promise().query(
+            `INSERT INTO storeSectores (description, textoWeb, prefijo, slug, descriptionweb, titleweb, backgroundImage)
+                VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage]
             );
+        
             const idSector = result.insertId;
-
-            // Asocia el nuevo ámbito con todas las soluciones existentes
+        
+            // Asociar sector con todas las soluciones
             await pool.promise().query(`
-                INSERT INTO storeSolucionesSectores (id_solucion, id_sector, descalternativa, textoalternativo)
-                SELECT s.id_solucion, ?, '', ''
-                FROM storeSoluciones s
-                WHERE NOT EXISTS (
-                  SELECT 1 FROM storeSolucionesSectores sa
-                  WHERE sa.id_solucion = s.id_solucion AND sa.id_sector = ?
-                )`, [idSector, idSector]);
-              
+            INSERT INTO storeSolucionesSectores (id_solucion, id_sector, descalternativa, textoalternativo)
+            SELECT s.id_solucion, ?, '', ''
+            FROM storeSoluciones s
+            WHERE NOT EXISTS (
+                SELECT 1 FROM storeSolucionesSectores sa
+                WHERE sa.id_solucion = s.id_solucion AND sa.id_sector = ?
+            )`, [idSector, idSector]);
+        
+            // Producto cartesiano: soluciones × ámbitos × nuevo sector
+            await pool.promise().query(`
+            INSERT INTO storeSolucionesAmbitosSectores (id_solucion, id_ambito, id_sector)
+            SELECT sa.id_solucion, sa.id_ambito, ?
+            FROM storeSolucionesAmbitos sa
+            CROSS JOIN (SELECT ? AS id_sector) AS sec
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM storeSolucionesAmbitosSectores sas
+                WHERE sas.id_solucion = sa.id_solucion
+                AND sas.id_ambito = sa.id_ambito
+                AND sas.id_sector = ?
+            )`, [idSector, idSector, idSector]);     
 
-            return { id_sector: idSector, description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage };
-        } 
-        catch (error) 
+            return {
+            id_sector: idSector,
+            description,
+            textoweb,
+            prefijo,
+            slug,
+            descriptionweb,
+            titleweb,
+            backgroundImage
+            };
+        }
+        catch (error)
         {
             console.error('Error al crear el sector:', error);
             throw new Error('Error al crear el sector');
         }
     }
+      
 
     async createStoreSector({ description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage }: SectorParams): Promise<StoreSectores> {
         try {
@@ -87,94 +111,6 @@ class StoreSectoresService
             throw new Error('Error al asociar el sector');
         }
     }
-
-    async asociarTodosSectoresConTodasSoluciones(): Promise<void> 
-    {
-        try 
-        {
-            const [result] = await pool.promise().query(`
-                INSERT INTO storeSolucionesSectores (id_solucion, id_sector, descalternativa, textoalternativo)
-                SELECT s.id_solucion, se.id_sector, '', ''
-                FROM storeSoluciones s
-                CROSS JOIN storeSectores se
-                WHERE NOT EXISTS (
-                    SELECT 1 FROM storeSolucionesSectores ss
-                    WHERE ss.id_solucion = s.id_solucion AND ss.id_sector = se.id_sector
-                )`);
-
-            if (result.affectedRows > 0)
-            {
-                console.log('Asociaciones de sectores con soluciones fueron exitosas.');
-            } 
-            else 
-            {
-                console.log('No se realizaron nuevas asociaciones.');
-            }
-        } 
-        catch (error) 
-        {
-            console.error('Error al asociar todos los sectores con todas las soluciones:', error);
-            throw new Error('Error en la asociación masiva de sectores con soluciones.');
-        }
-    }
-
-    async asociarSectoresAmbitosSoluciones(): Promise<void> 
-    {
-        try 
-        {
-            const [result] = await pool.promise().query(`
-                INSERT INTO storeSolucionesAmbitosSectores (
-                    id_solucion, id_ambito, id_sector, 
-                    titleweb, title, subtitle, thread_id, description, slug, icon,
-                    multimediaUri, multimediaTypeId,
-                    problemaTitle, problemaPragma,
-                    solucionTitle, solucionPragma,
-                    caracteristicasTitle, caracteristicasPragma,
-                    casosdeusoTitle, casosdeusoPragma,
-                    firstCtaTitle, firstCtaPragma,
-                    secondCtaTitle, secondCtaPragma,
-                    beneficiosTitle, beneficiosPragma
-                )
-                SELECT 
-                    s.id_solucion, a.id_ambito, se.id_sector,
-                    '', '', '', '', '', '', '',
-                    '', NULL,
-                    '', '',
-                    '', '',
-                    '', '',
-                    '', '',
-                    '', '',
-                    '', '',
-                    '', ''
-                FROM storeSoluciones s
-                CROSS JOIN storeAmbitos a
-                CROSS JOIN storeSectores se
-                WHERE NOT EXISTS (
-                    SELECT 1 
-                    FROM storeSolucionesAmbitosSectores ss
-                    WHERE 
-                        ss.id_solucion = s.id_solucion AND 
-                        ss.id_ambito = a.id_ambito AND 
-                        ss.id_sector = se.id_sector
-                )
-            `);
-
-            if (result.affectedRows > 0)
-            {
-                console.log('Asociaciones fueron exitosas.');
-            } 
-            else 
-            {
-                console.log('No se realizaron nuevas asociaciones.');
-            }
-        } 
-        catch (error) 
-        {
-            console.error('Error al asociar soluciones con ámbitos y sectores:', error);
-            throw new Error('Error en la asociación masiva.');
-        }
-    }
-
 
     async listSectores(): Promise<StoreSectores[]> {
         try {

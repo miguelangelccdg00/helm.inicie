@@ -18,18 +18,17 @@ interface AmbitosParams
   slug: string;
 }
 
-interface AsociarAmbitoParams {
+interface AsociarAmbitoParams 
+{
   id_solucion: number;
   id_ambito: number;
 }
 
 class StoreAmbitosService 
-{
-  
-  // Crea un nuevo ámbito
-  async createAmbito({description,textoweb,prefijo,slug}: Omit<CreateAmbitoParams, 'idSoluciones'>): Promise<StoreAmbitos> 
+{  
+  async createAmbito({ description, textoweb, prefijo, slug }: Omit<CreateAmbitoParams, 'idSoluciones'>): Promise<StoreAmbitos>
   {
-    try 
+    try
     {
       const [result]: any = await pool.promise().query(
         `INSERT INTO storeAmbitos (description, textoweb, prefijo, slug)
@@ -39,7 +38,7 @@ class StoreAmbitosService
   
       const idAmbito = result.insertId;
   
-      // Asocia el nuevo ámbito con todas las soluciones existentes
+      // Asociar ámbito con todas las soluciones
       await pool.promise().query(`
         INSERT INTO storeSolucionesAmbitos (id_solucion, id_ambito)
         SELECT s.id_solucion, ?
@@ -50,6 +49,17 @@ class StoreAmbitosService
         )
       `, [idAmbito, idAmbito]);
   
+      // Producto cartesiano: soluciones × nuevo ámbito × sectores
+      await pool.promise().query(`
+        INSERT INTO storeSolucionesAmbitosSectores (id_solucion, id_ambito, id_sector)
+        SELECT s.id_solucion, ?, sec.id_sector
+        FROM storeSoluciones s
+        CROSS JOIN storeSectores sec
+        WHERE NOT EXISTS (
+          SELECT 1 FROM storeSolucionesAmbitosSectores sas
+          WHERE sas.id_solucion = s.id_solucion AND sas.id_ambito = ? AND sas.id_sector = sec.id_sector
+        )`, [idAmbito, idAmbito]);
+  
       return {
         id_ambito: idAmbito,
         description,
@@ -57,15 +67,14 @@ class StoreAmbitosService
         prefijo,
         slug
       };
-    } 
-    catch (error) 
+    }
+    catch (error)
     {
-      console.error('Error al crear el ámbito y asociarlo a todas las soluciones:', error);
+      console.error('Error al crear el ámbito y asociarlo:', error);
       throw new Error('Error al crear el ámbito y hacer las asociaciones');
     }
   }
   
-
   async createStoreAmbito({ description, textoweb, prefijo, slug }: AmbitosParams): Promise<StoreAmbitos> 
   {
     try 

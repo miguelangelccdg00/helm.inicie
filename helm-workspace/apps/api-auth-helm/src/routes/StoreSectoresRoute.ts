@@ -29,16 +29,6 @@ router.post('/createStoreSectores', StoreSectoresController.createStoreSectores)
 router.post('/asociarSectores', StoreSectoresController.asociarSector);
 
 /**
- * @description Asociar un ambito existente a una solución
- */
-router.post('/asociarMasivamenteSectorSolucion', StoreSectoresController.asociarMasivamente);
-
-/**
- * @description Asociar un ambito existente a una solución
- */
-router.post('/asociarMasivamenteSectorAmbitoSolucion', StoreSectoresController.asociarMasivamenteSectorAmbitoSolucion);
-
-/**
  * @description Modificacion de un sector de una solucion especifica
  */
 
