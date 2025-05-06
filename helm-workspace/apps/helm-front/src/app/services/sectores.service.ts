@@ -25,7 +25,7 @@ export class SectoresService {
     }
   
     createStoreSector(sector: StoreSectores): Observable<StoreSectores> {
-      const url = `${this.sectoresUrl}/createStoreSectores`;
+      const url = `${this.sectoresUrl}/createSectores`;
       const headers = new HttpHeaders().set('Content-Type', 'application/json');
       return this.https.post<StoreSectores>(url, sector, { headers });
     }
