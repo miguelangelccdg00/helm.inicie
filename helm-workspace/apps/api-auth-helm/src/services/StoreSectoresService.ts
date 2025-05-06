@@ -2,7 +2,8 @@ import { pool } from '../../../api-shared-helm/src/databases/conexion';
 import { StoreSectores } from '../../../api-shared-helm/src/models/storeSectores';
 import { SolucionSector } from '../../../api-shared-helm/src/models/solucionSector';
 
-interface CreateSectorParams {
+interface CreateSectorParams
+{
     description: string;
     textoweb: string;
     prefijo: string;
@@ -12,7 +13,8 @@ interface CreateSectorParams {
     backgroundImage: string;
 }
 
-interface SectorParams {
+interface SectorParams
+{
     description: string;
     textoweb: string;
     prefijo: string;
@@ -24,51 +26,58 @@ interface SectorParams {
 
 class StoreSectoresService 
 {
+    /** 
+     * Crea un nuevo sector y lo asocia automáticamente con todas las soluciones y ámbitos existentes.
+     * 
+     * @param {CreateSectorParams} data - Información necesaria para crear un sector.
+     * @returns {Promise<StoreSectores>} Sector creado con su ID.
+     * @throws {Error} Si ocurre un error al insertar o asociar registros en la base de datos.
+     */
     async createSector({ description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage }: Omit<CreateSectorParams, 'idSoluciones'>): Promise<StoreSectores>
     {
         try
         {
             const [result]: any = await pool.promise().query(
-            `INSERT INTO storeSectores (description, textoWeb, prefijo, slug, descriptionweb, titleweb, backgroundImage)
-                VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            [description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage]
+                `INSERT INTO storeSectores (description, textoWeb, prefijo, slug, descriptionweb, titleweb, backgroundImage)
+                 VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage]
             );
         
             const idSector = result.insertId;
         
-            // Asociar sector con todas las soluciones
             await pool.promise().query(`
-            INSERT INTO storeSolucionesSectores (id_solucion, id_sector, descalternativa, textoalternativo)
-            SELECT s.id_solucion, ?, '', ''
-            FROM storeSoluciones s
-            WHERE NOT EXISTS (
-                SELECT 1 FROM storeSolucionesSectores sa
-                WHERE sa.id_solucion = s.id_solucion AND sa.id_sector = ?
-            )`, [idSector, idSector]);
+                INSERT INTO storeSolucionesSectores (id_solucion, id_sector, descalternativa, textoalternativo)
+                SELECT s.id_solucion, ?, '', ''
+                FROM storeSoluciones s
+                WHERE NOT EXISTS (
+                    SELECT 1 FROM storeSolucionesSectores sa
+                    WHERE sa.id_solucion = s.id_solucion AND sa.id_sector = ?
+                )`, [idSector, idSector]
+            );
         
-            // Producto cartesiano: soluciones × ámbitos ×  sector
             await pool.promise().query(`
-            INSERT INTO storeSolucionesAmbitosSectores (id_solucion, id_ambito, id_sector)
-            SELECT sa.id_solucion, sa.id_ambito, ?
-            FROM storeSolucionesAmbitos sa
-            CROSS JOIN (SELECT ? AS id_sector) AS sec
-            WHERE NOT EXISTS (
-                SELECT 1
-                FROM storeSolucionesAmbitosSectores sas
-                WHERE sas.id_solucion = sa.id_solucion
-                AND sas.id_ambito = sa.id_ambito
-                AND sas.id_sector = ?
-            )`, [idSector, idSector, idSector]);     
+                INSERT INTO storeSolucionesAmbitosSectores (id_solucion, id_ambito, id_sector)
+                SELECT sa.id_solucion, sa.id_ambito, ?
+                FROM storeSolucionesAmbitos sa
+                CROSS JOIN (SELECT ? AS id_sector) AS sec
+                WHERE NOT EXISTS (
+                    SELECT 1
+                    FROM storeSolucionesAmbitosSectores sas
+                    WHERE sas.id_solucion = sa.id_solucion
+                    AND sas.id_ambito = sa.id_ambito
+                    AND sas.id_sector = ?
+                )`, [idSector, idSector, idSector]
+            );     
 
             return {
-            id_sector: idSector,
-            description,
-            textoweb,
-            prefijo,
-            slug,
-            descriptionweb,
-            titleweb,
-            backgroundImage
+                id_sector: idSector,
+                description,
+                textoweb,
+                prefijo,
+                slug,
+                descriptionweb,
+                titleweb,
+                backgroundImage
             };
         }
         catch (error)
@@ -77,70 +86,123 @@ class StoreSectoresService
             throw new Error('Error al crear el sector');
         }
     }
-      
 
-    async createStoreSector({ description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage }: SectorParams): Promise<StoreSectores> {
-        try {
+    /** 
+     * Crea un nuevo sector sin asociaciones adicionales.
+     * 
+     * @param {SectorParams} data - Datos del sector.
+     * @returns {Promise<StoreSectores>} Sector creado.
+     * @throws {Error} Si ocurre un error al insertar el sector.
+     */
+    async createStoreSector({ description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage }: SectorParams): Promise<StoreSectores>
+    {
+        try
+        {
             const [result] = await pool.promise().query(
                 `INSERT INTO storeSectores (description, textoWeb, prefijo, slug, descriptionweb, titleweb, backgroundImage)
                  VALUES (?, ?, ?, ?, ?, ?, ?)`,
                 [description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage]
             );
+
             const idSector = result.insertId;
 
             return { id_sector: idSector, description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage };
-        } catch (error) {
+        }
+        catch (error)
+        {
             console.error('Error al crear el sector:', error);
             throw new Error('Error al crear el sector');
         }
     }
 
-    async asociarSector(idSolucion: number, idSector: number): Promise<void> {
-        try {
+    /** 
+     * Asocia un sector a una solución específica.
+     * 
+     * @param {number} idSolucion - ID de la solución.
+     * @param {number} idSector - ID del sector.
+     * @returns {Promise<void>}
+     * @throws {Error} Si no se puede realizar la asociación.
+     */
+    async asociarSector(idSolucion: number, idSector: number): Promise<void>
+    {
+        try
+        {
             const [result] = await pool.promise().query(
                 `INSERT INTO storeSolucionesSectores (id_solucion, id_sector, descalternativa, textoalternativo)
                  VALUES (?, ?, ?, ?)`,
                 [idSolucion, idSector, '', '']
             );
 
-            if (result.affectedRows === 0) {
+            if (result.affectedRows === 0)
+            {
                 throw new Error('No se pudo asociar el sector');
             }
-        } catch (error) {
+        }
+        catch (error)
+        {
             console.error('Error al asociar el sector:', error);
             throw new Error('Error al asociar el sector');
         }
     }
 
-    async listSectores(): Promise<StoreSectores[]> {
-        try {
+    /** 
+     * Obtiene todos los sectores registrados.
+     * 
+     * @returns {Promise<StoreSectores[]>} Lista de sectores.
+     */
+    async listSectores(): Promise<StoreSectores[]>
+    {
+        try
+        {
             const [rows] = await pool.promise().query(
                 `SELECT id_sector, description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage
                  FROM storeSectores`
             );
+
             return rows;
-        } catch (error) {
+        }
+        catch (error)
+        {
             console.error('Error al listar los sectores:', error);
             throw new Error('Error al listar los sectores');
         }
     }
 
-    async getSectorById(idSector: number): Promise<StoreSectores | null> {
-        try {
+    /** 
+     * Obtiene un sector por su ID.
+     * 
+     * @param {number} idSector - ID del sector a buscar.
+     * @returns {Promise<StoreSectores | null>} Sector encontrado o `null` si no existe.
+     */
+    async getSectorById(idSector: number): Promise<StoreSectores | null>
+    {
+        try
+        {
             const [rows] = await pool.promise().query(
                 `SELECT id_sector, description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage
                  FROM storeSectores WHERE id_sector = ?`,
                 [idSector]
             );
+
             return rows.length ? rows[0] : null;
-        } catch (error) {
+        }
+        catch (error)
+        {
             console.error('Error al obtener el sector por ID:', error);
             throw new Error('Error al obtener el sector');
         }
     }
 
-    async getByIdSectores(idSolucion: number): Promise<any[]> {
-        try {
+    /** 
+     * Obtiene los sectores asociados a una solución específica.
+     * 
+     * @param {number} idSolucion - ID de la solución.
+     * @returns {Promise<any[]>} Lista de sectores con datos de relación.
+     */
+    async getByIdSectores(idSolucion: number): Promise<any[]>
+    {
+        try
+        {
             const [rows] = await pool.promise().query(
                 `SELECT 
                     a.id_sector, a.description, a.textoweb, a.prefijo, a.slug, 
@@ -151,73 +213,66 @@ class StoreSectoresService
                  WHERE sa.id_solucion = ?`,
                 [idSolucion]
             );
+
             return rows;
-        } catch (error) {
+        }
+        catch (error)
+        {
             console.error('Error al obtener los sectores por ID de solución:', error);
             throw new Error('Error al obtener los sectores');
         }
     }
 
-    async deleteSolucionSector(idSolucion: number, idSector: number): Promise<boolean> {
-        try {
+    /** 
+     * Elimina la relación entre un sector y una solución.
+     * 
+     * @param {number} idSolucion - ID de la solución.
+     * @param {number} idSector - ID del sector.
+     * @returns {Promise<boolean>} Verdadero si se eliminó correctamente.
+     */
+    async deleteSolucionSector(idSolucion: number, idSector: number): Promise<boolean>
+    {
+        try
+        {
             const [result] = await pool.promise().query(
                 `DELETE FROM storeSolucionesSectores 
                  WHERE id_solucion = ? AND id_sector = ?`,
                 [idSolucion, idSector]
             );
+
             return result.affectedRows > 0;
-        } catch (error) {
+        }
+        catch (error)
+        {
             console.error('Error al eliminar la relación sector-solución:', error);
             throw new Error('Error al eliminar la relación sector-solución');
         }
     }
 
-    async update(idSector: number, idSolucion: number, updateData: Partial<StoreSectores & SolucionSector>): Promise<StoreSectores> {
-        try {
-            const { description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage } = updateData;
-
-            const updateFields = [];
-            const updateValues = [];
-
-            if (description) { updateFields.push('description = ?'); updateValues.push(description); }
-            if (textoweb) { updateFields.push('textoweb = ?'); updateValues.push(textoweb); }
-            if (prefijo) { updateFields.push('prefijo = ?'); updateValues.push(prefijo); }
-            if (slug) { updateFields.push('slug = ?'); updateValues.push(slug); }
-            if (descriptionweb) { updateFields.push('descriptionweb = ?'); updateValues.push(descriptionweb); }
-            if (titleweb) { updateFields.push('titleweb = ?'); updateValues.push(titleweb); }
-            if (backgroundImage) { updateFields.push('backgroundImage = ?'); updateValues.push(backgroundImage); }
-
-            updateValues.push(idSector);
-
-            const [result] = await pool.promise().query(
-                `UPDATE storeSectores SET ${updateFields.join(', ')}
-                 WHERE id_sector = ?`,
-                updateValues
-            );
-
-            if (result.affectedRows === 0) {
-                throw new Error('No se encontró el sector para actualizar');
-            }
-
-            return {
-                id_sector: idSector,
-                description: description || '',
-                textoweb: textoweb || '',
-                prefijo: prefijo || '',
-                slug: slug || '',
-                descriptionweb: descriptionweb || '',
-                titleweb: titleweb || '',
-                backgroundImage: backgroundImage || ''
-            };
-        } catch (error) {
-            console.error('Error al actualizar el sector:', error);
-            throw new Error('Error al actualizar el sector');
-        }
+    /** 
+     * Actualiza los datos de un sector y su relación con una solución.
+     * 
+     * @param {number} idSector - ID del sector.
+     * @param {number} idSolucion - ID de la solución.
+     * @param {Partial<StoreSectores & SolucionSector>} updateData - Datos a actualizar.
+     * @returns {Promise<StoreSectores>} Sector actualizado.
+     */
+    async update(idSector: number, idSolucion: number, updateData: Partial<StoreSectores & SolucionSector>): Promise<StoreSectores>
+    {
+        // (código igual al de `updateSector`, ya documentado más abajo)
+        return this.updateSector(idSector, updateData);
     }
 
-    async updateSector(idSector: number, updateData: Partial<StoreSectores & SolucionSector>): Promise<StoreSectores> 
+    /** 
+     * Actualiza los datos de un sector.
+     * 
+     * @param {number} idSector - ID del sector.
+     * @param {Partial<StoreSectores & SolucionSector>} updateData - Datos a actualizar.
+     * @returns {Promise<StoreSectores>} Sector actualizado.
+     */
+    async updateSector(idSector: number, updateData: Partial<StoreSectores & SolucionSector>): Promise<StoreSectores>
     {
-        try 
+        try
         {
             const { description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage } = updateData;
 
@@ -255,19 +310,29 @@ class StoreSectoresService
                 titleweb: titleweb || '',
                 backgroundImage: backgroundImage || ''
             };
-        } 
-        catch (error) 
+        }
+        catch (error)
         {
             console.error('Error al actualizar el sector:', error);
             throw new Error('Error al actualizar el sector');
         }
     }
 
-    async updateSolucionSectores(idSolucion: number, solucionSector: SolucionSector): Promise<SolucionSector> {
-        try {
+    /** 
+     * Actualiza la relación alternativa entre un sector y una solución.
+     * 
+     * @param {number} idSolucion - ID de la solución.
+     * @param {SolucionSector} solucionSector - Datos alternativos de la relación.
+     * @returns {Promise<SolucionSector>} Relación actualizada.
+     */
+    async updateSolucionSectores(idSolucion: number, solucionSector: SolucionSector): Promise<SolucionSector>
+    {
+        try
+        {
             const { id_sector, descalternativa, textoalternativo } = solucionSector;
 
-            if (!idSolucion || !id_sector) {
+            if (!idSolucion || !id_sector)
+            {
                 throw new Error('Faltan id_solucion o id_sector para actualizar la relación');
             }
 
@@ -277,7 +342,8 @@ class StoreSectoresService
                 [idSolucion, id_sector]
             ) as any[];
 
-            if (!rows || rows.length === 0) {
+            if (!rows || rows.length === 0)
+            {
                 throw new Error('No existe la relación sector-solución para actualizar');
             }
 
@@ -294,14 +360,25 @@ class StoreSectoresService
                 descalternativa: descalternativa || '',
                 textoalternativo: textoalternativo || ''
             };
-        } catch (error) {
+        }
+        catch (error)
+        {
             console.error('Error al actualizar la relación sector-solución:', error);
             throw new Error('Error al actualizar la relación sector-solución');
         }
     }
 
-    async deleteSector(idSolucion: number, idSector: number): Promise<boolean> {
-        try {
+    /** 
+     * Elimina un sector y su relación con una solución.
+     * 
+     * @param {number} idSolucion - ID de la solución.
+     * @param {number} idSector - ID del sector.
+     * @returns {Promise<boolean>} Verdadero si se eliminó correctamente.
+     */
+    async deleteSector(idSolucion: number, idSector: number): Promise<boolean>
+    {
+        try
+        {
             await pool.promise().query(
                 `DELETE FROM storeSolucionesSectores WHERE id_solucion = ? AND id_sector = ?`,
                 [idSolucion, idSector]
@@ -313,15 +390,23 @@ class StoreSectoresService
             );
 
             return result.affectedRows > 0;
-        } catch (error) {
+        }
+        catch (error)
+        {
             console.error('Error al eliminar el sector:', error);
             throw new Error('Error al eliminar el sector');
         }
     }
 
-    async deleteSectorById(idSector: number): Promise<boolean> 
+    /** 
+     * Elimina un sector por su ID.
+     * 
+     * @param {number} idSector - ID del sector.
+     * @returns {Promise<boolean>} Verdadero si se eliminó correctamente.
+     */
+    async deleteSectorById(idSector: number): Promise<boolean>
     {
-        try 
+        try
         {
             const [result] = await pool.promise().query(
                 `DELETE FROM storeSectores WHERE id_sector = ?`,
@@ -329,8 +414,8 @@ class StoreSectoresService
             );
 
             return result.affectedRows > 0;
-        } 
-        catch (error) 
+        }
+        catch (error)
         {
             console.error('Error al eliminar el sector:', error);
             throw new Error('Error al eliminar el sector');

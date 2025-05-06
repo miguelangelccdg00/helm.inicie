@@ -1,11 +1,13 @@
-import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
+import { pool } from '../../../api-shared-helm/src/databases/conexion.js'; 
 import { StoreSoluciones } from '../../../api-shared-helm/src/models/storeSoluciones.js';
 import { SolucionAmbitoSector } from '../../../api-shared-helm/src/models/solucionAmbitoSector.js';
 
 class StoreSolucionesService 
 {
     /**
-     * Obtiene todas las soluciones almacenadas en la base de datos
+     * Obtiene todas las soluciones almacenadas en la base de datos.
+     * 
+     * @returns {Promise<StoreSoluciones[]>} Lista de soluciones almacenadas en la base de datos.
      */
     async getAll(): Promise<StoreSoluciones[]> 
     {
@@ -16,7 +18,10 @@ class StoreSolucionesService
     }
 
     /**
-     * Obtiene una solución específica por su ID
+     * Obtiene una solución específica por su ID.
+     * 
+     * @param {number} id - ID de la solución a obtener.
+     * @returns {Promise<StoreSoluciones | null>} La solución solicitada o null si no se encuentra.
      */
     async getById(id: number): Promise<StoreSoluciones | null> 
     {
@@ -28,7 +33,11 @@ class StoreSolucionesService
     }
 
     /**
-     * Actualiza una solución específica en la base de datos
+     * Actualiza una solución específica en la base de datos.
+     * 
+     * @param {number} id - ID de la solución a actualizar.
+     * @param {Partial<StoreSoluciones>} updateData - Datos de la solución a actualizar.
+     * @returns {Promise<{ message: string }>} Mensaje indicando que la solución fue actualizada correctamente.
      */
     async update(id: number, updateData: Partial<StoreSoluciones>): Promise<{ message: string }> 
     {
@@ -37,7 +46,13 @@ class StoreSolucionesService
     }
 
     /**
-     * Actualiza los ámbitos de una solución
+     * Actualiza los ámbitos de una solución.
+     * 
+     * @param {number} idSolucion - ID de la solución a actualizar.
+     * @param {any[]} solucionAmbitos - Lista de ámbitos a actualizar.
+     * @returns {Promise<{ message: string }>} Mensaje indicando que los ámbitos de la solución fueron actualizados.
+     * 
+     * @throws {Error} Si ocurre un error durante la transacción.
      */
     async updateSolucionAmbitos(idSolucion: number, solucionAmbitos: any[]): Promise<{ message: string }> 
     {
@@ -68,7 +83,13 @@ class StoreSolucionesService
     }
 
     /**
-     * Actualiza los ámbitos de una solución
+     * Actualiza los sectores de una solución.
+     * 
+     * @param {number} idSolucion - ID de la solución a actualizar.
+     * @param {any[]} solucionSectores - Lista de sectores a actualizar.
+     * @returns {Promise<{ message: string }>} Mensaje indicando que los sectores de la solución fueron actualizados.
+     * 
+     * @throws {Error} Si ocurre un error durante la transacción.
      */
     async updateSolucionSector(idSolucion: number, solucionSectores: any[]): Promise<{ message: string }> 
     {
@@ -100,7 +121,13 @@ class StoreSolucionesService
     }
 
     /**
-     * Actualiza los ámbitos de una solución
+     * Actualiza los ámbitos y sectores de una solución.
+     * 
+     * @param {number} idSolucion - ID de la solución a actualizar.
+     * @param {SolucionAmbitoSector[]} solucionAmbitosSectores - Lista de ámbitos y sectores a actualizar.
+     * @returns {Promise<{ message: string }>} Mensaje indicando que los ámbitos y sectores de la solución fueron actualizados.
+     * 
+     * @throws {Error} Si ocurre un error durante la transacción.
      */
     async updateSolucionAmbitosSector(idSolucion: number, solucionAmbitosSectores: SolucionAmbitoSector[]): Promise<{ message: string }> 
     {
@@ -123,7 +150,7 @@ class StoreSolucionesService
             }
 
             await conn.commit();
-            return { message: 'Solución por ámbitos actualizada correctamente' };
+            return { message: 'Solución por ámbitos y sectores actualizada correctamente' };
         } 
         catch (error) 
         {
@@ -136,10 +163,13 @@ class StoreSolucionesService
         }
     }
 
-
-
     /**
-     * Elimina una solución específica de la base de datos
+     * Elimina una solución específica de la base de datos.
+     * 
+     * @param {number} id - ID de la solución a eliminar.
+     * @returns {Promise<{ message: string }>} Mensaje indicando que la solución fue eliminada correctamente.
+     * 
+     * @throws {Error} Si ocurre un error durante la eliminación de la solución.
      */
     async deleteSolucion(id: number): Promise<{ message: string }> 
     {
@@ -171,7 +201,10 @@ class StoreSolucionesService
     }
 
     /**
-     * Verifica si una solución existe en la base de datos
+     * Verifica si una solución existe en la base de datos.
+     * 
+     * @param {number} id - ID de la solución a verificar.
+     * @returns {Promise<boolean>} Devuelve true si la solución existe, de lo contrario, false.
      */
     async checkSolucionExists(id: number): Promise<boolean> 
     {
@@ -183,11 +216,14 @@ class StoreSolucionesService
     }
 
     /**
-     * Elimina la asociación entre una solución y un problema
+     * Elimina la asociación entre una solución y un problema.
+     * 
+     * @param {number} idSolucion - ID de la solución de la que se quiere eliminar la asociación.
+     * @param {number} idProblema - ID del problema asociado que se quiere eliminar.
+     * @returns {Promise<{ message: string }>} Mensaje indicando que la asociación fue eliminada correctamente.
      */
     async removeProblemaFromSolucion(idSolucion: number, idProblema: number): Promise<{ message: string }> 
     {
-        // Elimina solo la asociación en la tabla de relaciones
         await pool.promise().query(
             'DELETE FROM storeProblemasSoluciones WHERE id_solucion = ? AND id_problema = ?', 
             [idSolucion, idProblema]
@@ -196,11 +232,14 @@ class StoreSolucionesService
     }
 
     /**
-     * Elimina la asociación entre una solución y una característica
+     * Elimina la asociación entre una solución y una característica.
+     * 
+     * @param {number} idSolucion - ID de la solución de la que se quiere eliminar la asociación.
+     * @param {number} idCaracteristica - ID de la característica asociada que se quiere eliminar.
+     * @returns {Promise<{ message: string }>} Mensaje indicando que la asociación fue eliminada correctamente.
      */
     async removeCaracteristicaFromSolucion(idSolucion: number, idCaracteristica: number): Promise<{ message: string }> 
     {
-         // Elimina solo la asociación en la tabla de relaciones
          await pool.promise().query(
             'DELETE FROM storeSolucionesCaracteristicas WHERE id_solucion = ? AND id_caracteristica = ?', 
             [idSolucion, idCaracteristica]
@@ -209,11 +248,14 @@ class StoreSolucionesService
     }
 
     /**
-     * Elimina la asociación entre una solución y un ámbito
+     * Elimina la asociación entre una solución y un ámbito.
+     * 
+     * @param {number} idSolucion - ID de la solución de la que se quiere eliminar la asociación.
+     * @param {number} idAmbito - ID del ámbito asociado que se quiere eliminar.
+     * @returns {Promise<{ message: string }>} Mensaje indicando que la asociación fue eliminada correctamente.
      */
     async removeAmbitoFromSolucion(idSolucion: number, idAmbito: number): Promise<{ message: string }> 
     {
-         // Elimina solo la asociación en la tabla de relaciones
          await pool.promise().query(
             'DELETE FROM storeSolucionesAmbitos WHERE id_solucion = ? AND id_ambito = ?', 
             [idSolucion, idAmbito]
@@ -222,11 +264,14 @@ class StoreSolucionesService
     }
 
     /**
-     * Elimina la asociación entre una solución y un ámbito
+     * Elimina la asociación entre una solución y un sector.
+     * 
+     * @param {number} idSolucion - ID de la solución de la que se quiere eliminar la asociación.
+     * @param {number} idSector - ID del sector asociado que se quiere eliminar.
+     * @returns {Promise<{ message: string }>} Mensaje indicando que la asociación fue eliminada correctamente.
      */
     async removeSectorFromSolucion(idSolucion: number, idSector: number): Promise<{ message: string }> 
     {
-         // Elimina solo la asociación en la tabla de relaciones
          await pool.promise().query(
             'DELETE FROM storeSolucionesSectores WHERE id_solucion = ? AND id_sector = ?', 
             [idSolucion, idSector]

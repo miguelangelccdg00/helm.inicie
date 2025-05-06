@@ -1,21 +1,49 @@
 import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
 import { StoreBeneficios } from '../../../api-shared-helm/src/models/storeBeneficios.js';
 
-interface CreateBeneficioDTO {
+/**
+ * DTO para la creación de un nuevo beneficio.
+ * @interface CreateBeneficioDTO
+ */
+interface CreateBeneficioDTO
+{
+  /** Descripción del beneficio. */
   description: string;
+  /** ID de la solución asociada al beneficio. */
   idSolucion: number;
 }
 
-interface AsociarBeneficioResult {
+/**
+ * Resultado de asociar un beneficio a una solución.
+ * @interface AsociarBeneficioResult
+ */
+interface AsociarBeneficioResult
+{
+  /** ID de la solución. */
   idSolucion: number;
+  /** ID del beneficio. */
   idBeneficio: number;
+  /** Mensaje de resultado. */
   message: string;
 }
 
-class StoreBeneficiosServices {
-  async createBeneficio({ description, idSolucion }: CreateBeneficioDTO): Promise<{ idBeneficio: number; idSolucion: number }> {
+/**
+ * Servicios relacionados con los beneficios de la tienda.
+ * @class StoreBeneficiosServices
+ */
+class StoreBeneficiosServices
+{
+  /**
+   * Crea un nuevo beneficio y lo asocia a una solución.
+   * @param {CreateBeneficioDTO} params - Parámetros para la creación del beneficio.
+   * @returns {Promise<{ idBeneficio: number; idSolucion: number }>} El ID del beneficio creado y el ID de la solución.
+   * @throws {Error} Si la solución no existe o si ocurre un error durante la transacción.
+   */
+  async createBeneficio({ description, idSolucion }: CreateBeneficioDTO): Promise<{ idBeneficio: number; idSolucion: number }>
+  {
     const conn = await pool.promise().getConnection();
-    try {
+    try
+    {
       await conn.beginTransaction();
 
       const [solucionExiste]: [{ id_solucion: number }[]] = await conn.query(
@@ -23,7 +51,8 @@ class StoreBeneficiosServices {
         [idSolucion]
       );
 
-      if (solucionExiste.length === 0) {
+      if (solucionExiste.length === 0)
+      {
         throw new Error(`La solución con id ${idSolucion} no existe.`);
       }
 
@@ -42,21 +71,36 @@ class StoreBeneficiosServices {
       await conn.commit();
 
       return { idBeneficio, idSolucion };
-    } catch (error) {
+    }
+    catch (error)
+    {
       await conn.rollback();
       console.error("Error al insertar beneficio:", error);
       throw error;
-    } finally {
+    }
+    finally
+    {
       conn.release();
     }
   }
 
-  async getBeneficio(): Promise<StoreBeneficios[]> {
+  /**
+   * Obtiene todos los beneficios disponibles.
+   * @returns {Promise<StoreBeneficios[]>} Lista de todos los beneficios.
+   */
+  async getBeneficio(): Promise<StoreBeneficios[]>
+  {
     const [rows] = await pool.promise().query(`SELECT id_beneficio, description FROM storeBeneficios`);
     return rows as StoreBeneficios[];
   }
 
-  async getByIdBeneficio(idSolucion: number): Promise<StoreBeneficios[]> {
+  /**
+   * Obtiene los beneficios asociados a una solución.
+   * @param {number} idSolucion - El ID de la solución.
+   * @returns {Promise<StoreBeneficios[]>} Lista de beneficios asociados a la solución.
+   */
+  async getByIdBeneficio(idSolucion: number): Promise<StoreBeneficios[]>
+  {
     const [rows] = await pool.promise().query(
       `SELECT b.id_beneficio, b.description
       FROM storeBeneficios b
@@ -68,14 +112,29 @@ class StoreBeneficiosServices {
     return rows as StoreBeneficios[];
   }
 
-  async update(id: number, updateData: Partial<StoreBeneficios>): Promise<{ message: string }> {
+  /**
+   * Actualiza un beneficio existente.
+   * @param {number} id - El ID del beneficio a actualizar.
+   * @param {Partial<StoreBeneficios>} updateData - Los datos a actualizar.
+   * @returns {Promise<{ message: string }>} Mensaje confirmando que el beneficio fue actualizado.
+   */
+  async update(id: number, updateData: Partial<StoreBeneficios>): Promise<{ message: string }>
+  {
     await pool.promise().query('UPDATE storeBeneficios SET ? WHERE id_beneficio = ?', [updateData, id]);
     return { message: 'Beneficio actualizado' };
   }
 
-  async deleteBeneficio(idBeneficio: number): Promise<boolean> {
+  /**
+   * Elimina un beneficio.
+   * @param {number} idBeneficio - El ID del beneficio a eliminar.
+   * @returns {Promise<boolean>} Indica si el beneficio fue eliminado exitosamente.
+   * @throws {Error} Si ocurre un error durante la transacción de eliminación.
+   */
+  async deleteBeneficio(idBeneficio: number): Promise<boolean>
+  {
     const conn = await pool.promise().getConnection();
-    try {
+    try
+    {
       await conn.beginTransaction();
 
       const [result]: any = await conn.query(
@@ -86,18 +145,31 @@ class StoreBeneficiosServices {
       await conn.commit();
 
       return result.affectedRows > 0;
-    } catch (error) {
+    }
+    catch (error)
+    {
       await conn.rollback();
       console.error('Error al eliminar la asociación del beneficio:', error);
       throw error;
-    } finally {
+    }
+    finally
+    {
       conn.release();
     }
   }
 
-  async asociarBeneficio(idSolucion: number, idBeneficio: number): Promise<AsociarBeneficioResult> {
+  /**
+   * Asocia un beneficio a una solución.
+   * @param {number} idSolucion - El ID de la solución.
+   * @param {number} idBeneficio - El ID del beneficio.
+   * @returns {Promise<AsociarBeneficioResult>} Resultado de la operación con mensaje.
+   * @throws {Error} Si la solución o el beneficio no existen, o si ya existe una relación entre ambos.
+   */
+  async asociarBeneficio(idSolucion: number, idBeneficio: number): Promise<AsociarBeneficioResult>
+  {
     const conn = await pool.promise().getConnection();
-    try {
+    try
+    {
       await conn.beginTransaction();
 
       const [solucionExiste]: [{ id_solucion: number }[]] = await conn.query(
@@ -105,7 +177,8 @@ class StoreBeneficiosServices {
         [idSolucion]
       );
 
-      if (solucionExiste.length === 0) {
+      if (solucionExiste.length === 0)
+      {
         throw new Error(`La solución con id ${idSolucion} no existe.`);
       }
 
@@ -114,7 +187,8 @@ class StoreBeneficiosServices {
         [idBeneficio]
       );
 
-      if (beneficioExiste.length === 0) {
+      if (beneficioExiste.length === 0)
+      {
         throw new Error(`El beneficio con id ${idBeneficio} no existe.`);
       }
 
@@ -123,7 +197,8 @@ class StoreBeneficiosServices {
         [idSolucion, idBeneficio]
       );
 
-      if (relacionExiste.length > 0) {
+      if (relacionExiste.length > 0)
+      {
         await conn.commit();
         return { idSolucion, idBeneficio, message: 'La relación ya existía' };
       }
@@ -136,14 +211,19 @@ class StoreBeneficiosServices {
       await conn.commit();
 
       return { idSolucion, idBeneficio, message: 'Relación creada con éxito' };
-    } catch (error) {
+    }
+    catch (error)
+    {
       await conn.rollback();
       console.error("Error al asociar beneficio:", error);
       throw error;
-    } finally {
+    }
+    finally
+    {
       conn.release();
     }
   }
 }
 
 export default new StoreBeneficiosServices();
+

@@ -3,8 +3,14 @@ import bcrypt from 'bcryptjs';
 
 class AuthService 
 {
-    /**
-     * Busca un usuario en la base de datos por su nombre de usuario
+    /** 
+     * Busca un usuario en la base de datos por su nombre de usuario.
+     * 
+     * @param {string} username - Nombre de usuario del que se desea obtener los datos.
+     * 
+     * @returns {Promise<any | null>} Un objeto con los datos del usuario si existe, o null si no se encuentra.
+     * 
+     * @throws {Error} Si ocurre un error en la consulta a la base de datos.
      */
     async findUserByUsername(username: string) 
     {
@@ -12,16 +18,31 @@ class AuthService
         return rows.length ? rows[0] : null;
     }
 
-    /**
-     * Valida si la contraseña ingresada coincide con la almacenada 
+    /** 
+     * Valida si la contraseña ingresada coincide con la contraseña almacenada en la base de datos.
+     * 
+     * @param {string} inputPassword - Contraseña proporcionada por el usuario.
+     * @param {string} hashedPassword - Contraseña encriptada almacenada en la base de datos.
+     * 
+     * @returns {Promise<boolean>} Devuelve un valor booleano que indica si las contraseñas coinciden.
+     * 
+     * @throws {Error} Si ocurre un error al comparar las contraseñas.
      */
     async validatePassword(inputPassword: string, hashedPassword: string) 
     {
         return await bcrypt.compare(inputPassword, hashedPassword);
     }
 
-    /**
-     * Crea un nuevo usuario en la base de datos
+    /** 
+     * Crea un nuevo usuario en la base de datos con la contraseña encriptada.
+     * 
+     * @param {string} email - Correo electrónico del nuevo usuario.
+     * @param {string} username - Nombre de usuario del nuevo usuario.
+     * @param {string} password - Contraseña del nuevo usuario.
+     * 
+     * @returns {Promise<any>} Un objeto con los datos del nuevo usuario, incluido su ID generado.
+     * 
+     * @throws {Error} Si ocurre un error al insertar el usuario en la base de datos.
      */
     async createUser(email: string, username: string, password: string) 
     {

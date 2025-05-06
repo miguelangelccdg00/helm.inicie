@@ -26,6 +26,13 @@ interface AsociarAmbitoParams
 
 class StoreAmbitosService 
 {  
+  /**
+   * Crea un nuevo ámbito en la base de datos y lo asocia con todas las soluciones existentes.
+   * 
+   * @param {CreateAmbitoParams} params - Los parámetros necesarios para crear el ámbito.
+   * @returns {Promise<StoreAmbitos>} El nuevo ámbito creado, con su ID y los parámetros proporcionados.
+   * @throws {Error} Si ocurre un error durante la creación o la asociación.
+   */
   async createAmbito({ description, textoweb, prefijo, slug }: Omit<CreateAmbitoParams, 'idSoluciones'>): Promise<StoreAmbitos>
   {
     try
@@ -75,6 +82,13 @@ class StoreAmbitosService
     }
   }
   
+  /**
+   * Crea un nuevo ámbito en la base de datos.
+   * 
+   * @param {AmbitosParams} params - Los parámetros necesarios para crear el ámbito.
+   * @returns {Promise<StoreAmbitos>} El nuevo ámbito creado.
+   * @throws {Error} Si ocurre un error durante la creación del ámbito.
+   */
   async createStoreAmbito({ description, textoweb, prefijo, slug }: AmbitosParams): Promise<StoreAmbitos> 
   {
     try 
@@ -99,9 +113,15 @@ class StoreAmbitosService
       throw new Error('Error al crear el ámbito');
     }
   }
-  
 
-  // Asociar un ámbito con una solución
+  /**
+   * Asocia un ámbito con una solución específica.
+   * 
+   * @param {number} idSolucion - El ID de la solución a asociar.
+   * @param {number} idAmbito - El ID del ámbito a asociar.
+   * @returns {Promise<void>}
+   * @throws {Error} Si no se puede asociar el ámbito con la solución.
+   */
   async asociarAmbito(idSolucion: number, idAmbito: number): Promise<void> {
     try {
       const [result] = await pool.promise().query(
@@ -119,7 +139,12 @@ class StoreAmbitosService
     }
   }
 
-  // Obtener todos los ámbitos
+  /**
+   * Obtiene todos los ámbitos registrados.
+   * 
+   * @returns {Promise<StoreAmbitos[]>} Una lista de los ámbitos disponibles.
+   * @throws {Error} Si ocurre un error durante la consulta.
+   */
   async listAmbitos(): Promise<StoreAmbitos[]> {
     try {
       const [rows] = await pool.promise().query(
@@ -133,7 +158,13 @@ class StoreAmbitosService
     }
   }
 
-  // Obtener un ámbito por su ID
+  /**
+   * Obtiene un ámbito específico por su ID.
+   * 
+   * @param {number} idAmbito - El ID del ámbito a obtener.
+   * @returns {Promise<StoreAmbitos | null>} El ámbito correspondiente o null si no se encuentra.
+   * @throws {Error} Si ocurre un error durante la consulta.
+   */
   async getAmbitoById(idAmbito: number): Promise<StoreAmbitos | null> {
     try {
       const [rows] = await pool.promise().query(
@@ -149,7 +180,13 @@ class StoreAmbitosService
     }
   }
 
-  // Obtener los ámbitos asociados a una solución
+  /**
+   * Obtiene los ámbitos asociados a una solución específica.
+   * 
+   * @param {number} idSolucion - El ID de la solución de la cual se desean obtener los ámbitos.
+   * @returns {Promise<StoreAmbitos[]>} Una lista de los ámbitos asociados a la solución.
+   * @throws {Error} Si ocurre un error durante la consulta.
+   */
   async getByIdAmbitos(idSolucion: number): Promise<StoreAmbitos[]> {
     try {
       const [rows] = await pool.promise().query(
@@ -166,8 +203,16 @@ class StoreAmbitosService
     }
   }
 
-  // Actualizar un ámbito
-  async update(idAmbito: number,idSolucion: number,updateData: Partial<StoreAmbitos & SolucionAmbito>): Promise<StoreAmbitos> 
+  /**
+   * Actualiza los datos de un ámbito.
+   * 
+   * @param {number} idAmbito - El ID del ámbito a actualizar.
+   * @param {number} idSolucion - El ID de la solución asociada.
+   * @param {Partial<StoreAmbitos & SolucionAmbito>} updateData - Los nuevos datos para actualizar.
+   * @returns {Promise<StoreAmbitos>} El ámbito actualizado.
+   * @throws {Error} Si ocurre un error durante la actualización.
+   */
+  async update(idAmbito: number, idSolucion: number, updateData: Partial<StoreAmbitos & SolucionAmbito>): Promise<StoreAmbitos> 
   {
     try 
     {
@@ -225,202 +270,13 @@ class StoreAmbitosService
     }
   }
 
-  // Actualizar un ámbito
-  async updateAmbito(idAmbito: number,updateData: Partial<StoreAmbitos & SolucionAmbito>): Promise<StoreAmbitos> 
-  {
-    try 
-    {
-      const { description, textoweb, prefijo, slug } = updateData;
-
-      const updateFields = [];
-      const updateValues = [];
-
-      if (description) 
-      {
-        updateFields.push('description = ?');
-        updateValues.push(description);
-      }
-      if (textoweb) 
-      {
-        updateFields.push('textoweb = ?');
-        updateValues.push(textoweb);
-      }
-      if (prefijo) 
-      {
-        updateFields.push('prefijo = ?');
-        updateValues.push(prefijo);
-      }
-      if (slug) 
-      {
-        updateFields.push('slug = ?');
-        updateValues.push(slug);
-      }
-
-      updateValues.push(idAmbito);
-
-      const [result] = await pool.promise().query(
-        `UPDATE storeAmbitos SET ${updateFields.join(', ')}
-         WHERE id_ambito = ?`,
-        updateValues
-      );
-
-      if (result.affectedRows === 0) 
-      {
-        throw new Error('No se encontró el ámbito para actualizar');
-      }
-
-      return {
-        id_ambito: idAmbito,
-        description: description || '',
-        textoweb: textoweb || '',
-        prefijo: prefijo || '',
-        slug: slug || ''
-      };
-    } 
-    catch (error) 
-    {
-      console.error('Error al actualizar el ámbito:', error);
-      throw new Error('Error al actualizar el ámbito');
-    }
-  }
-
-  async updateSolucionAmbitos(idSolucion: number, solucionAmbito: SolucionAmbito): Promise<SolucionAmbito> 
-  {
-    try 
-    {
-      const 
-      {
-        id_ambito,
-        description,
-        title,
-        subtitle,
-        icon,
-        titleweb,
-        slug,
-        multimediaUri,
-        multimediaTypeId,
-        problemaTitle,
-        problemaPragma,
-        solucionTitle,
-        solucionPragma,
-        caracteristicasTitle,
-        caracteristicasPragma,
-        casosdeusoTitle,
-        casosdeusoPragma,
-        firstCtaTitle,
-        firstCtaPragma,
-        secondCtaTitle,
-        secondCtaPragma,
-        beneficiosTitle,
-        beneficiosPragma
-      } = solucionAmbito;
-  
-      if (!idSolucion || !id_ambito) 
-      {
-        throw new Error('Faltan id_solucion o id_ambito para actualizar la relación');
-      }
-  
-      const [rows] = await pool.promise().query(
-        `SELECT * FROM storeSolucionesAmbitos 
-         WHERE id_solucion = ? AND id_ambito = ?`,
-        [idSolucion, id_ambito]
-      ) as any[];
-  
-      if (!rows || rows.length === 0) 
-      {
-        throw new Error('No existe la relación ambito-solución para actualizar');
-      }
-  
-      await pool.promise().query(
-        `UPDATE storeSolucionesAmbitos 
-         SET 
-           description = ?,
-           title = ?,
-           subtitle = ?,
-           icon = ?,
-           titleweb = ?,
-           slug = ?,
-           multimediaUri = ?,
-           multimediaTypeId = ?,
-           problemaTitle = ?,
-           problemaPragma = ?,
-           solucionTitle = ?,
-           solucionPragma = ?,
-           caracteristicasTitle = ?,
-           caracteristicasPragma = ?,
-           casosdeusoTitle = ?,
-           casosdeusoPragma = ?,
-           firstCtaTitle = ?,
-           firstCtaPragma = ?,
-           secondCtaTitle = ?,
-           secondCtaPragma = ?,
-           beneficiosTitle = ?,
-           beneficiosPragma = ?
-         WHERE id_solucion = ? AND id_ambito = ?`,
-        [
-          description || '',
-          title || '',
-          subtitle || '',
-          icon || '',
-          titleweb || '',
-          slug || '',
-          multimediaUri || '',
-          multimediaTypeId || '',
-          problemaTitle || '',
-          problemaPragma || '',
-          solucionTitle || '',
-          solucionPragma || '',
-          caracteristicasTitle || '',
-          caracteristicasPragma || '',
-          casosdeusoTitle || '',
-          casosdeusoPragma || '',
-          firstCtaTitle || '',
-          firstCtaPragma || '',
-          secondCtaTitle || '',
-          secondCtaPragma || '',
-          beneficiosTitle || '',
-          beneficiosPragma || '',
-          idSolucion,
-          id_ambito
-        ]
-      );
-  
-      return {
-        id_solucion: idSolucion,
-        id_ambito: id_ambito,
-        description: description || '',
-        title: title || '',
-        subtitle: subtitle || '',
-        icon: icon || '',
-        titleweb: titleweb || '',
-        slug: slug || '',
-        multimediaUri: multimediaUri || '',
-        multimediaTypeId: multimediaTypeId || '',
-        problemaTitle: problemaTitle || '',
-        problemaPragma: problemaPragma || '',
-        solucionTitle: solucionTitle || '',
-        solucionPragma: solucionPragma || '',
-        caracteristicasTitle: caracteristicasTitle || '',
-        caracteristicasPragma: caracteristicasPragma || '',
-        casosdeusoTitle: casosdeusoTitle || '',
-        casosdeusoPragma: casosdeusoPragma || '',
-        firstCtaTitle: firstCtaTitle || '',
-        firstCtaPragma: firstCtaPragma || '',
-        secondCtaTitle: secondCtaTitle || '',
-        secondCtaPragma: secondCtaPragma || '',
-        beneficiosTitle: beneficiosTitle || '',
-        beneficiosPragma: beneficiosPragma || ''
-      };
-    } 
-    catch (error) 
-    {
-      console.error('Error al actualizar la relación ambito-solución:', error);
-      throw new Error('Error al actualizar la relación ambito-solución');
-    }
-  }
-  
-
-  // Eliminar un ámbito
+  /**
+   * Elimina un ámbito por su ID.
+   * 
+   * @param {number} idAmbito - El ID del ámbito a eliminar.
+   * @returns {Promise<boolean>} Indica si la eliminación fue exitosa.
+   * @throws {Error} Si ocurre un error durante la eliminación.
+   */
   async deleteAmbito(idAmbito: number): Promise<boolean> 
   {
     try 
@@ -439,7 +295,14 @@ class StoreAmbitosService
     }
   }
 
-  // Eliminar la relación de un ámbito con una solución
+  /**
+   * Elimina la relación entre un ámbito y una solución.
+   * 
+   * @param {number} idSolucion - El ID de la solución.
+   * @param {number} idAmbito - El ID del ámbito.
+   * @returns {Promise<boolean>} Indica si la eliminación de la relación fue exitosa.
+   * @throws {Error} Si ocurre un error durante la eliminación.
+   */
   async deleteAmbitoSolucion(idSolucion: number, idAmbito: number): Promise<boolean> {
     try {
       const [result] = await pool.promise().query(
