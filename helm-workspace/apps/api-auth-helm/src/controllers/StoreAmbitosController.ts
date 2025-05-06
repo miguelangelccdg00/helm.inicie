@@ -6,7 +6,8 @@ import { SolucionAmbito } from '@modelos-shared/solucionAmbito';
 
 interface CreateAmbitoBody extends Omit<StoreAmbitos, 'id_ambito'> {}
 
-interface AsociarAmbitoBody {
+interface AsociarAmbitoBody 
+{
   id_solucion: number;
   id_ambito: number;
 }
@@ -14,40 +15,73 @@ interface AsociarAmbitoBody {
 class StoreAmbitosController 
 {
 
+  /**
+   * Crea un nuevo ámbito y lo guarda en la base de datos.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP que contiene los datos enviados por el cliente.
+   * @param {string} req.body.description - Descripción del ámbito que se desea crear.
+   * @param {string} req.body.textoweb - Texto para la página web asociado al ámbito.
+   * @param {string} req.body.prefijo - Prefijo del ámbito.
+   * @param {string} req.body.slug - Slug (URL amigable) del ámbito.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve el ámbito creado si la operación es exitosa.
+   * 
+   * @throws {400} Si faltan datos o los datos son inválidos, devuelve un error con un mensaje adecuado.
+   * @throws {500} Si ocurre un error interno en el servidor al crear el ámbito.
+   */
   async createAmbitos(req: Request, res: Response): Promise<void> 
   {
     try 
     {
       const { description, textoweb, prefijo, slug } = req.body;
   
-      if (!description || !textoweb || !prefijo || !slug) 
+      if ([description, textoweb, prefijo, slug].some(val => typeof val !== 'string' || !val.trim())) 
       {
-        res.status(400).json({ message: 'Faltan datos requeridos para crear el ámbito.' });
+        res.status(400).json({ message: 'Datos incompletos o mal formateados' });
         return;
       }
   
-      const resultado = await StoreAmbitosService.createAmbito({
-        description,
-        textoweb,
-        prefijo,
-        slug
-      });
+      const resultado = await StoreAmbitosService.createAmbito({ description, textoweb, prefijo, slug });
+  
+      if (!resultado?.id_ambito) 
+      {
+        res.status(500).json({ message: 'No se pudo crear el ámbito' });
+        return;
+      }
   
       const ambitoCreado = await StoreAmbitosService.getAmbitoById(resultado.id_ambito);
+      res.status(201).json({ ...resultado, ambito: ambitoCreado });
   
-      res.status(201).json({
-        ...resultado,
-        ambito: ambitoCreado
-      });
     } 
     catch (error) 
     {
-      console.error('Error en createAmbitos:', error);
+      console.error('🔴 Error en createAmbitos:', 
+      {
+        message: (error as Error).message,
+        stack: (error as Error).stack
+      });
+  
       res.status(500).json({ message: 'Error interno del servidor al crear el ámbito.' });
     }
   }
   
-
+  
+  /**
+   * Crea un nuevo ámbito en la base de datos de una tienda.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP que contiene los datos enviados por el cliente.
+   * @param {string} req.body.description - Descripción del ámbito que se desea crear.
+   * @param {string} req.body.textoweb - Texto para la página web asociado al ámbito.
+   * @param {string} req.body.prefijo - Prefijo del ámbito.
+   * @param {string} req.body.slug - Slug (URL amigable) del ámbito.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve el ámbito creado si la operación es exitosa.
+   * 
+   * @throws {400} Si faltan datos para crear el ámbito.
+   * @throws {500} Si ocurre un error interno al intentar crear el ámbito.
+   */
   async createStoreAmbitos(req: Request, res: Response): Promise<void>
   {
     try 
@@ -81,7 +115,19 @@ class StoreAmbitosController
     }
   }
   
-
+  /**
+   * Asocia un ámbito con una solución específica.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP que contiene los datos de asociación.
+   * @param {number} req.body.id_solucion - ID de la solución que se asociará con el ámbito.
+   * @param {number} req.body.id_ambito - ID del ámbito que se asociará con la solución.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve la asociación exitosa entre la solución y el ámbito.
+   * 
+   * @throws {400} Si faltan datos en la solicitud.
+   * @throws {500} Si ocurre un error interno al asociar el ámbito con la solución.
+   */
   async asociarAmbito(req: Request<any, any, AsociarAmbitoBody>, res: Response): Promise<void> {
     try {
       const { id_solucion, id_ambito } = req.body;
@@ -108,6 +154,16 @@ class StoreAmbitosController
     }
   }
 
+  /**
+   * Obtiene una lista de todos los ámbitos existentes.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve la lista de todos los ámbitos disponibles.
+   * 
+   * @throws {500} Si ocurre un error interno al listar los ámbitos.
+   */
   async listAmbitos(req: Request, res: Response): Promise<void> 
   {
     try 
@@ -129,6 +185,18 @@ class StoreAmbitosController
     }
   }
 
+  /**
+   * Obtiene los ámbitos asociados a una solución específica identificada por su ID.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP que contiene el ID de la solución.
+   * @param {string} req.params.idSolucion - ID de la solución cuya lista de ámbitos se desea obtener.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve la lista de ámbitos asociados a la solución especificada.
+   * 
+   * @throws {400} Si el ID de la solución no es proporcionado.
+   * @throws {500} Si ocurre un error interno al obtener los ámbitos para la solución.
+   */
   async listIdAmbito(req: Request<{ idSolucion: string }>, res: Response): Promise<void> {
     try {
       const { idSolucion } = req.params;
@@ -153,6 +221,20 @@ class StoreAmbitosController
     }
   }
 
+  /**
+   * Modifica los detalles de un ámbito asociado a una solución específica.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP que contiene los datos de actualización.
+   * @param {string} req.params.idSolucion - ID de la solución asociada al ámbito que se desea modificar.
+   * @param {string} req.params.idAmbito - ID del ámbito que se desea modificar.
+   * @param {Partial<StoreAmbitos>} req.body - Datos de actualización para el ámbito.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve los detalles del ámbito actualizado.
+   * 
+   * @throws {400} Si el ID de la solución o el ID del ámbito no se proporcionan correctamente.
+   * @throws {500} Si ocurre un error interno al modificar los detalles del ámbito.
+   */
   async modifyStoreAmbitos(req: Request<{ idSolucion: string; idAmbito: string }, any, Partial<StoreAmbitos>>, res: Response): Promise<void> {
     try {
       const { idSolucion, idAmbito } = req.params;
@@ -181,6 +263,19 @@ class StoreAmbitosController
     }
   }
 
+  /**
+   * Modifica los detalles de un ámbito en la base de datos.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP que contiene los datos de actualización.
+   * @param {string} req.params.idAmbito - ID del ámbito que se desea modificar.
+   * @param {Partial<StoreAmbitos>} req.body - Datos de actualización para el ámbito.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve los detalles del ámbito actualizado.
+   * 
+   * @throws {400} Si el ID del ámbito no se proporciona correctamente.
+   * @throws {500} Si ocurre un error interno al modificar el ámbito.
+   */
   async modifyAmbitos(req: Request<{idAmbito: string }, any, Partial<StoreAmbitos>>, res: Response): Promise<void> 
   {
     try 
@@ -210,6 +305,19 @@ class StoreAmbitosController
     }
   }
 
+  /**
+   * Modifica la relación de un ámbito con una solución, actualizando los datos asociados.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP que contiene los datos de actualización.
+   * @param {string} req.params.idSolucion - ID de la solución cuya relación con el ámbito se desea modificar.
+   * @param {SolucionAmbito} req.body - Datos de la relación entre la solución y el ámbito.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve los detalles de la relación actualizada entre la solución y el ámbito.
+   * 
+   * @throws {400} Si el ID de la solución no se proporciona o los datos de la relación no se proporcionan correctamente.
+   * @throws {500} Si ocurre un error interno al modificar la relación del ámbito con la solución.
+   */
   async modifySolucionAmbitos(req: Request<{ idSolucion: string }, any, SolucionAmbito>, res: Response): Promise<void> 
   {
     try 
@@ -248,6 +356,18 @@ class StoreAmbitosController
     }
   }
 
+  /**
+   * Elimina un ámbito de la base de datos.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP que contiene el ID del ámbito a eliminar.
+   * @param {string} req.params.idAmbito - ID del ámbito que se desea eliminar.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve un mensaje de éxito si el ámbito se eliminó correctamente.
+   * 
+   * @throws {400} Si el ID del ámbito no se proporciona correctamente.
+   * @throws {500} Si ocurre un error interno al intentar eliminar el ámbito.
+   */
   async deleteAmbito(req: Request<{ idAmbito: string }>, res: Response): Promise<void> {
     try {
       const { idAmbito } = req.params;
@@ -271,6 +391,19 @@ class StoreAmbitosController
     }
   }
 
+  /**
+   * Elimina la relación de un ámbito con una solución.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP que contiene los IDs de la solución y el ámbito a desasociar.
+   * @param {string} req.params.idSolucion - ID de la solución de la que se desasociará el ámbito.
+   * @param {string} req.params.idAmbito - ID del ámbito que se desasociará de la solución.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve un mensaje de éxito si la relación se desasocia correctamente.
+   * 
+   * @throws {400} Si los IDs de la solución o el ámbito no se proporcionan correctamente.
+   * @throws {500} Si ocurre un error interno al desasociar el ámbito de la solución.
+   */
   async removeAmbitoFromSolucion(req: Request<{ idSolucion: string; idAmbito: string }>, res: Response): Promise<void> {
     try {
       const { idSolucion, idAmbito } = req.params;

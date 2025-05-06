@@ -46,7 +46,7 @@ class StoreSectoresService
                 WHERE sa.id_solucion = s.id_solucion AND sa.id_sector = ?
             )`, [idSector, idSector]);
         
-            // Producto cartesiano: soluciones × ámbitos × nuevo sector
+            // Producto cartesiano: soluciones × ámbitos ×  sector
             await pool.promise().query(`
             INSERT INTO storeSolucionesAmbitosSectores (id_solucion, id_ambito, id_sector)
             SELECT sa.id_solucion, sa.id_ambito, ?
