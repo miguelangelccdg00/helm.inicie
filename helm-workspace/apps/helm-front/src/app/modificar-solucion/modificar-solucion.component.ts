@@ -27,6 +27,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 
 export class ModificarSolucionComponent implements OnInit {
 
+  // Referencias a elementos de la plantilla mediante ViewChild.
   @ViewChild('scrollProblemas', { static: false }) scrollProblemas: ElementRef | undefined;
   @ViewChild('scrollBeneficios', { static: false }) scrollBeneficios: ElementRef | undefined;
   @ViewChild('scrollCaracteristicas', { static: false }) scrollCaracteristicas: ElementRef | undefined;
@@ -35,9 +36,17 @@ export class ModificarSolucionComponent implements OnInit {
   @ViewChild('scrollSectores', { static: false }) scrollSectores: ElementRef | undefined;
   @ViewChild('formularioSolucionSector', { static: false }) formularioSolucionSector: ElementRef | undefined;
   
+
+  // --- SOLUCIONES ---
+
   solucion: StoreSoluciones | null = null;
 
-  solucionesAmbitos: SolucionAmbito[] = [];
+  // --- SOLUCION AMBITOS ---
+  mostrarOpcionesSolucionAmbito: boolean = false;
+  solucionAmbitoSeleccionado: SolucionAmbito | null = null;
+  solucionAmbitoAEliminar: { idAmbito: number, idSolucion: number } | null = null;
+  mostrarModificarSolucionAmbito: boolean = false;
+  mostrarBotonModificarSolucionAmbito: boolean = false;
 
   nuevaSolucionAmbito: SolucionAmbito = {
     description: '',
@@ -65,25 +74,23 @@ export class ModificarSolucionComponent implements OnInit {
 
   };
 
-  solucionesSectores: SolucionSector[] = [];
+  solucionesAmbitos: SolucionAmbito[] = [];
 
-  nuevaSolucionSector: SolucionSector = {
-    descalternativa: '',
-    textoalternativo: ''
-  };
-  
-  mostrarOpcionesSolucionAmbito: boolean = false;
-  solucionAmbitoSeleccionado: SolucionAmbito | null = null;
-  solucionAmbitoAEliminar: { idAmbito: number, idSolucion: number } | null = null;
-  mostrarModificarSolucionAmbito: boolean = false;
-  mostrarBotonModificarSolucionAmbito: boolean = false;
-
+  // --- SOLUCION SECTORES ---
   mostrarOpcionesSolucionSector: boolean = false;
   solucionSectorSeleccionado: SolucionSector | null = null;
   solucionSectorAEliminar: { idSector: number, idSolucion: number } | null = null;
   mostrarModificarSolucionSector: boolean = false;
   mostrarBotonModificarSolucionSector: boolean = false;
 
+  nuevaSolucionSector: SolucionSector = {
+    descalternativa: '',
+    textoalternativo: ''
+  };
+
+  solucionesSectores: SolucionSector[] = [];
+
+  // --- PROBLEMAS ---
   nuevoProblema: StoreProblemas = { titulo: '', description: '' };
   buscadorProblema: string = '';
   problemas: StoreProblemas[] = [];
@@ -97,6 +104,8 @@ export class ModificarSolucionComponent implements OnInit {
   mostrarBotonModificarProblema: boolean = false;
   problemaAEliminar: number | null = null;
 
+
+  // --- BENEFICIOS ---
   nuevoBeneficio: StoreBeneficios = { titulo: '', description: '' };
   buscadorBeneficio: string = '';
   beneficios: StoreBeneficios[] = [];
@@ -110,6 +119,8 @@ export class ModificarSolucionComponent implements OnInit {
   mostrarBotonModificarBeneficio: boolean = false;
   beneficioAEliminar: number | null = null;
 
+
+  // --- CARACTERISTICAS ---
   nuevaCaracteristica: StoreCaracteristicas = { titulo: '', description: '' };
   buscadorCaracteristica: string = '';
   caracteristicas: StoreCaracteristicas[] = [];
@@ -123,6 +134,8 @@ export class ModificarSolucionComponent implements OnInit {
   mostrarBotonModificarCaracteristica: boolean = false;
   caracteristicaAEliminar: number | null = null;
 
+
+  // --- AMBITOS ---
   nuevoAmbito: StoreAmbitos = { description: '', textoweb: '', prefijo: '', slug: '' };
   buscadorAmbito: string = '';
   ambitos: StoreAmbitos[] = [];
@@ -136,6 +149,8 @@ export class ModificarSolucionComponent implements OnInit {
   mostrarBotonModificarAmbito: boolean = false;
   AmbitoAEliminar: number | null = null;
 
+
+  // --- SECTORES ---
   nuevoSector: StoreSectores = { description: '', textoweb: '', prefijo: '', slug: '', descriptionweb: '', titleweb: '', backgroundImage: '' };    
   buscadorSector: string = '';
   sectores: StoreSectores[] = [];
@@ -157,6 +172,8 @@ export class ModificarSolucionComponent implements OnInit {
   mostrarModalSector: boolean = false;
   mostrarModalSolucionSector: boolean = false;
 
+
+  // Diccionarios para ámbitos y sectores.
   ambitosDictionary: { [key: number]: StoreAmbitos } = {};
   sectoresDictionary: { [key: number]: StoreSectores } = {};
   
@@ -168,6 +185,7 @@ export class ModificarSolucionComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef 
 ) { }
 
+  // Listener para eventos de clic en el documento.
   @HostListener('document:click', ['$event'])
   clickFuera(event: MouseEvent) {
     const target = event.target as HTMLElement;
@@ -185,6 +203,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  // Al iniciar el componente, obtiene la solución y sus relaciones.
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
@@ -259,6 +278,7 @@ export class ModificarSolucionComponent implements OnInit {
     });
   }
   
+  // Función para crear un diccionario a partir de una lista de elementos.
   private createDictionary<T extends { id_ambito?: number; id_sector?: number }>(items: T[]): { [key: number]: T } {
     return items.reduce((acc, item) => {
       const id = (item as { id_ambito: number; id_sector: number }).id_ambito || (item as { id_ambito: number; id_sector: number }).id_sector;
@@ -269,6 +289,7 @@ export class ModificarSolucionComponent implements OnInit {
     }, {} as { [key: number]: T });
   }  
   
+  // Función para guardar los cambios realizados en la solución.
   guardarCambios() {
     if (this.solucion) {
       if (this.problemas.length > 0 && this.problemas[0].description) {
@@ -341,10 +362,12 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  // Función para cancelar los cambios y navegar de vuelta.
   cancelar() {
     this.router.navigate(['/store-soluciones']);
   }
 
+  // --- Funciones para manejar scrolls ---
   scrollProblema() {
     if (this.scrollProblemas) {
       this.scrollProblemas.nativeElement.scrollIntoView({ behavior: 'smooth' });
@@ -375,6 +398,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  // --- Funciones para seleccionar y ocultar opciones---
   seleccionarBeneficio(beneficio: StoreBeneficios) {
     this.buscadorBeneficio = beneficio.description;
     this.beneficioSeleccionado = beneficio;
@@ -435,6 +459,8 @@ export class ModificarSolucionComponent implements OnInit {
     this.mostrarOpcionesSolucionSector = false;
   }
 
+
+  //Función para agregar un beneficio a solución seleccionada.
   agregarBeneficio() {
     if (this.buscadorBeneficio && this.solucion) {
       const beneficioSeleccionado = this.beneficioSeleccionado ||
@@ -473,6 +499,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  //Función para agregar un problema a solución seleccionada.
   agregarProblema() {
     if (!this.buscadorProblema || !this.solucion) {
       return console.error('Debe seleccionar un problema antes de agregarlo');
@@ -516,7 +543,7 @@ export class ModificarSolucionComponent implements OnInit {
     this.problemaSeleccionado = null;
   }
   
-
+  //Función para agregar una característica a solución seleccionada.
   agregarCaracteristica() {
     if (this.buscadorCaracteristica && this.solucion) {
       const caracteristicaSeleccionada = this.caracteristicaSeleccionada ||
@@ -555,6 +582,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  //Función para agregar un ámbito a solución seleccionada.
   agregarAmbito() {
     if (this.buscadorAmbito && this.solucion) {
       const ambitoSeleccionado = this.ambitoSeleccionado ||
@@ -622,6 +650,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  //Función para agregar un sector a solución seleccionada.
   agregarSector() {
     if (this.buscadorSector && this.solucion) {
       const sectorSeleccionado = this.sectorSeleccionado ||
@@ -669,6 +698,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
   
+  //Función para eliminar beneficio.
   eliminarBeneficio() {
     if (this.beneficioAEliminar !== null) {
       this.storeSolucionesService.deleteBeneficio(this.beneficioAEliminar).subscribe({
@@ -703,7 +733,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
-
+  //Función para eliminar problema.
   eliminarProblema() {
     if (this.problemaAEliminar !== null) {
       this.storeSolucionesService.deleteProblema(this.problemaAEliminar).subscribe({
@@ -743,6 +773,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  //Función para eliminar característica.
   eliminarCaracteristica() {
     if (this.caracteristicaAEliminar !== null) {
       this.storeSolucionesService.deleteCaracteristica(this.caracteristicaAEliminar).subscribe({
@@ -782,6 +813,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  //Función para eliminar ámbito.
   eliminarAmbito() {
     if (this.AmbitoAEliminar === null) return;
   
@@ -819,6 +851,7 @@ export class ModificarSolucionComponent implements OnInit {
     });
   }
 
+  //Función para eliminar relación de un ámbito con solución seleccionada.
   eliminarSolucionAmbito() {
     if (this.solucionAmbitoAEliminar === null) return;
 
@@ -843,6 +876,7 @@ export class ModificarSolucionComponent implements OnInit {
 
   }
 
+  //Función para eliminar sector.
   eliminarSector() {
     if (this.sectorAEliminar === null) return;
   
@@ -880,6 +914,7 @@ export class ModificarSolucionComponent implements OnInit {
     });
   }
 
+  //Función para eliminar relación de un sector con solución seleccionada.
   eliminarSolucionSector() {
     if (!this.solucionSectorAEliminar) {
       console.error('No hay sector-solución para eliminar');
@@ -897,21 +932,16 @@ export class ModificarSolucionComponent implements OnInit {
       next: () => {
         console.log('Relación sector-solución eliminada correctamente');
         
-        // Solo eliminamos la relación de solucionesSectores
         this.solucionesSectores = this.solucionesSectores.filter(
           solucionSector => !(solucionSector.id_sector === idSector && 
                              solucionSector.id_solucion === idSolucion)
         );
   
-        // Quitamos el sector de la lista de sectores asociados a esta solución
         if (this.solucion && this.solucion.sectores) {
           this.solucion.sectores = this.solucion.sectores.filter(
             sector => sector.id_sector !== idSector
           );
         }
-  
-        // NO eliminamos el sector de allSectores ni sectoresFiltrados
-        // ya que estos contienen todos los sectores disponibles
         
         this.solucionSectorAEliminar = null;
         this.mostrarModalSolucionSector = false;
@@ -923,7 +953,7 @@ export class ModificarSolucionComponent implements OnInit {
     });
   }
   
-
+  // --- Funciones para filtrar ---
   filtrarBeneficios() {
     const filtro = this.buscadorBeneficio.toLowerCase().trim();
     this.beneficiosFiltrados = this.allBeneficios.filter(beneficio =>
@@ -965,6 +995,7 @@ export class ModificarSolucionComponent implements OnInit {
     );
   }
 
+  //Función para crear un nuevo beneficio.
   crearNuevoBeneficio() {
     this.mostrarCrearBeneficio = false;
     this.mostrarBotonCrear = true;
@@ -995,6 +1026,7 @@ export class ModificarSolucionComponent implements OnInit {
     });
   }
 
+  //Función para crear un nuevo problema.
   crearNuevoProblema() {
     this.mostrarCrearProblema = false;
     this.mostrarBotonCrearProblema = true;
@@ -1025,6 +1057,7 @@ export class ModificarSolucionComponent implements OnInit {
     });
   }
 
+  //Función para crear una nueva característica.
   crearNuevaCaracteristica() {
     this.mostrarCrearCaracteristica = false;
     this.mostrarBotonCrearCaracteristica = true;
@@ -1079,6 +1112,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  //Función para crear un nuevo ámbito.
   crearNuevoAmbito() {
     this.mostrarCrearAmbito = false;
     this.mostrarBotonCrearAmbito = true;
@@ -1133,46 +1167,11 @@ export class ModificarSolucionComponent implements OnInit {
     });
   }
 
+  //Función para crear un nuevo sector.
   crearNuevoSector() {
     this.mostrarCrearSector = false;
     this.mostrarBotonCrearSector = true;
   
-    /* if (!this.nuevoSector || !this.nuevoSector.description) {
-      console.error('Debe ingresar la descripción del sector');
-      return;
-    }
-  
-    if (!this.nuevoSector.textoweb) {
-      console.error('Debe ingresar el texto web del sector');
-      return;
-    }
-  
-    if (!this.nuevoSector.prefijo) {
-      console.error('Debe ingresar el prefijo del sector');
-      return;
-    }
-
-    if (!this.nuevoSector.slug) {
-      console.error('Debe ingresar el slug del sector');
-      return;
-    }
-
-    if (!this.nuevoSector.descriptionweb) {
-      console.error('Debe ingresar la descripción web del sector');
-      return;
-    }
-
-    if (!this.nuevoSector.titleweb) {
-      console.error('Debe ingresar el título web del sector');
-      return;
-    }
-
-    if (!this.nuevoSector.backgroundImage) {
-      console.error('Debe ingresar la background image del sector');
-      return;
-    }*/
-  
-
     if (!this.solucion) {
       // console.error('La solución debe estar cargada');
       return;
@@ -1206,7 +1205,7 @@ export class ModificarSolucionComponent implements OnInit {
     });
   }
 
-
+  // --- Funciones para tratar con el modal de eliminación ---
   confirmarEliminarProblema(idProblema: number, event: MouseEvent) {
     event.stopPropagation();
     this.problemaAEliminar = idProblema;
@@ -1285,6 +1284,7 @@ export class ModificarSolucionComponent implements OnInit {
     this.solucionSectorAEliminar = null;
   }
 
+  //Función para modificar un problema existente.
   modificarProblema() {
     console.log('Modificando problema...', this.nuevoProblema, this.problemaSeleccionado);
 
@@ -1311,6 +1311,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  //Función para modificar una característica existente.
   modificarCaracteristica() {
     console.log('Modificando característica..', this.nuevaCaracteristica, this.caracteristicaSeleccionada);
 
@@ -1337,6 +1338,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  //Función para modificar un beneficio existente.
   modificarBeneficio() {
     console.log('Modificando beneficio..', this.nuevoBeneficio, this.beneficioSeleccionado);
 
@@ -1363,6 +1365,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  //Función para modificar un ámbito existente.
   modificarAmbito() {
     if (this.ambitoSeleccionado) {
       this.storeSolucionesService.modifyAmbito(this.solucion!.id_solucion, this.ambitoSeleccionado.id_ambito!, this.nuevoAmbito).subscribe({
@@ -1384,6 +1387,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  //Función para preparar la edición de un ámbito existente.
   editarAmbito(ambito: StoreAmbitos, event?: MouseEvent) {
     if (event) {
       event.preventDefault();
@@ -1409,6 +1413,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  //Función para modificar un sector existente.
   modificarSector() {
     if (this.sectorSeleccionado) {
       this.storeSolucionesService.modifySector(this.solucion!.id_solucion, this.sectorSeleccionado.id_sector!, this.nuevoSector).subscribe({
@@ -1430,6 +1435,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  //Función para preparar la edición de un sector existente.
   editarSector(sector: StoreSectores, event?: MouseEvent) {
     if (event) {
       event.preventDefault();
@@ -1457,6 +1463,7 @@ export class ModificarSolucionComponent implements OnInit {
     }
   }
 
+  //Función para modificar una solución de un ámbito existente.
   modificarSolucionAmbito() {
     if (!this.solucion || !this.solucionAmbitoSeleccionado) {
       console.error('No hay solución o solución por ámbito seleccionada');
@@ -1501,6 +1508,7 @@ export class ModificarSolucionComponent implements OnInit {
     });
   }
 
+  //Función para preparar la edición de una solución de un ámbito existente.
   editarSolucionAmbito(solucionAmbito: SolucionAmbito, event?: MouseEvent) {
     if (event) {
       event.preventDefault();
@@ -1548,6 +1556,7 @@ export class ModificarSolucionComponent implements OnInit {
     }, 100);
   }
 
+  //Función para modificar una solución de un sector existente.
   modificarSolucionSector() {
     if (!this.solucion || !this.solucionSectorSeleccionado) {
       console.error('No hay solución o solución por sector seleccionada');
@@ -1592,6 +1601,7 @@ export class ModificarSolucionComponent implements OnInit {
     });
   }
 
+  //Función para preparar la edición de una solución de un sector existente.
   editarSolucionSector(solucionSector: SolucionSector, event?: MouseEvent) {
     if (event) {
       event.preventDefault();

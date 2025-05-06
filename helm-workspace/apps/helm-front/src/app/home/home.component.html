@@ -1,6 +1,15 @@
+<!--
+  Vista principal que contiene los componentes de login y carrusel.
+  El carrusel solo se muestra si 'mostrarCarrusel' es true (pantallas anchas).
+-->
+
 <div>
+    <!-- Componente de inicio de sesión -->
     <app-login></app-login>
+  
+    <!-- Componente carrusel mostrado solo en pantallas mayores a 500px -->
     @if (mostrarCarrusel) {
-        <app-carrusel></app-carrusel>
+      <app-carrusel></app-carrusel>
     }
 </div>
+  
