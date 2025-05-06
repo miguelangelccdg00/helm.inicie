@@ -28,17 +28,20 @@ export class StoreSolucionesService {
 
   /* StoreSoluciones */
 
+  /* Obtiene todas las store soluciones */
   getStoreSoluciones(): Observable<StoreSoluciones[]> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<StoreSoluciones[]>(this.apiUrl, { headers });
   }
 
+  /* Obtiene una store solucion por su id */
   getStoreSolucionById(id: number): Observable<StoreSoluciones> {
     const url = `http://localhost:3009/storeSolucion/listIdStoreSoluciones/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<StoreSoluciones>(url, { headers });
   }
 
+  /* Actualiza una store solucion */
   updateStoreSolucion(id: number, solucion: StoreSoluciones): Observable<UpdateStoreSolucionResponse> {
     const url = `http://localhost:3009/storeSolucion/modifyStoreSoluciones/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -81,6 +84,7 @@ export class StoreSolucionesService {
       );
   }
 
+  /* Elimina una store solucion por su id */
   deleteStoreSolucion(id: number): Observable<DeleteSolucionResponse> {
     const url = `http://localhost:3009/storeSolucion/deleteSolucion/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -89,6 +93,7 @@ export class StoreSolucionesService {
 
   /* Beneficios */
 
+  /* Modifica un beneficio */
   modifyBeneficio(idBeneficio: number, beneficio: StoreBeneficios): Observable<StoreBeneficios> {
     const url = `${this.beneficiosUrl}/modifyStoreBeneficio/${idBeneficio}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -100,6 +105,7 @@ export class StoreSolucionesService {
     return this.https.put<StoreBeneficios>(url, beneficioToUpdate, { headers });
   }
 
+  /* Obtiene los beneficios de una solución por su id */
   getBeneficiosBySolucion(idSolucion: number): Observable<StoreBeneficios[]> {
     const url = `${this.beneficiosUrl}/listBeneficios/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -126,6 +132,8 @@ export class StoreSolucionesService {
     );
   }
 
+
+  /* Obtiene todos los beneficios */
   getAllBeneficios(): Observable<StoreBeneficios[]> {
     const url = `${this.beneficiosUrl}/listCompleteBeneficios`;
     const headers = new HttpHeaders()
@@ -158,6 +166,7 @@ export class StoreSolucionesService {
     );
   }
 
+  /* Crea un beneficio y lo asocia a una solución */
   createBeneficio(idSolucion: number, beneficio: StoreBeneficios): Observable<CreateBeneficioResponse> {
     const url = `${this.beneficiosUrl}/createBeneficio/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -170,12 +179,14 @@ export class StoreSolucionesService {
     return this.https.post<CreateBeneficioResponse>(url, beneficioToCreate, { headers });
   }
 
+  /* Elimina un beneficio por su id */
   deleteBeneficio(idBeneficio: number): Observable<DeleteBeneficioResponse> {
     const url = `${this.beneficiosUrl}/deleteBeneficio/${idBeneficio}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete<DeleteBeneficioResponse>(url, { headers });
   }
 
+  /* Asocia un beneficio a una solución a partir de sus id */
   asociarBeneficioASolucion(idSolucion: number, idBeneficio: number): Observable<any> {
     const url = `${this.beneficiosUrl}/asociarBeneficio`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -190,6 +201,7 @@ export class StoreSolucionesService {
 
   /* Problemas */
 
+  /* Modifica un problema a partir de su id */
   modifyProblema(idProblema: number, problema: StoreProblemas): Observable<StoreProblemas> {
     const url = `${this.problemasUrl}/modifyStoreProblema/${idProblema}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -201,6 +213,7 @@ export class StoreSolucionesService {
     return this.https.put<StoreProblemas>(url, problemaToUpdate, { headers });
   }
 
+  /* Asocia un problema a una solución a partir de sus id  */
   asociarProblemaASolucion(idSolucion: number, idProblema: number): Observable<any> {
     const url = `${this.problemasUrl}/asociarProblema`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -213,6 +226,7 @@ export class StoreSolucionesService {
     return this.https.post<any>(url, relacion, { headers });
   }
 
+  /* Crea un problema y lo asocia a una solución */
   createProblema(idSolucion: number, problema: StoreProblemas): Observable<CreateProblemaResponse> {
     const url = `${this.problemasUrl}/createProblema/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -225,12 +239,14 @@ export class StoreSolucionesService {
     return this.https.post<CreateProblemaResponse>(url, problemaToCreate, { headers });
   }
 
+  /* Elimina un problema por su id */
   deleteProblema(idProblema: number): Observable<DeleteProblemaResponse> {
     const url = `${this.problemasUrl}/deleteProblema/${idProblema}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete<DeleteProblemaResponse>(url, { headers });
   }
 
+  /* Obtiene los problemas de una solución a partir del id de esta */
   getProblemasBySolucion(idSolucion: number): Observable<StoreProblemas[]> {
     const url = `${this.problemasUrl}/listProblemas/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -257,6 +273,7 @@ export class StoreSolucionesService {
     );
   }
 
+  /* Obtiene todos los problemas */
   getAllProblemas(): Observable<StoreProblemas[]> {
     const url = `${this.problemasUrl}/listCompleteProblemas`;
     const headers = new HttpHeaders()
@@ -289,6 +306,7 @@ export class StoreSolucionesService {
     );
   }
 
+  /* Actualiza un problema y lo asocia a una solución a partir del id de esta */
   updateProblemaAndAsociar(idSolucion: number, problema: StoreProblemas): Observable<any> {
     return this.getStoreSolucionById(idSolucion).pipe(
       switchMap(solucion => {
@@ -314,6 +332,7 @@ export class StoreSolucionesService {
 
   /* Características */
 
+  /* Modifica una característica */
   modifyCaracteristica(idCaracteristica: number, caracteristica: StoreCaracteristicas): Observable<StoreCaracteristicas> {
     const url = `${this.caracteristicasUrl}/modifyStoreCaracteristica/${idCaracteristica}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -325,6 +344,7 @@ export class StoreSolucionesService {
     return this.https.put<StoreCaracteristicas>(url, caracteristicaToUpdate, { headers });
   }
 
+  /* Crea una característica y lo asocia a una solución */
   createCaracteristica(idSolucion: number, caracteristica: StoreCaracteristicas): Observable<CreateCaracteristicaResponse> {
     const url = `${this.caracteristicasUrl}/createCaracteristicas/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -368,12 +388,14 @@ export class StoreSolucionesService {
     );
   }
 
+  /* Elimina una característica por su id */
   deleteCaracteristica(idCaracteristica: number): Observable<DeleteCaracteristicaResponse> {
     const url = `${this.caracteristicasUrl}/deleteCaracteristicas/${idCaracteristica}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete<DeleteCaracteristicaResponse>(url, { headers });
   }
 
+  /* Obtiene las características de una solución a partir de el id de esta */
   getCaracteristicasBySolucion(idSolucion: number): Observable<StoreCaracteristicas[]> {
     const url = `${this.caracteristicasUrl}/listCaracteristicas/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -400,6 +422,7 @@ export class StoreSolucionesService {
     );
   }
 
+  /* Obtiene todas las características */
   getAllCaracteristicas(): Observable<StoreCaracteristicas[]> {
     const url = `${this.caracteristicasUrl}/listCompleteCaracteristicas`;
     const headers = new HttpHeaders()
@@ -432,6 +455,7 @@ export class StoreSolucionesService {
     );
   }
 
+  /* Asocia una característica a una solución a partir de sus id */
   asociarCaracteristicaASolucion(idSolucion: number, idCaracteristica: number, titulo?: string): Observable<any> {
     const url = `${this.caracteristicasUrl}/asociarCaracteristica`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -444,12 +468,14 @@ export class StoreSolucionesService {
     return this.https.post<any>(url, relacion, { headers });
   }
 
+  /* Obtiene una característica por su id */
   getCaracteristicaById(idCaracteristica: number): Observable<StoreCaracteristicas> {
     const url = `${this.caracteristicasUrl}/getCaracteristica/${idCaracteristica}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<StoreCaracteristicas>(url, { headers });
   }
 
+  /* Actualiza una característica y la asocia a una solución a partir de el id de esta */
   updateCaracteristicaAndAsociar(idSolucion: number, caracteristica: StoreCaracteristicas): Observable<any> {
     if (caracteristica.id_caracteristica) {
       return this.asociarCaracteristicaASolucion(idSolucion, caracteristica.id_caracteristica).pipe(
@@ -492,6 +518,7 @@ export class StoreSolucionesService {
 
   /* Ámbitos */
 
+  /* Obtención de ámbitos por solución específica de su ID */
   getAmbitosBySolucion(idSolucion: number): Observable<StoreAmbitos[]> {
     const url = `${this.ambitosUrl}/listAmbitos/${idSolucion}`;
     const headers = new HttpHeaders()
@@ -524,6 +551,7 @@ export class StoreSolucionesService {
     );
   }
 
+  /* Obtiene todos los ámbitos */
   getAllAmbitos(): Observable<StoreAmbitos[]> {
     const url = `${this.ambitosUrl}/listCompleteAmbitos`;
     const headers = new HttpHeaders()
@@ -556,6 +584,7 @@ export class StoreSolucionesService {
     );
   }
 
+  /* Crea un ámbito y lo asocia a una solución*/
   createAmbito(idSolucion: number, ambito: StoreAmbitos): Observable<CreateAmbitoResponse> {
     const url = `${this.ambitosUrl}/createAmbito/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -570,6 +599,7 @@ export class StoreSolucionesService {
     return this.https.post<CreateAmbitoResponse>(url, ambitoToCreate, { headers });
   }
 
+  /* Asocia un ámbito a una solución a partir del id de esta */
   asociarAmbitoASolucion(idSolucion: number, idAmbito: number): Observable<any> {
     const url = `${this.ambitosUrl}/asociarAmbito`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -582,6 +612,7 @@ export class StoreSolucionesService {
     return this.https.post<any>(url, relacion, { headers });
   }
 
+  /* Modifica un ámbito a partir de su id y el de la solución en la que se está realizando la modificación */
   modifyAmbito(idSolucion: number, idAmbito: number, ambito: StoreAmbitos): Observable<StoreAmbitos> {
     const url = `${this.ambitosUrl}/modifyAmbitos/${idSolucion}/${idAmbito}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -596,12 +627,14 @@ export class StoreSolucionesService {
     return this.https.put<StoreAmbitos>(url, ambitoToUpdate, { headers });
   }
 
+  /* Elimina un ámbito a partir de su id */
   deleteAmbito(idAmbito: number): Observable<DeleteAmbitoResponse> {
     const url = `${this.ambitosUrl}/deleteAmbito/${idAmbito}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete<DeleteAmbitoResponse>(url, { headers });
   }
 
+  /* Lista los ámbitos de una solución a partir de su id */
   listAmbitos(idSolucion: number): Observable<SolucionAmbito[]> {
     const url = `${this.ambitosUrl}/listAmbitos/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -628,6 +661,7 @@ export class StoreSolucionesService {
     );
   }
 
+  /* Modifica la solución de un ámbito a partir de sus id */
   modifySolucionAmbito(idSolucion: number, idAmbito: number, ambito: StoreAmbitos): Observable<SolucionAmbito> {
     const url = `${this.ambitosUrl}/modifyAmbitos/${idSolucion}/${idAmbito}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -662,6 +696,7 @@ export class StoreSolucionesService {
     return this.https.put<SolucionAmbito>(url, solucionAmbitoToUpdate, { headers });
   }
 
+  /* Elimina una solución de un ámbito por sus id */
   deleteSolucionAmbito(idSolucion: number, idAmbito: number): Observable<DeleteSolucionAmbitoResponse> {
     const url = `http://localhost:3009/storeSolucion/removeAmbitoFromSolucion/${idSolucion}/${idAmbito}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -697,6 +732,7 @@ export class StoreSolucionesService {
 
   /* Sectores */
 
+  /* Crea un sector y lo asocia a una solución*/
   createSector(idSolucion: number, sector: StoreSectores): Observable<CreateSectorResponse> {
     const url = `${this.sectoresUrl}/createSectores/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -714,6 +750,7 @@ export class StoreSolucionesService {
     return this.https.post<CreateSectorResponse>(url, sectorToCreate, { headers });
   }
 
+  /* Listado de sectores */
   getAllSectores(): Observable<StoreSectores[]> {
   const url = `${this.sectoresUrl}/listCompleteSectores`;
   const headers = new HttpHeaders()
@@ -746,6 +783,7 @@ export class StoreSolucionesService {
   );
 }
 
+  /* Obtención de sectores por solución específica de su ID */
   getSectoresBySolucion(idSolucion: number): Observable<StoreSectores[]> {
     const url = `${this.sectoresUrl}/listSectores/${idSolucion}`;
     const headers = new HttpHeaders()
@@ -778,6 +816,7 @@ export class StoreSolucionesService {
     );
   }
 
+  /* Obtención de sectores por solución específica de su ID */
   listSectores(idSolucion: number): Observable<SolucionSector[]> {
     const url = `${this.sectoresUrl}/listSectores/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -812,6 +851,7 @@ export class StoreSolucionesService {
     );
   }
 
+  /* Asociar un sector existente a una solución */
   asociarSectorASolucion(idSolucion: number, idSector: number): Observable<any> {
     const url = `${this.sectoresUrl}/asociarSectores`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -824,6 +864,7 @@ export class StoreSolucionesService {
     return this.https.post<any>(url, relacion, { headers });
   }
 
+  /* Modificación de un sector de una solución específica */
   modifySector(idSolucion: number, idSector: number, sector: StoreSectores): Observable<StoreSectores> {
     const url = `${this.sectoresUrl}/modifySectores/${idSolucion}/${idSector}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -842,6 +883,7 @@ export class StoreSolucionesService {
 
   }
   
+  /* Modificación de los sectores asociados a una solución */
   updateSolucionSectores(idSolucion: number, solucionSector: SolucionSector): Observable<any> {
     const url = `${this.sectoresUrl}/modifySolucionSectores/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -869,12 +911,14 @@ export class StoreSolucionesService {
     );
   }
 
+  /* Elimina un sector específico */
   deleteSector(idSolucion: number,idSector: number): Observable<DeleteSectorResponse> {
     const url = `${this.sectoresUrl}/deleteSectores/${idSolucion}/${idSector}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete<DeleteSectorResponse>(url, { headers });
   }
 
+  /* Modificación de un sector de una solución específica */
   modifySolucionSector(idSolucion: number, idSector: number, solucionSector: SolucionSector): Observable<SolucionSector> {
     const url = `${this.sectoresUrl}/modifySectores/${idSolucion}/${idSector}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -898,6 +942,7 @@ export class StoreSolucionesService {
     );
   }
 
+  /* Eliminación de la relación entre un sector y una solución */
   deleteSolucionSector(idSolucion: number, idSector: number): Observable<DeleteSolucionSectorResponse> {
     const url = `${this.sectoresUrl}/deleteSolucionSector/${idSolucion}/${idSector}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
