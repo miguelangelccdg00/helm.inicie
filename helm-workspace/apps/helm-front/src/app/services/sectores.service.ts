@@ -12,24 +12,28 @@ export class SectoresService {
 
   constructor(private https: HttpClient) { }
   
+    /* Obtiene todos los sectores */
     getStoreSectores(): Observable<StoreSectores[]> {
       const url = `${this.sectoresUrl}/listCompleteSectores`;
       const headers = new HttpHeaders().set('Content-Type', 'application/json');
       return this.https.get<StoreSectores[]>(url, { headers });
     }
   
+    /* Elimina un sector específico por su id */
     deleteStoreSector(idSector: number): Observable<DeleteSectorResponse> {
       const url = `${this.sectoresUrl}/deleteSectorById/${idSector}`;
       const headers = new HttpHeaders().set('Content-Type', 'application/json');
       return this.https.delete<DeleteSectorResponse>(url, { headers });
     }
   
+    /* Crea un sector */
     createStoreSector(sector: StoreSectores): Observable<StoreSectores> {
       const url = `${this.sectoresUrl}/createSectores`;
       const headers = new HttpHeaders().set('Content-Type', 'application/json');
       return this.https.post<StoreSectores>(url, sector, { headers });
     }
 
+    /* Modifica un sector por su id */
     modifySector(idSector: number, sector: StoreSectores): Observable<StoreSectores> {
       const url = `${this.sectoresUrl}/modifySectores/${idSector}`;
       const headers = new HttpHeaders().set('Content-Type', 'application/json');

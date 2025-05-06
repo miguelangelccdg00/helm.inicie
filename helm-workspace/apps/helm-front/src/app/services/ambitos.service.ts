@@ -12,24 +12,28 @@ export class AmbitosService {
 
   constructor(private https: HttpClient) { }
 
+  /* Obtiene todos los ámbitos */
   getStoreAmbitos(): Observable<StoreAmbitos[]> {
     const url = `${this.ambitosUrl}/listCompleteAmbitos`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<StoreAmbitos[]>(url, { headers });
   }
 
+  /* Elimina un ámbito específico por su id */
   deleteStoreAmbito(idAmbito: number): Observable<DeleteAmbitoResponse> {
     const url = `${this.ambitosUrl}/deleteAmbito/${idAmbito}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete<DeleteAmbitoResponse>(url, { headers });
   }
 
+  /* Crea un ámbito */
   createStoreAmbito(ambito: StoreAmbitos): Observable<StoreAmbitos> {
     const url = `${this.ambitosUrl}/createAmbito`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.post<StoreAmbitos>(url, ambito, { headers });
   }
 
+  /* Modifica un ámbito por su id */
   modifyAmbito(idAmbito: number, ambito: StoreAmbitos): Observable<StoreAmbitos> {
     const url = `${this.ambitosUrl}/modifyAmbitos/${idAmbito}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
