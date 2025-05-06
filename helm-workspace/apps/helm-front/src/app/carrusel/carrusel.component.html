@@ -1,8 +1,10 @@
+<!-- Encabezado principal del carrusel -->
 <div id="encabezado">
     <h1>¿Aún no conoces NormaPro?</h1>
     <p>La solución para llevar tu negocio al siguiente nivel</p>
 </div>
 
+<!-- Carrusel que muestra tres bloques visibles a la vez -->
 <div id="carrusel">
     @for (bloque of bloquesVisibles; track bloque) {
         <div class="bloque">
@@ -13,6 +15,7 @@
     }
 </div>
 
+<!-- Botones para cambiar manualmente los bloques visibles del carrusel -->
 <div id="botones">
     @for (bloque of bloques; let i = $index; track i) {
     @if (i === botonSeleccionado) {
@@ -23,4 +26,5 @@
     }
 </div>
 
+<!-- Botón para descubrir más sobre NormaPro -->
 <button id="botonDescubre">Descubre más sobre NormaPro</button>

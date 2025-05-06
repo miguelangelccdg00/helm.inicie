@@ -1,18 +1,25 @@
+<!-- Contenedor principal con el menú lateral -->
 <div class="layout-container">
   <app-menu class="menu-lateral"></app-menu>
 
+  <!-- Contenido principal -->
   <div class="contenido-principal">
 
+    <!-- Encabezado con título y buscador -->
     <div class="header">
       <h1>Sectores</h1>
 
       <div class="flex">
+        <!-- Campo para buscar sectores por descripción -->
         <input type="text" placeholder="Buscar sector por descripción..." class="buscador"
           [formControl]="filtroDescripcion">
+
+        <!-- Botón para mostrar el formulario de creación -->
         <button (click)="mostrarFormularioCrear = true; mostrarFormularioEditar = false; scrollCrear()" id="boton">Crear sector</button>
       </div>
     </div>
 
+    <!-- Tabla de sectores -->
     <table>
       <thead>
         <tr>
@@ -28,6 +35,7 @@
         </tr>
       </thead>
       <tbody>
+        <!-- Iteración de sectores filtrados -->
         <tr *ngFor="let sector of sectoresFiltrados; trackBy: trackBySectorId">
           <td>{{sector.description}}</td>
           <td>{{sector.textoweb}}</td>
@@ -36,11 +44,13 @@
           <td>{{sector.descriptionweb}}</td>
           <td>{{sector.titleweb}}</td>
           <td class="background-image-cell">{{sector.backgroundImage}}</td>
+          <!-- Botón para editar -->
           <td class="text-center">
             <button class="btn" (click)="mostrarFormularioEditarSector(sector)" title="Modificar sector">
               <img src="assets/pencil.png" alt="lápiz" width="25px" height="25px">
             </button>
           </td>
+          <!-- Botón para eliminar -->
           <td class="text-center">
             <button class="btn" (click)="confirmarEliminarSector(sector.id_sector!, $event)" title="Eliminar sector">
               <img src="assets/papelera.png" alt="papelera" width="25px" height="25px">
@@ -50,10 +60,12 @@
       </tbody>
     </table>
 
+    <!-- Mensaje si no hay sectores -->
     <div class="no-data-message" *ngIf="sectoresFiltrados.length === 0">
       No se encontraron sectores disponibles.
     </div>
 
+    <!-- Formulario para crear un nuevo sector -->
     <div *ngIf="mostrarFormularioCrear" class="form-crear">
       <h3>Crear nuevo sector</h3>
 
@@ -100,6 +112,7 @@
             placeholder="Introduce la URL de la imagen de fondo" />
         </div>
 
+        <!-- Botones de acción -->
         <div class="botones-formulario">
           <button type="submit" class="btn-submit">Crear</button>
           <button type="button" class="btn-cancelar" (click)="mostrarFormularioCrear = false">Cancelar</button>
@@ -107,6 +120,7 @@
       </form>
     </div>
 
+    <!-- Formulario para editar un sector existente -->
     <div *ngIf="mostrarFormularioEditar" class="form-crear">
       <h3>Modificar sector</h3>
 
@@ -149,6 +163,7 @@
             name="edit_backgroundImage" />
         </div>
 
+        <!-- Botones de acción -->
         <div class="botones-formulario">
           <button type="submit" class="btn-submit">Guardar cambios</button>
           <button type="button" class="btn-cancelar" (click)="mostrarFormularioEditar = false">Cancelar</button>

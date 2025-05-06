@@ -16,6 +16,7 @@ import { MenuComponent } from '../menu/menu.component';
 })
 export class SectoresComponent {
 
+  // Referencias a los formularios en la vista
   @ViewChild('crearForm') crearFormRef!: ElementRef;
   @ViewChild('editarForm') editarFormRef!: ElementRef;
 
@@ -43,13 +44,16 @@ export class SectoresComponent {
   constructor(private storeSectoresService: SectoresService, private router: Router) {}
 
   ngOnInit() {
+    // Carga inicial de sectores
     this.cargarSectores();
 
+    // Escucha cambios del filtro con debounce
     this.filtroDescripcion.valueChanges
       .pipe(debounceTime(500))
       .subscribe(filtro => this.filtrarSectores(filtro || ''));
   }
 
+  // Obtener todos los sectores
   cargarSectores() {
     this.storeSectoresService.getStoreSectores().subscribe({
       next: (response) => {
@@ -63,17 +67,20 @@ export class SectoresComponent {
     });
   }
 
+  // Mostrar modal de confirmación al eliminar
   confirmarEliminarSector(idSector: number, event: MouseEvent) {
     event.stopPropagation();
     this.sectorAEliminar = idSector;
     this.mostrarModal = true;
   }
 
+  // Cancelar eliminación
   cancelarEliminarSector() {
     this.mostrarModal = false;
     this.sectorAEliminar = null;
   }
 
+  // Eliminar sector tras confirmación
   eliminarSector() {
     if (this.sectorAEliminar) {
       this.storeSectoresService.deleteStoreSector(this.sectorAEliminar).subscribe({
@@ -93,6 +100,7 @@ export class SectoresComponent {
     }
   }
 
+  // Método usado por *ngFor para optimizar la renderización de la tabla
   trackBySectorId(index: number, sector: StoreSectores): number {
     if (sector.id_sector === undefined) {
       throw new Error('id_sector es undefined');
@@ -100,6 +108,7 @@ export class SectoresComponent {
     return sector.id_sector;
   }
 
+  // Filtra los sectores en base al valor del input de búsqueda
   filtrarSectores(filtro: string) {
     const filtroLimpio = filtro.toLowerCase().trim();
 
@@ -113,6 +122,7 @@ export class SectoresComponent {
     );
   }
 
+  // Crea un nuevo sector usando los datos del formulario
   crearSector() {
 
     this.mostrarFormularioEditar = false;
@@ -131,12 +141,14 @@ export class SectoresComponent {
     });
   }
 
+  // Método para desplazar la pantalla hasta el formulario de creación
   scrollCrear() {
     setTimeout(() => {
       this.crearFormRef?.nativeElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }
 
+  // Muestra el formulario de edición para un sector específico
   mostrarFormularioEditarSector(sector: StoreSectores) {
     this.sectorAEditar = { ...sector };
     this.mostrarFormularioEditar = true;
@@ -148,6 +160,7 @@ export class SectoresComponent {
     
   }
   
+  // Guarda los cambios hechos en el formulario de edición de un sector
   guardarCambiosSector() {
     if (!this.sectorAEditar?.id_sector) return;
   

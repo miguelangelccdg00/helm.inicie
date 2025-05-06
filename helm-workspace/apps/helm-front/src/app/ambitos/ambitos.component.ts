@@ -18,6 +18,7 @@ import { MenuComponent } from '../menu/menu.component';
 
 export class AmbitosComponent {
 
+  // Referencias al DOM para hacer scroll automático a los formularios
   @ViewChild('crearForm') crearFormRef!: ElementRef;
   @ViewChild('editarForm') editarFormRef!: ElementRef;
 
@@ -42,6 +43,7 @@ export class AmbitosComponent {
 
   constructor(private storeAmbitosService: AmbitosService, private router: Router) { }
 
+  // Al cargar el componente, se obtienen los ámbitos y se activa el filtro
   ngOnInit() {
     this.cargarAmbitos();
 
@@ -50,6 +52,7 @@ export class AmbitosComponent {
       .subscribe(filtro => this.filtrarAmbitos(filtro || ''));
   }
 
+  // Cargar todos los ámbitos
   cargarAmbitos() {
     this.storeAmbitosService.getStoreAmbitos().subscribe({
       next: (response) => {
@@ -63,17 +66,20 @@ export class AmbitosComponent {
     });
   }
 
+  // Mostrar modal de confirmación antes de eliminar
   confirmarEliminarAmbito(idAmbito: number, event: MouseEvent) {
     event.stopPropagation();
     this.ambitoAEliminar = idAmbito;
     this.mostrarModal = true;
   }
 
+  // Cancelar el modal de eliminación
   cancelarEliminarAmbito() {
     this.mostrarModal = false;
     this.ambitoAEliminar = null;
   }
 
+  // Eliminar ámbito y actualizar lista local
   eliminarAmbito() {
     if (this.ambitoAEliminar) {
       this.storeAmbitosService.deleteStoreAmbito(this.ambitoAEliminar).subscribe({
@@ -93,6 +99,7 @@ export class AmbitosComponent {
     }
   }
 
+  // Optimiza el rendimiento al iterar con *ngFor
   trackByAmbitoId(index: number, ambito: StoreAmbitos): number {
     if (ambito.id_ambito === undefined) {
       throw new Error('id_ambito es undefined');
@@ -100,6 +107,7 @@ export class AmbitosComponent {
     return ambito.id_ambito;
   }
 
+  // Filtro por descripción con mínimo 3 caracteres
   filtrarAmbitos(filtro: string) {
     const filtroLimpio = filtro.toLowerCase().trim();
 
@@ -113,6 +121,7 @@ export class AmbitosComponent {
     );
   }
 
+  // Crear nuevo ámbito y actualizar vista
   crearAmbito() {
     this.storeAmbitosService.createStoreAmbito(this.nuevoAmbito).subscribe({
       next: (ambitoCreado) => {
@@ -128,12 +137,14 @@ export class AmbitosComponent {
     });
   }
 
+  // Scroll automático al formulario de creación
   scrollCrear() {
     setTimeout(() => {
       this.crearFormRef?.nativeElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }
 
+  // Mostrar formulario de edición con datos del ámbito seleccionado
   mostrarFormularioEditarAmbito(ambito: StoreAmbitos) {
     this.ambitoAEditar = { ...ambito };
     this.mostrarFormularioEditar = true;
@@ -145,6 +156,7 @@ export class AmbitosComponent {
 
   }
 
+  // Guardar cambios editados en el ámbito
   guardarCambiosAmbito() {
     if (!this.ambitoAEditar?.id_ambito) return;
 

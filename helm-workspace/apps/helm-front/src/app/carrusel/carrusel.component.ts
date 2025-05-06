@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 
 export class CarruselComponent implements OnInit, OnDestroy {
 
+  // Lista completa de bloques del carrusel
   bloques = [
     { titulo: 'BPM Suite', descripcion: 'Si buscas mejorar la eficiencia, el control y la agilidad de tus procesos operativos.', imagen: 'assets/images/img1.png' },
     { titulo: 'FormaPro', descripcion: 'Un LMS avanzado para mejorar el rendimiento y las habilidades de tus empleados.', imagen: 'assets/img2.png' },
@@ -24,18 +25,21 @@ export class CarruselComponent implements OnInit, OnDestroy {
   botonSeleccionado: number | null = null;
   private intervaloId: any;
 
+  // Al iniciar el componente, se activa el autoavance del carrusel
   ngOnInit() {
     this.intervaloId = setInterval(() => {
       this.avanzarBloques();
     }, 4000);
   }
 
+  // Al destruir el componente, se limpia el intervalo para evitar errores
   ngOnDestroy() {
     if (this.intervaloId) {
       clearInterval(this.intervaloId);
     }
   }
 
+  // Cambia manualmente los bloques visibles al pulsar un botón
   cambiarBloques(indice: number) {
     let bloquesVisibles = [];
 
@@ -53,6 +57,7 @@ export class CarruselComponent implements OnInit, OnDestroy {
     this.botonSeleccionado = indice;
   }
 
+  // Avanza automáticamente al siguiente conjunto de bloques
   avanzarBloques() {
     const siguienteIndice = (this.botonSeleccionado !== null ? this.botonSeleccionado : 0) + 1;
     if (siguienteIndice >= this.bloques.length) {
