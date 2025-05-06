@@ -1,16 +1,24 @@
+<!-- Contenedor principal de la vista -->
 <div class="layout-container">
+
+  <!-- Componente del menú lateral -->
   <app-menu class="menu-lateral"></app-menu>
-  
+
+  <!-- Contenido principal a la derecha del menú -->
   <div class="contenido-principal">
 
+    <!-- Cabecera con título y buscador -->
     <div class="header">
       <h1>Store soluciones</h1>
-    
-      <input type="text" placeholder="Buscar solución por descripción..." class="buscador" [formControl]="filtroDescripcion">
+
+      <!-- Input con formulario reactivo para filtrar por descripción -->
+      <input type="text" placeholder="Buscar solución por descripción..." class="buscador"
+        [formControl]="filtroDescripcion">
     </div>
 
+    <!-- Tabla que muestra la lista de soluciones -->
     <table>
-      <thead> 
+      <thead>
         <tr>
           <th>Icono</th>
           <th>Descripción</th>
@@ -18,11 +26,20 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let solucion of solucionesFiltradas; trackBy: trackBySolucionId" (click)="irAModificarSolucion(solucion.id_solucion)">
+        <!-- Recorre las soluciones filtradas y muestra cada una en una fila -->
+        <tr *ngFor="let solucion of solucionesFiltradas; trackBy: trackBySolucionId"
+          (click)="irAModificarSolucion(solucion.id_solucion)">
+
+          <!-- Icono asociado a la solución -->
           <td><i class="{{solucion.icon}}"></i></td>
+
+          <!-- Descripción de la solución -->
           <td>{{solucion.description}}</td>
+
+          <!-- Botón para eliminar, con evento click separado del click general -->
           <td class="text-center">
-            <button class="delete-btn" (click)="confirmarEliminarSolucion(solucion.id_solucion, $event)" title="Eliminar solución">
+            <button class="delete-btn" (click)="confirmarEliminarSolucion(solucion.id_solucion, $event)"
+              title="Eliminar solución">
               <img src="assets/papelera.png" alt="papelera" width="25px" height="25px">
             </button>
           </td>
@@ -30,25 +47,34 @@
       </tbody>
     </table>
 
+    <!-- Mensaje cuando no hay soluciones -->
     <div class="no-data-message" *ngIf="solucionesFiltradas.length === 0">
       No se encontraron soluciones disponibles.
     </div>
+
   </div>
 </div>
 
-<!-- Modal de confirmación para eliminar solución -->
+<!-- Modal de confirmación al intentar eliminar una solución -->
 <div class="modal-overlay" *ngIf="mostrarModal">
   <div class="modal-container">
+
+    <!-- Encabezado del modal -->
     <div class="modal-header">
       <h2>Confirmar eliminación</h2>
     </div>
+
+    <!-- Cuerpo del modal con mensaje de advertencia -->
     <div class="modal-body">
       <p>¿Está seguro de que desea eliminar la solución con id {{solucionAEliminar}}?</p>
       <p class="warning-text">Esta acción no se puede deshacer.</p>
     </div>
+
+    <!-- Footer del modal con botones de acción -->
     <div class="modal-footer">
       <button class="btn-cancelar" (click)="cancelarEliminarSolucion()">Cancelar</button>
       <button class="btn-eliminar" (click)="eliminarSolucion()">Eliminar</button>
     </div>
+
   </div>
 </div>

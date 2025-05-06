@@ -1,46 +1,59 @@
+<!-- Contenedor principal del login -->
 <div id="login">
 
+    <!-- Contenedor del formulario de login -->
     <div id="formulario">
 
+        <!-- Formulario reactivo: se conecta con el FormGroup 'loginForm' y ejecuta 'onSubmit()' al enviar -->
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
+            <!-- Etiqueta para el campo usuario -->
             <label for="usuario">Usuario</label>
-
             <br>
 
-            <input type="text" id="usuario" name="usuario" [ngClass]="{'input-error': loginForm.get('usuario')?.hasError('required') && loginForm.get('usuario')?.touched}" [placeholder]="usuarioPlaceholder" formControlName="usuario" required>
-
+            <!-- Campo de entrada para el usuario con validación visual -->
+            <input type="text" id="usuario" name="usuario" [ngClass]="{
+            'input-error': loginForm.get('usuario')?.hasError('required') && loginForm.get('usuario')?.touched
+          }" [placeholder]="usuarioPlaceholder" formControlName="usuario" required />
 
             <br><br>
 
+            <!-- Etiqueta para el campo contraseña -->
             <label for="contraseña">Contraseña</label>
-
             <br>
 
-            <input type="password" id="contrasena" name="contrasena" [ngClass]="{'input-error': loginForm.get('contrasena')?.hasError('required') && loginForm.get('contrasena')?.touched}" [placeholder]="contrasenaPlaceholder" formControlName="contrasena" required>
+            <!-- Campo de entrada para la contraseña con validación visual -->
+            <input type="password" id="contrasena" name="contrasena" [ngClass]="{
+            'input-error': loginForm.get('contrasena')?.hasError('required') && loginForm.get('contrasena')?.touched
+          }" [placeholder]="contrasenaPlaceholder" formControlName="contrasena" required />
 
             <br><br>
 
+            <!-- Checkbox para recordar sesión, solo visible en pantallas grandes -->
             @if (mostrarRecordar) {
-                <input type="checkbox" id="recordar" name="recordar" formControlName="recordar">
-                <label for="recordar">Recordar en este equipo</label>
-                <br><br>
+            <input type="checkbox" id="recordar" name="recordar" formControlName="recordar" />
+            <label for="recordar">Recordar en este equipo</label>
+            <br><br>
             }
 
+            <!-- Botón de envío deshabilitado si el formulario no es válido -->
             <button id="botonEntrar" type="submit" [disabled]="loginForm.invalid">Entrar</button>
 
         </form>
     </div>
 
+    <!-- Enlace para recuperar contraseña -->
     <a href="#">¿Has olvidado tu contraseña?</a>
-
 </div>
 
+<!-- Sección "Descubre NormaPro", solo visible en pantallas pequeñas -->
 @if (mostrarDescubrir) {
-    <div id="descubrir">
-        <h1>¿Aún no conoces NormaPro?</h1>
-        <p>La solución para llevar tu</p>
-        <p>negocio al siguiente nivel</p>
-        <button id="botonDescubre">Descubre NormaPro</button>
-    </div>
+<div id="descubrir">
+    <h1>¿Aún no conoces NormaPro?</h1>
+    <p>La solución para llevar tu</p>
+    <p>negocio al siguiente nivel</p>
+
+    <!-- Botón de redirección o promoción -->
+    <button id="botonDescubre">Descubre NormaPro</button>
+</div>
 }

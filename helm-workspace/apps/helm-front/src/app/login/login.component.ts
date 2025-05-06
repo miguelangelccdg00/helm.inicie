@@ -14,26 +14,32 @@ import { Router } from '@angular/router';
 
 export class LoginComponent {
 
+  // Formulario reactivo con dos campos: usuario y contraseña
   loginForm = new FormGroup({
     usuario: new FormControl('', Validators.required),
     contrasena: new FormControl('', Validators.required),
   });
 
+  // Placeholders dinámicos y banderas de visualización según el ancho de la pantalla
   usuarioPlaceholder: string = "";
   contrasenaPlaceholder: string = "";
   mostrarRecordar: boolean = true;
   mostrarDescubrir: boolean = false;
 
+  // Constructor: se inyectan el servicio de login y el router
   constructor(private loginService: LoginService, private router: Router) {
+    // Inicializa los placeholders según el ancho actual de la ventana
     this.updatePlaceholders(window.innerWidth);
   }
 
+  // Escucha los cambios de tamaño de ventana
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     const screenWidth = (event.target as Window).innerWidth;
     this.updatePlaceholders(screenWidth);
   }
 
+  // Actualiza los placeholders y banderas de visualización según el ancho
   updatePlaceholders(width: number) {
     if (width <= 500) {
       this.usuarioPlaceholder = "Introduce tu nombre de usuario";
@@ -48,29 +54,36 @@ export class LoginComponent {
     }
   }
 
+  // Lógica que se ejecuta al enviar el formulario
   onSubmit() {
-    
+    // Si el formulario es válido
     if (this.loginForm.valid) {
       const { usuario, contrasena } = this.loginForm.value;
 
+      // Valores por defecto si son null
       const usuarioFinal = usuario ?? '';
       const contrasenaFinal = contrasena ?? '';
         
+      // Llama al servicio de login
       this.loginService.login(usuarioFinal, contrasenaFinal).subscribe({
         next: (response) => {
+          // Si el login fue exitoso, guarda el usuario y redirige
           if (response.user) {
             localStorage.setItem('user', JSON.stringify(response.user));
             alert('Inicio de sesión exitoso');
             this.router.navigate(['/menu']);
           } else {
+            // Si el backend no devolvió usuario
             alert('Usuario o contraseña incorrectos');
           }
         },
         error: (err) => {
+          // Manejo de errores
           alert('Error al iniciar sesión: ' + (err.error?.message || 'Credenciales incorrectas'));
         }
       });
     } else {
+      // Si el formulario no es válido, muestra errores
       console.log('El formulario no es válido');
       this.loginForm.markAllAsTouched();
     }
