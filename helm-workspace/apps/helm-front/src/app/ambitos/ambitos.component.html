@@ -116,49 +116,31 @@
     <!-- Formulario de edición de ámbito -->
     <div *ngIf="mostrarFormularioEditar" class="form-crear" #editarForm>
       <h3>Modificar ámbito</h3>
-      <form #formEditar="ngForm" (ngSubmit)="guardarCambiosAmbito()" class="formulario-ambito">
-        <!-- Campo: Descripción -->
+      <form (ngSubmit)="guardarCambiosAmbito()" class="formulario-ambito">
+        <!-- Mismos campos que el formulario de creación pero ligados al ámbito a editar -->
         <div class="campo-formulario">
           <label for="description">Descripción:</label>
-          <input type="text" id="description" [(ngModel)]="ambitoAEditar!.description" name="edit_description" required placeholder="Introduce una descripción" #edit_description="ngModel"/>
-          <div *ngIf="edit_description.invalid && edit_description.touched" class="error">
-            La descripción es obligatoria.
-          </div>
+          <input type="text" id="description" [(ngModel)]="ambitoAEditar!.description" name="edit_description" placeholder="Introduce una descripción"/>
         </div>
-      
-        <!-- Campo: Texto Web -->
         <div class="campo-formulario">
           <label for="textoweb">Texto Web:</label>
-          <input type="text" id="textoweb" [(ngModel)]="ambitoAEditar!.textoweb" name="edit_textoweb" required placeholder="Introduce el texto web" #edit_textoweb="ngModel"/>
-          <div *ngIf="edit_textoweb.invalid && edit_textoweb.touched" class="error">
-            El texto web es obligatorio.
-          </div>
+          <input type="text" id="textoweb" [(ngModel)]="ambitoAEditar!.textoweb" name="edit_textoweb" placeholder="Introduce el texto web"/>
         </div>
-      
-        <!-- Campo: Prefijo -->
         <div class="campo-formulario">
           <label for="prefijo">Prefijo:</label>
-          <input type="text" id="prefijo" [(ngModel)]="ambitoAEditar!.prefijo" name="edit_prefijo" required placeholder="Introduce el prefijo" #edit_prefijo="ngModel"/>
-          <div *ngIf="edit_prefijo.invalid && edit_prefijo.touched" class="error">
-            El prefijo es obligatorio.
-          </div>
+          <input type="text" id="prefijo" [(ngModel)]="ambitoAEditar!.prefijo" name="edit_prefijo" placeholder="Introduce el prefijo"/>
         </div>
-      
-        <!-- Campo: Slug -->
         <div class="campo-formulario">
           <label for="slug">Slug:</label>
-          <input type="text" id="slug" [(ngModel)]="ambitoAEditar!.slug" name="edit_slug" required placeholder="Introduce el slug" #edit_slug="ngModel"/>
-          <div *ngIf="edit_slug.invalid && edit_slug.touched" class="error">
-            El slug es obligatorio.
-          </div>
+          <input type="text" id="slug" [(ngModel)]="ambitoAEditar!.slug" name="edit_slug" placeholder="Introduce el slug"/>
         </div>
-      
+
         <!-- Botones del formulario -->
         <div class="botones-formulario">
-          <button type="submit" class="btn-submit" [disabled]="formEditar.invalid">Guardar cambios</button>
+          <button type="submit" class="btn-submit">Guardar cambios</button>
           <button type="button" class="btn-cancelar" (click)="mostrarFormularioEditar = false">Cancelar</button>
         </div>
-      </form>      
+      </form>
     </div>
 
   </div>

@@ -69,55 +69,70 @@
     <div *ngIf="mostrarFormularioCrear" class="form-crear">
       <h3>Crear nuevo sector</h3>
 
-      <form (ngSubmit)="crearSector()" class="formulario-sector" #crearForm>
+      <form (ngSubmit)="crearSector()" class="formulario-sector" #crearForm="ngForm">
         <div class="campo-formulario">
           <label for="description">Descripción:</label>
-          <input type="text" id="description" [(ngModel)]="nuevoSector.description" name="description" required
-            placeholder="Introduce una descripción" />
+          <input type="text" id="description" [(ngModel)]="nuevoSector.description" name="description" required placeholder="Introduce una descripción" #descripcionCtrl="ngModel"/>
+          <div class="error" *ngIf="descripcionCtrl.invalid && descripcionCtrl.touched">
+            La descripción es obligatoria.
+          </div>
         </div>
-
+      
         <div class="campo-formulario">
           <label for="textoweb">Texto Web:</label>
-          <input type="text" id="textoweb" [(ngModel)]="nuevoSector.textoweb" name="textoweb" required
-            placeholder="Introduce el texto web" />
+          <input type="text" id="textoweb" [(ngModel)]="nuevoSector.textoweb" name="textoweb" required placeholder="Introduce el texto web" #textowebCtrl="ngModel"/>
+          <div class="error" *ngIf="textowebCtrl.invalid && textowebCtrl.touched">
+            El texto web es obligatorio.
+          </div>
         </div>
-
+      
         <div class="campo-formulario">
           <label for="prefijo">Prefijo:</label>
-          <input type="text" id="prefijo" [(ngModel)]="nuevoSector.prefijo" name="prefijo" required
-            placeholder="Introduce el prefijo" />
+          <input type="text" id="prefijo" [(ngModel)]="nuevoSector.prefijo" name="prefijo" required placeholder="Introduce el prefijo" #prefijoCtrl="ngModel"/>
+          <div class="error" *ngIf="prefijoCtrl.invalid && prefijoCtrl.touched">
+            El prefijo es obligatorio.
+          </div>
         </div>
-
+      
         <div class="campo-formulario">
           <label for="slug">Slug:</label>
-          <input type="text" id="slug" [(ngModel)]="nuevoSector.slug" name="slug" required
-            placeholder="Introduce el slug" />
+          <input type="text" id="slug" [(ngModel)]="nuevoSector.slug" name="slug" required placeholder="Introduce el slug" #slugCtrl="ngModel"/>
+          <div class="error" *ngIf="slugCtrl.invalid && slugCtrl.touched">
+            El slug es obligatorio.
+          </div>
         </div>
-
+      
         <div class="campo-formulario">
           <label for="descriptionweb">Descripción Web:</label>
-          <input type="text" id="descriptionweb" [(ngModel)]="nuevoSector.descriptionweb" name="descriptionweb" required
-            placeholder="Introduce la descripción web" />
+          <input type="text" id="descriptionweb" [(ngModel)]="nuevoSector.descriptionweb" name="descriptionweb" required placeholder="Introduce la descripción web" #descriptionwebCtrl="ngModel"/>
+          <div class="error" *ngIf="descriptionwebCtrl.invalid && descriptionwebCtrl.touched">
+            La descripción web es obligatoria.
+          </div>
         </div>
-
+      
         <div class="campo-formulario">
           <label for="titleweb">Título Web:</label>
-          <input type="text" id="titleweb" [(ngModel)]="nuevoSector.titleweb" name="titleweb" required
-            placeholder="Introduce el título web" />
+          <input type="text" id="titleweb" [(ngModel)]="nuevoSector.titleweb" name="titleweb" required placeholder="Introduce el título web" #titlewebCtrl="ngModel"/>
+          <div class="error" *ngIf="titlewebCtrl.invalid && titlewebCtrl.touched">
+            El título web es obligatorio.
+          </div>
         </div>
-
+      
         <div class="campo-formulario">
           <label for="backgroundImage">Imagen de fondo (URL):</label>
-          <input type="text" id="backgroundImage" [(ngModel)]="nuevoSector.backgroundImage" name="backgroundImage" required
-            placeholder="Introduce la URL de la imagen de fondo" />
+          <input type="text" id="backgroundImage" [(ngModel)]="nuevoSector.backgroundImage" name="backgroundImage" required placeholder="Introduce la URL de la imagen de fondo" #backgroundCtrl="ngModel"/>
+          <div class="error" *ngIf="backgroundCtrl.invalid && backgroundCtrl.touched">
+            La imagen de fondo es obligatoria.
+          </div>
         </div>
-
-        <!-- Botones de acción -->
+      
+        <!-- Botones -->
         <div class="botones-formulario">
           <button type="submit" class="btn-submit">Crear</button>
           <button type="button" class="btn-cancelar" (click)="mostrarFormularioCrear = false">Cancelar</button>
         </div>
       </form>
+      
     </div>
 
     <!-- Formulario para editar un sector existente -->
