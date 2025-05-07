@@ -124,7 +124,7 @@ h1
     max-width: 1500px
     width: 43%
     margin: 0 auto
-    background: #F3FAFF
+    background: #F4FAFA
     font-weight: 400
     box-sizing: border-box
     
@@ -488,10 +488,11 @@ button
   cursor: pointer
 
 :host ::ng-deep .mi-tabla
-  width: 100%
+  width: 90%
   border-collapse: collapse
   margin-bottom: $spacing-standard
   margin: 20px auto
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.18)
 
   table 
     width: 100%
@@ -501,16 +502,16 @@ button
     padding: 10px
     border-bottom: 1px solid $azul-principal
     font-weight: 500
-    background-color: $color-azul-claro
     text-align: center
   
   td 
     padding: 10px
     border-bottom: 1px solid $gris-borde
-    text-align: center
+    text-align: center    
 
   tbody tr:hover 
-    background-color: red
+    background-color: #d2e5f9 !important
+    border: 2px solid #aecced
   
   .nested-table
     margin-left: 20px
@@ -728,39 +729,6 @@ button
 
 .crear-beneficio-opcion:hover
   text-decoration: underline
-
-:host ::ng-deep .mi-tabla
-  width: 90%
-  border-collapse: collapse
-  margin-bottom: $spacing-standard
-  margin: 20px auto
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.07)
-
-  table 
-    width: 100%
-    border-collapse: collapse
-  
-  th 
-    padding: 10px
-    border-bottom: 1px solid $azul-principal
-    font-weight: 500
-    background-color: $color-azul-claro
-    text-align: center
-  
-  td 
-    padding: 10px
-    border-bottom: 1px solid $gris-borde
-    text-align: center
-
-  tbody tr:hover 
-    background-color: $azul-hover
-  
-  .nested-table
-    margin-left: 20px
-    background-color: rgba($azul-hover, 0.2)
-
-    td 
-      padding-left: 20px
 
 #title, #subtitle, #icon, #slug, #titleweb, #multimediaUri, #multimediaTypeId,
 #nuevoProblemaDescription, #buscadorProblema, #nuevaCaracteristicaDescription, #buscadorCaracteristica,
