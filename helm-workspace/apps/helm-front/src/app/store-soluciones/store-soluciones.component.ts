@@ -70,8 +70,7 @@ export class StoreSolucionesComponent implements OnInit {
 
   // Cierra el modal sin eliminar
   cancelarEliminarSolucion() {
-    this.mostrarModal = false;
-    this.solucionAEliminar = null;
+    this.resetModal();
   }
 
   // Llama al servicio para eliminar la solución confirmada
@@ -82,16 +81,20 @@ export class StoreSolucionesComponent implements OnInit {
           // Actualiza la lista tras eliminar
           this.storeSoluciones = this.storeSoluciones.filter(solucion => solucion.id_solucion !== this.solucionAEliminar);
           this.filtrarSoluciones(this.filtroDescripcion.value || '');
-          this.mostrarModal = false;
-          this.solucionAEliminar = null;
+          this.resetModal();
         },
         error: (error) => {
           console.error('Error al eliminar solución: ', error);
-          this.mostrarModal = false;
-          this.solucionAEliminar = null;
+          this.resetModal();
         }
       });
     }
+  }
+
+  // Cierra el modal de confirmación y reinicia la solución seleccionada para eliminar
+  private resetModal() {
+    this.mostrarModal = false;
+    this.solucionAEliminar = null;
   }
 
   // Optimiza la renderización con trackBy
@@ -112,4 +115,6 @@ export class StoreSolucionesComponent implements OnInit {
       solucion.description.toLowerCase().includes(filtroLimpio)
     );
   }
+
+
 }

@@ -10,6 +10,7 @@ import { StoreAmbitos, CreateAmbitoResponse, DeleteAmbitoResponse } from '@model
 import { SolucionAmbito, DeleteSolucionAmbitoResponse } from '@modelos-shared/solucionAmbito';
 import { StoreSectores, CreateSectorResponse, DeleteSectorResponse } from '@modelos-shared/storeSectores';
 import { SolucionSector, DeleteSolucionSectorResponse } from '@modelos-shared/solucionSector';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ import { SolucionSector, DeleteSolucionSectorResponse } from '@modelos-shared/so
 
 export class StoreSolucionesService {
 
-  private apiUrl = 'http://localhost:3009/storeSolucion/listStoreSoluciones';
+  private solucionesUrl = 'http://localhost:3009/storeSolucion';
   private beneficiosUrl = 'http://localhost:3009/storeBeneficios';
   private problemasUrl = 'http://localhost:3009/storeProblemas';
   private caracteristicasUrl = 'http://localhost:3009/storeCaracteristicas';
@@ -30,20 +31,21 @@ export class StoreSolucionesService {
 
   /* Obtiene todas las store soluciones */
   getStoreSoluciones(): Observable<StoreSoluciones[]> {
+    const url = `${this.solucionesUrl}/listStoreSoluciones`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.https.get<StoreSoluciones[]>(this.apiUrl, { headers });
+    return this.https.get<StoreSoluciones[]>(url, { headers });
   }
 
   /* Obtiene una store solucion por su id */
   getStoreSolucionById(id: number): Observable<StoreSoluciones> {
-    const url = `http://localhost:3009/storeSolucion/listIdStoreSoluciones/${id}`;
+    const url = `${this.solucionesUrl}/listIdStoreSoluciones/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.get<StoreSoluciones>(url, { headers });
   }
 
   /* Actualiza una store solucion */
   updateStoreSolucion(id: number, solucion: StoreSoluciones): Observable<UpdateStoreSolucionResponse> {
-    const url = `http://localhost:3009/storeSolucion/modifyStoreSoluciones/${id}`;
+    const url = `${this.solucionesUrl}/modifyStoreSoluciones/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     const solucionToUpdate: any = {
@@ -86,7 +88,7 @@ export class StoreSolucionesService {
 
   /* Elimina una store solucion por su id */
   deleteStoreSolucion(id: number): Observable<DeleteSolucionResponse> {
-    const url = `http://localhost:3009/storeSolucion/deleteSolucion/${id}`;
+    const url = `${this.solucionesUrl}/deleteSolucion/${id}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete<DeleteSolucionResponse>(url, { headers });
   }
@@ -347,46 +349,38 @@ export class StoreSolucionesService {
   /* Crea una característica y lo asocia a una solución */
   createCaracteristica(idSolucion: number, caracteristica: StoreCaracteristicas): Observable<CreateCaracteristicaResponse> {
     const url = `${this.caracteristicasUrl}/createCaracteristicas/${idSolucion}`;
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-
-    const caracteristicaToCreate = {
-      titulo: caracteristica.titulo,
-      description: caracteristica.description
-    };
-
-    const originalTitle = caracteristica.titulo;
-    const originalDescription = caracteristica.description;
-
-    console.log('Valores originales a guardar:', { title: originalTitle, description: originalDescription });
-
-    return this.https.post<CreateCaracteristicaResponse>(url, caracteristicaToCreate, { headers }).pipe(
-      switchMap(response => {
-        return this.getStoreSolucionById(idSolucion).pipe(
+    const headers = { 'Content-Type': 'application/json' };
+  
+    const { titulo, description } = caracteristica;
+    console.log('Valores originales a guardar:', { title: titulo, description });
+  
+    return this.https.post<CreateCaracteristicaResponse>(url, { titulo, description }, { headers }).pipe(
+      switchMap(response =>
+        this.getStoreSolucionById(idSolucion).pipe(
           switchMap(solucion => {
-            solucion.caracteristicasTitle = originalTitle || solucion.caracteristicasTitle;
-            solucion.caracteristicasPragma = originalDescription;
-            
-            console.log('Actualizando solución después de crear característica:');
-            console.log('caracteristicasTitle:', originalTitle);
-            console.log('caracteristicasPragma:', originalDescription);
-            
+            solucion.caracteristicasTitle = titulo || solucion.caracteristicasTitle;
+            solucion.caracteristicasPragma = description;
+  
+            console.log('Actualizando solución después de crear característica:', {
+              caracteristicasTitle: titulo,
+              caracteristicasPragma: description
+            });
+  
             return this.updateStoreSolucion(idSolucion, solucion).pipe(
-              map(() => {
-                return {
-                  ...response,
-                  caracteristica: {
-                    ...response.caracteristica,
-                    titulo: originalTitle,
-                    description: originalDescription
-                  }
-                };
-              })
+              map(() => ({
+                ...response,
+                caracteristica: {
+                  ...response.caracteristica,
+                  titulo,
+                  description
+                }
+              }))
             );
           })
-        );
-      })
+        )
+      )
     );
-  }
+  }  
 
   /* Elimina una característica por su id */
   deleteCaracteristica(idCaracteristica: number): Observable<DeleteCaracteristicaResponse> {
@@ -477,44 +471,31 @@ export class StoreSolucionesService {
 
   /* Actualiza una característica y la asocia a una solución a partir de el id de esta */
   updateCaracteristicaAndAsociar(idSolucion: number, caracteristica: StoreCaracteristicas): Observable<any> {
+    const actualizarCaracteristicas = (solucion: any): Observable<any> => {
+      solucion.caracteristicasTitle = caracteristica.titulo || solucion.caracteristicasTitle;
+      solucion.caracteristicasPragma = caracteristica.description;
+      
+      console.log('Actualizando caracteristicasTitle a:', caracteristica.titulo);
+      console.log('Actualizando caracteristicasPragma a:', caracteristica.description);
+      
+      return this.updateStoreSolucion(idSolucion, solucion);
+    };
+  
     if (caracteristica.id_caracteristica) {
       return this.asociarCaracteristicaASolucion(idSolucion, caracteristica.id_caracteristica).pipe(
-        switchMap(() => {
-          return this.getStoreSolucionById(idSolucion).pipe(
-            switchMap(solucion => {
-              solucion.caracteristicasTitle = caracteristica.titulo || solucion.caracteristicasTitle;
-              solucion.caracteristicasPragma = caracteristica.description;
-              
-              console.log('Actualizando caracteristicasTitle a:', caracteristica.titulo);
-              console.log('Actualizando caracteristicasPragma a:', caracteristica.description);
-              
-              return this.updateStoreSolucion(idSolucion, solucion);
-            })
-          );
-        })
+        switchMap(() => this.getStoreSolucionById(idSolucion).pipe(switchMap(actualizarCaracteristicas)))
       );
     } else {
       return this.getStoreSolucionById(idSolucion).pipe(
-        switchMap(solucion => {
-          solucion.caracteristicasTitle = caracteristica.titulo || solucion.caracteristicasTitle;
-          solucion.caracteristicasPragma = caracteristica.description;
-          
-          console.log('Actualizando caracteristicasTitle a:', caracteristica.titulo);
-          console.log('Actualizando caracteristicasPragma a:', caracteristica.description);
-          
-          return this.updateStoreSolucion(idSolucion, solucion).pipe(
-            map(response => {
-              return { 
-                message: 'Característica actualizada sin asociación',
-                caracteristicasTitle: caracteristica.titulo,
-                caracteristicasPragma: caracteristica.description
-              };
-            })
-          );
-        })
+        switchMap(actualizarCaracteristicas),
+        map(response => ({
+          message: 'Característica actualizada sin asociación',
+          caracteristicasTitle: caracteristica.titulo,
+          caracteristicasPragma: caracteristica.description
+        }))
       );
     }
-  }
+  }  
 
   /* Ámbitos */
 
@@ -750,38 +731,33 @@ export class StoreSolucionesService {
     return this.https.post<CreateSectorResponse>(url, sectorToCreate, { headers });
   }
 
-  /* Listado de sectores */
   getAllSectores(): Observable<StoreSectores[]> {
-  const url = `${this.sectoresUrl}/listCompleteSectores`;
-  const headers = new HttpHeaders()
-    .set('Content-Type', 'application/json')
-    .set('Accept', 'application/json, text/plain, */*');
+    const url = `${this.sectoresUrl}/listCompleteSectores`;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json, text/plain, */*'
+    };
   
-  console.info('ℹ️ Consultando listado completo de sectores...');
+    console.info('ℹ️ Consultando listado completo de sectores...');
   
-  return this.https.get<StoreSectores[]>(url, { 
-    headers,
-    observe: 'response',
-    responseType: 'json'
-  }).pipe(
-    map(response => {
-      if (response.body && response.body.length > 0) {
-        console.log('✅ Listado de sectores recuperado correctamente');
-      } else {
-        console.info('ℹ️ No hay sectores disponibles en el sistema');
-      }
-      return response.body || [];
-    }),
-    catchError(error => {
-      if (error.status === 404) {
-        console.info('ℹ️ Sin sectores para mostrar');
-      } else {
-        console.warn('⚠️ Error al consultar el listado de sectores:', error.message);
-      }
-      return of([]);
-    })
-  );
-}
+    return this.https.get<StoreSectores[]>(url, { headers }).pipe(
+      tap(sectores => {
+        if (sectores.length > 0) {
+          console.log('✅ Listado de sectores recuperado correctamente');
+        } else {
+          console.info('ℹ️ No hay sectores disponibles en el sistema');
+        }
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          console.info('ℹ️ Sin sectores para mostrar');
+        } else {
+          console.warn('⚠️ Error al consultar el listado de sectores:', error.message);
+        }
+        return of([]);
+      })
+    );
+  }  
 
   /* Obtención de sectores por solución específica de su ID */
   getSectoresBySolucion(idSolucion: number): Observable<StoreSectores[]> {
@@ -819,26 +795,20 @@ export class StoreSolucionesService {
   /* Obtención de sectores por solución específica de su ID */
   listSectores(idSolucion: number): Observable<SolucionSector[]> {
     const url = `${this.sectoresUrl}/listSectores/${idSolucion}`;
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    
+    const headers = { 'Content-Type': 'application/json' };
+  
     console.info('ℹ️ Consultando sectores de la solución:', idSolucion);
-    
+  
     return this.https.get<any[]>(url, { headers }).pipe(
       map(response => {
-        console.log('Respuesta sin procesar:', response);
-        // Asegurarse de que response sea un array
         const sectoresArray = Array.isArray(response) ? response : [response];
-        
+  
         return sectoresArray.map(sector => ({
           id_solucion: sector.id_solucion || idSolucion,
           id_sector: sector.id_sector,
-          descalternativa: sector.dawdawd || sector.descalternativa || '', // Agregamos dawdawd como posible valor
-          textoalternativo: sector.textoalternativo || sector.null || '' // Agregamos null como posible valor
+          descalternativa: sector.dawdawd || sector.descalternativa || '',
+          textoalternativo: sector.textoalternativo || sector.null || '' 
         }));
-      }),
-      map((mappedResponse: SolucionSector[]) => {
-        console.log('✅ Sectores mapeados:', mappedResponse);
-        return mappedResponse;
       }),
       catchError(error => {
         if (error.status === 404) {
@@ -849,7 +819,7 @@ export class StoreSolucionesService {
         return of([]);
       })
     );
-  }
+  }  
 
   /* Asociar un sector existente a una solución */
   asociarSectorASolucion(idSolucion: number, idSector: number): Observable<any> {
