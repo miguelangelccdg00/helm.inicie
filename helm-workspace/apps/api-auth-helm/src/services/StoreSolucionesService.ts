@@ -1,16 +1,14 @@
-import { pool } from '../../../api-shared-helm/src/databases/conexion.js'; 
+import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
 import { StoreSoluciones } from '../../../api-shared-helm/src/models/storeSoluciones.js';
 import { SolucionAmbitoSector } from '../../../api-shared-helm/src/models/solucionAmbitoSector.js';
 
-class StoreSolucionesService 
-{
+class StoreSolucionesService {
     /**
      * Obtiene todas las soluciones almacenadas en la base de datos.
      * 
      * @returns {Promise<StoreSoluciones[]>} Lista de soluciones almacenadas en la base de datos.
      */
-    async getAll(): Promise<StoreSoluciones[]> 
-    {
+    async getAll(): Promise<StoreSoluciones[]> {
         const [rows] = await pool.promise().query(
             'SELECT id_solucion,description,title,subtitle,icon,slug,titleweb,multimediaUri,multimediaTypeId, problemaTitle, problemaPragma, solucionTitle,solucionPragma, caracteristicasTitle, caracteristicasPragma,casosdeusoTitle,casosdeusoPragma,firstCtaTitle,firstCtaPragma,secondCtaTitle,secondCtaPragma,beneficiosPragma,titleBeneficio FROM storeSoluciones'
         );
@@ -23,8 +21,7 @@ class StoreSolucionesService
      * @param {number} id - ID de la solución a obtener.
      * @returns {Promise<StoreSoluciones | null>} La solución solicitada o null si no se encuentra.
      */
-    async getById(id: number): Promise<StoreSoluciones | null> 
-    {
+    async getById(id: number): Promise<StoreSoluciones | null> {
         const [rows] = await pool.promise().query(
             'SELECT id_solucion,description,title,subtitle,icon,slug,titleweb,multimediaUri,multimediaTypeId, problemaTitle, problemaPragma, solucionTitle,solucionPragma, caracteristicasTitle, caracteristicasPragma,casosdeusoTitle,casosdeusoPragma,firstCtaTitle,firstCtaPragma,secondCtaTitle,secondCtaPragma,beneficiosPragma,titleBeneficio FROM storeSoluciones WHERE id_solucion = ?',
             [id]
@@ -39,8 +36,7 @@ class StoreSolucionesService
      * @param {Partial<StoreSoluciones>} updateData - Datos de la solución a actualizar.
      * @returns {Promise<{ message: string }>} Mensaje indicando que la solución fue actualizada correctamente.
      */
-    async update(id: number, updateData: Partial<StoreSoluciones>): Promise<{ message: string }> 
-    {
+    async update(id: number, updateData: Partial<StoreSoluciones>): Promise<{ message: string }> {
         await pool.promise().query('UPDATE storeSoluciones SET ? WHERE id_solucion = ?', [updateData, id]);
         return { message: 'StoreSoluciones actualizado' };
     }
@@ -54,11 +50,9 @@ class StoreSolucionesService
      * 
      * @throws {Error} Si ocurre un error durante la transacción.
      */
-    async updateSolucionAmbitos(idSolucion: number, solucionAmbitos: any[]): Promise<{ message: string }> 
-    {
+    async updateSolucionAmbitos(idSolucion: number, solucionAmbitos: any[]): Promise<{ message: string }> {
         const conn = await pool.promise().getConnection();
-        try 
-        {
+        try {
             await conn.beginTransaction();
 
             for (const solucionAmbito of solucionAmbitos) {
@@ -70,14 +64,10 @@ class StoreSolucionesService
 
             await conn.commit();
             return { message: 'Solución por ámbitos actualizada correctamente' };
-        } 
-        catch (error) 
-        {
+        } catch (error) {
             await conn.rollback();
             throw error;
-        } 
-        finally 
-        {
+        } finally {
             conn.release();
         }
     }
@@ -91,15 +81,12 @@ class StoreSolucionesService
      * 
      * @throws {Error} Si ocurre un error durante la transacción.
      */
-    async updateSolucionSector(idSolucion: number, solucionSectores: any[]): Promise<{ message: string }> 
-    {
+    async updateSolucionSector(idSolucion: number, solucionSectores: any[]): Promise<{ message: string }> {
         const conn = await pool.promise().getConnection();
-        try 
-        {
+        try {
             await conn.beginTransaction();
 
-            for (const solucionSector of solucionSectores)
-            {
+            for (const solucionSector of solucionSectores) {
                 await conn.query(
                     'UPDATE storeSolucionesSectores SET ? WHERE id_solucion = ? AND id_sector = ?',
                     [solucionSector, idSolucion, solucionSector.id_sector]
@@ -108,14 +95,10 @@ class StoreSolucionesService
 
             await conn.commit();
             return { message: 'Solución por sectores actualizada correctamente' };
-        } 
-        catch (error) 
-        {
+        } catch (error) {
             await conn.rollback();
             throw error;
-        } 
-        finally 
-        {
+        } finally {
             conn.release();
         }
     }
@@ -129,15 +112,12 @@ class StoreSolucionesService
      * 
      * @throws {Error} Si ocurre un error durante la transacción.
      */
-    async updateSolucionAmbitosSector(idSolucion: number, solucionAmbitosSectores: SolucionAmbitoSector[]): Promise<{ message: string }> 
-    {
+    async updateSolucionAmbitosSector(idSolucion: number, solucionAmbitosSectores: SolucionAmbitoSector[]): Promise<{ message: string }> {
         const conn = await pool.promise().getConnection();
-        try 
-        {
+        try {
             await conn.beginTransaction();
 
-            for (const solucionAmbitoSector of solucionAmbitosSectores) 
-            {
+            for (const solucionAmbitoSector of solucionAmbitosSectores) {
                 await conn.query(
                     'UPDATE storeSolucionesAmbitosSectores SET ? WHERE id_solucion = ? AND id_ambito = ? AND id_sector = ?',
                     [
@@ -151,14 +131,10 @@ class StoreSolucionesService
 
             await conn.commit();
             return { message: 'Solución por ámbitos y sectores actualizada correctamente' };
-        } 
-        catch (error) 
-        {
+        } catch (error) {
             await conn.rollback();
             throw error;
-        } 
-        finally 
-        {
+        } finally {
             conn.release();
         }
     }
@@ -171,11 +147,9 @@ class StoreSolucionesService
      * 
      * @throws {Error} Si ocurre un error durante la eliminación de la solución.
      */
-    async deleteSolucion(id: number): Promise<{ message: string }> 
-    {
+    async deleteSolucion(id: number): Promise<{ message: string }> {
         const conn = await pool.promise().getConnection(); // Inicia conexión
-        try 
-        {
+        try {
             await conn.beginTransaction(); // Inicia transacción
 
             // Elimina referencias en `storePacksSoluciones`
@@ -186,17 +160,13 @@ class StoreSolucionesService
 
             await conn.commit(); // Confirmar cambios
             return { message: 'Solución eliminada correctamente' };
-        } 
-        catch (error) 
-        {
+        } catch (error) {
             // Revertir cambios en caso de error
-            await conn.rollback(); 
+            await conn.rollback();
             throw error;
-        } 
-        finally 
-        {
+        } finally {
             // Liberar conexión
-            conn.release(); 
+            conn.release();
         }
     }
 
@@ -206,8 +176,7 @@ class StoreSolucionesService
      * @param {number} id - ID de la solución a verificar.
      * @returns {Promise<boolean>} Devuelve true si la solución existe, de lo contrario, false.
      */
-    async checkSolucionExists(id: number): Promise<boolean> 
-    {
+    async checkSolucionExists(id: number): Promise<boolean> {
         const [rows] = await pool.promise().query(
             'SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?',
             [id]
@@ -222,8 +191,7 @@ class StoreSolucionesService
      * @param {number} idProblema - ID del problema asociado que se quiere eliminar.
      * @returns {Promise<{ message: string }>} Mensaje indicando que la asociación fue eliminada correctamente.
      */
-    async removeProblemaFromSolucion(idSolucion: number, idProblema: number): Promise<{ message: string }> 
-    {
+    async removeProblemaFromSolucion(idSolucion: number, idProblema: number): Promise<{ message: string }> {
         await pool.promise().query(
             'DELETE FROM storeProblemasSoluciones WHERE id_solucion = ? AND id_problema = ?', 
             [idSolucion, idProblema]
@@ -238,8 +206,7 @@ class StoreSolucionesService
      * @param {number} idCaracteristica - ID de la característica asociada que se quiere eliminar.
      * @returns {Promise<{ message: string }>} Mensaje indicando que la asociación fue eliminada correctamente.
      */
-    async removeCaracteristicaFromSolucion(idSolucion: number, idCaracteristica: number): Promise<{ message: string }> 
-    {
+    async removeCaracteristicaFromSolucion(idSolucion: number, idCaracteristica: number): Promise<{ message: string }> {
          await pool.promise().query(
             'DELETE FROM storeSolucionesCaracteristicas WHERE id_solucion = ? AND id_caracteristica = ?', 
             [idSolucion, idCaracteristica]
@@ -254,8 +221,7 @@ class StoreSolucionesService
      * @param {number} idAmbito - ID del ámbito asociado que se quiere eliminar.
      * @returns {Promise<{ message: string }>} Mensaje indicando que la asociación fue eliminada correctamente.
      */
-    async removeAmbitoFromSolucion(idSolucion: number, idAmbito: number): Promise<{ message: string }> 
-    {
+    async removeAmbitoFromSolucion(idSolucion: number, idAmbito: number): Promise<{ message: string }> {
          await pool.promise().query(
             'DELETE FROM storeSolucionesAmbitos WHERE id_solucion = ? AND id_ambito = ?', 
             [idSolucion, idAmbito]
@@ -270,8 +236,7 @@ class StoreSolucionesService
      * @param {number} idSector - ID del sector asociado que se quiere eliminar.
      * @returns {Promise<{ message: string }>} Mensaje indicando que la asociación fue eliminada correctamente.
      */
-    async removeSectorFromSolucion(idSolucion: number, idSector: number): Promise<{ message: string }> 
-    {
+    async removeSectorFromSolucion(idSolucion: number, idSector: number): Promise<{ message: string }> {
          await pool.promise().query(
             'DELETE FROM storeSolucionesSectores WHERE id_solucion = ? AND id_sector = ?', 
             [idSolucion, idSector]

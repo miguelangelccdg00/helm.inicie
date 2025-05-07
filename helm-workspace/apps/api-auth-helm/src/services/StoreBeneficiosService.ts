@@ -1,4 +1,4 @@
-import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
+import { pool } from '../../../api-shared-helm/src/databases/conexion.js'; 
 import { StoreBeneficios } from '../../../api-shared-helm/src/models/storeBeneficios.js';
 
 /**
@@ -35,6 +35,7 @@ class StoreBeneficiosServices
 {
   /**
    * Crea un nuevo beneficio y lo asocia a una solución.
+   * 
    * @param {CreateBeneficioDTO} params - Parámetros para la creación del beneficio.
    * @returns {Promise<{ idBeneficio: number; idSolucion: number }>} El ID del beneficio creado y el ID de la solución.
    * @throws {Error} Si la solución no existe o si ocurre un error durante la transacción.
@@ -86,6 +87,7 @@ class StoreBeneficiosServices
 
   /**
    * Obtiene todos los beneficios disponibles.
+   * 
    * @returns {Promise<StoreBeneficios[]>} Lista de todos los beneficios.
    */
   async getBeneficio(): Promise<StoreBeneficios[]>
@@ -96,6 +98,7 @@ class StoreBeneficiosServices
 
   /**
    * Obtiene los beneficios asociados a una solución.
+   * 
    * @param {number} idSolucion - El ID de la solución.
    * @returns {Promise<StoreBeneficios[]>} Lista de beneficios asociados a la solución.
    */
@@ -114,6 +117,7 @@ class StoreBeneficiosServices
 
   /**
    * Actualiza un beneficio existente.
+   * 
    * @param {number} id - El ID del beneficio a actualizar.
    * @param {Partial<StoreBeneficios>} updateData - Los datos a actualizar.
    * @returns {Promise<{ message: string }>} Mensaje confirmando que el beneficio fue actualizado.
@@ -126,6 +130,7 @@ class StoreBeneficiosServices
 
   /**
    * Elimina un beneficio.
+   * 
    * @param {number} idBeneficio - El ID del beneficio a eliminar.
    * @returns {Promise<boolean>} Indica si el beneficio fue eliminado exitosamente.
    * @throws {Error} Si ocurre un error durante la transacción de eliminación.
@@ -160,6 +165,7 @@ class StoreBeneficiosServices
 
   /**
    * Asocia un beneficio a una solución.
+   * 
    * @param {number} idSolucion - El ID de la solución.
    * @param {number} idBeneficio - El ID del beneficio.
    * @returns {Promise<AsociarBeneficioResult>} Resultado de la operación con mensaje.
@@ -226,4 +232,3 @@ class StoreBeneficiosServices
 }
 
 export default new StoreBeneficiosServices();
-
