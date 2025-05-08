@@ -13,28 +13,28 @@ export interface AuthRequest extends Request
 // Middleware para verificar el token
 const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) => 
 {
-    const token = req.header('Authorization')?.split(' ')[1]; 
+    const token = req.header('Authorization')?.split(' ')[1];
 
-    // Si no hay token, retornamos un error 401
     if (!token) 
     {
-        return res.status(401).json({ message: 'Token no proporcionado' });
+       
+        return res.redirect('/login');
     }
 
     try 
     {
-        // Verifica el token con la clave secreta
         const decoded = jwt.verify(token, SECRET_KEY);
-        req.user = decoded; 
-        
-        next(); 
+        req.user = decoded;
+        next();
     } 
     catch (error) 
     {
         console.error('Error al verificar el token: ', error);
-        return res.status(403).json({ message: 'Token inválido o expirado' });
+        // Redirige también si el token es inválido o ha expirado
+        return res.redirect('/login');
     }
 };
+
 
 /**
  * Middleware para verificar permisos basados en roles

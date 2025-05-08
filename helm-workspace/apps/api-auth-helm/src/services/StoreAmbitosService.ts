@@ -43,16 +43,6 @@ class StoreAmbitosService {
           SELECT 1 FROM storeSolucionesAmbitos sa WHERE sa.id_solucion = s.id_solucion AND sa.id_ambito = ?
         )`, [idAmbito, idAmbito]);
 
-      await pool.promise().query(`
-        INSERT INTO storeSolucionesAmbitosSectores (id_solucion, id_ambito, id_sector)
-        SELECT s.id_solucion, ?, sec.id_sector
-        FROM storeSoluciones s
-        CROSS JOIN storeSectores sec
-        WHERE NOT EXISTS (
-          SELECT 1 FROM storeSolucionesAmbitosSectores sas
-          WHERE sas.id_solucion = s.id_solucion AND sas.id_ambito = ? AND sas.id_sector = sec.id_sector
-        )`, [idAmbito, idAmbito]);
-
       return { id_ambito: idAmbito, description, textoweb, prefijo, slug };
     } catch (error) {
       console.error('Error al crear el ámbito y asociarlo:', error);
@@ -160,7 +150,8 @@ class StoreAmbitosService {
    * @param {Partial<StoreAmbitos & SolucionAmbito>} updateData - Datos a actualizar.
    * @returns {Promise<StoreAmbitos>} Ámbito actualizado.
    */
-  async update(idAmbito: number, idSolucion: number, updateData: Partial<StoreAmbitos & SolucionAmbito>): Promise<StoreAmbitos> {
+  async update(idAmbito: number, idSolucion: number, updateData: Partial<StoreAmbitos & SolucionAmbito>): Promise<StoreAmbitos> 
+  {
     return this.updateAmbito(idAmbito, updateData);
   }
 

@@ -226,7 +226,8 @@ class StoreSectoresService {
      * @param {Partial<StoreSectores & SolucionSector>} updateData - Datos a actualizar.
      * @returns {Promise<StoreSectores>} Sector actualizado.
      */
-    async update(idSector: number, idSolucion: number, updateData: Partial<StoreSectores & SolucionSector>): Promise<StoreSectores> {
+    async update(idSector: number, idSolucion: number, updateData: Partial<StoreSectores & SolucionSector>): Promise<StoreSectores> 
+    {
         return this.updateSector(idSector, updateData);
     }
 
