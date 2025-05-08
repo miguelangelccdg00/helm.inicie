@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 
 // Interfaz que define la estructura de la respuesta del backend al hacer login
 export interface LoginResponse {
@@ -65,5 +65,31 @@ export class LoginService {
     localStorage.removeItem('user'); // Elimina el usuario del localStorage
     localStorage.removeItem('token'); // Elimina el token del localStorage
     this.loggedIn.next(false); // Actualiza el estado de autenticación a 'false'
+  }
+
+  // Método para validar el token de autenticación
+  validateToken(): Observable<boolean> {
+    const token = this.getToken();
+  
+    if (!token) {
+      this.logout(); // Elimina datos si no hay token
+      return new BehaviorSubject(false).asObservable();
+    }
+  
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  
+    return this.http.get<{ message: string, usuario: any }>('http://localhost:3009/token/perfil', { headers })
+      .pipe(
+        tap({
+          error: () => {
+            this.logout(); // Token inválido o expirado
+          }
+        }),
+        // Si llega aquí es que el token es válido
+        // Mapeamos a true
+        map(() => true)
+      );
   }
 }
