@@ -70,6 +70,7 @@ thead
   border-bottom: 2px solid $color-azul-principal
   color: $color-azul-principal
   background-color: $color-gris-claro
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.05)
 
   th
     font-weight: 500
@@ -263,11 +264,10 @@ img:hover
     font-size: 20px
     font-weight: 500
 
-.formulario-ambito,
 .formulario-sector
   display: flex
   flex-direction: column
-  gap: 15px
+  gap: 25px
 
 .campo-formulario
   display: flex
@@ -337,3 +337,9 @@ input::placeholder
   padding: 15px
   margin-top: 7px
   border-radius: 4px
+
+tbody tr
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease
+
+tbody tr:hover
+  transform: scale(1.01)
