@@ -75,7 +75,9 @@ class StoreSectoresService {
                 titleweb,
                 backgroundImage
             };
-        } catch (error) {
+        } 
+        catch (error) 
+        {
             console.error('Error al crear el sector:', error);
             throw new Error('Error al crear el sector');
         }

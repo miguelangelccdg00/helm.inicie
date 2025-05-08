@@ -2,26 +2,30 @@ import { pool } from '../../../api-shared-helm/src/databases/conexion';
 import { StoreAmbitos } from '../../../api-shared-helm/src/models/storeAmbitos';
 import { SolucionAmbito } from '../../../api-shared-helm/src/models/solucionAmbito';
 
-interface CreateAmbitoParams {
+interface CreateAmbitoParams 
+{
   description: string;
   textoweb: string;
   prefijo: string;
   slug: string;
 }
 
-interface AmbitosParams {
+interface AmbitosParams 
+{
   description: string;
   textoweb: string;
   prefijo: string;
   slug: string;
 }
 
-interface AsociarAmbitoParams {
+interface AsociarAmbitoParams 
+{
   id_solucion: number;
   id_ambito: number;
 }
 
-class StoreAmbitosService {
+class StoreAmbitosService 
+{
   /**
    * Crea un nuevo ámbito y lo asocia con todas las soluciones existentes y sectores.
    * @param {CreateAmbitoParams} param0 - Datos del nuevo ámbito.

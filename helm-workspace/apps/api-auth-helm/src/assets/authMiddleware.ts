@@ -16,8 +16,7 @@ const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) =>
     const token = req.header('Authorization')?.split(' ')[1];
 
     if (!token) 
-    {
-       
+    {       
         return res.redirect('/login');
     }
 
