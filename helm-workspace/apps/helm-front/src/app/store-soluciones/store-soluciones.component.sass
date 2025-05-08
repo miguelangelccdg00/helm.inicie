@@ -58,7 +58,7 @@ table
   cursor: pointer
   padding: 5px
   border-radius: 4px
-  transition: background-color 0.3s ease
+  transition: background-color 0.6s ease
   
   &:hover
     background-color: rgba(0, 26, 63, 0.1)
@@ -67,11 +67,11 @@ table
     display: block
     margin: 0 auto
 
-
 thead
   border-bottom: 2px solid $color-azul-principal
   color: $color-azul-principal
   background-color: $color-gris-claro
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.05)
   
   th
     font-weight: 500
@@ -233,3 +233,25 @@ img:hover
   flex-direction: column
   align-items: center
   margin: auto
+
+tbody tr
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease
+
+tbody tr:hover
+  transform: scale(1.01)
+
+@media (max-width: 768px)
+  .contenido-principal
+    padding: 20px
+    padding-left: 70px
+  
+
+  table
+    width: 100%
+    font-size: 14px
+  
+
+  .buscador
+    width: 80%
+    margin-bottom: 15px
+  
