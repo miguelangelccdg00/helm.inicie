@@ -12,7 +12,7 @@
         <!-- Input con filtro reactivo por descripción -->
         <input type="text" placeholder="Buscar ámbito por descripción..." class="buscador"
           [formControl]="filtroDescripcion">
-        
+
         <!-- Botón para mostrar formulario de creación -->
         <button (click)="mostrarFormularioCrear = true; mostrarFormularioEditar = false; scrollCrear()" id="boton">
           Crear ámbito
@@ -61,69 +61,80 @@
     </div>
 
     <!-- Formulario de creación de ámbito -->
-    <div *ngIf="mostrarFormularioCrear" class="form-crear" #crearForm>
-      <h3>Crear nuevo ámbito</h3>
-      <form (ngSubmit)="crearAmbito()" class="formulario-ambito">
-        <!-- Campos del formulario de creación -->
-        <!-- Campo descripción -->
-        <div class="campo-formulario">
-          <label for="description">Descripción:</label>
-          <input type="text" id="description" [(ngModel)]="nuevoAmbito.description" name="description" required placeholder="Introduce una descripción" />
-        </div>
-        <!-- Campo texto web -->
-        <div class="campo-formulario">
-          <label for="textoweb">Texto Web:</label>
-          <input type="text" id="textoweb" [(ngModel)]="nuevoAmbito.textoweb" name="textoweb" required placeholder="Introduce el texto web" />
-        </div>
-        <!-- Campo prefijo -->
-        <div class="campo-formulario">
-          <label for="prefijo">Prefijo:</label>
-          <input type="text" id="prefijo" [(ngModel)]="nuevoAmbito.prefijo" name="prefijo" required placeholder="Introduce el prefijo"/>
-        </div>
-        <!-- Campo slug -->
-        <div class="campo-formulario">
-          <label for="slug">Slug:</label>
-          <input type="text" id="slug" [(ngModel)]="nuevoAmbito.slug" name="slug" required placeholder="Introduce el slug"/>
-        </div>
+    <div *ngIf="mostrarFormularioCrear" class="modal-overlay" #crearForm>
+      <div class="modal-formulario">
+        <h3>Crear nuevo ámbito</h3>
+        <form (ngSubmit)="crearAmbito()" class="formulario-ambito">
+          <!-- Campos del formulario de creación -->
+          <!-- Campo descripción -->
+          <div class="campo-formulario">
+            <label for="description">Descripción:</label>
+            <input type="text" id="description" [(ngModel)]="nuevoAmbito.description" name="description" required
+              placeholder="Introduce una descripción" #desc="ngModel" />
+            <div *ngIf="desc.invalid && desc.touched" class="error">La descripción es obligatoria.</div>
+          </div>
+          <!-- Campo texto web -->
+          <div class="campo-formulario">
+            <label for="textoweb">Texto Web:</label>
+            <input type="text" id="textoweb" [(ngModel)]="nuevoAmbito.textoweb" name="textoweb" required
+              placeholder="Introduce el texto web" #texto="ngModel" />
+            <div *ngIf="texto.invalid && texto.touched" class="error">El texto web es obligatorio.</div>
+          </div>
+          <!-- Campo prefijo -->
+          <div class="campo-formulario">
+            <label for="prefijo">Prefijo:</label>
+            <input type="text" id="prefijo" [(ngModel)]="nuevoAmbito.prefijo" name="prefijo" required
+              placeholder="Introduce el prefijo" #pref="ngModel" />
+            <div *ngIf="pref.invalid && pref.touched" class="error">El prefijo es obligatorio.</div>
+          </div>
+          <!-- Campo slug -->
+          <div class="campo-formulario">
+            <label for="slug">Slug:</label>
+            <input type="text" id="slug" [(ngModel)]="nuevoAmbito.slug" name="slug" required
+              placeholder="Introduce el slug" #slugField="ngModel" />
+            <div *ngIf="slugField.invalid && slugField.touched" class="error">El slug es obligatorio.</div>
+          </div>
 
-        <!-- Botones del formulario -->
-        <div class="botones-formulario">
-          <button type="submit" class="btn-submit">Crear</button>
-          <button type="button" class="btn-cancelar" (click)="mostrarFormularioCrear = false">Cancelar</button>
-        </div>
-      </form>
+          <!-- Botones del formulario -->
+          <div class="botones-formulario">
+            <button type="submit" class="btn-submit">Crear</button>
+            <button type="button" class="btn-cancelar" (click)="mostrarFormularioCrear = false">Cancelar</button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <!-- Formulario de edición de ámbito -->
-    <div *ngIf="mostrarFormularioEditar" class="form-crear" #editarForm>
-      <h3>Modificar ámbito</h3>
-      <form (ngSubmit)="guardarCambiosAmbito()" class="formulario-ambito">
-        <!-- Mismos campos que el formulario de creación pero ligados al ámbito a editar -->
-        <div class="campo-formulario">
-          <label for="description">Descripción:</label>
-          <input type="text" id="description" [(ngModel)]="ambitoAEditar!.description" name="edit_description" required placeholder="Introduce una descripción"/>
-        </div>
-        <div class="campo-formulario">
-          <label for="textoweb">Texto Web:</label>
-          <input type="text" id="textoweb" [(ngModel)]="ambitoAEditar!.textoweb" name="edit_textoweb" required placeholder="Introduce el texto web"/>
-        </div>
-        <div class="campo-formulario">
-          <label for="prefijo">Prefijo:</label>
-          <input type="text" id="prefijo" [(ngModel)]="ambitoAEditar!.prefijo" name="edit_prefijo" required placeholder="Introduce el prefijo"/>
-        </div>
-        <div class="campo-formulario">
-          <label for="slug">Slug:</label>
-          <input type="text" id="slug" [(ngModel)]="ambitoAEditar!.slug" name="edit_slug" required placeholder="Introduce el slug"/>
-        </div>
+    <div *ngIf="mostrarFormularioEditar" class="modal-overlay" #editarForm>
+      <div class="modal-formulario">
+        <h3>Modificar ámbito</h3>
+        <form (ngSubmit)="guardarCambiosAmbito()" class="formulario-ambito">
+          <!-- Mismos campos que el formulario de creación pero ligados al ámbito a editar -->
+          <div class="campo-formulario">
+            <label for="description">Descripción:</label>
+            <input type="text" id="description" [(ngModel)]="ambitoAEditar!.description" name="edit_description" placeholder="Introduce una descripción" />
+          </div>
+          <div class="campo-formulario">
+            <label for="textoweb">Texto Web:</label>
+            <input type="text" id="textoweb" [(ngModel)]="ambitoAEditar!.textoweb" name="edit_textoweb" placeholder="Introduce el texto web" />
+          </div>
+          <div class="campo-formulario">
+            <label for="prefijo">Prefijo:</label>
+            <input type="text" id="prefijo" [(ngModel)]="ambitoAEditar!.prefijo" name="edit_prefijo" placeholder="Introduce el prefijo" />
+          </div>
+          <div class="campo-formulario">
+            <label for="slug">Slug:</label>
+            <input type="text" id="slug" [(ngModel)]="ambitoAEditar!.slug" name="edit_slug" placeholder="Introduce el slug" />
+          </div>
 
-        <!-- Botones del formulario -->
-        <div class="botones-formulario">
-          <button type="submit" class="btn-submit">Guardar cambios</button>
-          <button type="button" class="btn-cancelar" (click)="mostrarFormularioEditar = false">Cancelar</button>
-        </div>
-      </form>
+          <!-- Botones del formulario -->
+          <div class="botones-formulario">
+            <button type="submit" class="btn-submit">Guardar cambios</button>
+            <button type="button" class="btn-cancelar" (click)="mostrarFormularioEditar = false">Cancelar</button>
+          </div>
+        </form>
+      </div>
     </div>
-
   </div>
 </div>
 
