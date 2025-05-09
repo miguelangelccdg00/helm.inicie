@@ -16,8 +16,8 @@ const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) =>
     const token = req.header('Authorization')?.split(' ')[1];
 
     if (!token) 
-    {
-        return res.status(401).json({ message: 'Token no proporcionado' });
+    {       
+        return res.redirect('/login');    
     }
 
     try 
@@ -28,11 +28,11 @@ const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) =>
     } 
     catch (error) 
     {
-        console.error('Error al verificar el token:', error);
-        return res.status(403).json({ message: 'Token inválido o expirado' });
+        console.error('Error al verificar el token: ', error);
+        // Redirige también si el token es inválido o ha expirado
+        return res.redirect('/login');
     }
 };
-
 
 
 /**
