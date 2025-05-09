@@ -122,7 +122,7 @@ h1
     color: $azul-principal
     padding: 30px
     max-width: 1500px
-    width: 43%
+    width: 100%
     margin: 0 auto
     background: #F4FAFA
     font-weight: 400
@@ -139,6 +139,7 @@ h1
     // Secciones del formulario
     .seccion
         margin-bottom: $spacing-section
+        width: 40%
         
         // Título de sección con línea inferior
         .titulo-seccion
@@ -148,6 +149,45 @@ h1
             padding-bottom: 8px
             border-bottom: 2px solid $azul-principal
             color: $azul-principal
+
+    .seccion2
+        margin-bottom: $spacing-section
+        width: 22%
+        
+        // Título de sección con línea inferior
+        .titulo-seccion
+            font-size: 20px
+            font-weight: 600
+            margin-bottom: $spacing-standard
+            padding-bottom: 8px
+            border-bottom: 2px solid $azul-principal
+            color: $azul-principal
+
+    .seccion3
+        margin-bottom: $spacing-section
+        width: 35%
+        
+        // Título de sección con línea inferior
+        .titulo-seccion
+            font-size: 20px
+            font-weight: 600
+            margin-bottom: $spacing-standard
+            padding-bottom: 8px
+            border-bottom: 2px solid $azul-principal
+            color: $azul-principal
+
+    .seccion4
+        margin-bottom: $spacing-section
+        width: 46%
+        
+        // Título de sección con línea inferior
+        .titulo-seccion
+            font-size: 20px
+            font-weight: 600
+            margin-bottom: $spacing-standard
+            padding-bottom: 8px
+            border-bottom: 2px solid $azul-principal
+            color: $azul-principal       
     
     // Subsecciones
     .subseccion
@@ -167,7 +207,7 @@ h1
     
     // Grupos de campos
     .form-group
-        margin-bottom: $spacing-standard
+        margin-bottom: -5px
         text-align: left
         width: 100% !important
         display: block !important
@@ -494,7 +534,7 @@ button
   margin: 20px auto
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.18)
 
-  table 
+  table
     width: 100%
     border-collapse: collapse
   
@@ -519,7 +559,6 @@ button
 
     td 
       padding-left: 20px
-
 
 :host ::ng-deep .p-paginator
     .p-paginator-page
@@ -705,3 +744,18 @@ button
 
 input::placeholder
   color: #8e93a9
+
+.flex
+    display: flex
+    justify-content: center
+    gap: 75px
+
+.flex2
+    display: flex
+    justify-content: center
+    gap: 75px
+
+.flex3
+    display: flex
+    justify-content: center
+    gap: 100px
