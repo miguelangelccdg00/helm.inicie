@@ -132,16 +132,23 @@ img:hover
   transition: 500ms ease-in-out
 
 .buscador
-  border-radius: 7px
+  border-radius: 8px
   border: 1px solid #ccced7
-  padding: 9px
-  width: 230px
-  margin-top: -5px
-  margin-bottom: 20px
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05)
+  padding: 10px 20px
+  width: 500px
+  transition: all 0.3s ease
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06)
+  font-size: 15px
+  background-color: white
+  margin-bottom: 30px
 
-  
+  &::placeholder
+    color: #999
 
+  &:focus
+    border: 2px solid $color-azul-principal
+    outline: none
+    box-shadow: 0 0 8px rgba(0, 27, 65, 0.2)
 
 .buscador:focus
   border: 2px solid #a6cbf3
@@ -240,6 +247,9 @@ tbody tr
 tbody tr:hover
   transform: scale(1.01)
 
+.descripcion-cell
+  white-space: nowrap
+
 @media (max-width: 768px)
   .contenido-principal
     padding: 20px
@@ -254,3 +264,16 @@ tbody tr:hover
   .buscador
     width: 80%
     margin-bottom: 15px
+
+  .descripcion-cell
+    max-width: 150px
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis  
+
+@media (max-width: 1440px)
+  .descripcion-cell
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis
+
