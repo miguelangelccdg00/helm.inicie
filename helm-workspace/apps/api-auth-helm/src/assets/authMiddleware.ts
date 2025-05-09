@@ -30,6 +30,7 @@ const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) =>
     {
         console.error('Error al verificar el token: ', error);
         // Redirige también si el token es inválido o ha expirado
+        
         return res.redirect('/login');
     }
 };

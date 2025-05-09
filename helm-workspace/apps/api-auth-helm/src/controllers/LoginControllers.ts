@@ -64,7 +64,15 @@ class LoginController
             );
 
             // Devuelve el token y los detalles del usuario en la respuesta
-            res.status(201).json({ message: 'Usuario logueado con éxito', token});
+            res.status(201).json({
+                message: 'Usuario logueado con éxito',
+                token,
+                user: {
+                    id: usuario.id_user,
+                    username: usuario.username,
+                    email: usuario.email
+                }
+            });
         } 
         catch (error) 
         {
