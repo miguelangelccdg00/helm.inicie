@@ -25,7 +25,7 @@ interface SectorParams {
 }
 
 class StoreSectoresService 
-{
+{    
     /** 
      * Crea un nuevo sector y lo asocia automáticamente con todas las soluciones y ámbitos existentes.
      * 
@@ -336,7 +336,8 @@ class StoreSectoresService
      * @param {SolucionSector} solucionSector - Datos alternativos de la relación.
      * @returns {Promise<SolucionSector>} Relación actualizada.
      */
-    async updateSolucionSectores(idSolucion: number, solucionSector: SolucionSector): Promise<SolucionSector> {
+    async updateSolucionSectores(idSolucion: number, solucionSector: SolucionSector): Promise<SolucionSector> 
+    {
         try {
             const { id_sector, descalternativa, textoalternativo } = solucionSector;
 
@@ -367,11 +368,124 @@ class StoreSectoresService
                 descalternativa: descalternativa || '',
                 textoalternativo: textoalternativo || ''
             };
-        } catch (error) {
+        } 
+        catch (error) 
+        {
             console.error('Error al actualizar la relación sector-solución:', error);
             throw new Error('Error al actualizar la relación sector-solución');
         }
     }
+
+    async updateSolucionAmbitoSectores(idSolucion: number, solucionAmbitoSector: SolucionAmbitoSector): Promise<SolucionAmbitoSector> 
+    {
+        try 
+        {
+            const { 
+                id_ambito,
+                id_solucion,
+                id_sector,
+                titleweb,
+                title,
+                subtitle,
+                description,
+                slug,
+                icon,
+                multimediaUri,
+                multimediaTypeId,
+                problemaTitle,
+                problemaPragma,
+                solucionTitle,
+                solucionPragma,
+                caracteristicasTitle,
+                caracteristicasPragma,
+                casosdeusoTitle,
+                casosdeusoPragma,
+                firstCtaTitle,
+                firstCtaPragma,
+                secondCtaTitle,
+                secondCtaPragma,
+                beneficiosTitle,
+                beneficiosPragma
+            } = solucionAmbitoSector;
+
+            if (!idSolucion || !id_sector || !id_ambito) 
+            {
+                throw new Error('Faltan id_solucion, id_sector o id_ambito para actualizar la relación');
+            }
+
+            const [rows] = await pool.promise().query(
+                `SELECT * FROM storeSolucionesAmbitosSectores 
+                WHERE id_solucion = ? AND id_sector = ? AND id_ambito = ?`,
+                [idSolucion, id_sector, id_ambito]
+            ) as any[];
+
+            if (!rows || rows.length === 0) {
+                throw new Error('No existe la relación ambito-sector-solución para actualizar');
+            }
+
+            await pool.promise().query(
+                `UPDATE storeSolucionesAmbitosSectores SET
+                    titleweb = ?, 
+                    title = ?, 
+                    subtitle = ?,  
+                    description = ?, 
+                    slug = ?, 
+                    icon = ?, 
+                    multimediaUri = ?, 
+                    multimediaTypeId = ?, 
+                    problemaTitle = ?, 
+                    problemaPragma = ?, 
+                    solucionTitle = ?, 
+                    solucionPragma = ?, 
+                    caracteristicasTitle = ?, 
+                    caracteristicasPragma = ?, 
+                    casosdeusoTitle = ?, 
+                    casosdeusoPragma = ?, 
+                    firstCtaTitle = ?, 
+                    firstCtaPragma = ?, 
+                    secondCtaTitle = ?, 
+                    secondCtaPragma = ?, 
+                    beneficiosTitle = ?, 
+                    beneficiosPragma = ?
+                WHERE id_solucion = ? AND id_sector = ? AND id_ambito = ?`,
+                [
+                    titleweb,
+                    title,
+                    subtitle,
+                    description,
+                    slug,
+                    icon,
+                    multimediaUri,
+                    multimediaTypeId,
+                    problemaTitle,
+                    problemaPragma,
+                    solucionTitle,
+                    solucionPragma,
+                    caracteristicasTitle,
+                    caracteristicasPragma,
+                    casosdeusoTitle,
+                    casosdeusoPragma,
+                    firstCtaTitle,
+                    firstCtaPragma,
+                    secondCtaTitle,
+                    secondCtaPragma,
+                    beneficiosTitle,
+                    beneficiosPragma,
+                    idSolucion,
+                    id_sector,
+                    id_ambito
+                ]
+            );
+
+            return solucionAmbitoSector;
+        } 
+        catch (error) 
+        {
+            console.error('Error al actualizar la relación ambito-sector-solución:', error);
+            throw new Error('Error al actualizar la relación ambito-sector-solución');
+        }
+    }
+
 
     /** 
      * Elimina un sector y su relación con una solución.

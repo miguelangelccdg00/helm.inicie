@@ -377,6 +377,55 @@ class storeSectoresControllers
   }
 
   /** 
+   * Modifica los datos de un sector dentro de una solución específica.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP que contiene el ID de la solución y los datos del sector a modificar.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve el resultado de la modificación del sector de solución.
+   * 
+   * @throws {400} Si los datos proporcionados para la modificación no son válidos.
+   * @throws {500} Error interno del servidor al modificar el sector de solución.
+   */
+  async modifySolucionAmbitosSectores(req: Request<{ idSolucion: string }, any, SolucionAmbitoSector>, res: Response): Promise<void>
+  {
+    try
+    {
+      const idSolucion = parseInt(req.params.idSolucion, 10);
+      const solucionAmbitoSector = req.body;
+
+      if (!idSolucion)
+      {
+        res.status(400).json({ message: 'ID de solución no proporcionado' });
+        return;
+      }
+
+      if (!solucionAmbitoSector)
+      {
+        res.status(400).json({ message: 'No se proporcionaron datos para actualizar' });
+        return;
+      }
+
+      const result = await StoreSectoresService.updateSolucionAmbitoSectores(
+        idSolucion,
+        solucionAmbitoSector
+      );
+
+      res.status(200).json({
+        message: 'SectorAmbitoSolución actualizado correctamente',
+        data: result,
+      });
+    }
+    catch (error)
+    {
+      console.error('❌ Error al modificar sector de solución:', error);
+      res.status(500).json({
+        message: 'Error interno del servidor al modificar el sector de solución',
+      });
+    }
+  }
+
+  /** 
    * Elimina una relación entre un sector y una solución.
    * 
    * @param {Request} req - Objeto de solicitud HTTP que contiene los IDs de la solución y el sector a eliminar.
