@@ -10,14 +10,13 @@ export interface AuthRequest extends Request
     user?: any;
 }
 
-// Middleware para verificar el token
 const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) => 
 {
     const token = req.header('Authorization')?.split(' ')[1];
 
     if (!token) 
-    {       
-        return res.redirect('/login');    
+    {
+        return res.status(403).json({ message: 'Token no proporcionado' });
     }
 
     try 
@@ -29,11 +28,10 @@ const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) =>
     catch (error) 
     {
         console.error('Error al verificar el token: ', error);
-        // Redirige también si el token es inválido o ha expirado
-        
-        return res.redirect('/login');
+        return res.status(403).json({ message: 'Token inválido' });
     }
 };
+
 
 
 /**
