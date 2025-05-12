@@ -23,8 +23,8 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(authReq).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401 || error.status === 403) {
-          console.warn('Interceptor detectó error 403/401, redirigiendo a login...');
+        if (error.status === 403) {
+          console.warn('Interceptor detectó error 403, redirigiendo a login...');
           console.log('Token inválido o expirado:', token);
           localStorage.clear();
           this.router.navigate(['/']);

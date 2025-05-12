@@ -18,6 +18,7 @@ export class LoginComponent {
   loginForm = new FormGroup({
     usuario: new FormControl('', Validators.required),
     contrasena: new FormControl('', Validators.required),
+    recordar: new FormControl(false),
   });
 
   // Placeholders dinámicos y banderas de visualización según el ancho de la pantalla
