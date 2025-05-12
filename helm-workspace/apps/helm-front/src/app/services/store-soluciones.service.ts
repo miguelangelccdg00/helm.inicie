@@ -59,7 +59,7 @@ export class StoreSolucionesService {
       titleweb: solucion.titleweb,
       multimediaUri: solucion.multimediaUri,
       multimediaTypeId: solucion.multimediaTypeId,
-      
+
       problemaTitle: solucion.problemaTitle,
       problemaPragma: solucion.problemaPragma,
       solucionTitle: solucion.solucionTitle,
@@ -112,9 +112,9 @@ export class StoreSolucionesService {
   getBeneficiosBySolucion(idSolucion: number): Observable<StoreBeneficios[]> {
     const url = `${this.beneficiosUrl}/listBeneficios/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    
+
     console.info('ℹ️ Consultando beneficios asociados...');
-    
+
     return this.https.get<StoreBeneficios[]>(url, { headers }).pipe(
       map(beneficios => {
         if (beneficios && beneficios.length > 0) {
@@ -142,10 +142,10 @@ export class StoreSolucionesService {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json, text/plain, */*');
-    
+
     console.info('ℹ️ Consultando listado completo de beneficios...');
-    
-    return this.https.get<StoreBeneficios[]>(url, { 
+
+    return this.https.get<StoreBeneficios[]>(url, {
       headers,
       observe: 'response',
       responseType: 'json'
@@ -208,11 +208,11 @@ export class StoreSolucionesService {
   modifyProblema(idProblema: number, problema: StoreProblemas): Observable<StoreProblemas> {
     const url = `${this.problemasUrl}/modifyStoreProblema/${idProblema}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-  
+
     const problemaToUpdate = {
       description: problema.description
     };
-  
+
     return this.https.put<StoreProblemas>(url, problemaToUpdate, { headers });
   }
 
@@ -253,9 +253,9 @@ export class StoreSolucionesService {
   getProblemasBySolucion(idSolucion: number): Observable<StoreProblemas[]> {
     const url = `${this.problemasUrl}/listProblemas/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    
+
     console.info('ℹ️ Consultando problemas asociados...');
-    
+
     return this.https.get<StoreProblemas[]>(url, { headers }).pipe(
       map(problemas => {
         if (problemas && problemas.length > 0) {
@@ -282,10 +282,10 @@ export class StoreSolucionesService {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json, text/plain, */*');
-    
+
     console.info('ℹ️ Consultando listado completo de problemas...');
-    
-    return this.https.get<StoreProblemas[]>(url, { 
+
+    return this.https.get<StoreProblemas[]>(url, {
       headers,
       observe: 'response',
       responseType: 'json'
@@ -351,22 +351,22 @@ export class StoreSolucionesService {
   createCaracteristica(idSolucion: number, caracteristica: StoreCaracteristicas): Observable<CreateCaracteristicaResponse> {
     const url = `${this.caracteristicasUrl}/createCaracteristicas/${idSolucion}`;
     const headers = { 'Content-Type': 'application/json' };
-  
+
     const { titulo, description } = caracteristica;
     console.log('Valores originales a guardar:', { title: titulo, description });
-  
+
     return this.https.post<CreateCaracteristicaResponse>(url, { titulo, description }, { headers }).pipe(
       switchMap(response =>
         this.getStoreSolucionById(idSolucion).pipe(
           switchMap(solucion => {
             solucion.caracteristicasTitle = titulo || solucion.caracteristicasTitle;
             solucion.caracteristicasPragma = description;
-  
+
             console.log('Actualizando solución después de crear característica:', {
               caracteristicasTitle: titulo,
               caracteristicasPragma: description
             });
-  
+
             return this.updateStoreSolucion(idSolucion, solucion).pipe(
               map(() => ({
                 ...response,
@@ -381,7 +381,7 @@ export class StoreSolucionesService {
         )
       )
     );
-  }  
+  }
 
   /* Elimina una característica por su id */
   deleteCaracteristica(idCaracteristica: number): Observable<DeleteCaracteristicaResponse> {
@@ -394,9 +394,9 @@ export class StoreSolucionesService {
   getCaracteristicasBySolucion(idSolucion: number): Observable<StoreCaracteristicas[]> {
     const url = `${this.caracteristicasUrl}/listCaracteristicas/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    
+
     console.info('ℹ️ Consultando características asociadas...');
-    
+
     return this.https.get<StoreCaracteristicas[]>(url, { headers }).pipe(
       map(caracteristicas => {
         if (caracteristicas && caracteristicas.length > 0) {
@@ -423,10 +423,10 @@ export class StoreSolucionesService {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json, text/plain, */*');
-    
+
     console.info('ℹ️ Consultando listado completo de características...');
-    
-    return this.https.get<StoreCaracteristicas[]>(url, { 
+
+    return this.https.get<StoreCaracteristicas[]>(url, {
       headers,
       observe: 'response',
       responseType: 'json'
@@ -475,13 +475,13 @@ export class StoreSolucionesService {
     const actualizarCaracteristicas = (solucion: any): Observable<any> => {
       solucion.caracteristicasTitle = caracteristica.titulo || solucion.caracteristicasTitle;
       solucion.caracteristicasPragma = caracteristica.description;
-      
+
       console.log('Actualizando caracteristicasTitle a:', caracteristica.titulo);
       console.log('Actualizando caracteristicasPragma a:', caracteristica.description);
-      
+
       return this.updateStoreSolucion(idSolucion, solucion);
     };
-  
+
     if (caracteristica.id_caracteristica) {
       return this.asociarCaracteristicaASolucion(idSolucion, caracteristica.id_caracteristica).pipe(
         switchMap(() => this.getStoreSolucionById(idSolucion).pipe(switchMap(actualizarCaracteristicas)))
@@ -496,7 +496,7 @@ export class StoreSolucionesService {
         }))
       );
     }
-  }  
+  }
 
   /* Ámbitos */
 
@@ -506,10 +506,10 @@ export class StoreSolucionesService {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json, text/plain, */*');
-    
+
     console.info('ℹ️ Consultando ámbitos asociados...');
-    
-    return this.https.get<StoreAmbitos[]>(url, { 
+
+    return this.https.get<StoreAmbitos[]>(url, {
       headers,
       observe: 'response',
       responseType: 'json'
@@ -539,10 +539,10 @@ export class StoreSolucionesService {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json, text/plain, */*');
-    
+
     console.info('ℹ️ Consultando listado completo de ámbitos...');
-    
-    return this.https.get<StoreAmbitos[]>(url, { 
+
+    return this.https.get<StoreAmbitos[]>(url, {
       headers,
       observe: 'response',
       responseType: 'json'
@@ -620,9 +620,9 @@ export class StoreSolucionesService {
   listAmbitos(idSolucion: number): Observable<SolucionAmbito[]> {
     const url = `${this.ambitosUrl}/listAmbitos/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    
+
     console.info('ℹ️ Solicitando ámbitos por solución:', url);
-    
+
     return this.https.get<SolucionAmbito[]>(url, { headers }).pipe(
       map(response => {
         if (!response || response.length === 0) {
@@ -688,13 +688,13 @@ export class StoreSolucionesService {
   updateSolucionAmbitos(idSolucion: number, solucionAmbito: SolucionAmbito): Observable<any> {
     const url = `${this.ambitosUrl}/modifySolucionAmbitos/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    
+
     console.log('⌛ Actualizando ámbito de la solución:', {
       url,
       idSolucion,
       solucionAmbito
     });
-  
+
     return this.https.put<any>(url, solucionAmbito, { headers }).pipe(
       map(response => {
         console.log('✅ Ámbito actualizado correctamente:', response);
@@ -738,9 +738,9 @@ export class StoreSolucionesService {
       'Content-Type': 'application/json',
       'Accept': 'application/json, text/plain, */*'
     };
-  
+
     console.info('ℹ️ Consultando listado completo de sectores...');
-  
+
     return this.https.get<StoreSectores[]>(url, { headers }).pipe(
       tap(sectores => {
         if (sectores.length > 0) {
@@ -758,7 +758,7 @@ export class StoreSolucionesService {
         return of([]);
       })
     );
-  }  
+  }
 
   /* Obtención de sectores por solución específica de su ID */
   getSectoresBySolucion(idSolucion: number): Observable<StoreSectores[]> {
@@ -766,10 +766,10 @@ export class StoreSolucionesService {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json, text/plain, */*');
-    
+
     console.info('ℹ️ Consultando sectores asociados...');
-    
-    return this.https.get<StoreSectores[]>(url, { 
+
+    return this.https.get<StoreSectores[]>(url, {
       headers,
       observe: 'response',
       responseType: 'json'
@@ -797,18 +797,18 @@ export class StoreSolucionesService {
   listSectores(idSolucion: number): Observable<SolucionSector[]> {
     const url = `${this.sectoresUrl}/listSectores/${idSolucion}`;
     const headers = { 'Content-Type': 'application/json' };
-  
+
     console.info('ℹ️ Consultando sectores de la solución:', idSolucion);
-  
+
     return this.https.get<any[]>(url, { headers }).pipe(
       map(response => {
         const sectoresArray = Array.isArray(response) ? response : [response];
-  
+
         return sectoresArray.map(sector => ({
           id_solucion: sector.id_solucion || idSolucion,
           id_sector: sector.id_sector,
           descalternativa: sector.dawdawd || sector.descalternativa || '',
-          textoalternativo: sector.textoalternativo || sector.null || '' 
+          textoalternativo: sector.textoalternativo || sector.null || ''
         }));
       }),
       catchError(error => {
@@ -820,7 +820,7 @@ export class StoreSolucionesService {
         return of([]);
       })
     );
-  }  
+  }
 
   /* Asociar un sector existente a una solución */
   asociarSectorASolucion(idSolucion: number, idSector: number): Observable<any> {
@@ -853,18 +853,18 @@ export class StoreSolucionesService {
     return this.https.put<StoreSectores>(url, sectorToUpdate, { headers });
 
   }
-  
+
   /* Modificación de los sectores asociados a una solución */
   updateSolucionSectores(idSolucion: number, solucionSector: SolucionSector): Observable<any> {
     const url = `${this.sectoresUrl}/modifySolucionSectores/${idSolucion}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    
+
     console.log('⌛ Actualizando sector de la solución:', {
       url,
       idSolucion,
       solucionSector
     });
-  
+
     return this.https.put<any>(url, solucionSector, { headers }).pipe(
       map(response => {
         console.log('✅ Sector actualizado correctamente:', response);
@@ -883,7 +883,7 @@ export class StoreSolucionesService {
   }
 
   /* Elimina un sector específico */
-  deleteSector(idSolucion: number,idSector: number): Observable<DeleteSectorResponse> {
+  deleteSector(idSolucion: number, idSector: number): Observable<DeleteSectorResponse> {
     const url = `${this.sectoresUrl}/deleteSectores/${idSolucion}/${idSector}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.delete<DeleteSectorResponse>(url, { headers });
@@ -893,14 +893,14 @@ export class StoreSolucionesService {
   modifySolucionSector(idSolucion: number, idSector: number, solucionSector: SolucionSector): Observable<SolucionSector> {
     const url = `${this.sectoresUrl}/modifySectores/${idSolucion}/${idSector}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-  
+
     const solucionSectorToUpdate: SolucionSector = {
       id_solucion: idSolucion,
       id_sector: idSector,
       descalternativa: solucionSector.descalternativa,
       textoalternativo: solucionSector.textoalternativo
     };
-  
+
     return this.https.put<SolucionSector>(url, solucionSectorToUpdate, { headers }).pipe(
       map(response => {
         console.log('✅ Sector actualizado correctamente:', response);
@@ -917,9 +917,9 @@ export class StoreSolucionesService {
   deleteSolucionSector(idSolucion: number, idSector: number): Observable<DeleteSolucionSectorResponse> {
     const url = `${this.sectoresUrl}/deleteSolucionSector/${idSolucion}/${idSector}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    
+
     console.log('Eliminando relación sector-solución:', url);
-    
+
     return this.https.delete<DeleteSolucionSectorResponse>(url, { headers }).pipe(
       map(response => {
         console.log('Respuesta al eliminar relación:', response);
@@ -938,9 +938,9 @@ export class StoreSolucionesService {
   getStoreSolucionAmbitosSectores(): Observable<SolucionAmbitoSector[]> {
     const url = `${this.sectoresUrl}/listSectoresAmbitosSoluciones`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    
+
     console.info('ℹ️ Consultando tabla de storeSolucionesAmbitosSectores...');
-    
+
     return this.https.get<SolucionAmbitoSector[]>(url, { headers }).pipe(
       map(response => {
         if (response && response.length > 0) {
@@ -957,6 +957,30 @@ export class StoreSolucionesService {
           console.warn('⚠️ Error al consultar la tabla de storeSolucionesAmbitosSectores:', error);
         }
         return of([]);
+      })
+    );
+  }
+
+  /* Modifica la solución de un ámbito y sector */
+  modifySolucionAmbitoSector(idSolucion: number, idAmbito: number, idSector: number, solucionAmbitoSector: SolucionAmbitoSector): Observable<SolucionAmbitoSector> {
+    const url = `${this.sectoresUrl}/modifySolucionAmbitosSectores/${idSolucion}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    const solucionAmbitoSectorToUpdate: SolucionAmbitoSector = {
+      ...solucionAmbitoSector,
+      id_ambito: idAmbito,
+      id_solucion: idSolucion,
+      id_sector: idSector,
+    };
+
+    return this.https.put<SolucionAmbitoSector>(url, solucionAmbitoSectorToUpdate, { headers }).pipe(
+      map(response => {
+        console.log('✅ Solución-Ámbito-Sector modificada correctamente:', response);
+        return response;
+      }),
+      catchError(error => {
+        console.error('❌ Error al modificar solución-ámbito-sector:', error);
+        return throwError(() => new Error(`Error al modificar: ${error.message}`));
       })
     );
   }

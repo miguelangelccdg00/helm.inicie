@@ -36,7 +36,7 @@ export class ModificarSolucionComponent implements OnInit {
   @ViewChild('formularioSolucionAmbito', { static: false }) formularioSolucionAmbito: ElementRef | undefined;
   @ViewChild('scrollSectores', { static: false }) scrollSectores: ElementRef | undefined;
   @ViewChild('formularioSolucionSector', { static: false }) formularioSolucionSector: ElementRef | undefined;
-  
+  @ViewChild('formularioSolucionAmbitoSector', { static: false }) formularioSolucionAmbitoSector: ElementRef | undefined;
 
   // --- SOLUCIONES ---
 
@@ -1662,6 +1662,101 @@ export class ModificarSolucionComponent implements OnInit {
     setTimeout(() => {
       if (this.formularioSolucionSector) {
         this.formularioSolucionSector.nativeElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  }
+
+  //Función para modificar una solución de una solución de un ámbito y sector.
+  modificarSolucionAmbitoSector() {
+    if (!this.solucion || !this.solucionAmbitoSectorSeleccionado) {
+      console.error('No hay solución o solución por ámbito sector seleccionada');
+      return;
+    }
+
+    const idSolucion = this.solucion.id_solucion;
+    const idSector = this.solucionAmbitoSectorSeleccionado.id_sector;
+    const idAmbito = this.solucionAmbitoSectorSeleccionado.id_ambito;
+
+    if (!idSolucion || !idSector || !idAmbito) {
+      console.error('ID de solución, ID de sector o ID de ámbito no disponibles');
+      return;
+    }
+
+    const solucionAmbitoSectorActualizada: SolucionAmbitoSector = {
+      ...this.nuevaSolucionAmbitoSector,
+      id_ambito: idAmbito,
+      id_solucion: idSolucion,
+      id_sector: idSector,
+    };
+
+    this.storeSolucionesService.modifySolucionAmbitoSector(idSolucion, idAmbito, idSector, solucionAmbitoSectorActualizada).subscribe({
+      next: (response) => {
+        console.log('Solución por ámbito sector actualizada correctamente:', response);
+    
+        const index = this.solucionesAmbitosSectores.findIndex(
+          ss => ss.id_solucion === idSolucion && ss.id_sector === idSector
+        );
+    
+        if (index !== -1) {
+          this.solucionesAmbitosSectores[index] = {
+            ...this.solucionesAmbitosSectores[index],
+            ...this.nuevaSolucionAmbitoSector
+          };
+        }
+    
+        this.mostrarModificarSolucionAmbitoSector = false;
+        this.solucionAmbitoSectorSeleccionado = null;
+      },
+      error: (error) => {
+        console.error('Error al actualizar la solución por ámbito sector:', error);
+      }
+    });
+  }
+
+  //Función para preparar la edición de una solución de un ámbito y sector.
+  editarSolucionAmbitoSector(solucionAmbitoSector: SolucionAmbitoSector, event?: MouseEvent) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    this.solucionAmbitoSectorSeleccionado = solucionAmbitoSector;
+    this.nuevaSolucionAmbitoSector = {
+      titleweb: solucionAmbitoSector.titleweb,
+      title: solucionAmbitoSector.title,
+      subtitle: solucionAmbitoSector.subtitle,
+      description: solucionAmbitoSector.description,
+      slug: solucionAmbitoSector.slug,
+      icon: solucionAmbitoSector.icon,
+      multimediaUri: solucionAmbitoSector.multimediaUri,
+      multimediaTypeId: solucionAmbitoSector.multimediaTypeId,
+      problemaTitle: solucionAmbitoSector.problemaTitle,
+      problemaPragma: solucionAmbitoSector.problemaPragma,
+      solucionTitle: solucionAmbitoSector.solucionTitle,
+      solucionPragma: solucionAmbitoSector.solucionPragma,
+      caracteristicasTitle: solucionAmbitoSector.caracteristicasTitle,
+      caracteristicasPragma: solucionAmbitoSector.caracteristicasPragma,
+      casosdeusoTitle: solucionAmbitoSector.casosdeusoTitle,
+      casosdeusoPragma: solucionAmbitoSector.casosdeusoPragma,
+      firstCtaTitle: solucionAmbitoSector.firstCtaTitle,
+      firstCtaPragma: solucionAmbitoSector.firstCtaPragma,
+      secondCtaTitle: solucionAmbitoSector.secondCtaTitle,
+      secondCtaPragma: solucionAmbitoSector.secondCtaPragma,
+      beneficiosTitle: solucionAmbitoSector.beneficiosTitle,
+      beneficiosPragma: solucionAmbitoSector.beneficiosPragma,
+    };
+
+    this.mostrarModificarSolucionAmbitoSector = true;
+    this.mostrarBotonModificarSolucionAmbitoSector = true;
+    this.mostrarOpcionesSolucionAmbitoSector = false;
+
+    if (this.scrollSectores) {
+      this.scrollSectores.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    setTimeout(() => {
+      if (this.formularioSolucionAmbitoSector) {
+        this.formularioSolucionAmbitoSector.nativeElement.scrollIntoView({ behavior: 'smooth' });
       }
     }, 100);
   }
