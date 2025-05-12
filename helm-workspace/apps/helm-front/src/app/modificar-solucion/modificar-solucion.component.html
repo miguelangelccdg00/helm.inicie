@@ -1024,6 +1024,222 @@
 
       </div>
 
+      <!-- <div class="flex4">
+        <div class="subseccion">
+            <h3 class="titulo-subseccion">Solución según cada ámbito sector</h3>
+
+            Formulario para modificar solución por ámbito y sector
+            <div *ngIf="mostrarModificarSolucionAmbitoSector" class="subseccion" #formularioSolucionAmbitoSector>
+              <h3 class="titulo-subseccion">Modificar solución por ámbito y sector</h3>
+
+              <form (ngSubmit)="modificarSolucionAmbitoSector()">
+                <div class="grid-container">
+                  <div class="form-group col-6">
+                    <label for="titleweb">titleweb:</label>
+                    <input id="titleweb" [(ngModel)]="nuevaSolucionAmbitoSector.titleweb" name="titleweb" placeholder="titleweb"
+                      pInputText variant="filled">
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="title">title:</label>
+                    <input id="title" [(ngModel)]="nuevaSolucionAmbitoSector.title" name="title" placeholder="title"
+                      pInputText variant="filled">
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="subtitle">subtitle:</label>
+                    <input id="subtitle" [(ngModel)]="nuevaSolucionAmbitoSector.subtitle" name="subtitle"
+                      placeholder="subtitle" pInputText variant="filled">
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="thread_id">thread_id:</label>
+                    <input id="thread_id" [(ngModel)]="nuevaSolucionAmbitoSector.thread_id" name="thread_id"
+                      placeholder="thread_id" pInputText variant="filled">
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="description">description:</label>
+                    <input id="description" [(ngModel)]="nuevaSolucionAmbitoSector.description" name="description" placeholder="description" pInputText
+                      variant="filled">
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="slug">slug:</label>
+                    <input id="slug" [(ngModel)]="nuevaSolucionAmbitoSector.slug" name="slug" placeholder="slug" pInputText
+                      variant="filled">
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="icon">icon:</label>
+                    <input id="icon" [(ngModel)]="nuevaSolucionAmbitoSector.icon" name="icon" placeholder="icon" pInputText
+                      variant="filled">
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="multimediaUri">multimediaUri:</label>
+                    <input id="multimediaUri" [(ngModel)]="nuevaSolucionAmbitoSector.multimediaUri" name="multimediaUri"
+                      placeholder="multimediaUri" pInputText variant="filled">
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="multimediaTypeId">multimediaTypeId:</label>
+                    <input id="multimediaTypeId" [(ngModel)]="nuevaSolucionAmbitoSector.multimediaTypeId"
+                      name="multimediaTypeId" placeholder="multimediaTypeId" pInputText variant="filled">
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="problemaTitle">problemaTitle:</label>
+                    <input id="problemaTitle" [(ngModel)]="nuevaSolucionAmbitoSector.problemaTitle" name="problemaTitle"
+                      placeholder="problemaTitle" pInputText variant="filled">
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="problemaPragma">problemaPragma:</label>
+                    <textarea id="problemaPragma" [(ngModel)]="nuevaSolucionAmbitoSector.problemaPragma" name="problemaPragma"
+                      placeholder="problemaPragma" pInputText variant="filled"></textarea>
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="solucionTitle">solucionTitle:</label>
+                    <input id="solucionTitle" [(ngModel)]="nuevaSolucionAmbitoSector.solucionTitle" name="solucionTitle"
+                      placeholder="solucionTitle" pInputText variant="filled">
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="solucionPragma">solucionPragma:</label>
+                    <textarea id="solucionPragma" [(ngModel)]="nuevaSolucionAmbitoSector.solucionPragma" name="solucionPragma"
+                      placeholder="solucionPragma" pInputText variant="filled"></textarea>
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="caracteristicasTitle">caracteristicasTitle:</label>
+                    <input id="caracteristicasTitle" [(ngModel)]="nuevaSolucionAmbitoSector.caracteristicasTitle"
+                      name="caracteristicasTitle" placeholder="caracteristicasTitle" pInputText variant="filled">
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="caracteristicasPragma">caracteristicasPragma:</label>
+                    <textarea id="caracteristicasPragma" [(ngModel)]="nuevaSolucionAmbitoSector.caracteristicasPragma"
+                      name="caracteristicasPragma" placeholder="caracteristicasPragma" pInputText
+                      variant="filled"></textarea>
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="casosdeusoTitle">casosdeusoTitle:</label>
+                    <input id="casosdeusoTitle" [(ngModel)]="nuevaSolucionAmbitoSector.casosdeusoTitle" name="casosdeusoTitle"
+                      placeholder="casosdeusoTitle" pInputText variant="filled">
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="casosdeusoPragma">casosdeusoPragma:</label>
+                    <textarea id="casosdeusoPragma" [(ngModel)]="nuevaSolucionAmbitoSector.casosdeusoPragma"
+                      name="casosdeusoPragma" placeholder="casosdeusoPragma" pInputText variant="filled"></textarea>
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="firstCtaTitle">firstCtaTitle:</label>
+                    <input id="firstCtaTitle" [(ngModel)]="nuevaSolucionAmbitoSector.firstCtaTitle" name="firstCtaTitle"
+                      placeholder="firstCtaTitle" pInputText variant="filled">
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="firstCtaPragma">firstCtaPragma:</label>
+                    <textarea id="firstCtaPragma" [(ngModel)]="nuevaSolucionAmbitoSector.firstCtaPragma" name="firstCtaPragma"
+                      placeholder="firstCtaPragma" pInputText variant="filled"></textarea>
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="secondCtaTitle">secondCtaTitle:</label>
+                    <input id="secondCtaTitle" [(ngModel)]="nuevaSolucionAmbitoSector.secondCtaTitle" name="secondCtaTitle"
+                      placeholder="secondCtaTitle" pInputText variant="filled">
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="secondCtaPragma">secondCtaPragma:</label>
+                    <textarea id="secondCtaPragma" [(ngModel)]="nuevaSolucionAmbitoSector.secondCtaPragma"
+                      name="secondCtaPragma" placeholder="secondCtaPragma" pInputText variant="filled"></textarea>
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="beneficiosTitle">beneficiosTitle:</label>
+                    <input id="beneficiosTitle" [(ngModel)]="nuevaSolucionAmbitoSector.beneficiosTitle" name="beneficiosTitle"
+                      placeholder="beneficiosTitle" pInputText variant="filled">
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="beneficiosPragma">beneficiosPragma:</label>
+                    <textarea id="beneficiosPragma" [(ngModel)]="nuevaSolucionAmbitoSector.beneficiosPragma"
+                      name="beneficiosPragma" placeholder="beneficiosPragma" pInputText variant="filled"></textarea>
+                  </div>
+                </div>
+                <div class="botones-container">
+                  <button type="submit">Modificar</button>
+                  <button type="button"
+                    (click)="mostrarModificarSolucionAmbitoSector = false; mostrarBotonModificarSolucionAmbitoSector = true">Cancelar</button>
+                </div>
+              </form>
+            </div>
+
+            <div *ngIf="solucionesAmbitosSectores && solucionesAmbitosSectores.length">
+              <p-table [value]="solucionesAmbitosSectores" [paginator]="true" [rows]="5"
+                [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>ID ambito</th>
+                    <th>ID solucion</th>
+                    <th>ID sector</th>
+                    <th>titleweb</th>
+                    <th>title</th>
+                    <th>subtitle</th>
+                    <th>thread_id</th>
+                    <th>description</th>
+                    <th>slug</th>
+                    <th>icon</th>
+                    <th>multimediaUri</th>
+                    <th>multimediaTypeId</th>
+                    <th>problemaTitle</th>
+                    <th>problemaPragma</th>
+                    <th>solucionTitle</th>
+                    <th>solucionPragma</th>
+                    <th>caracteristicasTitle</th>
+                    <th>caracteristicasPragma</th>
+                    <th>casosdeusoTitle</th>
+                    <th>casosdeusoPragma</th>
+                    <th>firstCtaTitle</th>
+                    <th>firstCtaPragma</th>
+                    <th>secondCtaTitle</th>
+                    <th>secondCtaPragma</th>
+                    <th>beneficiosTitle</th>
+                    <th>beneficiosPragma</th>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-solucionAmbitoSector>
+                  <tr>
+                    <td>{{ solucionAmbitoSector.id_ambito }}</td>
+                    <td>{{ solucionAmbitoSector.id_solucion }}</td>
+                    <td>{{ solucionAmbitoSector.id_sector }}</td>
+                    <td>{{ solucionAmbitoSector.titleweb }}</td>
+                    <td>{{ solucionAmbitoSector.title }}</td>
+                    <td>{{ solucionAmbitoSector.subtitle }}</td>
+                    <td>{{ solucionAmbitoSector.thread_id }}</td>
+                    <td>{{ solucionAmbitoSector.description }}</td>
+                    <td>{{ solucionAmbitoSector.slug }}</td>
+                    <td>{{ solucionAmbitoSector.icon }}</td>
+                    <td>{{ solucionAmbitoSector.multimediaUri }}</td>
+                    <td>{{ solucionAmbitoSector.multimediaTypeId }}</td>
+                    <td>{{ solucionAmbitoSector.problemaTitle }}</td>
+                    <td>{{ solucionAmbitoSector.problemaPragma }}</td>
+                    <td>{{ solucionAmbitoSector.solucionTitle }}</td>
+                    <td>{{ solucionAmbitoSector.solucionPragma }}</td>
+                    <td>{{ solucionAmbitoSector.caracteristicasTitle }}</td>
+                    <td>{{ solucionAmbitoSector.caracteristicasPragma }}</td>
+                    <td>{{ solucionAmbitoSector.casosdeusoTitle }}</td>
+                    <td>{{ solucionAmbitoSector.casosdeusoPragma }}</td>
+                    <td>{{ solucionAmbitoSector.firstCtaTitle }}</td>
+                    <td>{{ solucionAmbitoSector.firstCtaPragma }}</td>
+                    <td>{{ solucionAmbitoSector.secondCtaTitle }}</td>
+                    <td>{{ solucionAmbitoSector.secondCtaPragma }}</td>
+                    <td>{{ solucionAmbitoSector.beneficiosTitle }}</td>
+                    <td>{{ solucionAmbitoSector.beneficiosPragma }}</td>
+                    <td>
+                      <span (click)="editarSolucionAmbitoSector(solucionAmbitoSector)" class="emojis">✏️</span>
+                    </td>
+                    <td>
+                      <span
+                        (click)="confirmarEliminarSolucionAmbitoSector(solucionAmbitoSector.id_sector!, solucion.id_solucion!, $event)"
+                        class="emojis">🗑️</span>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+
+            <div *ngIf="!solucionesAmbitosSectores || solucionesAmbitosSectores.length === 0">
+              <p>No hay sectores o ámbitos asociados a esta solución.</p>
+            </div>
+          </div>
+      </div> -->
+
       <div class="botones-container2">
         <button type="submit">Guardar Cambios</button>
         <button type="button" class="btn-secondary" (click)="cancelar()">Cancelar</button>
@@ -1150,3 +1366,20 @@
     </div>
   </div>
 </div>
+
+<!-- Modal de confirmación para eliminar solucionAmbitoSector -->
+<!-- <div class="modal-overlay" *ngIf="mostrarModalSolucionAmbitoSector">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2>Confirmar eliminación</h2>
+    </div>
+    <div class="modal-body">
+      <p>¿Está seguro de que desea eliminar esta solución del ámbito y sector?</p>
+      <p class="warning-text">Esta acción no se puede deshacer.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cancelarEliminarSolucionAmbitoSector()">Cancelar</button>
+      <button class="btn-eliminar" (click)="eliminarSolucionAmbitoSector()">Eliminar</button>
+    </div>
+  </div>
+</div> -->
