@@ -10,6 +10,7 @@ import { StoreAmbitos, CreateAmbitoResponse, DeleteAmbitoResponse } from '@model
 import { SolucionAmbito, DeleteSolucionAmbitoResponse } from '@modelos-shared/solucionAmbito';
 import { StoreSectores, CreateSectorResponse, DeleteSectorResponse } from '@modelos-shared/storeSectores';
 import { SolucionSector, DeleteSolucionSectorResponse } from '@modelos-shared/solucionSector';
+import { SolucionAmbitoSector } from '@modelos-shared/solucionAmbitoSector';
 import { tap } from 'rxjs/operators';
 
 @Injectable({
@@ -930,6 +931,36 @@ export class StoreSolucionesService {
       })
     );
   }
+
+  /* SolucionSectorAmbito */
+
+  /* Obtiene la tabla completa de storeSolucionesAmbitosSectores con los campos de la solución por ámbitos y sectores*/
+  getStoreSolucionAmbitosSectores(): Observable<SolucionAmbitoSector[]> {
+    const url = `${this.sectoresUrl}/listSectoresAmbitosSoluciones`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    
+    console.info('ℹ️ Consultando tabla de storeSolucionesAmbitosSectores...');
+    
+    return this.https.get<SolucionAmbitoSector[]>(url, { headers }).pipe(
+      map(response => {
+        if (response && response.length > 0) {
+          console.log('✅ Tabla de storeSolucionesAmbitosSectores recuperada correctamente');
+        } else {
+          console.info('ℹ️ No hay datos en la tabla de storeSolucionesAmbitosSectores');
+        }
+        return response || [];
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          console.info('ℹ️ Sin datos para mostrar en la tabla de storeSolucionesAmbitosSectores');
+        } else {
+          console.warn('⚠️ Error al consultar la tabla de storeSolucionesAmbitosSectores:', error);
+        }
+        return of([]);
+      })
+    );
+  }
+
 }
 
 
