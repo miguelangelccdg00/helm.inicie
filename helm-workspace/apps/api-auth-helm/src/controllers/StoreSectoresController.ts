@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import StoreSectoresService from '../services/StoreSectoresService';
 import StoreSolucionesService from '../services/StoreSolucionesService';
 import { StoreSectores, SolucionSector } from '../../../api-shared-helm/src/models/storeSectores';
+import {  SolucionAmbitoSector } from '../../../api-shared-helm/src/models/solucionAmbitoSector';
 
 interface CreateSectorBody extends Omit<StoreSectores, 'id_sector'> {}
 
@@ -172,6 +173,27 @@ class storeSectoresControllers
     catch (error)
     {
       console.warn('⚠️ Error listando los sectores:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
+
+  async listSectoresAmbitosSolucion(req: Request, res: Response): Promise<void>
+  {
+    try
+    {
+      const listSectoresAmbitosSolucion: SolucionAmbitoSector[] = await StoreSectoresService.listSectoresAmbitosSolucion();
+
+      if (!listSectoresAmbitosSolucion.length)
+      {
+        res.status(404).json({ message: 'No existen sectores' });
+        return;
+      }
+
+      res.status(202).json(listSectoresAmbitosSolucion);
+    }
+    catch (error)
+    {
+      console.warn('⚠️ Error listando los sectoresAmbitosSolucion:', error);
       res.status(500).json({ message: 'Error interno del servidor' });
     }
   }

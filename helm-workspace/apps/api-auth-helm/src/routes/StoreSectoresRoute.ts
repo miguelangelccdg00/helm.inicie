@@ -9,6 +9,11 @@ const router = Router();
 router.get('/listCompleteSectores', StoreSectoresController.listSectores);
 
 /**
+ * @description Obtencion de sectores, ambitos y soluciones
+ */
+router.get('/listSectoresAmbitosSoluciones', StoreSectoresController.listSectoresAmbitosSolucion);
+
+/**
  * @description Obtencion de sectores por solución específica de su ID
  */
 router.get('/listSectores/:idSolucion', StoreSectoresController.listIdSector);

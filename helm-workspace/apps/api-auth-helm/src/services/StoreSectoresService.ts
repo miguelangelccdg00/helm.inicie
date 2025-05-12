@@ -1,6 +1,8 @@
 import { pool } from '../../../api-shared-helm/src/databases/conexion';
 import { StoreSectores } from '../../../api-shared-helm/src/models/storeSectores';
 import { SolucionSector } from '../../../api-shared-helm/src/models/solucionSector';
+import { SolucionAmbitoSector } from '../../../api-shared-helm/src/models/solucionAmbitoSector';
+
 
 interface CreateSectorParams {
     description: string;
@@ -22,8 +24,8 @@ interface SectorParams {
     backgroundImage: string;
 }
 
-class StoreSectoresService {
-
+class StoreSectoresService 
+{
     /** 
      * Crea un nuevo sector y lo asocia automáticamente con todas las soluciones y ámbitos existentes.
      * 
@@ -146,6 +148,50 @@ class StoreSectoresService {
 
             return rows;
         } catch (error) {
+            console.error('Error al listar los sectores:', error);
+            throw new Error('Error al listar los sectores');
+        }
+    }
+
+    async listSectoresAmbitosSolucion(): Promise<SolucionAmbitoSector[]> 
+    {
+        try 
+        {
+            const [rows] = await pool.promise().query(`
+                SELECT  ssas.id_ambito,
+                    ssas.id_solucion,
+                    ssas.id_sector,
+                    ssas.description,
+                    ssas.title,
+                    ssas.subtitle,
+                    ssas.icon,
+                    ssas.titleweb,
+                    ssas.slug,
+                    ssas.multimediaUri,
+                    ssas.multimediaTypeId,
+                    ssas.problemaTitle,
+                    ssas.problemaPragma,
+                    ssas.solucionTitle,
+                    ssas.solucionPragma,
+                    ssas.caracteristicasTitle,
+                    ssas.caracteristicasPragma,
+                    ssas.casosdeusoTitle,
+                    ssas.casosdeusoPragma,
+                    ssas.firstCtaTitle,
+                    ssas.firstCtaPragma,
+                    ssas.secondCtaTitle,
+                    ssas.secondCtaPragma,
+                    ssas.beneficiosTitle,
+                    ssas.beneficiosPragma
+
+                FROM storeSolucionesAmbitosSectores ssas JOIN storeSolucionesAmbitos sa
+                JOIN storeSectores ss ON ss.id_sector = ssas.id_sector AND sa.id_ambito = ssas.id_ambito AND sa.id_solucion = ssas.id_solucion
+                `);
+
+            return rows;
+        } 
+        catch (error) 
+        {
             console.error('Error al listar los sectores:', error);
             throw new Error('Error al listar los sectores');
         }
