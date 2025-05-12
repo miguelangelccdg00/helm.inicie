@@ -472,6 +472,53 @@ class storeSectoresControllers
   }
 
   /** 
+   * Elimina una relación entre un sector y una solución.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP que contiene los IDs de la solución y el sector a eliminar.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve un mensaje confirmando la eliminación.
+   * 
+   * @throws {400} Si faltan IDs en la solicitud.
+   * @throws {500} Error interno del servidor al eliminar la relación.
+   */
+  async deleteSolucionSectorAmbito(req: Request<{ idSolucion: string; idSector: string; idAmbito: string  }>, res: Response): Promise<void>
+  {
+    try
+    {
+      const { idSolucion, idSector, idAmbito } = req.params;
+
+      if (!idSolucion || !idSector || !idAmbito)
+      {
+        res.status(400).json({ message: 'IDs no proporcionados' });
+        return;
+      }
+
+      const wasDeleted = await StoreSectoresService.deleteSolucionSectorAmbito(
+        Number(idSolucion),
+        Number(idSector),
+        Number(idAmbito)
+      );
+
+      if (!wasDeleted)
+      {
+        console.info('ℹ️ Relación sector-solución-ambito no encontrada');
+        res.status(404).json({ message: 'Relación sector-solución-ambito  no encontrada' });
+        return;
+      }
+
+      res.status(200).json({
+        message: 'Relación sector-solución-ambito  eliminada correctamente',
+      });
+    }
+    catch (error)
+    {
+      console.warn('⚠️ Error al eliminar la relación sector-solución-ambito :', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
+
+  /** 
    * Elimina un sector específico.
    * 
    * @param {Request} req - Objeto de solicitud HTTP que contiene los IDs de la solución y el sector a eliminar.

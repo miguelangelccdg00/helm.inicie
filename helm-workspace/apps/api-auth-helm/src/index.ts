@@ -142,6 +142,7 @@ app.get('/', (req: Request, res: Response): void =>
                         { method: 'PUT', path: '/modifySector/:idSector' },
                         { method: 'PUT', path: '/modifySolucionAmbitosSectores/:idSolucion' },
                         { method: 'DELETE', path: '/deleteSectores/:idSolucion/:idSector' },
+                        { method: 'DELETE', path: '/deleteSolucionSectorAmbito/:idSolucion/:idSector/:idAmbito' },
                         { method: 'DELETE', path: '/deleteSectorById/:idSector' }
                     ]
                 }

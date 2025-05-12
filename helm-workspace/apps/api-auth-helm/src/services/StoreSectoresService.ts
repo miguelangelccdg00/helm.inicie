@@ -513,6 +513,32 @@ class StoreSectoresService
         }
     }
 
+    /**
+     * Elimina una relación ambito-sector-solución específica.
+     * 
+     * @param {number} idSolucion - ID de la solución.
+     * @param {number} idSector - ID del sector.
+     * @param {number} idAmbito - ID del ámbito.
+     * @returns {Promise<boolean>} Verdadero si se eliminó al menos una fila.
+     */
+    async deleteSolucionSectorAmbito(idSolucion: number, idSector: number, idAmbito: number): Promise<boolean> 
+    {
+        try 
+        {
+            const [result] = await pool.promise().query(
+                `DELETE FROM storeSolucionesAmbitosSectores WHERE id_solucion = ? AND id_sector = ? AND id_ambito = ?`,
+                [idSolucion, idSector, idAmbito]
+            );
+
+            return result.affectedRows > 0;
+        } 
+        catch (error) 
+        {
+            console.error('Error al eliminar el sector:', error);
+            throw new Error('Error al eliminar el sector');
+        }
+    }
+
     /** 
      * Elimina un sector por su ID.
      * 

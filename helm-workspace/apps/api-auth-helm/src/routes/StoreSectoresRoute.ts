@@ -63,6 +63,11 @@ router.put('/modifySolucionAmbitosSectores/:idSolucion', StoreSectoresController
 router.delete('/deleteSolucionSector/:idSolucion/:idSector', StoreSectoresController.deleteSolucionSector);
 
 /**
+ * @description Eliminación de la relación entre un sector un ambito y una solución 
+ */
+router.delete('/deleteSolucionSectorAmbito/:idSolucion/:idSector/:idAmbito', StoreSectoresController.deleteSolucionSectorAmbito);
+
+/**
  * @description Eliminacion de un sector específico por su ID
  */
 router.delete('/deleteSectores/:idSolucion/:idSector', StoreSectoresController.deleteSector);
