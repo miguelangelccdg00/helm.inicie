@@ -296,7 +296,7 @@
           <div class="subseccion">
             <h3 class="titulo-subseccion">Características asociadas a la solución</h3>
             <div>
-              <p-table [value]="solucion?.caracteristicas || []" [paginator]="true" [rows]="5"
+              <p-table [value]="solucion.caracteristicas || []" [paginator]="true" [rows]="5"
                 [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
                 <ng-template pTemplate="header">
                   <tr>
@@ -407,7 +407,7 @@
           <div class="subseccion">
             <h3 class="titulo-subseccion">Beneficios asociados a la solución</h3>
             <div>
-              <p-table [value]="solucion?.beneficios || []" [paginator]="true" [rows]="5"
+              <p-table [value]="solucion.beneficios || []" [paginator]="true" [rows]="5"
                 [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
                 <ng-template pTemplate="header">
                   <tr>
@@ -742,7 +742,7 @@
 
                 <ng-template pTemplate="body" let-solucionAmbito>
                   <tr>
-                    <td>{{ ambitosDictionary[solucionAmbito.id_ambito!]?.description || 'No disponible' }}</td>
+                    <td>{{ ambitosDictionary[solucionAmbito.id_ambito!].description || 'No disponible' }}</td>
                     <td>{{ solucion.description }}</td>
                     <td>{{ solucionAmbito.title }}</td>
                     <td>{{ solucionAmbito.subtitle }}</td>
@@ -938,9 +938,11 @@
                     <td>{{sector.titleweb}}</td>
                     <td>{{sector.backgroundImage}}</td>
                     <td><span (click)="editarSector(sector)" class="emojis">✏️</span></td>
-                    <td><span
-                        (click)="sector.id_sector !== undefined ? confirmarEliminarSector(sector.id_sector, $event) : null"
-                        class="emojis">🗑️</span></td>
+                    <td>
+                      <span (click)="confirmarEliminarSector(sector.id_sector, $event)" class="emojis"
+                        style="cursor: pointer;">🗑️</span>
+                    </td>
+
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
@@ -1026,10 +1028,10 @@
 
       <div class="flex4">
         <div class="subseccion">
-            <h3 class="titulo-subseccion">Solución según cada ámbito sector</h3>
+          <h3 class="titulo-subseccion">Solución según cada ámbito sector</h3>
 
-            <!-- Formulario para modificar solución por ámbito y sector -->
-            <!-- <div *ngIf="mostrarModificarSolucionAmbitoSector" class="subseccion" #formularioSolucionAmbitoSector>
+          <!-- Formulario para modificar solución por ámbito y sector -->
+          <div *ngIf="mostrarModificarSolucionAmbitoSector" class="subseccion" #formularioSolucionAmbitoSector>
               <h3 class="titulo-subseccion">Modificar solución por ámbito y sector</h3>
 
               <form (ngSubmit)="modificarSolucionAmbitoSector()">
@@ -1146,91 +1148,93 @@
                       name="beneficiosPragma" placeholder="beneficiosPragma" pInputText variant="filled"></textarea>
                   </div>
                 </div>
-                <div class="botones-container">
+                <div class="botones-container3">
                   <button type="submit">Modificar</button>
                   <button type="button"
                     (click)="mostrarModificarSolucionAmbitoSector = false; mostrarBotonModificarSolucionAmbitoSector = true">Cancelar</button>
                 </div>
               </form>
-            </div> -->
-
-            <div *ngIf="solucionesAmbitosSectores && solucionesAmbitosSectores.length">
-              <p-table [value]="solucionesAmbitosSectores" [paginator]="true" [rows]="5"
-                [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th>ID ambito</th>
-                    <th>ID solucion</th>
-                    <th>ID sector</th>
-                    <th>titleweb</th>
-                    <th>title</th>
-                    <th>subtitle</th>
-                    <th>thread_id</th>
-                    <th>description</th>
-                    <th>slug</th>
-                    <th>icon</th>
-                    <th>multimediaUri</th>
-                    <th>multimediaTypeId</th>
-                    <th>problemaTitle</th>
-                    <th>problemaPragma</th>
-                    <th>solucionTitle</th>
-                    <th>solucionPragma</th>
-                    <th>caracteristicasTitle</th>
-                    <th>caracteristicasPragma</th>
-                    <th>casosdeusoTitle</th>
-                    <th>casosdeusoPragma</th>
-                    <th>firstCtaTitle</th>
-                    <th>firstCtaPragma</th>
-                    <th>secondCtaTitle</th>
-                    <th>secondCtaPragma</th>
-                    <th>beneficiosTitle</th>
-                    <th>beneficiosPragma</th>
-                  </tr>
-                </ng-template>
-
-                <ng-template pTemplate="body" let-solucionAmbitoSector>
-                  <tr>
-                    <td>{{ solucionAmbitoSector.id_ambito }}</td>
-                    <td>{{ solucionAmbitoSector.id_solucion }}</td>
-                    <td>{{ solucionAmbitoSector.id_sector }}</td>
-                    <td>{{ solucionAmbitoSector.titleweb }}</td>
-                    <td>{{ solucionAmbitoSector.title }}</td>
-                    <td>{{ solucionAmbitoSector.subtitle }}</td>
-                    <td>{{ solucionAmbitoSector.thread_id }}</td>
-                    <td>{{ solucionAmbitoSector.description }}</td>
-                    <td>{{ solucionAmbitoSector.slug }}</td>
-                    <td>{{ solucionAmbitoSector.icon }}</td>
-                    <td>{{ solucionAmbitoSector.multimediaUri }}</td>
-                    <td>{{ solucionAmbitoSector.multimediaTypeId }}</td>
-                    <td>{{ solucionAmbitoSector.problemaTitle }}</td>
-                    <td>{{ solucionAmbitoSector.problemaPragma }}</td>
-                    <td>{{ solucionAmbitoSector.solucionTitle }}</td>
-                    <td>{{ solucionAmbitoSector.solucionPragma }}</td>
-                    <td>{{ solucionAmbitoSector.caracteristicasTitle }}</td>
-                    <td>{{ solucionAmbitoSector.caracteristicasPragma }}</td>
-                    <td>{{ solucionAmbitoSector.casosdeusoTitle }}</td>
-                    <td>{{ solucionAmbitoSector.casosdeusoPragma }}</td>
-                    <td>{{ solucionAmbitoSector.firstCtaTitle }}</td>
-                    <td>{{ solucionAmbitoSector.firstCtaPragma }}</td>
-                    <td>{{ solucionAmbitoSector.secondCtaTitle }}</td>
-                    <td>{{ solucionAmbitoSector.secondCtaPragma }}</td>
-                    <td>{{ solucionAmbitoSector.beneficiosTitle }}</td>
-                    <td>{{ solucionAmbitoSector.beneficiosPragma }}</td>
-                    <td>
-                      <span class="emojis">✏️</span>
-                    </td>
-                    <td>
-                      <span class="emojis">🗑️</span>
-                    </td>
-                  </tr>
-                </ng-template>
-              </p-table>
             </div>
 
-            <div *ngIf="!solucionesAmbitosSectores || solucionesAmbitosSectores.length === 0">
-              <p>No hay sectores o ámbitos asociados a esta solución.</p>
-            </div>
+          <div *ngIf="solucionesAmbitosSectores && solucionesAmbitosSectores.length">
+            <p-table [value]="solucionesAmbitosSectores" [paginator]="true" [rows]="5"
+              [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>ID ambito</th>
+                  <th>ID solucion</th>
+                  <th>ID sector</th>
+                  <th>titleweb</th>
+                  <th>title</th>
+                  <th>subtitle</th>
+                  <th>thread_id</th>
+                  <th>description</th>
+                  <th>slug</th>
+                  <th>icon</th>
+                  <th>multimediaUri</th>
+                  <th>multimediaTypeId</th>
+                  <th>problemaTitle</th>
+                  <th>problemaPragma</th>
+                  <th>solucionTitle</th>
+                  <th>solucionPragma</th>
+                  <th>caracteristicasTitle</th>
+                  <th>caracteristicasPragma</th>
+                  <th>casosdeusoTitle</th>
+                  <th>casosdeusoPragma</th>
+                  <th>firstCtaTitle</th>
+                  <th>firstCtaPragma</th>
+                  <th>secondCtaTitle</th>
+                  <th>secondCtaPragma</th>
+                  <th>beneficiosTitle</th>
+                  <th>beneficiosPragma</th>
+                  <th>Editar</th>
+                  <th>Eliminar</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-solucionAmbitoSector>
+                <tr>
+                  <td>{{ solucionAmbitoSector.id_ambito }}</td>
+                  <td>{{ solucionAmbitoSector.id_solucion }}</td>
+                  <td>{{ solucionAmbitoSector.id_sector }}</td>
+                  <td>{{ solucionAmbitoSector.titleweb }}</td>
+                  <td>{{ solucionAmbitoSector.title }}</td>
+                  <td>{{ solucionAmbitoSector.subtitle }}</td>
+                  <td>{{ solucionAmbitoSector.thread_id }}</td>
+                  <td>{{ solucionAmbitoSector.description }}</td>
+                  <td>{{ solucionAmbitoSector.slug }}</td>
+                  <td>{{ solucionAmbitoSector.icon }}</td>
+                  <td>{{ solucionAmbitoSector.multimediaUri }}</td>
+                  <td>{{ solucionAmbitoSector.multimediaTypeId }}</td>
+                  <td>{{ solucionAmbitoSector.problemaTitle }}</td>
+                  <td>{{ solucionAmbitoSector.problemaPragma }}</td>
+                  <td>{{ solucionAmbitoSector.solucionTitle }}</td>
+                  <td>{{ solucionAmbitoSector.solucionPragma }}</td>
+                  <td>{{ solucionAmbitoSector.caracteristicasTitle }}</td>
+                  <td>{{ solucionAmbitoSector.caracteristicasPragma }}</td>
+                  <td>{{ solucionAmbitoSector.casosdeusoTitle }}</td>
+                  <td>{{ solucionAmbitoSector.casosdeusoPragma }}</td>
+                  <td>{{ solucionAmbitoSector.firstCtaTitle }}</td>
+                  <td>{{ solucionAmbitoSector.firstCtaPragma }}</td>
+                  <td>{{ solucionAmbitoSector.secondCtaTitle }}</td>
+                  <td>{{ solucionAmbitoSector.secondCtaPragma }}</td>
+                  <td>{{ solucionAmbitoSector.beneficiosTitle }}</td>
+                  <td>{{ solucionAmbitoSector.beneficiosPragma }}</td>
+                  <td>
+                    <span (click)="editarSolucionAmbitoSector(solucionAmbitoSector)" class="emojis">✏️</span>
+                  </td>
+                  <td>
+                    <span class="emojis">🗑️</span>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
           </div>
+
+          <div *ngIf="!solucionesAmbitosSectores || solucionesAmbitosSectores.length === 0">
+            <p>No hay sectores o ámbitos asociados a esta solución.</p>
+          </div>
+        </div>
       </div>
 
       <div class="botones-container2">
