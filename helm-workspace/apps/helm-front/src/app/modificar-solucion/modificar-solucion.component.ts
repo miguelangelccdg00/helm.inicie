@@ -9,6 +9,7 @@ import { StoreAmbitos } from '@modelos-shared/storeAmbitos';
 import { SolucionAmbito } from '@modelos-shared/solucionAmbito';
 import { StoreSectores } from '@modelos-shared/storeSectores';
 import { SolucionSector } from '@modelos-shared/solucionSector';
+import { SolucionAmbitoSector } from '@modelos-shared/solucionAmbitoSector';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MenuComponent } from '../menu/menu.component';
@@ -89,6 +90,40 @@ export class ModificarSolucionComponent implements OnInit {
   };
 
   solucionesSectores: SolucionSector[] = [];
+
+  // --- SOLUCION AMBITOS SECTORES ---
+  mostrarOpcionesSolucionAmbitoSector: boolean = false;
+  solucionAmbitoSectorSeleccionado: SolucionAmbitoSector | null = null;
+  solucionAmbitoSectorAEliminar: { idAmbito: number, idSolucion: number } | null = null;
+  mostrarModificarSolucionAmbitoSector: boolean = false;
+  mostrarBotonModificarSolucionAmbitoSector: boolean = false;
+
+  nuevaSolucionAmbitoSector: SolucionAmbitoSector = {
+    description: '',
+    title: '',
+    subtitle: '',
+    icon: '',
+    titleweb: '',
+    slug: '',
+    multimediaUri: '',
+    multimediaTypeId: '',
+    problemaTitle: '',
+    problemaPragma: '',
+    solucionTitle: '',
+    solucionPragma: '',
+    caracteristicasTitle: '',
+    caracteristicasPragma: '',
+    casosdeusoTitle: '',
+    casosdeusoPragma: '',
+    firstCtaTitle: '',
+    firstCtaPragma: '',
+    secondCtaTitle: '',
+    secondCtaPragma: '',
+    beneficiosTitle: '',
+    beneficiosPragma: '',
+  }
+
+  solucionesAmbitosSectores: SolucionAmbitoSector[] = [];
 
   // --- PROBLEMAS ---
   nuevoProblema: StoreProblemas = { titulo: '', description: '' };
@@ -227,9 +262,10 @@ export class ModificarSolucionComponent implements OnInit {
           this.storeSolucionesService.getAmbitosBySolucion(idSolucion),
           this.storeSolucionesService.getSectoresBySolucion(idSolucion),
           this.storeSolucionesService.listAmbitos(idSolucion),
-          this.storeSolucionesService.listSectores(idSolucion)
+          this.storeSolucionesService.listSectores(idSolucion),
+          this.storeSolucionesService.getStoreSolucionAmbitosSectores()
         ]).subscribe({
-          next: ([problemas, beneficios, caracteristicas, ambitos, sectores, solucionesAmbitos, solucionesSectores]) => {
+          next: ([problemas, beneficios, caracteristicas, ambitos, sectores, solucionesAmbitos, solucionesSectores, solucionesAmbitosSectores]) => {
             if(this.solucion) {
               this.problemas = this.solucion.problemas = problemas;
               this.beneficios = this.solucion.beneficios = beneficios;
@@ -239,6 +275,7 @@ export class ModificarSolucionComponent implements OnInit {
             }
             this.solucionesAmbitos = solucionesAmbitos;
             this.solucionesSectores = solucionesSectores;
+            this.solucionesAmbitosSectores = solucionesAmbitosSectores;
   
             forkJoin({
               ambitos: this.storeSolucionesService.getAllAmbitos(),
