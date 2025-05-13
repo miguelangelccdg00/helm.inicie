@@ -94,7 +94,7 @@ export class ModificarSolucionComponent implements OnInit {
   // --- SOLUCION AMBITOS SECTORES ---
   mostrarOpcionesSolucionAmbitoSector: boolean = false;
   solucionAmbitoSectorSeleccionado: SolucionAmbitoSector | null = null;
-  solucionAmbitoSectorAEliminar: { idAmbito: number, idSolucion: number } | null = null;
+  solucionAmbitoSectorAEliminar: { idSector: number, idAmbito: number, idSolucion: number } | null = null;
   mostrarModificarSolucionAmbitoSector: boolean = false;
   mostrarBotonModificarSolucionAmbitoSector: boolean = false;
 
@@ -186,7 +186,7 @@ export class ModificarSolucionComponent implements OnInit {
 
 
   // --- SECTORES ---
-  nuevoSector: StoreSectores = { description: '', textoweb: '', prefijo: '', slug: '', descriptionweb: '', titleweb: '', backgroundImage: '' };    
+  nuevoSector: StoreSectores = { description: '', textoweb: '', prefijo: '', slug: '', descriptionweb: '', titleweb: '', backgroundImage: '' };
   buscadorSector: string = '';
   sectores: StoreSectores[] = [];
   allSectores: StoreSectores[] = [];
@@ -206,19 +206,20 @@ export class ModificarSolucionComponent implements OnInit {
   mostrarModalSolucionAmbito: boolean = false;
   mostrarModalSector: boolean = false;
   mostrarModalSolucionSector: boolean = false;
+  mostrarModalSolucionAmbitoSector: boolean = false;
 
 
   // Diccionarios para ámbitos y sectores.
   ambitosDictionary: { [key: number]: StoreAmbitos } = {};
   sectoresDictionary: { [key: number]: StoreSectores } = {};
-  
+
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private storeSolucionesService: StoreSolucionesService,
-    private changeDetectorRef: ChangeDetectorRef 
-) { }
+    private changeDetectorRef: ChangeDetectorRef
+  ) { }
 
   // Listener para eventos de clic en el documento.
   @HostListener('document:click', ['$event'])
@@ -242,19 +243,20 @@ export class ModificarSolucionComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
-  
+
     const idSolucion = +id;
-  
+
     this.storeSolucionesService.getStoreSolucionById(idSolucion).subscribe({
       next: (solucion) => {
-        this.solucion = { ...solucion, 
+        this.solucion = {
+          ...solucion,
           problemas: solucion.problemas || [],
           beneficios: solucion.beneficios || [],
           caracteristicas: solucion.caracteristicas || [],
           ambitos: solucion.ambitos || [],
           sectores: solucion.sectores || []
         };
-  
+
         forkJoin([
           this.storeSolucionesService.getProblemasBySolucion(idSolucion),
           this.storeSolucionesService.getBeneficiosBySolucion(idSolucion),
@@ -266,7 +268,7 @@ export class ModificarSolucionComponent implements OnInit {
           this.storeSolucionesService.getStoreSolucionAmbitosSectores()
         ]).subscribe({
           next: ([problemas, beneficios, caracteristicas, ambitos, sectores, solucionesAmbitos, solucionesSectores, solucionesAmbitosSectores]) => {
-            if(this.solucion) {
+            if (this.solucion) {
               this.problemas = this.solucion.problemas = problemas;
               this.beneficios = this.solucion.beneficios = beneficios;
               this.caracteristicas = this.solucion.caracteristicas = caracteristicas;
@@ -276,7 +278,7 @@ export class ModificarSolucionComponent implements OnInit {
             this.solucionesAmbitos = solucionesAmbitos;
             this.solucionesSectores = solucionesSectores;
             this.solucionesAmbitosSectores = solucionesAmbitosSectores;
-  
+
             forkJoin({
               ambitos: this.storeSolucionesService.getAllAmbitos(),
               sectores: this.storeSolucionesService.getAllSectores()
@@ -294,7 +296,7 @@ export class ModificarSolucionComponent implements OnInit {
       },
       error: (e) => console.warn('Error al obtener la solución:', e)
     });
-  
+
     forkJoin([
       this.storeSolucionesService.getAllProblemas(),
       this.storeSolucionesService.getAllBeneficios(),
@@ -314,7 +316,7 @@ export class ModificarSolucionComponent implements OnInit {
       error: (e) => console.warn('Error al cargar todos los elementos:', e)
     });
   }
-  
+
   // Función para crear un diccionario a partir de una lista de elementos.
   private createDictionary<T extends { id_ambito?: number; id_sector?: number }>(items: T[]): { [key: number]: T } {
     return items.reduce((acc, item) => {
@@ -324,8 +326,8 @@ export class ModificarSolucionComponent implements OnInit {
       }
       return acc;
     }, {} as { [key: number]: T });
-  }  
-  
+  }
+
   // Función para guardar los cambios realizados en la solución.
   guardarCambios() {
     if (this.solucion) {
@@ -336,7 +338,7 @@ export class ModificarSolucionComponent implements OnInit {
       if (this.caracteristicas.length > 0 && this.caracteristicas[0].description) {
         this.solucion.caracteristicasPragma = this.caracteristicas[0].description;
       }
-      
+
       if (this.beneficios.length > 0 && this.beneficios[0].description) {
         this.solucion.beneficiosPragma = this.beneficios[0].description;
       }
@@ -541,26 +543,26 @@ export class ModificarSolucionComponent implements OnInit {
     if (!this.buscadorProblema || !this.solucion) {
       return console.error('Debe seleccionar un problema antes de agregarlo');
     }
-  
+
     const problema = this.problemaSeleccionado || this.allProblemas.find(
       p => p.description.toLowerCase() === this.buscadorProblema.toLowerCase()
     );
-  
+
     if (!problema) return console.error('Problema no encontrado');
-  
+
     const yaExiste = this.problemas.some(p => p.id_problema === problema.id_problema);
     if (yaExiste) return console.error('Este problema ya está agregado');
-  
+
     this.solucion.problemaTitle = problema.titulo || '';
     this.solucion.problemaPragma = problema.description;
     this.problemas.push(problema);
     this.solucion.problemas = this.problemas;
-  
+
     this.storeSolucionesService.updateStoreSolucion(this.solucion.id_solucion, this.solucion).subscribe({
       next: () => {
         console.log('Problema agregado correctamente a la solución');
         if (!problema.id_problema) return;
-  
+
         this.storeSolucionesService.asociarProblemaASolucion(this.solucion!.id_solucion, problema.id_problema).subscribe({
           next: () => {
             console.log('Problema asociado correctamente');
@@ -575,11 +577,11 @@ export class ModificarSolucionComponent implements OnInit {
       },
       error: err => console.error('Error al agregar problema:', err)
     });
-  
+
     this.buscadorProblema = '';
     this.problemaSeleccionado = null;
   }
-  
+
   //Función para agregar una característica a solución seleccionada.
   agregarCaracteristica() {
     if (this.buscadorCaracteristica && this.solucion) {
@@ -626,20 +628,20 @@ export class ModificarSolucionComponent implements OnInit {
         this.allAmbitos.find(
           a => a.description.toLowerCase() === this.buscadorAmbito.toLowerCase()
         );
-  
+
       if (ambitoSeleccionado) {
         const yaExiste = this.ambitos.some(
           a => a.id_ambito === ambitoSeleccionado.id_ambito
         );
-  
+
         if (!yaExiste) {
           this.storeSolucionesService.asociarAmbitoASolucion(this.solucion.id_solucion, ambitoSeleccionado.id_ambito!).subscribe({
             next: () => {
               console.log('Ámbito asociado correctamente a la solución');
-  
+
               this.ambitos.push(ambitoSeleccionado);
               this.solucion!.ambitos = this.ambitos;
-  
+
               const nuevaSolucionAmbito: SolucionAmbito = {
                 id_solucion: this.solucion!.id_solucion,
                 id_ambito: ambitoSeleccionado.id_ambito!,
@@ -666,9 +668,9 @@ export class ModificarSolucionComponent implements OnInit {
                 beneficiosTitle: '',
                 beneficiosPragma: ''
               };
-  
+
               this.solucionesAmbitos.push(nuevaSolucionAmbito);
-  
+
               this.buscadorAmbito = '';
               this.ambitoSeleccionado = null;
             },
@@ -694,29 +696,29 @@ export class ModificarSolucionComponent implements OnInit {
         this.allSectores.find(
           s => s.description.toLowerCase() === this.buscadorSector.toLowerCase()
         );
-  
+
       if (sectorSeleccionado) {
         const yaExiste = this.sectores.some(
           s => s.id_sector === sectorSeleccionado.id_sector
         );
-  
+
         if (!yaExiste) {
           this.storeSolucionesService.asociarSectorASolucion(this.solucion.id_solucion, sectorSeleccionado.id_sector!).subscribe({
             next: () => {
               console.log('Sector asociado correctamente a la solución');
-  
+
               this.sectores.push(sectorSeleccionado);
               this.solucion!.sectores = this.sectores;
-  
+
               const nuevaSolucionSector: SolucionSector = {
                 id_solucion: this.solucion!.id_solucion,
                 id_sector: sectorSeleccionado.id_sector!,
                 descalternativa: '',
                 textoalternativo: '',
               };
-  
+
               this.solucionesSectores.push(nuevaSolucionSector);
-  
+
               this.buscadorSector = '';
               this.sectorSeleccionado = null;
             },
@@ -734,7 +736,7 @@ export class ModificarSolucionComponent implements OnInit {
       console.error('Debe seleccionar un sector antes de agregarlo');
     }
   }
-  
+
   //Función para eliminar beneficio.
   eliminarBeneficio() {
     if (this.beneficioAEliminar !== null) {
@@ -853,11 +855,11 @@ export class ModificarSolucionComponent implements OnInit {
   //Función para eliminar ámbito.
   eliminarAmbito() {
     if (this.AmbitoAEliminar === null) return;
-  
+
     this.storeSolucionesService.deleteAmbito(this.AmbitoAEliminar).subscribe({
       next: () => {
         console.log('Ámbito eliminado correctamente de la base de datos');
-  
+
         this.allAmbitos = this.allAmbitos.filter(ambito =>
           ambito.id_ambito !== this.AmbitoAEliminar
         );
@@ -867,17 +869,17 @@ export class ModificarSolucionComponent implements OnInit {
         this.ambitosFiltrados = this.ambitosFiltrados.filter(ambito =>
           ambito.id_ambito !== this.AmbitoAEliminar
         );
-  
+
         if (this.solucion && this.solucion.ambitos) {
           this.solucion.ambitos = this.solucion.ambitos.filter(ambito =>
             ambito.id_ambito !== this.AmbitoAEliminar
           );
         }
-  
+
         this.solucionesAmbitos = this.solucionesAmbitos.filter(ambito =>
           ambito.id_ambito !== this.AmbitoAEliminar
         );
-  
+
         this.AmbitoAEliminar = null;
         this.mostrarModalAmbito = false;
       },
@@ -898,7 +900,7 @@ export class ModificarSolucionComponent implements OnInit {
       next: () => {
         console.log('Solución del ámbito eliminada correctamente de la base de datos');
 
-        this.solucionesAmbitos = this.solucionesAmbitos.filter((ambito) => 
+        this.solucionesAmbitos = this.solucionesAmbitos.filter((ambito) =>
           ambito.id_ambito !== idAmbito || ambito.id_solucion !== idSolucion
         );
 
@@ -916,11 +918,11 @@ export class ModificarSolucionComponent implements OnInit {
   //Función para eliminar sector.
   eliminarSector() {
     if (this.sectorAEliminar === null) return;
-  
+
     this.storeSolucionesService.deleteSector(this.solucion!.id_solucion, this.sectorAEliminar).subscribe({
       next: () => {
         console.log('Sector eliminado correctamente de la base de datos');
-  
+
         this.allSectores = this.allSectores.filter(sector =>
           sector.id_sector !== this.sectorAEliminar
         );
@@ -930,17 +932,17 @@ export class ModificarSolucionComponent implements OnInit {
         this.sectoresFiltrados = this.sectoresFiltrados.filter(sector =>
           sector.id_sector !== this.sectorAEliminar
         );
-  
+
         if (this.solucion && this.solucion.sectores) {
           this.solucion.sectores = this.solucion.sectores.filter(sector =>
             sector.id_sector !== this.sectorAEliminar
           );
         }
-  
+
         this.solucionesSectores = this.solucionesSectores.filter(sector =>
           sector.id_sector !== this.sectorAEliminar
         );
-  
+
         this.sectorAEliminar = null;
         this.mostrarModalSector = false;
       },
@@ -957,29 +959,29 @@ export class ModificarSolucionComponent implements OnInit {
       console.error('No hay sector-solución para eliminar');
       return;
     }
-  
+
     const { idSector, idSolucion } = this.solucionSectorAEliminar;
-  
+
     if (idSolucion == null || idSector == null) {
       console.error('idSolucion o idSector son inválidos:', { idSolucion, idSector });
       return;
     }
-  
+
     this.storeSolucionesService.deleteSolucionSector(idSolucion, idSector).subscribe({
       next: () => {
         console.log('Relación sector-solución eliminada correctamente');
-        
+
         this.solucionesSectores = this.solucionesSectores.filter(
-          solucionSector => !(solucionSector.id_sector === idSector && 
-                             solucionSector.id_solucion === idSolucion)
+          solucionSector => !(solucionSector.id_sector === idSector &&
+            solucionSector.id_solucion === idSolucion)
         );
-  
+
         if (this.solucion && this.solucion.sectores) {
           this.solucion.sectores = this.solucion.sectores.filter(
             sector => sector.id_sector !== idSector
           );
         }
-        
+
         this.solucionSectorAEliminar = null;
         this.mostrarModalSolucionSector = false;
       },
@@ -989,7 +991,47 @@ export class ModificarSolucionComponent implements OnInit {
       }
     });
   }
-  
+
+  //Función para eliminar relación de un sector y un ámbito con solución seleccionada.
+  eliminarSolucionAmbitoSector() {
+    if (!this.solucionAmbitoSectorAEliminar) {
+      console.error('No hay solución-ámbito-sector para eliminar');
+      return;
+    }
+
+    const { idSector, idAmbito, idSolucion } = this.solucionAmbitoSectorAEliminar;
+
+    if (idSolucion == null || idSector == null || idAmbito == null) {
+      console.error('idSolucion, idSector o idAmbito son inválidos:', { idSolucion, idSector, idAmbito });
+      return;
+    }
+
+    this.storeSolucionesService.deleteSolucionAmbitoSector(idSolucion, idSector, idAmbito).subscribe({
+      next: () => {
+        console.log('Relación solución-ámbito-sector eliminada correctamente');
+
+        if (this.solucionesAmbitosSectores) {
+          this.solucionesAmbitosSectores = this.solucionesAmbitosSectores.filter(
+            item => !(item.id_sector === idSector && item.id_ambito === idAmbito && item.id_solucion === idSolucion)
+          );
+        }
+
+        if (this.solucion?.solucionAmbitoSector) {
+          this.solucion.solucionAmbitoSector = this.solucion.solucionAmbitoSector.filter(
+            item => !(item.id_sector === idSector && item.id_ambito === idAmbito)
+          );
+        }
+
+        this.solucionAmbitoSectorAEliminar = null;
+        this.mostrarModalSolucionAmbitoSector = false;
+      },
+      error: (error) => {
+        console.error('Error al eliminar la relación solución-ámbito-sector:', error);
+        this.mostrarModalSolucionAmbitoSector = false;
+      }
+    });
+  }
+
   // --- Funciones para filtrar ---
   filtrarBeneficios() {
     const filtro = this.buscadorBeneficio.toLowerCase().trim();
@@ -1018,7 +1060,7 @@ export class ModificarSolucionComponent implements OnInit {
     if (!filtro) {
       this.ambitosFiltrados = this.allAmbitos;
     } else {
-      
+
       this.ambitosFiltrados = this.allAmbitos.filter(ambito =>
         ambito.description.toLowerCase().includes(filtro)
       );
@@ -1153,36 +1195,36 @@ export class ModificarSolucionComponent implements OnInit {
   crearNuevoAmbito() {
     this.mostrarCrearAmbito = false;
     this.mostrarBotonCrearAmbito = true;
-  
+
     if (!this.nuevoAmbito || !this.nuevoAmbito.description) {
       console.error('Debe ingresar la descripción del ámbito');
       return;
     }
-  
+
     if (!this.nuevoAmbito.slug) {
       console.error('Debe ingresar el slug del ámbito');
       return;
     }
-  
+
     if (!this.nuevoAmbito.textoweb) {
       console.error('Debe ingresar el texto web del ámbito');
       return;
     }
-  
+
     if (!this.nuevoAmbito.prefijo) {
       console.error('Debe ingresar el prefijo del ámbito');
       return;
     }
-  
+
     if (!this.solucion) {
       console.error('La solución debe estar cargada');
       return;
     }
-  
+
     this.storeSolucionesService.createAmbito(this.solucion.id_solucion, this.nuevoAmbito).subscribe({
       next: (ambitoCreadoResponse) => {
         console.log('Ámbito creado:', ambitoCreadoResponse);
-  
+
         const ambitoCreado: StoreAmbitos = {
           id_ambito: ambitoCreadoResponse.ambito.id_ambito,
           description: this.nuevoAmbito.description,
@@ -1190,12 +1232,12 @@ export class ModificarSolucionComponent implements OnInit {
           prefijo: this.nuevoAmbito.prefijo,
           slug: this.nuevoAmbito.slug
         };
-  
+
         this.allAmbitos.push(ambitoCreado);
         this.filtrarAmbitos();
-        
+
         this.nuevoAmbito = { description: '', textoweb: '', prefijo: '', slug: '' };
-        
+
         console.log('Ámbito creado y añadido al listado. Ahora puede seleccionarlo para asociarlo a la solución.');
       },
       error: (error) => {
@@ -1208,16 +1250,15 @@ export class ModificarSolucionComponent implements OnInit {
   crearNuevoSector() {
     this.mostrarCrearSector = false;
     this.mostrarBotonCrearSector = true;
-  
+
     if (!this.solucion) {
-      // console.error('La solución debe estar cargada');
       return;
-    } 
-  
+    }
+
     this.storeSolucionesService.createSector(this.solucion.id_solucion, this.nuevoSector).subscribe({
       next: (sectorCreadoResponse) => {
         console.log('Sector creado:', sectorCreadoResponse);
-  
+
         const sectorCreado: StoreSectores = {
           id_sector: sectorCreadoResponse.sector.id_sector,
           description: this.nuevoSector.description,
@@ -1228,12 +1269,12 @@ export class ModificarSolucionComponent implements OnInit {
           titleweb: this.nuevoSector.titleweb,
           backgroundImage: this.nuevoSector.backgroundImage
         };
-  
+
         this.allSectores.push(sectorCreado);
         this.filtrarSectores();
-        
+
         this.nuevoSector = { description: '', textoweb: '', prefijo: '', slug: '', descriptionweb: '', titleweb: '', backgroundImage: '' };
-        
+
         console.log('Sector creado y añadido al listado. Ahora puede seleccionarlo para asociarlo a la solución.');
       },
       error: (error) => {
@@ -1289,7 +1330,7 @@ export class ModificarSolucionComponent implements OnInit {
 
   confirmarEliminarSolucionAmbito(idAmbito: number, idSolucion: number, event: MouseEvent) {
     event.stopPropagation();
-    this.solucionAmbitoAEliminar = { idAmbito, idSolucion};
+    this.solucionAmbitoAEliminar = { idAmbito, idSolucion };
     this.mostrarModalSolucionAmbito = true;
   }
 
@@ -1319,6 +1360,17 @@ export class ModificarSolucionComponent implements OnInit {
   cancelarEliminarSolucionSector() {
     this.mostrarModalSolucionSector = false;
     this.solucionSectorAEliminar = null;
+  }
+
+  confirmarEliminarSolucionAmbitoSector(idSector: number, idAmbito: number, idSolucion: number, event: MouseEvent) {
+    event.stopPropagation();
+    this.solucionAmbitoSectorAEliminar = { idSector, idAmbito, idSolucion };
+    this.mostrarModalSolucionAmbitoSector = true;
+  }
+
+  cancelarEliminarSolucionAmbitoSector() {
+    this.mostrarModalSolucionAmbitoSector = false;
+    this.solucionAmbitoSectorAEliminar = null;
   }
 
   //Función para modificar un problema existente.
@@ -1524,18 +1576,18 @@ export class ModificarSolucionComponent implements OnInit {
     this.storeSolucionesService.updateSolucionAmbitos(idSolucion, solucionAmbitoActualizada).subscribe({
       next: (response) => {
         console.log('Solución por ámbito actualizada correctamente:', response);
-        
+
         const index = this.solucionesAmbitos.findIndex(
           sa => sa.id_solucion === idSolucion && sa.id_ambito === idAmbito
         );
-        
+
         if (index !== -1) {
           this.solucionesAmbitos[index] = {
             ...this.solucionesAmbitos[index],
             ...this.nuevaSolucionAmbito
           };
         }
-        
+
         this.mostrarModificarSolucionAmbito = false;
         this.solucionAmbitoSeleccionado = null;
       },
@@ -1617,18 +1669,18 @@ export class ModificarSolucionComponent implements OnInit {
     this.storeSolucionesService.updateSolucionSectores(idSolucion, solucionSectorActualizada).subscribe({
       next: (response) => {
         console.log('Solución por sector actualizada correctamente:', response);
-    
+
         const index = this.solucionesSectores.findIndex(
           ss => ss.id_solucion === idSolucion && ss.id_sector === idSector
         );
-    
+
         if (index !== -1) {
           this.solucionesSectores[index] = {
             ...this.solucionesSectores[index],
             ...this.nuevaSolucionSector
           };
         }
-    
+
         this.mostrarModificarSolucionSector = false;
         this.solucionSectorSeleccionado = null;
       },
@@ -1692,18 +1744,18 @@ export class ModificarSolucionComponent implements OnInit {
     this.storeSolucionesService.modifySolucionAmbitoSector(idSolucion, idAmbito, idSector, solucionAmbitoSectorActualizada).subscribe({
       next: (response) => {
         console.log('Solución por ámbito sector actualizada correctamente:', response);
-    
+
         const index = this.solucionesAmbitosSectores.findIndex(
           ss => ss.id_solucion === idSolucion && ss.id_sector === idSector
         );
-    
+
         if (index !== -1) {
           this.solucionesAmbitosSectores[index] = {
             ...this.solucionesAmbitosSectores[index],
             ...this.nuevaSolucionAmbitoSector
           };
         }
-    
+
         this.mostrarModificarSolucionAmbitoSector = false;
         this.solucionAmbitoSectorSeleccionado = null;
       },

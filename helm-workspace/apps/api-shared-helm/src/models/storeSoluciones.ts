@@ -5,6 +5,7 @@ import { StoreAmbitos } from './storeAmbitos';
 import { SolucionAmbito } from './solucionAmbito';
 import { StoreSectores } from './storeSectores';
 import { SolucionSector } from './solucionSector';
+import { SolucionAmbitoSector } from './solucionAmbitoSector';
 
 export interface StoreSoluciones {
     id_solucion: number;
@@ -44,6 +45,7 @@ export interface StoreSoluciones {
     solucionAmbito: SolucionAmbito[];
     sectores: StoreSectores[];
     solucionSector: SolucionSector[];
+    solucionAmbitoSector: SolucionAmbitoSector[];
 }
 
 export interface UpdateStoreSolucionResponse {

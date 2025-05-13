@@ -913,24 +913,24 @@ export class StoreSolucionesService {
     );
   }
 
-  /* Eliminación de la relación entre un sector y una solución */
-  deleteSolucionSector(idSolucion: number, idSector: number): Observable<DeleteSolucionSectorResponse> {
-    const url = `${this.sectoresUrl}/deleteSolucionSector/${idSolucion}/${idSector}`;
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    /* Eliminación de la relación entre un sector y una solución */
+    deleteSolucionSector(idSolucion: number, idSector: number): Observable<DeleteSolucionSectorResponse> {
+      const url = `${this.sectoresUrl}/deleteSolucionSector/${idSolucion}/${idSector}`;
+      const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    console.log('Eliminando relación sector-solución:', url);
+      console.log('Eliminando relación sector-solución:', url);
 
-    return this.https.delete<DeleteSolucionSectorResponse>(url, { headers }).pipe(
-      map(response => {
-        console.log('Respuesta al eliminar relación:', response);
-        return response;
-      }),
-      catchError(error => {
-        console.error('Error al eliminar la relación:', error);
-        throw error;
-      })
-    );
-  }
+      return this.https.delete<DeleteSolucionSectorResponse>(url, { headers }).pipe(
+        map(response => {
+          console.log('Respuesta al eliminar relación:', response);
+          return response;
+        }),
+        catchError(error => {
+          console.error('Error al eliminar la relación:', error);
+          throw error;
+        })
+      );
+    }
 
   /* SolucionSectorAmbito */
 

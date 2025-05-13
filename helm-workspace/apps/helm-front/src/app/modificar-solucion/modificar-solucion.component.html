@@ -939,8 +939,7 @@
                     <td>{{sector.backgroundImage}}</td>
                     <td><span (click)="editarSector(sector)" class="emojis">✏️</span></td>
                     <td>
-                      <span (click)="confirmarEliminarSector(sector.id_sector, $event)" class="emojis"
-                        style="cursor: pointer;">🗑️</span>
+                      <span (click)="confirmarEliminarSector(sector.id_sector, $event)" class="emojis">🗑️</span>
                     </td>
 
                   </tr>
@@ -1224,7 +1223,7 @@
                     <span (click)="editarSolucionAmbitoSector(solucionAmbitoSector)" class="emojis">✏️</span>
                   </td>
                   <td>
-                    <span class="emojis">🗑️</span>
+                    <span (click)="confirmarEliminarSolucionAmbitoSector(solucionAmbitoSector.id_sector!, solucionAmbitoSector.id_ambito!, solucionAmbitoSector.id_solucion!,  $event)" class="emojis">🗑️</span>
                   </td>
                 </tr>
               </ng-template>
@@ -1365,7 +1364,7 @@
 </div>
 
 <!-- Modal de confirmación para eliminar solucionAmbitoSector -->
-<!-- <div class="modal-overlay" *ngIf="mostrarModalSolucionAmbitoSector">
+<div class="modal-overlay" *ngIf="mostrarModalSolucionAmbitoSector">
   <div class="modal-container">
     <div class="modal-header">
       <h2>Confirmar eliminación</h2>
@@ -1379,4 +1378,4 @@
       <button class="btn-eliminar" (click)="eliminarSolucionAmbitoSector()">Eliminar</button>
     </div>
   </div>
-</div> -->
+</div>
