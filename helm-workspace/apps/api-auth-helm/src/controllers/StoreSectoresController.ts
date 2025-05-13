@@ -376,16 +376,15 @@ class storeSectoresControllers
     }
   }
 
-  /** 
-   * Modifica los datos de un sector dentro de una solución específica.
+  
+  /**
+   * Controlador que maneja la actualización de una relación entre solución, ámbito y sector.
    * 
-   * @param {Request} req - Objeto de solicitud HTTP que contiene el ID de la solución y los datos del sector a modificar.
-   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * @param {Request<SolucionAmbitoSector>} req - Objeto de solicitud HTTP con el cuerpo que contiene los datos a actualizar.
+   * @param {Response} res - Objeto de respuesta HTTP.
+   * @returns {Promise<void>} No retorna nada directamente, pero envía una respuesta HTTP con el resultado de la operación.
    * 
-   * @returns {Promise<void>} Devuelve el resultado de la modificación del sector de solución.
-   * 
-   * @throws {400} Si los datos proporcionados para la modificación no son válidos.
-   * @throws {500} Error interno del servidor al modificar el sector de solución.
+   * @throws {Error} Si no se proporcionan datos o si ocurre un error durante la actualización.
    */
   async modifySolucionAmbitosSectores(req: Request<SolucionAmbitoSector>, res: Response): Promise<void>
   {
@@ -414,6 +413,7 @@ class storeSectoresControllers
       });
     }
   }
+
 
   /** 
    * Elimina una relación entre un sector y una solución.

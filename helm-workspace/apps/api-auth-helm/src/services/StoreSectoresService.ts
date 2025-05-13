@@ -376,6 +376,13 @@ class StoreSectoresService
         }
     }
 
+    /**
+     * Actualiza la relación alternativa entre un sector, un ámbito y una solución.
+     * 
+     * @param {SolucionAmbitoSector} solucionAmbitoSector - Objeto que contiene los datos de la relación a actualizar, incluyendo títulos, descripciones y contenido multimedia.
+     * @returns {Promise<SolucionAmbitoSector>} Relación actualizada.
+     * @throws {Error} Si faltan identificadores clave o si ocurre un error en la base de datos.
+     */
     async updateSolucionAmbitoSectores(solucionAmbitoSector: SolucionAmbitoSector): Promise<SolucionAmbitoSector> 
     {
         try 
