@@ -985,6 +985,25 @@ export class StoreSolucionesService {
     );
   }
 
+  /* Elimina la relación entre una solución y un ámbito y un sector */
+  deleteSolucionAmbitoSector(idSolucion: number, idSector: number, idAmbito: number): Observable<DeleteSolucionSectorResponse> {
+    const url = `${this.sectoresUrl}/deleteSolucionSectorAmbito/${idSolucion}/${idSector}/${idAmbito}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    console.log('Eliminando relación solución-ámbito-sector:', url);
+
+    return this.https.delete<DeleteSolucionSectorResponse>(url, { headers }).pipe(
+      map(response => {
+        console.log('Respuesta al eliminar relación:', response);
+        return response;
+      }),
+      catchError(error => {
+        console.error('Error al eliminar la relación:', error);
+        throw error;
+      })
+    );
+  }
+
 }
 
 
