@@ -387,18 +387,11 @@ class storeSectoresControllers
    * @throws {400} Si los datos proporcionados para la modificación no son válidos.
    * @throws {500} Error interno del servidor al modificar el sector de solución.
    */
-  async modifySolucionAmbitosSectores(req: Request<{ idSolucion: string }, any, SolucionAmbitoSector>, res: Response): Promise<void>
+  async modifySolucionAmbitosSectores(req: Request<SolucionAmbitoSector>, res: Response): Promise<void>
   {
     try
     {
-      const idSolucion = parseInt(req.params.idSolucion, 10);
       const solucionAmbitoSector = req.body;
-
-      if (!idSolucion)
-      {
-        res.status(400).json({ message: 'ID de solución no proporcionado' });
-        return;
-      }
 
       if (!solucionAmbitoSector)
       {
@@ -406,10 +399,7 @@ class storeSectoresControllers
         return;
       }
 
-      const result = await StoreSectoresService.updateSolucionAmbitoSectores(
-        idSolucion,
-        solucionAmbitoSector
-      );
+      const result = await StoreSectoresService.updateSolucionAmbitoSectores(solucionAmbitoSector);
 
       res.status(200).json({
         message: 'SectorAmbitoSolución actualizado correctamente',

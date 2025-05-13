@@ -54,7 +54,7 @@ router.put('/modifySolucionSectores/:idSolucion', StoreSectoresController.modify
 /**
  * @description Modificación de los sectores asociados a una solución asociados a un ambito
  */
-router.put('/modifySolucionAmbitosSectores/:idSolucion', StoreSectoresController.modifySolucionAmbitosSectores);
+router.put('/modifySolucionAmbitosSectores', StoreSectoresController.modifySolucionAmbitosSectores);
 
 
 /**

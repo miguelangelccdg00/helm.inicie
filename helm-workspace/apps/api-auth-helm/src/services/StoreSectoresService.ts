@@ -376,11 +376,12 @@ class StoreSectoresService
         }
     }
 
-    async updateSolucionAmbitoSectores(idSolucion: number, solucionAmbitoSector: SolucionAmbitoSector): Promise<SolucionAmbitoSector> 
+    async updateSolucionAmbitoSectores(solucionAmbitoSector: SolucionAmbitoSector): Promise<SolucionAmbitoSector> 
     {
         try 
         {
-            const { 
+            const 
+            { 
                 id_ambito,
                 id_solucion,
                 id_sector,
@@ -408,7 +409,7 @@ class StoreSectoresService
                 beneficiosPragma
             } = solucionAmbitoSector;
 
-            if (!idSolucion || !id_sector || !id_ambito) 
+            if (!id_solucion || !id_sector || !id_ambito) 
             {
                 throw new Error('Faltan id_solucion, id_sector o id_ambito para actualizar la relación');
             }
@@ -416,7 +417,7 @@ class StoreSectoresService
             const [rows] = await pool.promise().query(
                 `SELECT * FROM storeSolucionesAmbitosSectores 
                 WHERE id_solucion = ? AND id_sector = ? AND id_ambito = ?`,
-                [idSolucion, id_sector, id_ambito]
+                [id_solucion, id_sector, id_ambito]
             ) as any[];
 
             if (!rows || rows.length === 0) {
@@ -471,7 +472,7 @@ class StoreSectoresService
                     secondCtaPragma,
                     beneficiosTitle,
                     beneficiosPragma,
-                    idSolucion,
+                    id_solucion,
                     id_sector,
                     id_ambito
                 ]
