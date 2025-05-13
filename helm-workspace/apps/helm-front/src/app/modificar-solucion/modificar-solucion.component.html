@@ -118,7 +118,7 @@
                     variant="filled"></textarea>
                 </div>
               </div>
-              <div class="botones-container">
+              <div class="botones-container5">
                 <button type="submit">Modificar</button>
                 <button type="button"
                   (click)="mostrarModificarProblema = false; mostrarBotonModificarProblema = true">Cancelar</button>
@@ -138,7 +138,7 @@
                     variant="filled"></textarea>
                 </div>
               </div>
-              <div class="botones-container">
+              <div class="botones-container5">
                 <button type="submit">Crear y Añadir</button>
                 <button type="button"
                   (click)="mostrarCrearProblema = false; mostrarBotonCrearProblema = true">Cancelar</button>
@@ -234,7 +234,7 @@
                     pInputText variant="filled"></textarea>
                 </div>
               </div>
-              <div class="botones-container">
+              <div class="botones-container5">
                 <button type="submit">Modificar</button>
                 <button type="button"
                   (click)="mostrarModificarCaracteristica = false; mostrarBotonModificarCaracteristica = true">Cancelar</button>
@@ -255,7 +255,7 @@
                     pInputText variant="filled"></textarea>
                 </div>
               </div>
-              <div class="botones-container">
+              <div class="botones-container5">
                 <button type="submit">Crear y Añadir</button>
                 <button type="button"
                   (click)="mostrarCrearCaracteristica = false; mostrarBotonCrearCaracteristica = true">Cancelar</button>
@@ -350,7 +350,7 @@
                     variant="filled"></textarea>
                 </div>
               </div>
-              <div class="botones-container">
+              <div class="botones-container5">
                 <button type="submit">Modificar</button>
                 <button type="button"
                   (click)="mostrarModificarBeneficio = false; mostrarBotonModificarBeneficio = true">Cancelar</button>
@@ -367,7 +367,7 @@
                 <textarea id="nuevaDescripcion" [(ngModel)]="nuevoBeneficio.description" name="nuevaDescripcion"
                   required></textarea>
               </div>
-              <div class="botones-container">
+              <div class="botones-container5">
                 <button type="submit">Crear y Añadir</button>
                 <button type="button"
                   (click)="mostrarCrearBeneficio = false; mostrarBotonCrear = true">Cancelar</button>
@@ -476,7 +476,7 @@
                   <textarea id="nuevoSlug" [(ngModel)]="nuevoAmbito.slug" name="nuevoSlug" required></textarea>
                 </div>
               </div>
-              <div class="botones-container">
+              <div class="botones-container5">
                 <button type="submit">Modificar</button>
                 <button type="button"
                   (click)="mostrarModificarAmbito = false; mostrarBotonModificarAmbito = true">Cancelar</button>
@@ -488,25 +488,25 @@
             <h3 class="titulo-subseccion">Crear y añadir ámbito</h3>
 
             <form (ngSubmit)="crearNuevoAmbito()">
-              <div class="form-group">
+              <div class="form-group margen">
                 <label for="nuevaDescripcionAmbito">Descripción:</label>
                 <textarea id="nuevaDescripcionAmbito" [(ngModel)]="nuevoAmbito.description"
                   name="nuevaDescripcionAmbito" required></textarea>
               </div>
-              <div class="form-group">
-                <label for="nuevoTextoweb">Textoweb:</label>
+              <div class="form-group margen">
+                <label for="nuevoTextoweb">Texto Web:</label>
                 <textarea id="nuevoTextoweb" [(ngModel)]="nuevoAmbito.textoweb" name="nuevoTextoweb"
                   required></textarea>
               </div>
-              <div class="form-group">
+              <div class="form-group margen">
                 <label for="nuevoPrefijo">Prefijo:</label>
                 <textarea id="nuevoPrefijo" [(ngModel)]="nuevoAmbito.prefijo" name="nuevoPrefijo" required></textarea>
               </div>
-              <div class="form-group">
+              <div class="form-group margen">
                 <label for="nuevoSlug">Slug:</label>
                 <textarea id="nuevoSlug" [(ngModel)]="nuevoAmbito.slug" name="nuevoSlug" required></textarea>
               </div>
-              <div class="botones-container">
+              <div class="botones-container5">
                 <button type="submit">Crear y Añadir</button>
                 <button type="button"
                   (click)="mostrarCrearAmbito = false; mostrarBotonCrearAmbito = true">Cancelar</button>
@@ -553,7 +553,7 @@
                 <ng-template pTemplate="header">
                   <tr>
                     <th>Descripción</th>
-                    <th>Textoweb</th>
+                    <th>Texto Web</th>
                     <th>Prefijo</th>
                     <th>Slug</th>
                     <th>Editar</th>
@@ -699,7 +699,7 @@
                       name="beneficiosPragma" placeholder="beneficiosPragma" pInputText variant="filled"></textarea>
                   </div>
                 </div>
-                <div class="botones-container">
+                <div class="botones-container4">
                   <button type="submit">Modificar</button>
                   <button type="button"
                     (click)="mostrarModificarSolucionAmbito = false; mostrarBotonModificarSolucionAmbito = true">Cancelar</button>
@@ -793,41 +793,41 @@
             <form (ngSubmit)="modificarSector()">
               <div class="grid-container">
                 <div class="form-group col-6">
-                  <label for="nuevaDescripcionSector">description:</label>
+                  <label for="nuevaDescripcionSector">Descripción:</label>
                   <textarea id="nuevaDescripcionSector" [(ngModel)]="nuevoSector.description"
                     name="nuevaDescripcionSector" required placeholder="Descripción del sector" pInputText
                     variant="filled"></textarea>
                 </div>
                 <div class="form-group col-6">
-                  <label for="nuevoTextoweb">textoWeb:</label>
+                  <label for="nuevoTextoweb">Texto Web:</label>
                   <textarea id="nuevoTextoweb" [(ngModel)]="nuevoSector.textoweb" name="nuevoTextoweb"
                     required></textarea>
                 </div>
                 <div class="form-group col-6">
-                  <label for="nuevoPrefijo">prefijo:</label>
+                  <label for="nuevoPrefijo">Prefijo:</label>
                   <textarea id="nuevoPrefijo" [(ngModel)]="nuevoSector.prefijo" name="nuevoPrefijo" required></textarea>
                 </div>
                 <div class="form-group col-6">
-                  <label for="nuevoSlug">slug:</label>
+                  <label for="nuevoSlug">Slug:</label>
                   <textarea id="nuevoSlug" [(ngModel)]="nuevoSector.slug" name="nuevoSlug" required></textarea>
                 </div>
                 <div class="form-group col-6">
-                  <label for="nuevaDescriptionWeb">descriptionweb:</label>
+                  <label for="nuevaDescriptionWeb">Descripción Web:</label>
                   <textarea id="nuevaDescriptionWeb" [(ngModel)]="nuevoSector.descriptionweb" name="nuevaDescriptionWeb"
                     required></textarea>
                 </div>
                 <div class="form-group col-6">
-                  <label for="nuevoTitleWeb">titleweb:</label>
+                  <label for="nuevoTitleWeb">Título Web:</label>
                   <textarea id="nuevoTitleWeb" [(ngModel)]="nuevoSector.titleweb" name="nuevoTitleWeb"
                     required></textarea>
                 </div>
                 <div class="form-group col-6">
-                  <label for="nuevaBackgroundImage">backgroundImage:</label>
+                  <label for="nuevaBackgroundImage">Imagen de fondo (URL):</label>
                   <textarea id="nuevaBackgroundImage" [(ngModel)]="nuevoSector.backgroundImage"
                     name="nuevaBackgroundImage" required></textarea>
                 </div>
               </div>
-              <div class="botones-container">
+              <div class="botones-container5">
                 <button type="submit">Modificar</button>
                 <button type="button"
                   (click)="mostrarModificarSector = false; mostrarBotonModificarSector = true">Cancelar</button>
@@ -839,40 +839,40 @@
             <h3 class="titulo-subseccion">Crear y añadir sector</h3>
 
             <form (ngSubmit)="crearNuevoSector()">
-              <div class="form-group">
-                <label for="nuevaDescripcionSector">description:</label>
+              <div class="form-group margen">
+                <label for="nuevaDescripcionSector">Descripción:</label>
                 <textarea id="nuevaDescripcionSector" [(ngModel)]="nuevoSector.description"
                   name="nuevaDescripcionSector" required></textarea>
               </div>
-              <div class="form-group">
-                <label for="nuevoTextoweb">textoWeb:</label>
+              <div class="form-group margen">
+                <label for="nuevoTextoweb">Texto Web:</label>
                 <textarea id="nuevoTextoweb" [(ngModel)]="nuevoSector.textoweb" name="nuevoTextoweb"
                   required></textarea>
               </div>
-              <div class="form-group">
-                <label for="nuevoPrefijo">prefijo:</label>
+              <div class="form-group margen">
+                <label for="nuevoPrefijo">Prefijo:</label>
                 <textarea id="nuevoPrefijo" [(ngModel)]="nuevoSector.prefijo" name="nuevoPrefijo" required></textarea>
               </div>
-              <div class="form-group">
-                <label for="nuevoSlug">slug:</label>
+              <div class="form-group margen">
+                <label for="nuevoSlug">Slug:</label>
                 <textarea id="nuevoSlug" [(ngModel)]="nuevoSector.slug" name="nuevoSlug" required></textarea>
               </div>
-              <div class="form-group">
-                <label for="nuevaDescriptionWeb">descriptionweb:</label>
+              <div class="form-group margen">
+                <label for="nuevaDescriptionWeb">Descripción Web:</label>
                 <textarea id="nuevaDescriptionWeb" [(ngModel)]="nuevoSector.descriptionweb" name="nuevaDescriptionWeb"
                   required></textarea>
               </div>
-              <div class="form-group">
-                <label for="nuevoTitleWeb">titleweb:</label>
+              <div class="form-group margen">
+                <label for="nuevoTitleWeb">Título Web:</label>
                 <textarea id="nuevoTitleWeb" [(ngModel)]="nuevoSector.titleweb" name="nuevoTitleWeb"
                   required></textarea>
               </div>
-              <div class="form-group">
-                <label for="nuevaBackgroundImage">backgroundImage:</label>
+              <div class="form-group margen">
+                <label for="nuevaBackgroundImage">Imagen de fondo (URL):</label>
                 <textarea id="nuevaBackgroundImage" [(ngModel)]="nuevoSector.backgroundImage"
                   name="nuevaBackgroundImage" required></textarea>
               </div>
-              <div class="botones-container">
+              <div class="botones-container5">
                 <button type="submit">Crear y Añadir</button>
                 <button type="button"
                   (click)="mostrarCrearSector = false; mostrarBotonCrearSector = true">Cancelar</button>
@@ -916,13 +916,13 @@
                 [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
                 <ng-template pTemplate="header">
                   <tr>
-                    <th>description</th>
-                    <th>textoweb</th>
-                    <th>prefijo</th>
-                    <th>slug</th>
-                    <th>descriptionweb</th>
-                    <th>titleweb</th>
-                    <th>backgroundImage</th>
+                    <th>Descripción</th>
+                    <th>Texto Web</th>
+                    <th>Prefijo</th>
+                    <th>Slug</th>
+                    <th>Descripción Web</th>
+                    <th>Título Web</th>
+                    <th>Imagen de fondo (URL):</th>
                     <th>Editar</th>
                     <th>Eliminar</th>
                   </tr>
@@ -975,7 +975,7 @@
                       name="textoalternativo" placeholder="textoalternativo" pInputText variant="filled">
                   </div>
                 </div>
-                <div class="botones-container">
+                <div class="botones-container4">
                   <button type="submit">Modificar</button>
                   <button type="button"
                     (click)="mostrarModificarSolucionSector = false; mostrarBotonModificarSolucionSector = true">Cancelar</button>
