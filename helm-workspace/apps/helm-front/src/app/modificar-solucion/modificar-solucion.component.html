@@ -459,21 +459,21 @@
                 <div class="form-group col-6">
                   <label for="nuevaDescripcionAmbito">Descripción:</label>
                   <textarea id="nuevaDescripcionAmbito" [(ngModel)]="nuevoAmbito.description"
-                    name="nuevaDescripcionAmbito" required placeholder="Descripción del ámbito" pInputText
+                    name="nuevaDescripcionAmbito" required placeholder="Descripción" pInputText
                     variant="filled"></textarea>
                 </div>
                 <div class="form-group col-6">
-                  <label for="nuevoTextoweb">Textoweb:</label>
-                  <textarea id="nuevoTextoweb" [(ngModel)]="nuevoAmbito.textoweb" name="nuevoTextoweb"
+                  <label for="nuevoTextoweb">Texto Web:</label>
+                  <textarea id="nuevoTextoweb" [(ngModel)]="nuevoAmbito.textoweb" name="nuevoTextoweb" placeholder="Texto Web"
                     required></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="nuevoPrefijo">Prefijo:</label>
-                  <textarea id="nuevoPrefijo" [(ngModel)]="nuevoAmbito.prefijo" name="nuevoPrefijo" required></textarea>
+                  <textarea id="nuevoPrefijo" [(ngModel)]="nuevoAmbito.prefijo" name="nuevoPrefijo" placeholder="Prefijo" required></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="nuevoSlug">Slug:</label>
-                  <textarea id="nuevoSlug" [(ngModel)]="nuevoAmbito.slug" name="nuevoSlug" required></textarea>
+                  <textarea id="nuevoSlug" [(ngModel)]="nuevoAmbito.slug" name="nuevoSlug" placeholder="Slug" required></textarea>
                 </div>
               </div>
               <div class="botones-container5">
@@ -491,20 +491,20 @@
               <div class="form-group margen">
                 <label for="nuevaDescripcionAmbito">Descripción:</label>
                 <textarea id="nuevaDescripcionAmbito" [(ngModel)]="nuevoAmbito.description"
-                  name="nuevaDescripcionAmbito" required></textarea>
+                  name="nuevaDescripcionAmbito" placeholder="Descripción del ámbito" required></textarea>
               </div>
               <div class="form-group margen">
                 <label for="nuevoTextoweb">Texto Web:</label>
-                <textarea id="nuevoTextoweb" [(ngModel)]="nuevoAmbito.textoweb" name="nuevoTextoweb"
+                <textarea id="nuevoTextoweb" [(ngModel)]="nuevoAmbito.textoweb" name="nuevoTextoweb" placeholder="Texto Web del ámbito"  
                   required></textarea>
               </div>
               <div class="form-group margen">
                 <label for="nuevoPrefijo">Prefijo:</label>
-                <textarea id="nuevoPrefijo" [(ngModel)]="nuevoAmbito.prefijo" name="nuevoPrefijo" required></textarea>
+                <textarea id="nuevoPrefijo" [(ngModel)]="nuevoAmbito.prefijo" name="nuevoPrefijo" placeholder="Prefijo del ámbito" required></textarea>
               </div>
               <div class="form-group margen">
                 <label for="nuevoSlug">Slug:</label>
-                <textarea id="nuevoSlug" [(ngModel)]="nuevoAmbito.slug" name="nuevoSlug" required></textarea>
+                <textarea id="nuevoSlug" [(ngModel)]="nuevoAmbito.slug" name="nuevoSlug" placeholder="Slug del ámbito" required></textarea>
               </div>
               <div class="botones-container5">
                 <button type="submit">Crear y Añadir</button>
@@ -795,35 +795,35 @@
                 <div class="form-group col-6">
                   <label for="nuevaDescripcionSector">Descripción:</label>
                   <textarea id="nuevaDescripcionSector" [(ngModel)]="nuevoSector.description"
-                    name="nuevaDescripcionSector" required placeholder="Descripción del sector" pInputText
+                    name="nuevaDescripcionSector" required placeholder="Descripción" pInputText
                     variant="filled"></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="nuevoTextoweb">Texto Web:</label>
-                  <textarea id="nuevoTextoweb" [(ngModel)]="nuevoSector.textoweb" name="nuevoTextoweb"
+                  <textarea id="nuevoTextoweb" [(ngModel)]="nuevoSector.textoweb" name="nuevoTextoweb" placeholder="Texto Web"
                     required></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="nuevoPrefijo">Prefijo:</label>
-                  <textarea id="nuevoPrefijo" [(ngModel)]="nuevoSector.prefijo" name="nuevoPrefijo" required></textarea>
+                  <textarea id="nuevoPrefijo" [(ngModel)]="nuevoSector.prefijo" name="nuevoPrefijo" placeholder="Prefijo" required></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="nuevoSlug">Slug:</label>
-                  <textarea id="nuevoSlug" [(ngModel)]="nuevoSector.slug" name="nuevoSlug" required></textarea>
+                  <textarea id="nuevoSlug" [(ngModel)]="nuevoSector.slug" name="nuevoSlug" placeholder="Slug" required></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="nuevaDescriptionWeb">Descripción Web:</label>
-                  <textarea id="nuevaDescriptionWeb" [(ngModel)]="nuevoSector.descriptionweb" name="nuevaDescriptionWeb"
+                  <textarea id="nuevaDescriptionWeb" [(ngModel)]="nuevoSector.descriptionweb" name="nuevaDescriptionWeb" placeholder="Descripción Web"
                     required></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="nuevoTitleWeb">Título Web:</label>
-                  <textarea id="nuevoTitleWeb" [(ngModel)]="nuevoSector.titleweb" name="nuevoTitleWeb"
+                  <textarea id="nuevoTitleWeb" [(ngModel)]="nuevoSector.titleweb" name="nuevoTitleWeb" placeholder="Título Web"
                     required></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="nuevaBackgroundImage">Imagen de fondo (URL):</label>
-                  <textarea id="nuevaBackgroundImage" [(ngModel)]="nuevoSector.backgroundImage"
+                  <textarea id="nuevaBackgroundImage" [(ngModel)]="nuevoSector.backgroundImage" placeholder="Imagen de fondo"
                     name="nuevaBackgroundImage" required></textarea>
                 </div>
               </div>
@@ -841,35 +841,35 @@
             <form (ngSubmit)="crearNuevoSector()">
               <div class="form-group margen">
                 <label for="nuevaDescripcionSector">Descripción:</label>
-                <textarea id="nuevaDescripcionSector" [(ngModel)]="nuevoSector.description"
+                <textarea id="nuevaDescripcionSector" [(ngModel)]="nuevoSector.description" placeholder="Descripción del sector"
                   name="nuevaDescripcionSector" required></textarea>
               </div>
               <div class="form-group margen">
                 <label for="nuevoTextoweb">Texto Web:</label>
-                <textarea id="nuevoTextoweb" [(ngModel)]="nuevoSector.textoweb" name="nuevoTextoweb"
+                <textarea id="nuevoTextoweb" [(ngModel)]="nuevoSector.textoweb" name="nuevoTextoweb" placeholder="Texto Web del sector"
                   required></textarea>
               </div>
               <div class="form-group margen">
                 <label for="nuevoPrefijo">Prefijo:</label>
-                <textarea id="nuevoPrefijo" [(ngModel)]="nuevoSector.prefijo" name="nuevoPrefijo" required></textarea>
+                <textarea id="nuevoPrefijo" [(ngModel)]="nuevoSector.prefijo" name="nuevoPrefijo" placeholder="Prefijo del sector" required></textarea>
               </div>
               <div class="form-group margen">
                 <label for="nuevoSlug">Slug:</label>
-                <textarea id="nuevoSlug" [(ngModel)]="nuevoSector.slug" name="nuevoSlug" required></textarea>
+                <textarea id="nuevoSlug" [(ngModel)]="nuevoSector.slug" name="nuevoSlug" placeholder="Slug del sector" required></textarea>
               </div>
               <div class="form-group margen">
                 <label for="nuevaDescriptionWeb">Descripción Web:</label>
-                <textarea id="nuevaDescriptionWeb" [(ngModel)]="nuevoSector.descriptionweb" name="nuevaDescriptionWeb"
+                <textarea id="nuevaDescriptionWeb" [(ngModel)]="nuevoSector.descriptionweb" name="nuevaDescriptionWeb" placeholder="Descripción Web del sector"
                   required></textarea>
               </div>
               <div class="form-group margen">
                 <label for="nuevoTitleWeb">Título Web:</label>
-                <textarea id="nuevoTitleWeb" [(ngModel)]="nuevoSector.titleweb" name="nuevoTitleWeb"
+                <textarea id="nuevoTitleWeb" [(ngModel)]="nuevoSector.titleweb" name="nuevoTitleWeb" placeholder="Título Web del sector"
                   required></textarea>
               </div>
               <div class="form-group margen">
                 <label for="nuevaBackgroundImage">Imagen de fondo (URL):</label>
-                <textarea id="nuevaBackgroundImage" [(ngModel)]="nuevoSector.backgroundImage"
+                <textarea id="nuevaBackgroundImage" [(ngModel)]="nuevoSector.backgroundImage" placeholder="Imagen de fondo del sector"
                   name="nuevaBackgroundImage" required></textarea>
               </div>
               <div class="botones-container5">
