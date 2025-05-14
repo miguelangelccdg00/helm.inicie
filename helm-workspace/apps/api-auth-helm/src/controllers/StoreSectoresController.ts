@@ -26,7 +26,7 @@ class storeSectoresControllers
    * @throws {400} Si faltan datos requeridos en la solicitud.
    * @throws {500} Error interno del servidor si ocurre un fallo al crear el sector.
    */
-  async createSectores(req: Request<{ idSolucion: string }, any, CreateSectorBody>, res: Response): Promise<void>
+  async createSectoresSolucion(req: Request<{ idSolucion: string }, any, CreateSectorBody>, res: Response): Promise<void>
   {
     try
     {
@@ -38,7 +38,7 @@ class storeSectoresControllers
         return;
       }
 
-      const resultado = await StoreSectoresService.createSector({
+      const resultado = await StoreSectoresService.createSectoresSolucion({
         description,
         textoweb,
         prefijo,
@@ -61,6 +61,65 @@ class storeSectoresControllers
       res.status(500).json({ message: 'Error interno del servidor al crear el sector.' });
     }
   }
+
+  /** 
+   * Crea un nuevo sector y lo asocia a una solución.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP que contiene los datos del sector a crear.
+   * @param {CreateSectorBody} req.body - Datos del nuevo sector.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve el sector recién creado.
+   * 
+   * @throws {400} Si faltan datos requeridos en la solicitud.
+   * @throws {500} Error interno del servidor si ocurre un fallo al crear el sector.
+   */
+  async createSectores(req: Request<{ idSolucion: string }, any, CreateSectorBody>, res: Response): Promise<void> {
+    try {
+      const idSolucion = parseInt(req.params.idSolucion, 10);
+
+      if (isNaN(idSolucion)) {
+        res.status(400).json({ message: 'ID de solución no es válido.' });
+        return;
+      }
+
+      const { description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage } = req.body;
+
+      if (!description || !textoweb || !prefijo || !slug || !descriptionweb || !titleweb || !backgroundImage) {
+        res.status(400).json({ message: 'Faltan datos requeridos para crear el sector.' });
+        return;
+      }
+
+      const solucionExits = await StoreSolucionesService.checkSolucionExists(idSolucion);
+
+      if (!solucionExits) {
+        res.status(400).json({ message: 'Id de la solución no existe' });
+        return;
+      }
+
+      const resultado = await StoreSectoresService.createSectores({
+        idSolucion: idSolucion, 
+        description,
+        textoweb,
+        prefijo,
+        slug,
+        descriptionweb,
+        titleweb,
+        backgroundImage        
+      });
+
+      const sectorCreado = await StoreSectoresService.getSectorById(resultado.id_sector);
+
+      res.status(201).json({
+        ...resultado,
+        sector: sectorCreado,
+      });
+    } catch (error) {
+      console.warn('⚠️ Error en createSectores:', error);
+      res.status(500).json({ message: 'Error interno del servidor al crear el sector.' });
+    }
+  }
+
 
   /** 
    * Crea un nuevo sector sin asociarlo directamente a una solución.

@@ -5,6 +5,7 @@ import { SolucionAmbitoSector } from '../../../api-shared-helm/src/models/soluci
 
 
 interface CreateSectorParams {
+    idSolucion?: number;
     description: string;
     textoweb: string;
     prefijo: string;
@@ -33,7 +34,7 @@ class StoreSectoresService
      * @returns {Promise<StoreSectores>} Sector creado con su ID.
      * @throws {Error} Si ocurre un error al insertar o asociar registros en la base de datos.
      */
-    async createSector({ description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage }: Omit<CreateSectorParams, 'idSoluciones'>): Promise<StoreSectores> {
+    async createSectoresSolucion({ description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage }: Omit<CreateSectorParams, 'idSoluciones'>): Promise<StoreSectores> {
         try {
             const [result]: any = await pool.promise().query(
                 `INSERT INTO storeSectores (description, textoWeb, prefijo, slug, descriptionweb, titleweb, backgroundImage)
@@ -84,6 +85,67 @@ class StoreSectoresService
             throw new Error('Error al crear el sector');
         }
     }
+
+    /** 
+     * Crea un nuevo sector y lo asocia automáticamente con todas las soluciones y ámbitos existentes.
+     * 
+     * @param {CreateSectorParams} data - Información necesaria para crear un sector.
+     * @returns {Promise<StoreSectores>} Sector creado con su ID.
+     * @throws {Error} Si ocurre un error al insertar o asociar registros en la base de datos.
+     */
+    async createSectores({idSolucion, description,textoweb,prefijo,slug,descriptionweb,titleweb,backgroundImage}: CreateSectorParams): Promise<StoreSectores> {
+        try {
+            const [result]: any = await pool.promise().query(
+            `INSERT INTO storeSectores (description, textoWeb, prefijo, slug, descriptionweb, titleweb, backgroundImage)
+            VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage]
+            );
+
+            const idSector = result.insertId;
+
+            // Asociar con UNA solución
+            await pool.promise().query(
+            `INSERT INTO storeSolucionesSectores (id_solucion, id_sector, descalternativa, textoalternativo)
+            SELECT ?, ?, '', ''
+            WHERE NOT EXISTS (
+                SELECT 1 FROM storeSolucionesSectores
+                WHERE id_solucion = ? AND id_sector = ?
+            )`,
+            [idSolucion, idSector, idSolucion, idSector]
+            );
+
+            // Asociar con los ámbitos de ESA solución
+            await pool.promise().query(
+            `INSERT INTO storeSolucionesAmbitosSectores (id_solucion, id_ambito, id_sector)
+            SELECT sa.id_solucion, sa.id_ambito, ?
+            FROM storeSolucionesAmbitos sa
+            WHERE sa.id_solucion = ?
+            AND NOT EXISTS (
+                SELECT 1
+                FROM storeSolucionesAmbitosSectores sas
+                WHERE sas.id_solucion = sa.id_solucion
+                AND sas.id_ambito = sa.id_ambito
+                AND sas.id_sector = ?
+            )`,
+            [idSector, idSolucion, idSector]
+            );
+
+            return {
+            id_sector: idSector,
+            description,
+            textoweb,
+            prefijo,
+            slug,
+            descriptionweb,
+            titleweb,
+            backgroundImage
+            };
+        } catch (error) {
+            console.error('Error al crear el sector:', error);
+            throw new Error('Error al crear el sector');
+        }
+    }
+
 
     /** 
      * Crea un nuevo sector sin asociaciones adicionales.
