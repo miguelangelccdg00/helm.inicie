@@ -26,8 +26,8 @@
         <tr>
           <th>Descripción</th>
           <th>Texto Web</th>
-          <th>Prefijo</th>
-          <th>Slug</th>
+          <th class="columnas1">Prefijo</th>
+          <th class="columnas1">Slug</th>
           <th class="text-center">Editar</th>
           <th class="text-center">Eliminar</th>
         </tr>
@@ -37,8 +37,8 @@
         <tr *ngFor="let ambito of ambitosFiltrados; trackBy: trackByAmbitoId">
           <td>{{ambito.description}}</td>
           <td>{{ambito.textoweb}}</td>
-          <td>{{ambito.prefijo}}</td>
-          <td>{{ambito.slug}}</td>
+          <td class="columnas1">{{ambito.prefijo}}</td>
+          <td class="columnas1">{{ambito.slug}}</td>
           <td class="text-center">
             <!-- Botón para mostrar formulario de edición -->
             <button class="btn" (click)="mostrarFormularioEditarAmbito(ambito)" title="Modificar ámbito">
