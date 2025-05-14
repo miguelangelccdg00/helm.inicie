@@ -26,7 +26,7 @@
         <tr>
           <th>Descripción</th>
           <th>Texto Web</th>
-          <th>Prefijo</th>
+          <th class="columnas2">Prefijo</th>
           <th class="columnas2">Slug</th>
           <th class="columnas2">Descripción Web</th>
           <th class="columnas1">Título Web</th>
@@ -40,7 +40,7 @@
         <tr *ngFor="let sector of sectoresFiltrados; trackBy: trackBySectorId">
           <td>{{sector.description}}</td>
           <td>{{sector.textoweb}}</td>
-          <td>{{sector.prefijo}}</td>
+          <td class="columnas2">{{sector.prefijo}}</td>
           <td class="columnas2">{{sector.slug}}</td>
           <td class="columnas2">{{sector.descriptionweb}}</td>
           <td class="columnas1">{{sector.titleweb}}</td>
