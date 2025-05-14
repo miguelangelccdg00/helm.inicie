@@ -27,10 +27,10 @@
           <th>Descripción</th>
           <th>Texto Web</th>
           <th>Prefijo</th>
-          <th>Slug</th>
-          <th>Descripción Web</th>
-          <th>Título Web</th>
-          <th>Imagen de fondo (URL):</th>
+          <th class="columnas2">Slug</th>
+          <th class="columnas2">Descripción Web</th>
+          <th class="columnas1">Título Web</th>
+          <th class="columnas1">Imagen de fondo (URL):</th>
           <th class="text-center">Editar</th>
           <th class="text-center">Eliminar</th>
         </tr>
@@ -41,10 +41,10 @@
           <td>{{sector.description}}</td>
           <td>{{sector.textoweb}}</td>
           <td>{{sector.prefijo}}</td>
-          <td>{{sector.slug}}</td>
-          <td>{{sector.descriptionweb}}</td>
-          <td>{{sector.titleweb}}</td>
-          <td class="background-image-cell">{{sector.backgroundImage}}</td>
+          <td class="columnas2">{{sector.slug}}</td>
+          <td class="columnas2">{{sector.descriptionweb}}</td>
+          <td class="columnas1">{{sector.titleweb}}</td>
+          <td class="background-image-cell columnas1">{{sector.backgroundImage}}</td>
           <!-- Botón para editar -->
           <td class="text-center">
             <button class="btn" (click)="mostrarFormularioEditarSector(sector)" title="Modificar sector">
