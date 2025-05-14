@@ -1,11 +1,13 @@
-import { pool } from '../../../api-shared-helm/src/databases/conexion.js'; 
+import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
 import { StoreCaracteristicas } from '../../../api-shared-helm/src/models/storeCaracteristicas.js';
+import { AppError } from '../../../api-shared-helm/src/models/AppError';
 
 /**
  * Interfaz para los parámetros de entrada para la creación de una nueva característica.
  * @interface CreateCaracteristicaInput
  */
-interface CreateCaracteristicaInput {
+interface CreateCaracteristicaInput
+{
   /** Descripción de la característica. */
   description: string;
   /** Título de la característica. */
@@ -18,7 +20,8 @@ interface CreateCaracteristicaInput {
  * Interfaz para el resultado de asociar una característica a una solución.
  * @interface AsociarCaracteristicaOutput
  */
-interface AsociarCaracteristicaOutput {
+interface AsociarCaracteristicaOutput
+{
   /** ID de la solución. */
   idSolucion: number;
   /** ID de la característica. */
@@ -33,7 +36,8 @@ interface AsociarCaracteristicaOutput {
  * Interfaz para representar una característica.
  * @interface Caracteristica
  */
-interface Caracteristica {
+interface Caracteristica
+{
   /** ID de la característica. */
   id_caracteristica: number;
   /** Descripción de la característica. */
@@ -44,13 +48,14 @@ interface Caracteristica {
  * Servicio para gestionar las características asociadas a las soluciones.
  * @class StoreCaracteristicasService
  */
-class StoreCaracteristicasService {
+class StoreCaracteristicasService
+{
 
   /**
    * Crea una nueva característica y la asocia a una solución existente.
    * @param {CreateCaracteristicaInput} params - Parámetros necesarios para crear la característica.
    * @returns {Promise<{ idCaracteristica: number; idSolucion: number; description: string; titulo: string; caracteristicasTitle: string; caracteristicasPragma: string }>} - Información de la característica creada y la solución asociada.
-   * @throws {Error} Si la solución no existe o si ocurre un error durante la transacción.
+   * @throws {AppError} Si la solución no existe o si ocurre un error durante la transacción.
    */
   async createCaracteristica({ description, titulo, idSolucion }: CreateCaracteristicaInput): Promise<{
     idCaracteristica: number;
@@ -59,7 +64,8 @@ class StoreCaracteristicasService {
     titulo: string;
     caracteristicasTitle: string;
     caracteristicasPragma: string;
-  }> {
+  }>
+  {
     const conn = await pool.promise().getConnection();
 
     try {
@@ -71,8 +77,9 @@ class StoreCaracteristicasService {
         [idSolucion]
       );
 
-      if (solucionExiste.length === 0) {
-        throw new Error(`La solución con id ${idSolucion} no existe.`);
+      if (solucionExiste.length === 0)
+      {
+        throw new AppError(`La solución con id ${idSolucion} no existe.`, 404);
       }
 
       // Crear la nueva característica
@@ -105,11 +112,15 @@ class StoreCaracteristicasService {
         caracteristicasTitle: titulo,
         caracteristicasPragma: description
       };
-    } catch (error) {
+    }
+    catch (error)
+    {
       await conn.rollback();
       console.error("Error al insertar la característica:", error);
-      throw error;
-    } finally {
+      throw error instanceof AppError ? error : new AppError("Error al crear la característica", 500);
+    }
+    finally
+    {
       conn.release();
     }
   }
@@ -120,9 +131,10 @@ class StoreCaracteristicasService {
    * @param {number} idCaracteristica - El ID de la característica.
    * @param {string} [titulo] - El título opcional de la característica.
    * @returns {Promise<AsociarCaracteristicaOutput>} Resultado de la operación con mensaje.
-   * @throws {Error} Si la solución o la característica no existen, o si ya existe una relación entre ambos.
+   * @throws {AppError} Si la solución o la característica no existen, o si ya existe una relación entre ambos.
    */
-  async asociarCaracteristica(idSolucion: number, idCaracteristica: number, titulo?: string): Promise<AsociarCaracteristicaOutput> {
+  async asociarCaracteristica(idSolucion: number, idCaracteristica: number, titulo?: string): Promise<AsociarCaracteristicaOutput>
+  {
     const conn = await pool.promise().getConnection();
 
     try {
@@ -134,8 +146,9 @@ class StoreCaracteristicasService {
         [idSolucion]
       );
 
-      if (solucionExiste.length === 0) {
-        throw new Error(`La solución con id ${idSolucion} no existe.`);
+      if (solucionExiste.length === 0)
+      {
+        throw new AppError(`La solución con id ${idSolucion} no existe.`, 404);
       }
 
       // Verificar que la característica existe
@@ -144,8 +157,9 @@ class StoreCaracteristicasService {
         [idCaracteristica]
       );
 
-      if (caracteristicaExiste.length === 0) {
-        throw new Error(`La característica con id ${idCaracteristica} no existe.`);
+      if (caracteristicaExiste.length === 0)
+      {
+        throw new AppError(`La característica con id ${idCaracteristica} no existe.`, 404);
       }
 
       // Verificar si ya existe la relación entre solución y característica
@@ -154,7 +168,8 @@ class StoreCaracteristicasService {
         [idSolucion, idCaracteristica]
       );
 
-      if (relacionExiste.length > 0) {
+      if (relacionExiste.length > 0)
+      {
         await conn.commit();
         return { idSolucion, idCaracteristica, message: 'La relación ya existía' };
       }
@@ -175,11 +190,15 @@ class StoreCaracteristicasService {
       await conn.commit();
 
       return { idSolucion, idCaracteristica, titulo, message: 'Relación creada con éxito' };
-    } catch (error) {
+    }
+    catch (error)
+    {
       await conn.rollback();
       console.error("Error al asociar característica:", error);
-      throw error;
-    } finally {
+      throw error instanceof AppError ? error : new AppError("Error al asociar la característica", 500);
+    }
+    finally
+    {
       conn.release();
     }
   }
@@ -188,7 +207,8 @@ class StoreCaracteristicasService {
    * Lista todas las características registradas.
    * @returns {Promise<Caracteristica[]>} Lista de todas las características registradas.
    */
-  async listCaracteristicas(): Promise<Caracteristica[]> {
+  async listCaracteristicas(): Promise<Caracteristica[]>
+  {
     const [rows]: [Caracteristica[], any] = await pool.promise().query(
       `SELECT id_caracteristica, description FROM storeCaracteristicas`
     );
@@ -200,7 +220,8 @@ class StoreCaracteristicasService {
    * @param {number} idCaracteristica - El ID de la característica a obtener.
    * @returns {Promise<Caracteristica | null>} La característica encontrada, o null si no existe.
    */
-  async getCaracteristicaById(idCaracteristica: number): Promise<Caracteristica | null> {
+  async getCaracteristicaById(idCaracteristica: number): Promise<Caracteristica | null>
+  {
     const [rows]: [Caracteristica[], any] = await pool.promise().query(
       `SELECT id_caracteristica, description FROM storeCaracteristicas WHERE id_caracteristica = ?`,
       [idCaracteristica]
@@ -213,7 +234,8 @@ class StoreCaracteristicasService {
    * @param {number} idSolucion - El ID de la solución a obtener las características.
    * @returns {Promise<Caracteristica[]>} Lista de características asociadas a la solución.
    */
-  async getByIdCaracteristicas(idSolucion: number): Promise<Caracteristica[]> {
+  async getByIdCaracteristicas(idSolucion: number): Promise<Caracteristica[]>
+  {
     const [rows]: [Caracteristica[], any] = await pool.promise().query(
       `SELECT c.id_caracteristica, c.description
        FROM storeCaracteristicas c
@@ -230,7 +252,8 @@ class StoreCaracteristicasService {
    * @param {Partial<StoreCaracteristicas>} updateData - Los datos a actualizar.
    * @returns {Promise<{ message: string }>} Mensaje confirmando la actualización de la característica.
    */
-  async update(id: number, updateData: Partial<StoreCaracteristicas>): Promise<{ message: string }> {
+  async update(id: number, updateData: Partial<StoreCaracteristicas>): Promise<{ message: string }>
+  {
     await pool.promise().query(
       'UPDATE storeCaracteristicas SET ? WHERE id_caracteristica = ?',
       [updateData, id]
@@ -242,9 +265,10 @@ class StoreCaracteristicasService {
    * Elimina una característica y su relación con soluciones.
    * @param {number} idCaracteristica - El ID de la característica a eliminar.
    * @returns {Promise<boolean>} Indica si la característica fue eliminada exitosamente.
-   * @throws {Error} Si ocurre un error durante la eliminación.
+   * @throws {AppError} Si ocurre un error durante la eliminación.
    */
-  async deleteCaracteristica(idCaracteristica: number): Promise<boolean> {
+  async deleteCaracteristica(idCaracteristica: number): Promise<boolean>
+  {
     const conn = await pool.promise().getConnection();
     try {
       await conn.beginTransaction();
@@ -264,11 +288,15 @@ class StoreCaracteristicasService {
       await conn.commit();
 
       return caracteristicaResult.affectedRows > 0;
-    } catch (error) {
+    }
+    catch (error)
+    {
       await conn.rollback();
       console.error('Error al eliminar la característica:', error);
-      throw error;
-    } finally {
+      throw error instanceof AppError ? error : new AppError("Error al eliminar la característica", 500);
+    }
+    finally
+    {
       conn.release();
     }
   }

@@ -1,5 +1,6 @@
-import { pool } from '../../../api-shared-helm/src/databases/conexion.js'; 
+import { pool } from '../../../api-shared-helm/src/databases/conexion.js';
 import { StoreBeneficios } from '../../../api-shared-helm/src/models/storeBeneficios.js';
+import { AppError } from '../../../api-shared-helm/src/models/AppError';
 
 /**
  * DTO para la creación de un nuevo beneficio.
@@ -38,7 +39,7 @@ class StoreBeneficiosServices
    * 
    * @param {CreateBeneficioDTO} params - Parámetros para la creación del beneficio.
    * @returns {Promise<{ idBeneficio: number; idSolucion: number }>} El ID del beneficio creado y el ID de la solución.
-   * @throws {Error} Si la solución no existe o si ocurre un error durante la transacción.
+   * @throws {AppError} Si la solución no existe o si ocurre un error durante la transacción.
    */
   async createBeneficio({ description, idSolucion }: CreateBeneficioDTO): Promise<{ idBeneficio: number; idSolucion: number }>
   {
@@ -54,7 +55,7 @@ class StoreBeneficiosServices
 
       if (solucionExiste.length === 0)
       {
-        throw new Error(`La solución con id ${idSolucion} no existe.`);
+        throw new AppError(`La solución con id ${idSolucion} no existe.`, 404);
       }
 
       const [beneficioResult]: any = await conn.query(
@@ -77,7 +78,7 @@ class StoreBeneficiosServices
     {
       await conn.rollback();
       console.error("Error al insertar beneficio:", error);
-      throw error;
+      throw new AppError("Error al crear el beneficio", 500);
     }
     finally
     {
@@ -92,8 +93,16 @@ class StoreBeneficiosServices
    */
   async getBeneficio(): Promise<StoreBeneficios[]>
   {
-    const [rows] = await pool.promise().query(`SELECT id_beneficio, description FROM storeBeneficios`);
-    return rows as StoreBeneficios[];
+    try
+    {
+      const [rows] = await pool.promise().query(`SELECT id_beneficio, description FROM storeBeneficios`);
+      return rows as StoreBeneficios[];
+    }
+    catch (error)
+    {
+      console.error("Error al obtener beneficios:", error);
+      throw new AppError("Error al obtener beneficios", 500);
+    }
   }
 
   /**
@@ -104,15 +113,23 @@ class StoreBeneficiosServices
    */
   async getByIdBeneficio(idSolucion: number): Promise<StoreBeneficios[]>
   {
-    const [rows] = await pool.promise().query(
-      `SELECT b.id_beneficio, b.description
-      FROM storeBeneficios b
-      JOIN storeSolucionesBeneficios sb ON b.id_beneficio = sb.id_beneficio
-      WHERE sb.id_solucion = ?`,
-      [idSolucion]
-    );
+    try
+    {
+      const [rows] = await pool.promise().query(
+        `SELECT b.id_beneficio, b.description
+         FROM storeBeneficios b
+         JOIN storeSolucionesBeneficios sb ON b.id_beneficio = sb.id_beneficio
+         WHERE sb.id_solucion = ?`,
+        [idSolucion]
+      );
 
-    return rows as StoreBeneficios[];
+      return rows as StoreBeneficios[];
+    }
+    catch (error)
+    {
+      console.error("Error al obtener beneficios por solución:", error);
+      throw new AppError("Error al obtener beneficios por solución", 500);
+    }
   }
 
   /**
@@ -124,8 +141,16 @@ class StoreBeneficiosServices
    */
   async update(id: number, updateData: Partial<StoreBeneficios>): Promise<{ message: string }>
   {
-    await pool.promise().query('UPDATE storeBeneficios SET ? WHERE id_beneficio = ?', [updateData, id]);
-    return { message: 'Beneficio actualizado' };
+    try
+    {
+      await pool.promise().query('UPDATE storeBeneficios SET ? WHERE id_beneficio = ?', [updateData, id]);
+      return { message: 'Beneficio actualizado' };
+    }
+    catch (error)
+    {
+      console.error("Error al actualizar beneficio:", error);
+      throw new AppError("Error al actualizar beneficio", 500);
+    }
   }
 
   /**
@@ -133,7 +158,7 @@ class StoreBeneficiosServices
    * 
    * @param {number} idBeneficio - El ID del beneficio a eliminar.
    * @returns {Promise<boolean>} Indica si el beneficio fue eliminado exitosamente.
-   * @throws {Error} Si ocurre un error durante la transacción de eliminación.
+   * @throws {AppError} Si ocurre un error durante la transacción de eliminación.
    */
   async deleteBeneficio(idBeneficio: number): Promise<boolean>
   {
@@ -155,7 +180,7 @@ class StoreBeneficiosServices
     {
       await conn.rollback();
       console.error('Error al eliminar la asociación del beneficio:', error);
-      throw error;
+      throw new AppError("Error al eliminar el beneficio", 500);
     }
     finally
     {
@@ -169,7 +194,7 @@ class StoreBeneficiosServices
    * @param {number} idSolucion - El ID de la solución.
    * @param {number} idBeneficio - El ID del beneficio.
    * @returns {Promise<AsociarBeneficioResult>} Resultado de la operación con mensaje.
-   * @throws {Error} Si la solución o el beneficio no existen, o si ya existe una relación entre ambos.
+   * @throws {AppError} Si la solución o el beneficio no existen, o si ya existe una relación entre ambos.
    */
   async asociarBeneficio(idSolucion: number, idBeneficio: number): Promise<AsociarBeneficioResult>
   {
@@ -185,7 +210,7 @@ class StoreBeneficiosServices
 
       if (solucionExiste.length === 0)
       {
-        throw new Error(`La solución con id ${idSolucion} no existe.`);
+        throw new AppError(`La solución con id ${idSolucion} no existe.`, 404);
       }
 
       const [beneficioExiste]: [{ id_beneficio: number }[]] = await conn.query(
@@ -195,7 +220,7 @@ class StoreBeneficiosServices
 
       if (beneficioExiste.length === 0)
       {
-        throw new Error(`El beneficio con id ${idBeneficio} no existe.`);
+        throw new AppError(`El beneficio con id ${idBeneficio} no existe.`, 404);
       }
 
       const [relacionExiste]: [{ id_solucion: number; id_beneficio: number }[]] = await conn.query(
@@ -222,7 +247,7 @@ class StoreBeneficiosServices
     {
       await conn.rollback();
       console.error("Error al asociar beneficio:", error);
-      throw error;
+      throw new AppError("Error al asociar beneficio", 500);
     }
     finally
     {

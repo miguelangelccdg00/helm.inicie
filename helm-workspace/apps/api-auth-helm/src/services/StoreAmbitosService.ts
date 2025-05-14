@@ -1,6 +1,7 @@
 import { pool } from '../../../api-shared-helm/src/databases/conexion';
 import { StoreAmbitos } from '../../../api-shared-helm/src/models/storeAmbitos';
 import { SolucionAmbito } from '../../../api-shared-helm/src/models/solucionAmbito';
+import { AppError } from '../../../api-shared-helm/src/models/AppError';
 
 interface CreateAmbitoParams 
 {
@@ -31,8 +32,10 @@ class StoreAmbitosService
    * @param {CreateAmbitoParams} param0 - Datos del nuevo ámbito.
    * @returns {Promise<StoreAmbitos>} El ámbito creado.
    */
-  async createAmbito({ description, textoweb, prefijo, slug }: Omit<CreateAmbitoParams, 'idSoluciones'>): Promise<StoreAmbitos> {
-    try {
+  async createAmbito({ description, textoweb, prefijo, slug }: Omit<CreateAmbitoParams, 'idSoluciones'>): Promise<StoreAmbitos> 
+  {
+    try 
+    {
       const [result]: any = await pool.promise().query(
         `INSERT INTO storeAmbitos (description, textoweb, prefijo, slug) VALUES (?, ?, ?, ?)`,
         [description, textoweb, prefijo, slug]
@@ -40,17 +43,21 @@ class StoreAmbitosService
 
       const idAmbito = result.insertId;
 
-      await pool.promise().query(`
-        INSERT INTO storeSolucionesAmbitos (id_solucion, id_ambito)
-        SELECT s.id_solucion, ? FROM storeSoluciones s
-        WHERE NOT EXISTS (
-          SELECT 1 FROM storeSolucionesAmbitos sa WHERE sa.id_solucion = s.id_solucion AND sa.id_ambito = ?
-        )`, [idAmbito, idAmbito]);
+      await pool.promise().query(
+        `INSERT INTO storeSolucionesAmbitos (id_solucion, id_ambito)
+         SELECT s.id_solucion, ? FROM storeSoluciones s
+         WHERE NOT EXISTS (
+           SELECT 1 FROM storeSolucionesAmbitos sa WHERE sa.id_solucion = s.id_solucion AND sa.id_ambito = ?
+         )`, 
+         [idAmbito, idAmbito]
+      );
 
       return { id_ambito: idAmbito, description, textoweb, prefijo, slug };
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error('Error al crear el ámbito y asociarlo:', error);
-      throw new Error('Error al crear el ámbito y hacer las asociaciones');
+      throw new AppError('Error al crear el ámbito y hacer las asociaciones');
     }
   }
 
@@ -59,16 +66,20 @@ class StoreAmbitosService
    * @param {AmbitosParams} param0 - Datos del ámbito.
    * @returns {Promise<StoreAmbitos>} Ámbito creado.
    */
-  async createStoreAmbito({ description, textoweb, prefijo, slug }: AmbitosParams): Promise<StoreAmbitos> {
-    try {
+  async createStoreAmbito({ description, textoweb, prefijo, slug }: AmbitosParams): Promise<StoreAmbitos> 
+  {
+    try 
+    {
       const [result]: any = await pool.promise().query(
         `INSERT INTO storeAmbitos (description, textoweb, prefijo, slug) VALUES (?, ?, ?, ?)`,
         [description, textoweb, prefijo, slug]
       );
       return { id_ambito: result.insertId, description, textoweb, prefijo, slug };
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error('Error al crear el ámbito:', error);
-      throw new Error('Error al crear el ámbito');
+      throw new AppError('Error al crear el ámbito');
     }
   }
 
@@ -77,18 +88,23 @@ class StoreAmbitosService
    * @param {number} idSolucion - ID de la solución.
    * @param {number} idAmbito - ID del ámbito.
    */
-  async asociarAmbito(idSolucion: number, idAmbito: number): Promise<void> {
-    try {
+  async asociarAmbito(idSolucion: number, idAmbito: number): Promise<void> 
+  {
+    try 
+    {
       const [result] = await pool.promise().query(
         `INSERT INTO storeSolucionesAmbitos (id_solucion, id_ambito) VALUES (?, ?)`,
         [idSolucion, idAmbito]
       );
-      if (result.affectedRows === 0) {
-        throw new Error('No se pudo asociar el ámbito');
+      if (result.affectedRows === 0) 
+      {
+        throw new AppError('No se pudo asociar el ámbito');
       }
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error('Error al asociar el ámbito:', error);
-      throw new Error('Error al asociar el ámbito');
+      throw new AppError('Error al asociar el ámbito');
     }
   }
 
@@ -96,15 +112,19 @@ class StoreAmbitosService
    * Lista todos los ámbitos.
    * @returns {Promise<StoreAmbitos[]>} Lista de ámbitos.
    */
-  async listAmbitos(): Promise<StoreAmbitos[]> {
-    try {
+  async listAmbitos(): Promise<StoreAmbitos[]> 
+  {
+    try 
+    {
       const [rows] = await pool.promise().query(
         `SELECT id_ambito, description, textoweb, prefijo, slug FROM storeAmbitos`
       );
       return rows;
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error('Error al listar los ámbitos:', error);
-      throw new Error('Error al listar los ámbitos');
+      throw new AppError('Error al listar los ámbitos');
     }
   }
 
@@ -113,16 +133,20 @@ class StoreAmbitosService
    * @param {number} idAmbito - ID del ámbito.
    * @returns {Promise<StoreAmbitos | null>} Ámbito encontrado o null.
    */
-  async getAmbitoById(idAmbito: number): Promise<StoreAmbitos | null> {
-    try {
+  async getAmbitoById(idAmbito: number): Promise<StoreAmbitos | null> 
+  {
+    try 
+    {
       const [rows] = await pool.promise().query(
         `SELECT id_ambito, description, textoweb, prefijo, slug FROM storeAmbitos WHERE id_ambito = ?`,
         [idAmbito]
       );
       return rows.length ? rows[0] : null;
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error('Error al obtener el ámbito por ID:', error);
-      throw new Error('Error al obtener el ámbito');
+      throw new AppError('Error al obtener el ámbito');
     }
   }
 
@@ -131,8 +155,10 @@ class StoreAmbitosService
    * @param {number} idSolucion - ID de la solución.
    * @returns {Promise<StoreAmbitos[]>} Lista de ámbitos.
    */
-  async getByIdAmbitos(idSolucion: number): Promise<StoreAmbitos[]> {
-    try {
+  async getByIdAmbitos(idSolucion: number): Promise<StoreAmbitos[]> 
+  {
+    try 
+    {
       const [rows] = await pool.promise().query(
         `SELECT a.id_ambito, a.description, a.textoweb, a.prefijo, a.slug
          FROM storeAmbitos a
@@ -141,9 +167,11 @@ class StoreAmbitosService
         [idSolucion]
       );
       return rows;
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error('Error al obtener los ámbitos por ID de solución:', error);
-      throw new Error('Error al obtener los ámbitos');
+      throw new AppError('Error al obtener los ámbitos');
     }
   }
 
@@ -165,8 +193,10 @@ class StoreAmbitosService
    * @param {Partial<StoreAmbitos & SolucionAmbito>} updateData - Campos a actualizar.
    * @returns {Promise<StoreAmbitos>} Ámbito actualizado.
    */
-  async updateAmbito(idAmbito: number, updateData: Partial<StoreAmbitos & SolucionAmbito>): Promise<StoreAmbitos> {
-    try {
+  async updateAmbito(idAmbito: number, updateData: Partial<StoreAmbitos & SolucionAmbito>): Promise<StoreAmbitos> 
+  {
+    try 
+    {
       const { description, textoweb, prefijo, slug } = updateData;
       const updateFields = [];
       const updateValues = [];
@@ -183,14 +213,17 @@ class StoreAmbitosService
         updateValues
       );
 
-      if (result.affectedRows === 0) {
-        throw new Error('No se encontró el ámbito para actualizar');
+      if (result.affectedRows === 0) 
+      {
+        throw new AppError('No se encontró el ámbito para actualizar');
       }
 
       return { id_ambito: idAmbito, description: description || '', textoweb: textoweb || '', prefijo: prefijo || '', slug: slug || '' };
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error('Error al actualizar el ámbito:', error);
-      throw new Error('Error al actualizar el ámbito');
+      throw new AppError('Error al actualizar el ámbito');
     }
   }
 
@@ -200,17 +233,25 @@ class StoreAmbitosService
    * @param {SolucionAmbito} solucionAmbito - Datos para actualizar.
    * @returns {Promise<SolucionAmbito>} Relación actualizada.
    */
-  async updateSolucionAmbitos(idSolucion: number, solucionAmbito: SolucionAmbito): Promise<SolucionAmbito> {
-    try {
+  async updateSolucionAmbitos(idSolucion: number, solucionAmbito: SolucionAmbito): Promise<SolucionAmbito> 
+  {
+    try 
+    {
       const { id_ambito } = solucionAmbito;
-      if (!idSolucion || !id_ambito) throw new Error('Faltan id_solucion o id_ambito');
+      if (!idSolucion || !id_ambito) 
+      {
+        throw new AppError('Faltan id_solucion o id_ambito');
+      }
 
       const [rows] = await pool.promise().query(
         `SELECT * FROM storeSolucionesAmbitos WHERE id_solucion = ? AND id_ambito = ?`,
         [idSolucion, id_ambito]
       ) as any[];
 
-      if (!rows.length) throw new Error('No existe la relación ambito-solución para actualizar');
+      if (!rows.length) 
+      {
+        throw new AppError('No existe la relación ambito-solución para actualizar');
+      }
 
       await pool.promise().query(
         `UPDATE storeSolucionesAmbitos SET ... WHERE id_solucion = ? AND id_ambito = ?`,
@@ -218,9 +259,11 @@ class StoreAmbitosService
       );
 
       return { ...solucionAmbito };
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error('Error al actualizar la relación ambito-solución:', error);
-      throw new Error('Error al actualizar la relación ambito-solución');
+      throw new AppError('Error al actualizar la relación ambito-solución');
     }
   }
 
@@ -229,16 +272,20 @@ class StoreAmbitosService
    * @param {number} idAmbito - ID del ámbito a eliminar.
    * @returns {Promise<boolean>} True si fue eliminado.
    */
-  async deleteAmbito(idAmbito: number): Promise<boolean> {
-    try {
+  async deleteAmbito(idAmbito: number): Promise<boolean> 
+  {
+    try 
+    {
       const [result] = await pool.promise().query(
         `DELETE FROM storeAmbitos WHERE id_ambito = ?`,
         [idAmbito]
       );
       return result.affectedRows > 0;
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error('Error al eliminar el ámbito:', error);
-      throw new Error('Error al eliminar el ámbito');
+      throw new AppError('Error al eliminar el ámbito');
     }
   }
 
@@ -248,16 +295,20 @@ class StoreAmbitosService
    * @param {number} idAmbito - ID del ámbito.
    * @returns {Promise<boolean>} True si fue eliminado.
    */
-  async deleteAmbitoSolucion(idSolucion: number, idAmbito: number): Promise<boolean> {
-    try {
+  async deleteAmbitoSolucion(idSolucion: number, idAmbito: number): Promise<boolean> 
+  {
+    try 
+    {
       const [result] = await pool.promise().query(
         `DELETE FROM storeSolucionesAmbitos WHERE id_solucion = ? AND id_ambito = ?`,
         [idSolucion, idAmbito]
       );
       return result.affectedRows > 0;
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error('Error al eliminar la relación de ámbito-solución:', error);
-      throw new Error('Error al eliminar la relación');
+      throw new AppError('Error al eliminar la relación');
     }
   }
 }
