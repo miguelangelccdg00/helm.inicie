@@ -147,12 +147,12 @@ img:hover
     color: #999
 
   &:focus
-    border: 2px solid $color-azul-principal
+    border: 1px solid $color-azul-principal
     outline: none
     box-shadow: 0 0 8px rgba(0, 27, 65, 0.2)
 
 .buscador:focus
-  border: 2px solid #a6cbf3
+  border: 1px solid #a6cbf3
   outline: none
 
 // Estilos para el modal
@@ -256,14 +256,12 @@ tbody tr:hover
     padding: 20px
     padding-left: 70px
   
-
   table
     width: 100%
     font-size: 14px
-  
 
   .buscador
-    width: 80%
+    width: 250px !important
     margin-bottom: 15px
 
   .descripcion-cell
@@ -277,4 +275,8 @@ tbody tr:hover
     overflow: hidden
     white-space: nowrap
     text-overflow: ellipsis
+
+@media (max-width: 1024px)
+  .buscador
+    width: 350px
 
