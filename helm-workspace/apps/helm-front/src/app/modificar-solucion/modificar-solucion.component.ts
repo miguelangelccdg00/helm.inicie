@@ -2,9 +2,9 @@ import { Component, OnInit, HostListener, ViewChild, ElementRef, ChangeDetectorR
 import { CommonModule } from '@angular/common';
 import { StoreSolucionesService } from '../services/store-soluciones.service';
 import { StoreSoluciones } from '@modelos-shared/storeSoluciones';
-import { StoreBeneficios } from '@modelos-shared/storeBeneficios';
-import { StoreProblemas } from '@modelos-shared/storeProblemas';
-import { StoreCaracteristicas } from '@modelos-shared/storeCaracteristicas';
+import { StoreBeneficios, AsociarBeneficioResponse } from '@modelos-shared/storeBeneficios';
+import { StoreProblemas, AsociarProblemaResponse } from '@modelos-shared/storeProblemas';
+import { StoreCaracteristicas, AsociarCaracteristicaResponse } from '@modelos-shared/storeCaracteristicas';
 import { StoreAmbitos } from '@modelos-shared/storeAmbitos';
 import { SolucionAmbito } from '@modelos-shared/solucionAmbito';
 import { StoreSectores } from '@modelos-shared/storeSectores';
@@ -347,7 +347,11 @@ export class ModificarSolucionComponent implements OnInit {
         next: () => {
           console.log('Solución actualizada correctamente');
 
-          const observables: Observable<any>[] = [];
+          const observables: (
+            | Observable<AsociarBeneficioResponse>
+            | Observable<AsociarProblemaResponse>
+            | Observable<AsociarCaracteristicaResponse>
+          )[] = [];
 
           this.beneficios.forEach(beneficio => {
             if (beneficio.id_beneficio) {

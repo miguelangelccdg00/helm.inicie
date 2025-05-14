@@ -12,3 +12,15 @@ export interface CreateProblemaResponse {
 export interface DeleteProblemaResponse {
     message: string;
 }
+
+export interface Asociacion {
+  idSolucion: number;
+  idProblema: number;
+  message: string;
+  titulo?: string;
+}
+
+export interface AsociarProblemaResponse {
+  message: string;
+  asociacion: Asociacion;
+}

@@ -3,9 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { StoreSoluciones, UpdateStoreSolucionResponse, DeleteSolucionResponse } from '@modelos-shared/storeSoluciones'
-import { StoreBeneficios, CreateBeneficioResponse, DeleteBeneficioResponse } from '@modelos-shared/storeBeneficios';
-import { StoreProblemas, CreateProblemaResponse, DeleteProblemaResponse } from '@modelos-shared/storeProblemas';
-import { StoreCaracteristicas, CreateCaracteristicaResponse, DeleteCaracteristicaResponse } from '@modelos-shared/storeCaracteristicas';
+import { StoreBeneficios, CreateBeneficioResponse, DeleteBeneficioResponse, AsociarBeneficioResponse } from '@modelos-shared/storeBeneficios';
+import { StoreProblemas, CreateProblemaResponse, DeleteProblemaResponse, AsociarProblemaResponse } from '@modelos-shared/storeProblemas';
+import { StoreCaracteristicas, CreateCaracteristicaResponse, DeleteCaracteristicaResponse, AsociarCaracteristicaResponse } from '@modelos-shared/storeCaracteristicas';
 import { StoreAmbitos, CreateAmbitoResponse, DeleteAmbitoResponse } from '@modelos-shared/storeAmbitos';
 import { SolucionAmbito, DeleteSolucionAmbitoResponse } from '@modelos-shared/solucionAmbito';
 import { StoreSectores, CreateSectorResponse, DeleteSectorResponse } from '@modelos-shared/storeSectores';
@@ -190,7 +190,7 @@ export class StoreSolucionesService {
   }
 
   /* Asocia un beneficio a una solución a partir de sus id */
-  asociarBeneficioASolucion(idSolucion: number, idBeneficio: number): Observable<any> {
+  asociarBeneficioASolucion(idSolucion: number, idBeneficio: number): Observable<AsociarBeneficioResponse> {
     const url = `${this.beneficiosUrl}/asociarBeneficio`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
@@ -199,7 +199,7 @@ export class StoreSolucionesService {
       id_beneficio: idBeneficio
     };
 
-    return this.https.post<any>(url, relacion, { headers });
+    return this.https.post<AsociarBeneficioResponse>(url, relacion, { headers });
   }
 
   /* Problemas */
@@ -217,7 +217,7 @@ export class StoreSolucionesService {
   }
 
   /* Asocia un problema a una solución a partir de sus id  */
-  asociarProblemaASolucion(idSolucion: number, idProblema: number): Observable<any> {
+  asociarProblemaASolucion(idSolucion: number, idProblema: number): Observable<AsociarProblemaResponse> {
     const url = `${this.problemasUrl}/asociarProblema`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
@@ -226,7 +226,7 @@ export class StoreSolucionesService {
       id_problema: idProblema
     };
 
-    return this.https.post<any>(url, relacion, { headers });
+    return this.https.post<AsociarProblemaResponse>(url, relacion, { headers });
   }
 
   /* Crea un problema y lo asocia a una solución */
@@ -451,7 +451,7 @@ export class StoreSolucionesService {
   }
 
   /* Asocia una característica a una solución a partir de sus id */
-  asociarCaracteristicaASolucion(idSolucion: number, idCaracteristica: number, titulo?: string): Observable<any> {
+  asociarCaracteristicaASolucion(idSolucion: number, idCaracteristica: number, titulo?: string): Observable<AsociarCaracteristicaResponse> {
     const url = `${this.caracteristicasUrl}/asociarCaracteristica`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
@@ -460,7 +460,7 @@ export class StoreSolucionesService {
       id_caracteristica: idCaracteristica
     };
 
-    return this.https.post<any>(url, relacion, { headers });
+    return this.https.post<AsociarCaracteristicaResponse>(url, relacion, { headers });
   }
 
   /* Obtiene una característica por su id */

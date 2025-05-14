@@ -12,3 +12,15 @@ export interface CreateBeneficioResponse {
 export interface DeleteBeneficioResponse {
   message: string;
 }
+
+export interface Asociacion {
+  idSolucion: number;
+  idBeneficio: number;
+  message: string;
+  titulo?: string;
+}
+
+export interface AsociarBeneficioResponse {
+  message: string;
+  asociacion: Asociacion;
+}

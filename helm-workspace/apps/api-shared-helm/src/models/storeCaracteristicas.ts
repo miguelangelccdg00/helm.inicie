@@ -12,3 +12,15 @@ export interface CreateCaracteristicaResponse {
 export interface DeleteCaracteristicaResponse {
     message: string;
 }
+
+export interface Asociacion {
+  idSolucion: number;
+  idCaracteristica: number;
+  message: string;
+  titulo?: string;
+}
+
+export interface AsociarCaracteristicaResponse {
+  message: string;
+  asociacion: Asociacion;
+}
