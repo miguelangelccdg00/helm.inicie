@@ -27,3 +27,17 @@ export interface DeleteSectorResponse
 {
     message: string;
 }
+
+export interface Asociacion
+{
+    idSolucion: number;
+    idSector: number;
+}
+
+export interface AsociarSectorResponse
+{
+    message: string;
+    asociacion: Asociacion;
+    sector: StoreSectores;
+    sectoresActualizados: StoreSectores[];
+}

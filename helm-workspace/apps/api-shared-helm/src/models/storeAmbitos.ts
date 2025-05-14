@@ -14,3 +14,15 @@ export interface CreateAmbitoResponse {
 export interface DeleteAmbitoResponse {
     message: string;
 }
+
+export interface Asociacion {
+    idSolucion: number;
+    idAmbito: number;
+}
+
+export interface AsociarAmbitoResponse {
+    message: string;
+    asociacion: Asociacion;
+    ambito: StoreAmbitos;
+    ambitosActualizados: StoreAmbitos[];
+}

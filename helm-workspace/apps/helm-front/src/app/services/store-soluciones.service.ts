@@ -6,9 +6,9 @@ import { StoreSoluciones, UpdateStoreSolucionResponse, DeleteSolucionResponse } 
 import { StoreBeneficios, CreateBeneficioResponse, DeleteBeneficioResponse, AsociarBeneficioResponse } from '@modelos-shared/storeBeneficios';
 import { StoreProblemas, CreateProblemaResponse, DeleteProblemaResponse, AsociarProblemaResponse } from '@modelos-shared/storeProblemas';
 import { StoreCaracteristicas, CreateCaracteristicaResponse, DeleteCaracteristicaResponse, AsociarCaracteristicaResponse } from '@modelos-shared/storeCaracteristicas';
-import { StoreAmbitos, CreateAmbitoResponse, DeleteAmbitoResponse } from '@modelos-shared/storeAmbitos';
+import { StoreAmbitos, CreateAmbitoResponse, DeleteAmbitoResponse, AsociarAmbitoResponse } from '@modelos-shared/storeAmbitos';
 import { SolucionAmbito, DeleteSolucionAmbitoResponse } from '@modelos-shared/solucionAmbito';
-import { StoreSectores, CreateSectorResponse, DeleteSectorResponse } from '@modelos-shared/storeSectores';
+import { StoreSectores, CreateSectorResponse, DeleteSectorResponse, AsociarSectorResponse } from '@modelos-shared/storeSectores';
 import { SolucionSector, DeleteSolucionSectorResponse } from '@modelos-shared/solucionSector';
 import { SolucionAmbitoSector } from '@modelos-shared/solucionAmbitoSector';
 import { tap } from 'rxjs/operators';
@@ -582,7 +582,7 @@ export class StoreSolucionesService {
   }
 
   /* Asocia un ámbito a una solución a partir del id de esta */
-  asociarAmbitoASolucion(idSolucion: number, idAmbito: number): Observable<any> {
+  asociarAmbitoASolucion(idSolucion: number, idAmbito: number): Observable<AsociarAmbitoResponse> {
     const url = `${this.ambitosUrl}/asociarAmbito`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
@@ -591,7 +591,7 @@ export class StoreSolucionesService {
       id_ambito: idAmbito
     };
 
-    return this.https.post<any>(url, relacion, { headers });
+    return this.https.post<AsociarAmbitoResponse>(url, relacion, { headers });
   }
 
   /* Modifica un ámbito a partir de su id y el de la solución en la que se está realizando la modificación */
@@ -823,7 +823,7 @@ export class StoreSolucionesService {
   }
 
   /* Asociar un sector existente a una solución */
-  asociarSectorASolucion(idSolucion: number, idSector: number): Observable<any> {
+  asociarSectorASolucion(idSolucion: number, idSector: number): Observable<AsociarSectorResponse> {
     const url = `${this.sectoresUrl}/asociarSectores`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
@@ -832,7 +832,7 @@ export class StoreSolucionesService {
       id_sector: idSector
     };
 
-    return this.https.post<any>(url, relacion, { headers });
+    return this.https.post<AsociarSectorResponse>(url, relacion, { headers });
   }
 
   /* Modificación de un sector de una solución específica */
