@@ -28,7 +28,7 @@ export class AmbitosService {
 
   /* Crea un ámbito */
   createStoreAmbito(ambito: StoreAmbitos): Observable<StoreAmbitos> {
-    const url = `${this.ambitosUrl}/createAmbito`;
+    const url = `${this.ambitosUrl}/createAmbitoSolucion`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.https.post<StoreAmbitos>(url, ambito, { headers });
   }
