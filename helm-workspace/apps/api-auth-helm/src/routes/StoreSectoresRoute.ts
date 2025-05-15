@@ -26,7 +26,7 @@ router.post('/createSectoresSolucion', StoreSectoresController.createSectoresSol
 /**
  * @description Insercion de sectores por solución específica de su ID
  */
-router.post('/createSectores', StoreSectoresController.createSectores);
+router.post('/createSectores/idSolucion', StoreSectoresController.createSectores);
 
 /**
  * @description Insercion de sectores por solución específica de su ID

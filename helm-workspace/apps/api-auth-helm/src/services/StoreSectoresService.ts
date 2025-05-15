@@ -87,7 +87,7 @@ class StoreSectoresService
     }
 
     /** 
-     * Crea un nuevo sector y lo asocia automáticamente con todas las soluciones y ámbitos existentes.
+     * Crea un nuevo sector por una solucion determinada.
      * 
      * @param {CreateSectorParams} data - Información necesaria para crear un sector.
      * @returns {Promise<StoreSectores>} Sector creado con su ID.
@@ -106,28 +106,8 @@ class StoreSectoresService
             // Asociar con UNA solución
             await pool.promise().query(
             `INSERT INTO storeSolucionesSectores (id_solucion, id_sector, descalternativa, textoalternativo)
-            SELECT ?, ?, '', ''
-            WHERE NOT EXISTS (
-                SELECT 1 FROM storeSolucionesSectores
-                WHERE id_solucion = ? AND id_sector = ?
-            )`,
-            [idSolucion, idSector, idSolucion, idSector]
-            );
-
-            // Asociar con los ámbitos de ESA solución
-            await pool.promise().query(
-            `INSERT INTO storeSolucionesAmbitosSectores (id_solucion, id_ambito, id_sector)
-            SELECT sa.id_solucion, sa.id_ambito, ?
-            FROM storeSolucionesAmbitos sa
-            WHERE sa.id_solucion = ?
-            AND NOT EXISTS (
-                SELECT 1
-                FROM storeSolucionesAmbitosSectores sas
-                WHERE sas.id_solucion = sa.id_solucion
-                AND sas.id_ambito = sa.id_ambito
-                AND sas.id_sector = ?
-            )`,
-            [idSector, idSolucion, idSector]
+            VALUES (?, ?, '', '')`,
+            [idSolucion, idSector]
             );
 
             return {
@@ -145,7 +125,6 @@ class StoreSectoresService
             throw new Error('Error al crear el sector');
         }
     }
-
 
     /** 
      * Crea un nuevo sector sin asociaciones adicionales.
