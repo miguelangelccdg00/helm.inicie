@@ -33,7 +33,7 @@ class StoreAmbitosService
    * @param {CreateAmbitoParams} param0 - Datos del nuevo ámbito.
    * @returns {Promise<StoreAmbitos>} El ámbito creado.
    */
-  async createAmbitoSolucion({ idSolucion, description, textoweb, prefijo, slug }: Omit<CreateAmbitoParams, 'idSoluciones'>): Promise<StoreAmbitos> 
+  async createAmbito({ idSolucion, description, textoweb, prefijo, slug }: Omit<CreateAmbitoParams, 'idSoluciones'>): Promise<StoreAmbitos> 
   {
     try 
     {
@@ -48,8 +48,7 @@ class StoreAmbitosService
       await pool.promise().query(
       `INSERT INTO storeSolucionesAmbitos (id_solucion, id_ambito)
       VALUES (?, ?)`,
-      [idSolucion, idAmbito]
-      );
+      [idSolucion, idAmbito]);
 
       return { id_ambito: idAmbito, description, textoweb, prefijo, slug };
     } 
@@ -65,7 +64,7 @@ class StoreAmbitosService
    * @param {CreateAmbitoParams} param0 - Datos del nuevo ámbito.
    * @returns {Promise<StoreAmbitos>} El ámbito creado.
    */
-  async createAmbito({ description, textoweb, prefijo, slug }: Omit<CreateAmbitoParams, 'idSoluciones'>): Promise<StoreAmbitos> 
+  async createAmbitoSolucion({ description, textoweb, prefijo, slug }: Omit<CreateAmbitoParams, 'idSoluciones'>): Promise<StoreAmbitos> 
   {
     try 
     {
