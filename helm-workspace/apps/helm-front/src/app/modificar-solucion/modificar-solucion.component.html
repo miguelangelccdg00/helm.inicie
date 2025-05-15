@@ -464,16 +464,18 @@
                 </div>
                 <div class="form-group col-6">
                   <label for="nuevoTextoweb">Texto Web:</label>
-                  <textarea id="nuevoTextoweb" [(ngModel)]="nuevoAmbito.textoweb" name="nuevoTextoweb" placeholder="Texto Web"
-                    required></textarea>
+                  <textarea id="nuevoTextoweb" [(ngModel)]="nuevoAmbito.textoweb" name="nuevoTextoweb"
+                    placeholder="Texto Web" required></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="nuevoPrefijo">Prefijo:</label>
-                  <textarea id="nuevoPrefijo" [(ngModel)]="nuevoAmbito.prefijo" name="nuevoPrefijo" placeholder="Prefijo" required></textarea>
+                  <textarea id="nuevoPrefijo" [(ngModel)]="nuevoAmbito.prefijo" name="nuevoPrefijo"
+                    placeholder="Prefijo" required></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="nuevoSlug">Slug:</label>
-                  <textarea id="nuevoSlug" [(ngModel)]="nuevoAmbito.slug" name="nuevoSlug" placeholder="Slug" required></textarea>
+                  <textarea id="nuevoSlug" [(ngModel)]="nuevoAmbito.slug" name="nuevoSlug" placeholder="Slug"
+                    required></textarea>
                 </div>
               </div>
               <div class="botones-container5">
@@ -495,16 +497,18 @@
               </div>
               <div class="form-group margen">
                 <label for="nuevoTextoweb">Texto Web:</label>
-                <textarea id="nuevoTextoweb" [(ngModel)]="nuevoAmbito.textoweb" name="nuevoTextoweb" placeholder="Texto Web del ámbito"  
-                  required></textarea>
+                <textarea id="nuevoTextoweb" [(ngModel)]="nuevoAmbito.textoweb" name="nuevoTextoweb"
+                  placeholder="Texto Web del ámbito" required></textarea>
               </div>
               <div class="form-group margen">
                 <label for="nuevoPrefijo">Prefijo:</label>
-                <textarea id="nuevoPrefijo" [(ngModel)]="nuevoAmbito.prefijo" name="nuevoPrefijo" placeholder="Prefijo del ámbito" required></textarea>
+                <textarea id="nuevoPrefijo" [(ngModel)]="nuevoAmbito.prefijo" name="nuevoPrefijo"
+                  placeholder="Prefijo del ámbito" required></textarea>
               </div>
               <div class="form-group margen">
                 <label for="nuevoSlug">Slug:</label>
-                <textarea id="nuevoSlug" [(ngModel)]="nuevoAmbito.slug" name="nuevoSlug" placeholder="Slug del ámbito" required></textarea>
+                <textarea id="nuevoSlug" [(ngModel)]="nuevoAmbito.slug" name="nuevoSlug" placeholder="Slug del ámbito"
+                  required></textarea>
               </div>
               <div class="botones-container5">
                 <button type="submit">Crear y Añadir</button>
@@ -800,31 +804,33 @@
                 </div>
                 <div class="form-group col-6">
                   <label for="nuevoTextoweb">Texto Web:</label>
-                  <textarea id="nuevoTextoweb" [(ngModel)]="nuevoSector.textoweb" name="nuevoTextoweb" placeholder="Texto Web"
-                    required></textarea>
+                  <textarea id="nuevoTextoweb" [(ngModel)]="nuevoSector.textoweb" name="nuevoTextoweb"
+                    placeholder="Texto Web" required></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="nuevoPrefijo">Prefijo:</label>
-                  <textarea id="nuevoPrefijo" [(ngModel)]="nuevoSector.prefijo" name="nuevoPrefijo" placeholder="Prefijo" required></textarea>
+                  <textarea id="nuevoPrefijo" [(ngModel)]="nuevoSector.prefijo" name="nuevoPrefijo"
+                    placeholder="Prefijo" required></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="nuevoSlug">Slug:</label>
-                  <textarea id="nuevoSlug" [(ngModel)]="nuevoSector.slug" name="nuevoSlug" placeholder="Slug" required></textarea>
+                  <textarea id="nuevoSlug" [(ngModel)]="nuevoSector.slug" name="nuevoSlug" placeholder="Slug"
+                    required></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="nuevaDescriptionWeb">Descripción Web:</label>
-                  <textarea id="nuevaDescriptionWeb" [(ngModel)]="nuevoSector.descriptionweb" name="nuevaDescriptionWeb" placeholder="Descripción Web"
-                    required></textarea>
+                  <textarea id="nuevaDescriptionWeb" [(ngModel)]="nuevoSector.descriptionweb" name="nuevaDescriptionWeb"
+                    placeholder="Descripción Web" required></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="nuevoTitleWeb">Título Web:</label>
-                  <textarea id="nuevoTitleWeb" [(ngModel)]="nuevoSector.titleweb" name="nuevoTitleWeb" placeholder="Título Web"
-                    required></textarea>
+                  <textarea id="nuevoTitleWeb" [(ngModel)]="nuevoSector.titleweb" name="nuevoTitleWeb"
+                    placeholder="Título Web" required></textarea>
                 </div>
                 <div class="form-group col-6">
                   <label for="nuevaBackgroundImage">Imagen de fondo (URL):</label>
-                  <textarea id="nuevaBackgroundImage" [(ngModel)]="nuevoSector.backgroundImage" placeholder="Imagen de fondo"
-                    name="nuevaBackgroundImage" required></textarea>
+                  <textarea id="nuevaBackgroundImage" [(ngModel)]="nuevoSector.backgroundImage"
+                    placeholder="Imagen de fondo" name="nuevaBackgroundImage" required></textarea>
                 </div>
               </div>
               <div class="botones-container5">
@@ -838,46 +844,79 @@
           <div *ngIf="mostrarCrearSector === true" class="subseccion">
             <h3 class="titulo-subseccion">Crear y añadir sector</h3>
 
-            <form (ngSubmit)="crearNuevoSector()">
+            <form (ngSubmit)="crearNuevoSector()" #crearForm="ngForm">
               <div class="form-group margen">
                 <label for="nuevaDescripcionSector">Descripción:</label>
-                <textarea id="nuevaDescripcionSector" [(ngModel)]="nuevoSector.description" placeholder="Descripción del sector"
-                  name="nuevaDescripcionSector" required></textarea>
+                <textarea id="nuevaDescripcionSector" [(ngModel)]="nuevoSector.description"
+                  placeholder="Descripción del sector" name="nuevaDescripcionSector" required
+                  #descripcionCtrl="ngModel"></textarea>
+                <div class="error" *ngIf="descripcionCtrl.invalid && descripcionCtrl.touched">
+                  La descripción es obligatoria.
+                </div>
               </div>
+
               <div class="form-group margen">
                 <label for="nuevoTextoweb">Texto Web:</label>
-                <textarea id="nuevoTextoweb" [(ngModel)]="nuevoSector.textoweb" name="nuevoTextoweb" placeholder="Texto Web del sector"
-                  required></textarea>
+                <textarea id="nuevoTextoweb" [(ngModel)]="nuevoSector.textoweb" name="nuevoTextoweb"
+                  placeholder="Texto Web del sector" required #textowebCtrl="ngModel"></textarea>
+                <div class="error" *ngIf="textowebCtrl.invalid && textowebCtrl.touched">
+                  El texto web es obligatorio.
+                </div>
               </div>
+
               <div class="form-group margen">
                 <label for="nuevoPrefijo">Prefijo:</label>
-                <textarea id="nuevoPrefijo" [(ngModel)]="nuevoSector.prefijo" name="nuevoPrefijo" placeholder="Prefijo del sector" required></textarea>
+                <textarea id="nuevoPrefijo" [(ngModel)]="nuevoSector.prefijo" name="nuevoPrefijo"
+                  placeholder="Prefijo del sector" required #prefijoCtrl="ngModel"></textarea>
+                <div class="error" *ngIf="prefijoCtrl.invalid && prefijoCtrl.touched">
+                  El prefijo es obligatorio.
+                </div>
               </div>
+
               <div class="form-group margen">
                 <label for="nuevoSlug">Slug:</label>
-                <textarea id="nuevoSlug" [(ngModel)]="nuevoSector.slug" name="nuevoSlug" placeholder="Slug del sector" required></textarea>
+                <textarea id="nuevoSlug" [(ngModel)]="nuevoSector.slug" name="nuevoSlug" placeholder="Slug del sector"
+                  required #slugCtrl="ngModel"></textarea>
+                <div class="error" *ngIf="slugCtrl.invalid && slugCtrl.touched">
+                  El slug es obligatorio.
+                </div>
               </div>
+
               <div class="form-group margen">
                 <label for="nuevaDescriptionWeb">Descripción Web:</label>
-                <textarea id="nuevaDescriptionWeb" [(ngModel)]="nuevoSector.descriptionweb" name="nuevaDescriptionWeb" placeholder="Descripción Web del sector"
-                  required></textarea>
+                <textarea id="nuevaDescriptionWeb" [(ngModel)]="nuevoSector.descriptionweb" name="nuevaDescriptionWeb"
+                  placeholder="Descripción Web del sector" required #descriptionwebCtrl="ngModel"></textarea>
+                <div class="error" *ngIf="descriptionwebCtrl.invalid && descriptionwebCtrl.touched">
+                  La descripción web es obligatoria.
+                </div>
               </div>
+
               <div class="form-group margen">
                 <label for="nuevoTitleWeb">Título Web:</label>
-                <textarea id="nuevoTitleWeb" [(ngModel)]="nuevoSector.titleweb" name="nuevoTitleWeb" placeholder="Título Web del sector"
-                  required></textarea>
+                <textarea id="nuevoTitleWeb" [(ngModel)]="nuevoSector.titleweb" name="nuevoTitleWeb"
+                  placeholder="Título Web del sector" required #titlewebCtrl="ngModel"></textarea>
+                <div class="error" *ngIf="titlewebCtrl.invalid && titlewebCtrl.touched">
+                  El título web es obligatorio.
+                </div>
               </div>
+
               <div class="form-group margen">
                 <label for="nuevaBackgroundImage">Imagen de fondo (URL):</label>
-                <textarea id="nuevaBackgroundImage" [(ngModel)]="nuevoSector.backgroundImage" placeholder="Imagen de fondo del sector"
-                  name="nuevaBackgroundImage" required></textarea>
+                <textarea id="nuevaBackgroundImage" [(ngModel)]="nuevoSector.backgroundImage"
+                  placeholder="Imagen de fondo del sector" name="nuevaBackgroundImage" required
+                  #backgroundCtrl="ngModel"></textarea>
+                <div class="error" *ngIf="backgroundCtrl.invalid && backgroundCtrl.touched">
+                  La imagen de fondo es obligatoria.
+                </div>
               </div>
+
               <div class="botones-container5">
-                <button type="submit">Crear y Añadir</button>
+                <button type="submit" [disabled]="crearForm.invalid">Crear y Añadir</button>
                 <button type="button"
                   (click)="mostrarCrearSector = false; mostrarBotonCrearSector = true">Cancelar</button>
               </div>
             </form>
+
           </div>
 
           <div class="subseccion">
@@ -1031,129 +1070,129 @@
 
           <!-- Formulario para modificar solución por ámbito y sector -->
           <div *ngIf="mostrarModificarSolucionAmbitoSector" class="subseccion" #formularioSolucionAmbitoSector>
-              <h3 class="titulo-subseccion">Modificar solución por ámbito y sector</h3>
+            <h3 class="titulo-subseccion">Modificar solución por ámbito y sector</h3>
 
-              <form (ngSubmit)="modificarSolucionAmbitoSector()">
-                <div class="grid-container">
-                  <div class="form-group col-6">
-                    <label for="titleweb">titleweb:</label>
-                    <input id="titleweb" [(ngModel)]="nuevaSolucionAmbitoSector.titleweb" name="titleweb" placeholder="titleweb"
-                      pInputText variant="filled">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="title">title:</label>
-                    <input id="title" [(ngModel)]="nuevaSolucionAmbitoSector.title" name="title" placeholder="title"
-                      pInputText variant="filled">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="subtitle">subtitle:</label>
-                    <input id="subtitle" [(ngModel)]="nuevaSolucionAmbitoSector.subtitle" name="subtitle"
-                      placeholder="subtitle" pInputText variant="filled">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="description">description:</label>
-                    <input id="description" [(ngModel)]="nuevaSolucionAmbitoSector.description" name="description" placeholder="description" pInputText
-                      variant="filled">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="slug">slug:</label>
-                    <input id="slug" [(ngModel)]="nuevaSolucionAmbitoSector.slug" name="slug" placeholder="slug" pInputText
-                      variant="filled">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="icon">icon:</label>
-                    <input id="icon" [(ngModel)]="nuevaSolucionAmbitoSector.icon" name="icon" placeholder="icon" pInputText
-                      variant="filled">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="multimediaUri">multimediaUri:</label>
-                    <input id="multimediaUri" [(ngModel)]="nuevaSolucionAmbitoSector.multimediaUri" name="multimediaUri"
-                      placeholder="multimediaUri" pInputText variant="filled">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="multimediaTypeId">multimediaTypeId:</label>
-                    <input id="multimediaTypeId" [(ngModel)]="nuevaSolucionAmbitoSector.multimediaTypeId"
-                      name="multimediaTypeId" placeholder="multimediaTypeId" pInputText variant="filled">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="problemaTitle">problemaTitle:</label>
-                    <input id="problemaTitle" [(ngModel)]="nuevaSolucionAmbitoSector.problemaTitle" name="problemaTitle"
-                      placeholder="problemaTitle" pInputText variant="filled">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="problemaPragma">problemaPragma:</label>
-                    <textarea id="problemaPragma" [(ngModel)]="nuevaSolucionAmbitoSector.problemaPragma" name="problemaPragma"
-                      placeholder="problemaPragma" pInputText variant="filled"></textarea>
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="solucionTitle">solucionTitle:</label>
-                    <input id="solucionTitle" [(ngModel)]="nuevaSolucionAmbitoSector.solucionTitle" name="solucionTitle"
-                      placeholder="solucionTitle" pInputText variant="filled">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="solucionPragma">solucionPragma:</label>
-                    <textarea id="solucionPragma" [(ngModel)]="nuevaSolucionAmbitoSector.solucionPragma" name="solucionPragma"
-                      placeholder="solucionPragma" pInputText variant="filled"></textarea>
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="caracteristicasTitle">caracteristicasTitle:</label>
-                    <input id="caracteristicasTitle" [(ngModel)]="nuevaSolucionAmbitoSector.caracteristicasTitle"
-                      name="caracteristicasTitle" placeholder="caracteristicasTitle" pInputText variant="filled">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="caracteristicasPragma">caracteristicasPragma:</label>
-                    <textarea id="caracteristicasPragma" [(ngModel)]="nuevaSolucionAmbitoSector.caracteristicasPragma"
-                      name="caracteristicasPragma" placeholder="caracteristicasPragma" pInputText
-                      variant="filled"></textarea>
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="casosdeusoTitle">casosdeusoTitle:</label>
-                    <input id="casosdeusoTitle" [(ngModel)]="nuevaSolucionAmbitoSector.casosdeusoTitle" name="casosdeusoTitle"
-                      placeholder="casosdeusoTitle" pInputText variant="filled">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="casosdeusoPragma">casosdeusoPragma:</label>
-                    <textarea id="casosdeusoPragma" [(ngModel)]="nuevaSolucionAmbitoSector.casosdeusoPragma"
-                      name="casosdeusoPragma" placeholder="casosdeusoPragma" pInputText variant="filled"></textarea>
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="firstCtaTitle">firstCtaTitle:</label>
-                    <input id="firstCtaTitle" [(ngModel)]="nuevaSolucionAmbitoSector.firstCtaTitle" name="firstCtaTitle"
-                      placeholder="firstCtaTitle" pInputText variant="filled">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="firstCtaPragma">firstCtaPragma:</label>
-                    <textarea id="firstCtaPragma" [(ngModel)]="nuevaSolucionAmbitoSector.firstCtaPragma" name="firstCtaPragma"
-                      placeholder="firstCtaPragma" pInputText variant="filled"></textarea>
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="secondCtaTitle">secondCtaTitle:</label>
-                    <input id="secondCtaTitle" [(ngModel)]="nuevaSolucionAmbitoSector.secondCtaTitle" name="secondCtaTitle"
-                      placeholder="secondCtaTitle" pInputText variant="filled">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="secondCtaPragma">secondCtaPragma:</label>
-                    <textarea id="secondCtaPragma" [(ngModel)]="nuevaSolucionAmbitoSector.secondCtaPragma"
-                      name="secondCtaPragma" placeholder="secondCtaPragma" pInputText variant="filled"></textarea>
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="beneficiosTitle">beneficiosTitle:</label>
-                    <input id="beneficiosTitle" [(ngModel)]="nuevaSolucionAmbitoSector.beneficiosTitle" name="beneficiosTitle"
-                      placeholder="beneficiosTitle" pInputText variant="filled">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="beneficiosPragma">beneficiosPragma:</label>
-                    <textarea id="beneficiosPragma" [(ngModel)]="nuevaSolucionAmbitoSector.beneficiosPragma"
-                      name="beneficiosPragma" placeholder="beneficiosPragma" pInputText variant="filled"></textarea>
-                  </div>
+            <form (ngSubmit)="modificarSolucionAmbitoSector()">
+              <div class="grid-container">
+                <div class="form-group col-6">
+                  <label for="titleweb">titleweb:</label>
+                  <input id="titleweb" [(ngModel)]="nuevaSolucionAmbitoSector.titleweb" name="titleweb"
+                    placeholder="titleweb" pInputText variant="filled">
                 </div>
-                <div class="botones-container3">
-                  <button type="submit">Modificar</button>
-                  <button type="button"
-                    (click)="mostrarModificarSolucionAmbitoSector = false; mostrarBotonModificarSolucionAmbitoSector = true">Cancelar</button>
+                <div class="form-group col-6">
+                  <label for="title">title:</label>
+                  <input id="title" [(ngModel)]="nuevaSolucionAmbitoSector.title" name="title" placeholder="title"
+                    pInputText variant="filled">
                 </div>
-              </form>
-            </div>
+                <div class="form-group col-6">
+                  <label for="subtitle">subtitle:</label>
+                  <input id="subtitle" [(ngModel)]="nuevaSolucionAmbitoSector.subtitle" name="subtitle"
+                    placeholder="subtitle" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="description">description:</label>
+                  <input id="description" [(ngModel)]="nuevaSolucionAmbitoSector.description" name="description"
+                    placeholder="description" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="slug">slug:</label>
+                  <input id="slug" [(ngModel)]="nuevaSolucionAmbitoSector.slug" name="slug" placeholder="slug"
+                    pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="icon">icon:</label>
+                  <input id="icon" [(ngModel)]="nuevaSolucionAmbitoSector.icon" name="icon" placeholder="icon"
+                    pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="multimediaUri">multimediaUri:</label>
+                  <input id="multimediaUri" [(ngModel)]="nuevaSolucionAmbitoSector.multimediaUri" name="multimediaUri"
+                    placeholder="multimediaUri" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="multimediaTypeId">multimediaTypeId:</label>
+                  <input id="multimediaTypeId" [(ngModel)]="nuevaSolucionAmbitoSector.multimediaTypeId"
+                    name="multimediaTypeId" placeholder="multimediaTypeId" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="problemaTitle">problemaTitle:</label>
+                  <input id="problemaTitle" [(ngModel)]="nuevaSolucionAmbitoSector.problemaTitle" name="problemaTitle"
+                    placeholder="problemaTitle" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="problemaPragma">problemaPragma:</label>
+                  <textarea id="problemaPragma" [(ngModel)]="nuevaSolucionAmbitoSector.problemaPragma"
+                    name="problemaPragma" placeholder="problemaPragma" pInputText variant="filled"></textarea>
+                </div>
+                <div class="form-group col-6">
+                  <label for="solucionTitle">solucionTitle:</label>
+                  <input id="solucionTitle" [(ngModel)]="nuevaSolucionAmbitoSector.solucionTitle" name="solucionTitle"
+                    placeholder="solucionTitle" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="solucionPragma">solucionPragma:</label>
+                  <textarea id="solucionPragma" [(ngModel)]="nuevaSolucionAmbitoSector.solucionPragma"
+                    name="solucionPragma" placeholder="solucionPragma" pInputText variant="filled"></textarea>
+                </div>
+                <div class="form-group col-6">
+                  <label for="caracteristicasTitle">caracteristicasTitle:</label>
+                  <input id="caracteristicasTitle" [(ngModel)]="nuevaSolucionAmbitoSector.caracteristicasTitle"
+                    name="caracteristicasTitle" placeholder="caracteristicasTitle" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="caracteristicasPragma">caracteristicasPragma:</label>
+                  <textarea id="caracteristicasPragma" [(ngModel)]="nuevaSolucionAmbitoSector.caracteristicasPragma"
+                    name="caracteristicasPragma" placeholder="caracteristicasPragma" pInputText
+                    variant="filled"></textarea>
+                </div>
+                <div class="form-group col-6">
+                  <label for="casosdeusoTitle">casosdeusoTitle:</label>
+                  <input id="casosdeusoTitle" [(ngModel)]="nuevaSolucionAmbitoSector.casosdeusoTitle"
+                    name="casosdeusoTitle" placeholder="casosdeusoTitle" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="casosdeusoPragma">casosdeusoPragma:</label>
+                  <textarea id="casosdeusoPragma" [(ngModel)]="nuevaSolucionAmbitoSector.casosdeusoPragma"
+                    name="casosdeusoPragma" placeholder="casosdeusoPragma" pInputText variant="filled"></textarea>
+                </div>
+                <div class="form-group col-6">
+                  <label for="firstCtaTitle">firstCtaTitle:</label>
+                  <input id="firstCtaTitle" [(ngModel)]="nuevaSolucionAmbitoSector.firstCtaTitle" name="firstCtaTitle"
+                    placeholder="firstCtaTitle" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="firstCtaPragma">firstCtaPragma:</label>
+                  <textarea id="firstCtaPragma" [(ngModel)]="nuevaSolucionAmbitoSector.firstCtaPragma"
+                    name="firstCtaPragma" placeholder="firstCtaPragma" pInputText variant="filled"></textarea>
+                </div>
+                <div class="form-group col-6">
+                  <label for="secondCtaTitle">secondCtaTitle:</label>
+                  <input id="secondCtaTitle" [(ngModel)]="nuevaSolucionAmbitoSector.secondCtaTitle"
+                    name="secondCtaTitle" placeholder="secondCtaTitle" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="secondCtaPragma">secondCtaPragma:</label>
+                  <textarea id="secondCtaPragma" [(ngModel)]="nuevaSolucionAmbitoSector.secondCtaPragma"
+                    name="secondCtaPragma" placeholder="secondCtaPragma" pInputText variant="filled"></textarea>
+                </div>
+                <div class="form-group col-6">
+                  <label for="beneficiosTitle">beneficiosTitle:</label>
+                  <input id="beneficiosTitle" [(ngModel)]="nuevaSolucionAmbitoSector.beneficiosTitle"
+                    name="beneficiosTitle" placeholder="beneficiosTitle" pInputText variant="filled">
+                </div>
+                <div class="form-group col-6">
+                  <label for="beneficiosPragma">beneficiosPragma:</label>
+                  <textarea id="beneficiosPragma" [(ngModel)]="nuevaSolucionAmbitoSector.beneficiosPragma"
+                    name="beneficiosPragma" placeholder="beneficiosPragma" pInputText variant="filled"></textarea>
+                </div>
+              </div>
+              <div class="botones-container3">
+                <button type="submit">Modificar</button>
+                <button type="button"
+                  (click)="mostrarModificarSolucionAmbitoSector = false; mostrarBotonModificarSolucionAmbitoSector = true">Cancelar</button>
+              </div>
+            </form>
+          </div>
 
           <div *ngIf="solucionesAmbitosSectores && solucionesAmbitosSectores.length">
             <p-table [value]="solucionesAmbitosSectores" [paginator]="true" [rows]="5"
@@ -1223,7 +1262,9 @@
                     <span (click)="editarSolucionAmbitoSector(solucionAmbitoSector)" class="emojis">✏️</span>
                   </td>
                   <td>
-                    <span (click)="confirmarEliminarSolucionAmbitoSector(solucionAmbitoSector.id_sector!, solucionAmbitoSector.id_ambito!, solucionAmbitoSector.id_solucion!,  $event)" class="emojis">🗑️</span>
+                    <span
+                      (click)="confirmarEliminarSolucionAmbitoSector(solucionAmbitoSector.id_sector!, solucionAmbitoSector.id_ambito!, solucionAmbitoSector.id_solucion!,  $event)"
+                      class="emojis">🗑️</span>
                   </td>
                 </tr>
               </ng-template>
