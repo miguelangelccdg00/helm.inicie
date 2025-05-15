@@ -765,7 +765,7 @@
 
                 <ng-template pTemplate="body" let-solucionAmbito>
                   <tr>
-                    <td>{{ ambitosDictionary[solucionAmbito.id_ambito!].description || 'No disponible' }}</td>
+                    <td>{{ getAmbitoDescription(solucionAmbito.id_ambito) }}</td>
                     <td>{{ solucion.description }}</td>
                     <td>{{ solucionAmbito.title }}</td>
                     <td>{{ solucionAmbito.subtitle }}</td>

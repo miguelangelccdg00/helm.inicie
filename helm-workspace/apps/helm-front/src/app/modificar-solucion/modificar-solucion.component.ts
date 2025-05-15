@@ -328,6 +328,12 @@ export class ModificarSolucionComponent implements OnInit {
     }, {} as { [key: number]: T });
   }
 
+  getAmbitoDescription(idAmbito: number | undefined): string {
+    if (idAmbito == null) return 'No disponible';
+    const ambito = this.ambitosDictionary[idAmbito];
+    return ambito?.description ?? 'No disponible';
+  }
+
   // Función para guardar los cambios realizados en la solución.
   guardarCambios() {
     if (this.solucion) {
