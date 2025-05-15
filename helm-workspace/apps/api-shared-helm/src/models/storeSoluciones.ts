@@ -48,12 +48,14 @@ export interface StoreSoluciones {
     solucionAmbitoSector: SolucionAmbitoSector[];
 }
 
-export interface UpdateStoreSolucionResponse {
+/* export interface UpdateStoreSolucionResponse {
     success: boolean;
     message?: string;
     updatedSolucion?: StoreSoluciones;
-}
+} */
 
 export interface DeleteSolucionResponse {
     message: string;
 }
+
+export type UpdateStoreSolucionResponse = StoreSoluciones;
