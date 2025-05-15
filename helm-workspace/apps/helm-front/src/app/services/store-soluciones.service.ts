@@ -12,6 +12,7 @@ import { StoreSectores, CreateSectorResponse, DeleteSectorResponse, AsociarSecto
 import { SolucionSector, DeleteSolucionSectorResponse } from '@modelos-shared/solucionSector';
 import { SolucionAmbitoSector } from '@modelos-shared/solucionAmbitoSector';
 import { SolucionAmbitoSectorCaracteristica } from '@modelos-shared/solucionAmbitoSectorCaracteristica';
+import { SolucionAmbitoSectorBeneficio } from '@modelos-shared/solucionAmbitoSectorBeneficio';
 import { tap } from 'rxjs/operators';
 
 @Injectable({
@@ -1028,6 +1029,33 @@ export class StoreSolucionesService {
           console.info('ℹ️ Sin datos para mostrar en la tabla de storeSolucionesAmbitosSectoresCaracteristicas');
         } else {
           console.warn('⚠️ Error al consultar la tabla de storeSolucionesAmbitosSectoresCaracteristicas:', error);
+        }
+        return of([]);
+      })
+    );
+  }
+
+  /* Obtiene la tabla completa de storeSolucionesAmbitosSectoresBeneficios */
+  getStoreSolucionAmbitosSectoresBeneficios(): Observable<SolucionAmbitoSectorBeneficio[]> {
+    const url = `${this.beneficiosUrl}/listSolucionAmbitoBeneficio`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    console.info('ℹ️ Consultando tabla de storeSolucionesAmbitosSectoresBeneficios...');
+
+    return this.https.get<SolucionAmbitoSectorBeneficio[]>(url, { headers }).pipe(
+      map(response => {
+        if (response && response.length > 0) {
+          console.log('✅ Tabla de storeSolucionesAmbitosSectoresBeneficios recuperada correctamente');
+        } else {
+          console.info('ℹ️ No hay datos en la tabla de storeSolucionesAmbitosSectoresBeneficios');
+        }
+        return response || [];
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          console.info('ℹ️ Sin datos para mostrar en la tabla de storeSolucionesAmbitosSectoresBeneficios');
+        } else {
+          console.warn('⚠️ Error al consultar la tabla de storeSolucionesAmbitosSectoresBeneficios:', error);
         }
         return of([]);
       })
