@@ -107,6 +107,7 @@ app.get('/', (req: Request, res: Response): void =>
                     operations: [
                         { method: 'GET', path: '/listCompleteCaracteristicas' },
                         { method: 'GET', path: '/listCaracteristicas/:idSolucion' },
+                        { method: 'GET', path: '/listSolucionAmbitoCaracteristica' },
                         { method: 'POST', path: '/createCaracteristicas/:idSolucion' },
                         { method: 'PUT', path: '/modifyCaracteristicas/:id' },
                         { method: 'DELETE', path: '/deleteCaracteristicas/:idCaracteristicas' }

@@ -254,6 +254,36 @@ class StoreCaracteristicasController
   }
 
   /**
+   * Lista todas las características existentes.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve una lista de todas las características si es exitosa.
+   * 
+   * @throws {500} Error interno en el servidor en caso de fallos al obtener las características.
+   */
+  async listSolucionAmbitoCaracteristica(req: Request, res: Response): Promise<void>
+  {
+    try
+    {
+      const listSolucionAmbitoCaracteristica: AsociarSolucionAmbitoCaracteristicaBody[] = await StoreCaracteristicasService.listSolucionAmbitoCaracteristica();
+
+      if (!listSolucionAmbitoCaracteristica.length)
+      {
+        res.status(404).json({ message: 'No existen características' });
+        return;
+      }
+
+      res.status(200).json(listSolucionAmbitoCaracteristica);
+    } catch (error)
+    {
+      console.error('Error listando las características:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
+
+  /**
    * Modifica una característica existente.
    * 
    * @param {Request} req - Objeto de solicitud HTTP que contiene el ID de la característica y los datos a actualizar.

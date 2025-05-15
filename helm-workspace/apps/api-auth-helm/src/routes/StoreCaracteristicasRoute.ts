@@ -13,6 +13,11 @@ router.get('/listCompleteCaracteristicas', storeCaracteristicasController.listCa
 router.get('/listCaracteristicas/:idSolucion', storeCaracteristicasController.listIdCaracteristica);
 
 /**
+ * @description Obtencion de problemas por solución específica de su ID
+ */
+router.get('/listSolucionAmbitoCaracteristica', storeCaracteristicasController.listSolucionAmbitoCaracteristica);
+
+/**
  * @description Insercion de caracteristicas por solución específica de su ID
  */
 router.post('/createCaracteristicas/:idSolucion', storeCaracteristicasController.createCaracteristicas);

@@ -31,10 +31,15 @@ interface AsociarCaracteristicaOutput
  */
 interface Caracteristica
 {
-  /** ID de la característica. */
   id_caracteristica: number;
-  /** Descripción de la característica. */
   description: string;
+}
+
+interface AsociarSolucionAmbitoCaracteristicaBody 
+{
+  id_solucion: number;
+  id_ambito: number;
+  id_caracteristica: number;
 }
 
 /**
@@ -43,7 +48,6 @@ interface Caracteristica
  */
 class StoreCaracteristicasService
 {
-
   /**
    * Crea una nueva característica y la asocia a una solución existente.
    * @param {CreateCaracteristicaInput} params - Parámetros necesarios para crear la característica.
@@ -277,6 +281,14 @@ class StoreCaracteristicasService
        JOIN storeSolucionesCaracteristicas sc ON c.id_caracteristica = sc.id_caracteristica
        WHERE sc.id_solucion = ?`,
       [idSolucion]
+    );
+    return rows;
+  }
+
+  async listSolucionAmbitoCaracteristica():Promise<AsociarSolucionAmbitoCaracteristicaBody[]> 
+  {
+    const [rows]: [AsociarSolucionAmbitoCaracteristicaBody[], any] = await pool.promise().query(
+      `SELECT id_solucion,id_ambito,id_caracteristica FROM storeSolucionesAmbitosCaracteristicas`
     );
     return rows;
   }
