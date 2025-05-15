@@ -1294,6 +1294,46 @@
             <p>No hay sectores o ámbitos asociados a esta solución.</p>
           </div>
         </div>
+
+        <div class="subseccion">
+          <h3 class="titulo-subseccion">solucionesAmbitosSectoresCaracteristicas</h3>
+
+          <div *ngIf="solucionesAmbitosSectoresCaracteristicas && solucionesAmbitosSectoresCaracteristicas.length">
+            <p-table [value]="solucionesAmbitosSectoresCaracteristicas" [paginator]="true" [rows]="5"
+              [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>ID solucion</th>
+                  <th>ID ambito</th>
+                  <th>ID sector</th>
+                  <th>ID caracteristica</th>
+                 
+                  <th>Editar</th>
+                  <th>Eliminar</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-solucionAmbitoSectorCaracteristica>
+                <tr>
+                  <td>{{ solucionAmbitoSectorCaracteristica.id_solucionx }}</td>
+                  <td>{{ solucionAmbitoSectorCaracteristica.id_ambito }}</td>
+                  <td>{{ solucionAmbitoSectorCaracteristica.id_sector }}</td>
+                  <td>{{ solucionAmbitoSectorCaracteristica.id_caracteristica }}</td>
+                  <td>
+                    <span class="emojis">✏️</span>
+                  </td>
+                  <td>
+                    <span class="emojis">🗑️</span>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+
+          <div *ngIf="!solucionesAmbitosSectoresCaracteristicas || solucionesAmbitosSectoresCaracteristicas.length === 0">
+            <p>No hay sectores o ámbitos asociados a esta solución.</p>
+          </div>
+        </div>
       </div>
 
       <div class="botones-container2">
