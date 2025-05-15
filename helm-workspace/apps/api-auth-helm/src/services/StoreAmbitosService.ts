@@ -5,6 +5,7 @@ import { AppError } from '../../../api-shared-helm/src/models/AppError';
 
 interface CreateAmbitoParams 
 {
+  idSolucion?: number;
   description: string;
   textoweb: string;
   prefijo: string;
@@ -27,6 +28,38 @@ interface AsociarAmbitoParams
 
 class StoreAmbitosService 
 {
+  /**
+   * Crea un nuevo ámbito y lo asocia con todas las soluciones existentes y sectores.
+   * @param {CreateAmbitoParams} param0 - Datos del nuevo ámbito.
+   * @returns {Promise<StoreAmbitos>} El ámbito creado.
+   */
+  async createAmbitoSolucion({ idSolucion, description, textoweb, prefijo, slug }: Omit<CreateAmbitoParams, 'idSoluciones'>): Promise<StoreAmbitos> 
+  {
+    try 
+    {
+      const [result]: any = await pool.promise().query(
+        `INSERT INTO storeAmbitos (description, textoweb, prefijo, slug) VALUES (?, ?, ?, ?)`,
+        [description, textoweb, prefijo, slug]
+      );
+
+      const idAmbito = result.insertId;
+
+      // Asociar con UNA solución
+      await pool.promise().query(
+      `INSERT INTO storeSolucionesAmbitos (id_solucion, id_ambito)
+      VALUES (?, ?)`,
+      [idSolucion, idAmbito]
+      );
+
+      return { id_ambito: idAmbito, description, textoweb, prefijo, slug };
+    } 
+    catch (error) 
+    {
+      console.error('Error al crear el ámbito y asociarlo:', error);
+      throw new AppError('Error al crear el ámbito y hacer las asociaciones');
+    }
+  }
+
   /**
    * Crea un nuevo ámbito y lo asocia con todas las soluciones existentes y sectores.
    * @param {CreateAmbitoParams} param0 - Datos del nuevo ámbito.

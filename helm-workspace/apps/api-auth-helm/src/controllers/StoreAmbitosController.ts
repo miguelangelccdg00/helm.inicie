@@ -30,19 +30,77 @@ class StoreAmbitosController
    * @throws {400} Si faltan datos o los datos son inválidos, devuelve un error con un mensaje adecuado.
    * @throws {500} Si ocurre un error interno en el servidor al crear el ámbito.
    */
-  async createAmbitos(req: Request, res: Response): Promise<void> 
+  async createAmbitosSolucion(req: Request, res: Response): Promise<void> 
   {
     try 
     {
       const { description, textoweb, prefijo, slug } = req.body;
   
-      if ([description, textoweb, prefijo, slug].some(val => typeof val !== 'string' || !val.trim())) 
+      if (!description || !textoweb || !prefijo || !slug) 
       {
         res.status(400).json({ message: 'Datos incompletos o mal formateados' });
         return;
       }
   
-      const resultado = await StoreAmbitosService.createAmbito({ description, textoweb, prefijo, slug });
+      const resultado = await StoreAmbitosService.createAmbitoSolucion({ description, textoweb, prefijo, slug });
+  
+      if (!resultado?.id_ambito) 
+      {
+        res.status(500).json({ message: 'No se pudo crear el ámbito' });
+        return;
+      }
+  
+      const ambitoCreado = await StoreAmbitosService.getAmbitoById(resultado.id_ambito);
+      res.status(201).json({ ...resultado, ambito: ambitoCreado });
+  
+    } 
+    catch (error) 
+    {
+      console.error('🔴 Error en createAmbitos:', 
+      {
+        message: (error as Error).message,
+        stack: (error as Error).stack
+      });
+  
+      res.status(500).json({ message: 'Error interno del servidor al crear el ámbito.' });
+    }
+  }
+
+  /**
+   * Crea un nuevo ámbito por una solucion determinado.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP que contiene los datos enviados por el cliente.
+   * @param {string} req.body.description - Descripción del ámbito que se desea crear.
+   * @param {string} req.body.textoweb - Texto para la página web asociado al ámbito.
+   * @param {string} req.body.prefijo - Prefijo del ámbito.
+   * @param {string} req.body.slug - Slug (URL amigable) del ámbito.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve el ámbito creado si la operación es exitosa.
+   * 
+   * @throws {400} Si faltan datos o los datos son inválidos, devuelve un error con un mensaje adecuado.
+   * @throws {500} Si ocurre un error interno en el servidor al crear el ámbito.
+   */
+  async createAmbitos(req: Request<{idSolucion: string}>, res: Response): Promise<void> 
+  {
+    try 
+    {
+      const idSolucion = parseInt(req.params.idSolucion, 10);
+
+      const { description, textoweb, prefijo, slug } = req.body;
+
+      if (isNaN(idSolucion)) {
+        res.status(400).json({ message: 'ID de solución no es válido.' });
+        return;
+      }
+  
+      if (!description || !textoweb || !prefijo || !slug) 
+      {
+        res.status(400).json({ message: 'Datos incompletos o mal formateados' });
+        return;
+      }
+  
+      const resultado = await StoreAmbitosService.createAmbito({ idSolucion, description, textoweb, prefijo, slug });
   
       if (!resultado?.id_ambito) 
       {
