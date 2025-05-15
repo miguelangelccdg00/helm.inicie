@@ -489,33 +489,52 @@
           <div *ngIf="mostrarCrearAmbito === true" class="subseccion">
             <h3 class="titulo-subseccion">Crear y añadir ámbito</h3>
 
-            <form (ngSubmit)="crearNuevoAmbito()">
+            <form (ngSubmit)="crearNuevoAmbito()" #crearAmbForm="ngForm">
               <div class="form-group margen">
                 <label for="nuevaDescripcionAmbito">Descripción:</label>
                 <textarea id="nuevaDescripcionAmbito" [(ngModel)]="nuevoAmbito.description"
-                  name="nuevaDescripcionAmbito" placeholder="Descripción del ámbito" required></textarea>
+                  name="nuevaDescripcionAmbito" placeholder="Descripción del ámbito" required
+                  #descCtrl="ngModel"></textarea>
+                <div *ngIf="descCtrl.invalid && descCtrl.touched" class="error">
+                  La descripción es obligatoria.
+                </div>
               </div>
+
               <div class="form-group margen">
                 <label for="nuevoTextoweb">Texto Web:</label>
                 <textarea id="nuevoTextoweb" [(ngModel)]="nuevoAmbito.textoweb" name="nuevoTextoweb"
-                  placeholder="Texto Web del ámbito" required></textarea>
+                  placeholder="Texto Web del ámbito" required #textoCtrl="ngModel"></textarea>
+                <div *ngIf="textoCtrl.invalid && textoCtrl.touched" class="error">
+                  El texto web es obligatorio.
+                </div>
               </div>
+
               <div class="form-group margen">
                 <label for="nuevoPrefijo">Prefijo:</label>
                 <textarea id="nuevoPrefijo" [(ngModel)]="nuevoAmbito.prefijo" name="nuevoPrefijo"
-                  placeholder="Prefijo del ámbito" required></textarea>
+                  placeholder="Prefijo del ámbito" required #prefCtrl="ngModel"></textarea>
+                <div *ngIf="prefCtrl.invalid && prefCtrl.touched" class="error">
+                  El prefijo es obligatorio.
+                </div>
               </div>
+
               <div class="form-group margen">
                 <label for="nuevoSlug">Slug:</label>
                 <textarea id="nuevoSlug" [(ngModel)]="nuevoAmbito.slug" name="nuevoSlug" placeholder="Slug del ámbito"
-                  required></textarea>
+                  required #slugCtrl="ngModel"></textarea>
+                <div *ngIf="slugCtrl.invalid && slugCtrl.touched" class="error">
+                  El slug es obligatorio.
+                </div>
               </div>
+
               <div class="botones-container5">
-                <button type="submit">Crear y Añadir</button>
-                <button type="button"
-                  (click)="mostrarCrearAmbito = false; mostrarBotonCrearAmbito = true">Cancelar</button>
+                <button type="submit" [disabled]="crearAmbForm.invalid">Crear y Añadir</button>
+                <button type="button" (click)="mostrarCrearAmbito = false; mostrarBotonCrearAmbito = true">
+                  Cancelar
+                </button>
               </div>
             </form>
+
           </div>
 
           <div class="subseccion">
@@ -844,7 +863,7 @@
           <div *ngIf="mostrarCrearSector === true" class="subseccion">
             <h3 class="titulo-subseccion">Crear y añadir sector</h3>
 
-            <form (ngSubmit)="crearNuevoSector()" #crearForm="ngForm">
+            <form (ngSubmit)="crearNuevoSector()" #crearSecForm="ngForm">
               <div class="form-group margen">
                 <label for="nuevaDescripcionSector">Descripción:</label>
                 <textarea id="nuevaDescripcionSector" [(ngModel)]="nuevoSector.description"
@@ -911,7 +930,7 @@
               </div>
 
               <div class="botones-container5">
-                <button type="submit" [disabled]="crearForm.invalid">Crear y Añadir</button>
+                <button type="submit" [disabled]="crearSecForm.invalid">Crear y Añadir</button>
                 <button type="button"
                   (click)="mostrarCrearSector = false; mostrarBotonCrearSector = true">Cancelar</button>
               </div>
