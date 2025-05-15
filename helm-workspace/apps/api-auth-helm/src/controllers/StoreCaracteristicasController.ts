@@ -271,7 +271,7 @@ class StoreCaracteristicasController
 
       if (!listSolucionAmbitoCaracteristica.length)
       {
-        res.status(404).json({ message: 'No existen características' });
+        res.status(404).json({ message: 'No existen solucion x ambitos x caracteristicas' });
         return;
       }
 

@@ -8,10 +8,15 @@ import { AppError } from '../../../api-shared-helm/src/models/AppError';
  */
 interface CreateBeneficioDTO
 {
-  /** Descripción del beneficio. */
   description: string;
-  /** ID de la solución asociada al beneficio. */
   idSolucion: number;
+}
+
+interface AsociarSolucionAmbitoBeneficioBody 
+{
+  id_solucion: number;
+  id_ambito: number;
+  id_beneficio: number;
 }
 
 /**
@@ -20,11 +25,8 @@ interface CreateBeneficioDTO
  */
 interface AsociarBeneficioResult
 {
-  /** ID de la solución. */
   idSolucion: number;
-  /** ID del beneficio. */
   idBeneficio: number;
-  /** Mensaje de resultado. */
   message: string;
 }
 
@@ -86,6 +88,49 @@ class StoreBeneficiosServices
     }
   }
 
+
+  /**
+   * Asocia un ámbito a una solución.
+   * @param {number} idSolucion - ID de la solución.
+   * @param {number} idAmbito - ID del ámbito.
+   * @param {number} idCaracteristica - ID del caracteristica.
+   */
+  async asociarSolucionAmbitoBeneficio(idSolucion: number, idAmbito: number, idBeneficio: number): Promise<void> 
+  {
+    try 
+    {
+      const [solucionAmbitoExists] = await pool.promise().query(
+        `SELECT sa.id_solucion, sa.id_ambito FROM storeSolucionesAmbitos sa WHERE id_solucion = ?, id_ambito = ?`,
+        [idSolucion, idAmbito]);
+
+      const [beneficioExists] = await pool.promise().query(
+        `SELECT b.id_beneficio FROM storeBeneficios b WHERE b.id_beneficio = ?`,
+        [idBeneficio]
+      );
+
+      if (solucionAmbitoExists.affectedRows === 0) 
+      {
+        throw new AppError('Solucion o ambito no existe');
+      }
+
+      if (beneficioExists.affectedRows === 0) 
+      {
+        throw new AppError('Beneficio no existe');
+      }
+
+      const [result] = await pool.promise().query(
+        `INSERT INTO storeSolucionesAmbitosBeneficios (id_solucion, id_ambito, id_beneficio) VALUES (?, ?, ?)`,
+        [idSolucion, idAmbito, idBeneficio]
+      );
+
+    } 
+    catch (error) 
+    {
+      console.error('Error al asociar el storeSolucionesAmbitosBeneficios:', error);
+      throw new AppError('Error al asociar el storeSolucionesAmbitosBeneficios');
+    }
+  }
+
   /**
    * Obtiene todos los beneficios disponibles.
    * 
@@ -130,6 +175,14 @@ class StoreBeneficiosServices
       console.error("Error al obtener beneficios por solución:", error);
       throw new AppError("Error al obtener beneficios por solución", 500);
     }
+  }
+
+  async listSolucionAmbitoBeneficio():Promise<AsociarSolucionAmbitoBeneficioBody[]> 
+  {
+    const [rows]: [AsociarSolucionAmbitoBeneficioBody[], any] = await pool.promise().query(
+      `SELECT id_solucion,id_ambito,id_beneficio FROM storeSolucionesAmbitosBeneficios`
+    );
+    return rows;
   }
 
   /**
