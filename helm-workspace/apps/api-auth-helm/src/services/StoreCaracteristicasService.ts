@@ -8,11 +8,8 @@ import { AppError } from '../../../api-shared-helm/src/models/AppError';
  */
 interface CreateCaracteristicaInput
 {
-  /** Descripción de la característica. */
   description: string;
-  /** Título de la característica. */
   titulo: string;
-  /** ID de la solución asociada a la característica. */
   idSolucion: number;
 }
 
@@ -22,13 +19,9 @@ interface CreateCaracteristicaInput
  */
 interface AsociarCaracteristicaOutput
 {
-  /** ID de la solución. */
   idSolucion: number;
-  /** ID de la característica. */
   idCaracteristica: number;
-  /** Título de la característica. */
   titulo?: string;
-  /** Mensaje con el resultado de la operación. */
   message: string;
 }
 
@@ -200,6 +193,48 @@ class StoreCaracteristicasService
     finally
     {
       conn.release();
+    }
+  }
+
+  /**
+   * Asocia un ámbito a una solución.
+   * @param {number} idSolucion - ID de la solución.
+   * @param {number} idAmbito - ID del ámbito.
+   * @param {number} idCaracteristica - ID del caracteristica.
+   */
+  async asociarSolucionAmbitoCaracteristica(idSolucion: number, idAmbito: number, idCaracteristica: number): Promise<void> 
+  {
+    try 
+    {
+      const [solucionAmbitoExists] = await pool.promise().query(
+        `SELECT sa.id_solucion, sa.id_ambito FROM storeSolucionesAmbitos sa WHERE id_solucion = ?, id_ambito = ?`,
+        [idSolucion, idAmbito]);
+
+      const [caracteristicaExists] = await pool.promise().query(
+        `SELECT c.id_caracteristica FROM storeCaracteristicas c WHERE id_caracteristica = ?`,
+        [idCaracteristica]
+      );
+
+      if (solucionAmbitoExists.affectedRows === 0) 
+      {
+        throw new AppError('Solucion o ambito no existe');
+      }
+
+      if (caracteristicaExists.affectedRows === 0) 
+      {
+        throw new AppError('Caracteristica no existe');
+      }
+
+      const [result] = await pool.promise().query(
+        `INSERT INTO storeSolucionesAmbitosCaracteristicas (id_solucion, id_ambito, id_caracteristica) VALUES (?, ?, ?)`,
+        [idSolucion, idAmbito, idCaracteristica]
+      );
+
+    } 
+    catch (error) 
+    {
+      console.error('Error al asociar el solucionAmbitoCaracteristica:', error);
+      throw new AppError('Error al asociar el solucionAmbitoCaracteristica');
     }
   }
 

@@ -23,6 +23,11 @@ router.post('/createCaracteristicas/:idSolucion', storeCaracteristicasController
 router.post('/asociarCaracteristica', storeCaracteristicasController.asociarCaracteristica);
 
 /**
+ * @description Asociar un problema existente a una solución
+ */
+router.post('/asociarSolucionAmbitoCaracteristica', storeCaracteristicasController.asociarSolucionAmbitoCaracteristica);
+
+/**
  * @description Modifica un beneficio específico por su ID
  */
 router.put('/modifyStoreCaracteristica/:id', storeCaracteristicasController.modifyStoreCaracteristicas);

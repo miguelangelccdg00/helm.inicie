@@ -18,6 +18,13 @@ interface AsociarCaracteristicaDTO
   id_caracteristica: number;
 }
 
+interface AsociarSolucionAmbitoCaracteristicaBody 
+{
+  id_solucion: number;
+  id_ambito: number;
+  id_caracteristica: number;
+}
+
 /**
  * Controlador para gestionar las características asociadas a soluciones.
  */
@@ -138,6 +145,44 @@ class StoreCaracteristicasController
   }
 
   /**
+   * Asocia un caracteristica con una solución específica.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP que contiene los datos de asociación.
+   * @param {number} req.body.id_solucion - ID de la solución que se asociará con el caracteristica.
+   * @param {number} req.body.id_ambito - ID del caracteristica que se asociará con la solución.
+   * @param {number} req.body.id_caracteristica - ID del caracteristica que se asociará con la solución.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve la asociación exitosa entre la solución y el caracteristica.
+   * 
+   * @throws {400} Si faltan datos en la solicitud.
+   * @throws {500} Si ocurre un error interno al asociar el caracteristica con la solución.
+   */
+  async asociarSolucionAmbitoCaracteristica(req: Request<any, any, AsociarSolucionAmbitoCaracteristicaBody>, res: Response): Promise<void> {
+    try {
+      const { id_solucion, id_ambito, id_caracteristica } = req.body;
+
+      if (!id_solucion || !id_ambito || !id_caracteristica) {
+        res.status(400).json({ message: 'Faltan datos para la asociación' });
+        return;
+      }
+
+      const asociacion = await StoreCaracteristicasService.asociarSolucionAmbitoCaracteristica(id_solucion, id_ambito, id_caracteristica);
+      const caracteristica = await StoreCaracteristicasService.getCaracteristicaById(id_caracteristica);
+      const solucion = await storeSolucionesService.getById(id_solucion);
+
+      res.status(201).json({
+        message: 'caracteristica asociado a la solución con éxito',
+        asociacion,
+        caracteristica
+      });
+    } catch (error) {
+      console.error('Error asociando el caracteristica:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
+
+  /**
    * Lista todas las características existentes.
    * 
    * @param {Request} req - Objeto de solicitud HTTP.
@@ -195,7 +240,7 @@ class StoreCaracteristicasController
 
       if (!caracteristicaSolucion.length)
       {
-        console.info(`ℹ️ No se encontraron ámbitos para la solución ${idSolucion}, devolviendo lista vacía.`);
+        console.info(`ℹ️ No se encontraron caracteristicas para la solución ${idSolucion}, devolviendo lista vacía.`);
         res.status(200).json([]); // Devolver 200 OK con un array vacío para evitar el error 404
         return;
       }
