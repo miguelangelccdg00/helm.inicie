@@ -95,6 +95,7 @@ app.get('/', (req: Request, res: Response): void =>
                     operations: [
                         { method: 'GET', path: '/listCompleteProblemas' },
                         { method: 'GET', path: '/listProblemas/:idSolucion' },
+                        { method: 'GET', path: '/listSolucionAmbitoProblema' },
                         { method: 'POST', path: '/createProblema/:idSolucion' },
                         { method: 'PUT', path: '/modifyProblema/:id' },
                         { method: 'DELETE', path: '/deleteProblema/:idProblema' }

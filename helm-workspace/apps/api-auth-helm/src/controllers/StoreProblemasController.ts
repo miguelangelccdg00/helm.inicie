@@ -11,6 +11,13 @@ interface CreateStoreProblemaDTO
   idSolucion: number;
 }
 
+interface AsociarSolucionAmbitoProblemaBody 
+{
+  id_solucion: number;
+  id_ambito: number;
+  id_problema: number;
+}
+
 /**
  * Controlador para gestionar los problemas asociados a soluciones.
  */
@@ -127,6 +134,36 @@ class StoreProblemasController
     } catch (error)
     {
       console.error('Error obteniendo problemas por solución:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
+
+  /**
+   * Lista todas las características existentes.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve una lista de todas las características si es exitosa.
+   * 
+   * @throws {500} Error interno en el servidor en caso de fallos al obtener las características.
+   */
+  async listSolucionAmbitoProblema(req: Request, res: Response): Promise<void>
+  {
+    try
+    {
+      const listSolucionAmbitoProblema: AsociarSolucionAmbitoProblemaBody[] = await storeProblemasService.listSolucionAmbitoProblema();
+
+      if (!listSolucionAmbitoProblema.length)
+      {
+        res.status(404).json({ message: 'No existen relaciones de solucion x ambitos x problemas' });
+        return;
+      }
+
+      res.status(200).json(listSolucionAmbitoProblema);
+    } catch (error)
+    {
+      console.error('Error listando los problemas:', error);
       res.status(500).json({ message: 'Error interno del servidor' });
     }
   }
@@ -248,6 +285,44 @@ class StoreProblemasController
     } catch (error)
     {
       console.error('Error asociando problema:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
+
+  /**
+   * Asocia un caracteristica con una solución específica.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP que contiene los datos de asociación.
+   * @param {number} req.body.id_solucion - ID de la solución que se asociará con el caracteristica.
+   * @param {number} req.body.id_ambito - ID del caracteristica que se asociará con la solución.
+   * @param {number} req.body.id_problema - ID del caracteristica que se asociará con la solución.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve la asociación exitosa entre la solución y el caracteristica.
+   * 
+   * @throws {400} Si faltan datos en la solicitud.
+   * @throws {500} Si ocurre un error interno al asociar el caracteristica con la solución.
+   */
+  async asociarSolucionAmbitoProblema(req: Request<any, any, AsociarSolucionAmbitoProblemaBody>, res: Response): Promise<void> {
+    try {
+      const { id_solucion, id_ambito, id_problema } = req.body;
+
+      if (!id_solucion || !id_ambito || !id_problema) {
+        res.status(400).json({ message: 'Faltan datos para la asociación' });
+        return;
+      }
+
+      const asociacion = await storeProblemasService.asociarSolucionAmbitoProblema(id_solucion, id_ambito, id_problema);
+      const problema = await storeProblemasService.getProblemaById(id_problema);
+      const solucion = await storeSolucionesService.getById(id_solucion);
+
+      res.status(201).json({
+        message: 'Problema asociado a la solución con éxito',
+        asociacion,
+        problema
+      });
+    } catch (error) {
+      console.error('Error asociando el problema:', error);
       res.status(500).json({ message: 'Error interno del servidor' });
     }
   }

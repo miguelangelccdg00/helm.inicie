@@ -88,7 +88,6 @@ class StoreBeneficiosServices
     }
   }
 
-
   /**
    * Asocia un ámbito a una solución.
    * @param {number} idSolucion - ID de la solución.

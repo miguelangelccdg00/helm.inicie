@@ -13,6 +13,11 @@ router.get('/listCompleteProblemas', storeProblemasController.listProblemas);
 router.get('/listProblemas/:idSolucion', storeProblemasController.listProblemasBySolucion);
 
 /**
+ * @description Obtencion de problemas por solución específica de su ID
+ */
+router.get('/listSolucionAmbitoProblema', storeProblemasController.listSolucionAmbitoProblema);
+
+/**
  * @description Insercion de problemas por solución específica de su ID
  */
 router.post('/createProblema/:idSolucion', storeProblemasController.createProblema);
@@ -21,6 +26,11 @@ router.post('/createProblema/:idSolucion', storeProblemasController.createProble
  * @description Asociar un problema existente a una solución
  */
 router.post('/asociarProblema', storeProblemasController.asociarProblema);
+
+/**
+ * @description Asociar un problema existente a una solución
+ */
+router.post('/asociarSolucionAmbitoProblema', storeProblemasController.asociarSolucionAmbitoProblema);
 
 /**
  * @description Modifica un problema específico por su ID
