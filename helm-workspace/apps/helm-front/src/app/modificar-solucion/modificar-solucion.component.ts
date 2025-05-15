@@ -11,6 +11,7 @@ import { StoreSectores } from '@modelos-shared/storeSectores';
 import { SolucionSector } from '@modelos-shared/solucionSector';
 import { SolucionAmbitoSector } from '@modelos-shared/solucionAmbitoSector';
 import { SolucionAmbitoSectorCaracteristica } from '@modelos-shared/solucionAmbitoSectorCaracteristica';
+import { SolucionAmbitoSectorBeneficio } from '@modelos-shared/solucionAmbitoSectorBeneficio';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MenuComponent } from '../menu/menu.component';
@@ -141,6 +142,22 @@ export class ModificarSolucionComponent implements OnInit {
   }
 
   solucionesAmbitosSectoresCaracteristicas: SolucionAmbitoSectorCaracteristica[] = [];
+
+  // --- SOLUCION AMBITOS SECTORES BENEFICIOS ---
+  mostrarOpcionesSolucionAmbitoSectorBeneficio: boolean = false;
+  solucionAmbitoSectorBeneficioSeleccionado: SolucionAmbitoSectorBeneficio | null = null;
+  solucionAmbitoSectorBeneficioAEliminar: { idSolucion: number, idAmbito: number, idSector: number, idBeneficio: number } | null = null;
+  mostrarModificarSolucionAmbitoSectorBeneficio: boolean = false;
+  mostrarBotonModificarSolucionAmbitoSectorBeneficio: boolean = false;
+
+  nuevaSolucionAmbitoSectorBeneficio: SolucionAmbitoSectorBeneficio = {
+    id_solucion: 0,
+    id_ambito: 0,
+    id_sector: 0,
+    id_beneficio: 0,
+  }
+
+  solucionesAmbitosSectoresBeneficios: SolucionAmbitoSectorBeneficio[] = [];
 
 
   // --- PROBLEMAS ---
