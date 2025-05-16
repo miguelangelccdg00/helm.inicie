@@ -112,7 +112,7 @@ class StoreBeneficiosServices
     {
       // Verifica que exista la relación solucion-ambito-sector
       const [rows] = await pool.promise().query(
-        `SELECT 1 FROM storeSolucionesAmbitosSectores
+        `SELECT * FROM storeSolucionesAmbitosSectores
         WHERE id_solucion = ? AND id_ambito = ? AND id_sector = ?`,
         [idSolucion, idAmbito, idSector]
       );
@@ -124,7 +124,7 @@ class StoreBeneficiosServices
 
       // Opcional: verifica si ya existe la relación antes de insertar
       const [existing] = await pool.promise().query(
-        `SELECT 1 FROM storeSolucionesAmbitosSectoresBeneficios
+        `SELECT * FROM storeSolucionesAmbitosSectoresBeneficios
         WHERE id_solucion = ? AND id_ambito = ? AND id_sector = ? AND id_beneficio = ?`,
         [idSolucion, idAmbito, idSector, idBeneficio]
       );
@@ -163,7 +163,7 @@ class StoreBeneficiosServices
     {
       // Verifica si ya existe la relación
       const [existing] = await pool.promise().query(
-        `SELECT 1 FROM storeSolucionesAmbitosBeneficios
+        `SELECT * FROM storeSolucionesAmbitosBeneficios
         WHERE id_solucion = ? AND id_ambito = ? AND id_beneficio = ?`,
         [idSolucion, idAmbito, idBeneficio]
       );
