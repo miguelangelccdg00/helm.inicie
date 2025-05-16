@@ -13,6 +13,8 @@ import { SolucionSector, DeleteSolucionSectorResponse } from '@modelos-shared/so
 import { SolucionAmbitoSector } from '@modelos-shared/solucionAmbitoSector';
 import { SolucionAmbitoSectorCaracteristica } from '@modelos-shared/solucionAmbitoSectorCaracteristica';
 import { SolucionAmbitoSectorBeneficio } from '@modelos-shared/solucionAmbitoSectorBeneficio';
+import { SolucionAmbitoBeneficio } from '@modelos-shared/solucionAmbitoBeneficio';
+import { SolucionAmbitoCaracteristica } from '@modelos-shared/solucionAmbitoCaracteristica';
 import { tap } from 'rxjs/operators';
 
 @Injectable({
@@ -1064,8 +1066,62 @@ export class StoreSolucionesService {
     );
   }
 
-  
+  /* SolucionAmbitoBeneficio */ 
+  /* Obtiene la tabla completa de storeSolucionesAmbitosBeneficios */
+  getStoreSolucionAmbitosBeneficios(): Observable<SolucionAmbitoBeneficio[]> {
+    const url = `${this.beneficiosUrl}/listSolucionAmbitoBeneficio`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
+    console.info('ℹ️ Consultando tabla de storeSolucionesAmbitosBeneficios...');
+
+    return this.https.get<SolucionAmbitoBeneficio[]>(url, { headers }).pipe(
+      map(response => {
+        if (response && response.length > 0) {
+          console.log('✅ Tabla de storeSolucionesAmbitosBeneficios recuperada correctamente');
+        } else {
+          console.info('ℹ️ No hay datos en la tabla de storeSolucionesAmbitosBeneficios');
+        }
+        return response || [];
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          console.info('ℹ️ Sin datos para mostrar en la tabla de storeSolucionesAmbitosBeneficios');
+        } else {
+          console.warn('⚠️ Error al consultar la tabla de storeSolucionesAmbitosBeneficios:', error);
+        }
+        return of([]);
+      })
+    );
+  }
+
+  /* SolucionAmbitoCaracteristica */
+  /* Obtiene la tabla completa de storeSolucionesAmbitosCaracteristicas */
+  getStoreSolucionAmbitosCaracteristicas(): Observable<SolucionAmbitoCaracteristica[]> {
+    const url = `${this.caracteristicasUrl}/listSolucionAmbitoCaracteristica`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    console.info('ℹ️ Consultando tabla de storeSolucionesAmbitosCaracteristicas...');
+
+    return this.https.get<SolucionAmbitoCaracteristica[]>(url, { headers }).pipe(
+      map(response => {
+        if (response && response.length > 0) {
+          console.log('✅ Tabla de storeSolucionesAmbitosCaracteristicas recuperada correctamente');
+        } else {
+          console.info('ℹ️ No hay datos en la tabla de storeSolucionesAmbitosCaracteristicas');
+        }
+        return response || [];
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          console.info('ℹ️ Sin datos para mostrar en la tabla de storeSolucionesAmbitosCaracteristicas');
+        } else {
+          console.warn('⚠️ Error al consultar la tabla de storeSolucionesAmbitosCaracteristicas:', error);
+        }
+        return of([]);
+      })
+    );
+  }
+  
 }
 
 
