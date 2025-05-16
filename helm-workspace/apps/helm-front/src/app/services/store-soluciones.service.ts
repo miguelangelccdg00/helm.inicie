@@ -13,8 +13,8 @@ import { SolucionSector, DeleteSolucionSectorResponse } from '@modelos-shared/so
 import { SolucionAmbitoSector } from '@modelos-shared/solucionAmbitoSector';
 import { SolucionAmbitoSectorCaracteristica } from '@modelos-shared/solucionAmbitoSectorCaracteristica';
 import { SolucionAmbitoSectorBeneficio } from '@modelos-shared/solucionAmbitoSectorBeneficio';
-import { SolucionAmbitoBeneficio } from '@modelos-shared/solucionAmbitoBeneficio';
-import { SolucionAmbitoCaracteristica } from '@modelos-shared/solucionAmbitoCaracteristica';
+import { SolucionAmbitoBeneficio, AsociarSolucionAmbitoBeneficioResponse } from '@modelos-shared/solucionAmbitoBeneficio';
+import { SolucionAmbitoCaracteristica, AsociarSolucionAmbitoCaracteristicaResponse } from '@modelos-shared/solucionAmbitoCaracteristica';
 import { tap } from 'rxjs/operators';
 
 @Injectable({
@@ -917,24 +917,24 @@ export class StoreSolucionesService {
     );
   }
 
-    /* Eliminación de la relación entre un sector y una solución */
-    deleteSolucionSector(idSolucion: number, idSector: number): Observable<DeleteSolucionSectorResponse> {
-      const url = `${this.sectoresUrl}/deleteSolucionSector/${idSolucion}/${idSector}`;
-      const headers = new HttpHeaders().set('Content-Type', 'application/json');
+  /* Eliminación de la relación entre un sector y una solución */
+  deleteSolucionSector(idSolucion: number, idSector: number): Observable<DeleteSolucionSectorResponse> {
+    const url = `${this.sectoresUrl}/deleteSolucionSector/${idSolucion}/${idSector}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-      console.log('Eliminando relación sector-solución:', url);
+    console.log('Eliminando relación sector-solución:', url);
 
-      return this.https.delete<DeleteSolucionSectorResponse>(url, { headers }).pipe(
-        map(response => {
-          console.log('Respuesta al eliminar relación:', response);
-          return response;
-        }),
-        catchError(error => {
-          console.error('Error al eliminar la relación:', error);
-          throw error;
-        })
-      );
-    }
+    return this.https.delete<DeleteSolucionSectorResponse>(url, { headers }).pipe(
+      map(response => {
+        console.log('Respuesta al eliminar relación:', response);
+        return response;
+      }),
+      catchError(error => {
+        console.error('Error al eliminar la relación:', error);
+        throw error;
+      })
+    );
+  }
 
   /* SolucionSectorAmbito */
 
@@ -1066,7 +1066,7 @@ export class StoreSolucionesService {
     );
   }
 
-  /* SolucionAmbitoBeneficio */ 
+  /* SolucionAmbitoBeneficio */
   /* Obtiene la tabla completa de storeSolucionesAmbitosBeneficios */
   getStoreSolucionAmbitosBeneficios(): Observable<SolucionAmbitoBeneficio[]> {
     const url = `${this.beneficiosUrl}/listSolucionAmbitoBeneficio`;
@@ -1092,6 +1092,20 @@ export class StoreSolucionesService {
         return of([]);
       })
     );
+  }
+
+  /* Creacion de la relacion solucionAmbito con beneficio */
+  asociarSolucionAmbitoBeneficio(idSolucion: number, idAmbito: number, idBeneficio: number): Observable<AsociarSolucionAmbitoBeneficioResponse> {
+    const url = `${this.beneficiosUrl}/asociarSolucionAmbitoBeneficio`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    const relacion = {
+      id_solucion: idSolucion,
+      id_ambito: idAmbito,
+      id_beneficio: idBeneficio
+    };
+
+    return this.https.post<AsociarSolucionAmbitoBeneficioResponse>(url, relacion, { headers });
   }
 
   /* SolucionAmbitoCaracteristica */
@@ -1121,7 +1135,21 @@ export class StoreSolucionesService {
       })
     );
   }
-  
+
+  /* Creacion de la relacion solucionAmbito con caracteristica */
+  asociarSolucionAmbitoCaracteristica(idSolucion: number, idAmbito: number, idCaracteristica: number): Observable<AsociarSolucionAmbitoCaracteristicaResponse> {
+    const url = `${this.caracteristicasUrl}/asociarSolucionAmbitoCaracteristica`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    const relacion = {
+      id_solucion: idSolucion,
+      id_ambito: idAmbito,
+      id_caracteristica: idCaracteristica
+    };
+
+    return this.https.post<AsociarSolucionAmbitoCaracteristicaResponse>(url, relacion, { headers });
+  }
+
 }
 
 
