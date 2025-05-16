@@ -40,7 +40,7 @@ router.post('/asociarSolucionAmbitoBeneficio', storeBeneficiosController.asociar
 /**
  * @description Asociar un problema existente a una solución
  */
-router.post('/asociarSolucionAmbitoSectorBeneficio', storeBeneficiosController.asociarSolucionAmbitoSectorBeneficio);
+router.post('/asociarSolucionAmbitoSectorBeneficio', storeBeneficiosController.asociarSolucionAmbitoSectorBeneficios);
 
 /**
  * @description Modifica un beneficio específico por su ID
