@@ -16,6 +16,14 @@ interface AsociarSolucionAmbitoProblemaBody
   id_problema: number;
 }
 
+interface AsociarSolucionAmbitoSectorProblemaBody 
+{
+  id_solucion: number;
+  id_ambito: number;
+  id_sector: number;
+  id_problema: number;
+}
+
 class StoreProblemasService
 {
   /**
@@ -137,6 +145,14 @@ class StoreProblemasService
     return rows;
   }
 
+  async listSolucionAmbitoSectorProblema():Promise<AsociarSolucionAmbitoSectorProblemaBody[]> 
+  {
+    const [rows]: [AsociarSolucionAmbitoSectorProblemaBody[], any] = await pool.promise().query(
+      `SELECT id_solucion,id_ambito,id_sector,id_problema FROM storeSolucionesAmbitosSectoresProblemas`
+    );
+    return rows;
+  }
+
   /**
    * Asocia un problema existente a una solución.
    * 
@@ -254,6 +270,58 @@ class StoreProblemasService
     {
       console.error('Error al asociar el storeSolucionesAmbitosProblemas:', error);
       throw new AppError('Error al asociar el storeSolucionesAmbitosProblemas');
+    }
+  }
+
+  /**
+   * Asocia un problema a una solución, ámbito y sector.
+   * 
+   * @param {number} idSolucion - ID de la solución.
+   * @param {number} idAmbito - ID del ámbito.
+   * @param {number} idSector - ID del sector.
+   * @param {number} idProblema - ID del problema.
+   * @throws {AppError} Si la relación solución-ámbito-sector no existe o si ya existe la asociación.
+   */
+  async asociarSolucionAmbitoSectorProblema(idSolucion: number,idAmbito: number,idSector: number,idProblema: number): Promise<void> 
+  {
+    try 
+    {
+      // Verifica que exista la relación solucion-ambito-sector
+      const [rows] = await pool.promise().query(
+        `SELECT * FROM storeSolucionesAmbitosSectores
+        WHERE id_solucion = ? AND id_ambito = ? AND id_sector = ?`,
+        [idSolucion, idAmbito, idSector]
+      );
+
+      if ((rows as any[]).length === 0) 
+      {
+        throw new AppError('No existe la relación solución-ámbito-sector');
+      }
+
+      // Verifica si ya existe la relación antes de insertar
+      const [existing] = await pool.promise().query(
+        `SELECT * FROM storeSolucionesAmbitosSectoresProblemas
+        WHERE id_solucion = ? AND id_ambito = ? AND id_sector = ? AND id_problema = ?`,
+        [idSolucion, idAmbito, idSector, idProblema]
+      );
+
+      if ((existing as any[]).length > 0) 
+      {
+        throw new AppError('La relación ya existe');
+      }
+
+      await pool.promise().query(
+        `INSERT INTO storeSolucionesAmbitosSectoresProblemas 
+        (id_solucion, id_ambito, id_sector, id_problema)
+        VALUES (?, ?, ?, ?)`,
+        [idSolucion, idAmbito, idSector, idProblema]
+      );
+
+    } 
+    catch (error) 
+    {
+      console.error('Error al asociar solución-ámbito-sector-problema:', error);
+      throw new AppError('Error al asociar solución-ámbito-sector-problema');
     }
   }
 
