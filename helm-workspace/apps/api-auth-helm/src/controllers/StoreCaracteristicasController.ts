@@ -25,6 +25,14 @@ interface AsociarSolucionAmbitoCaracteristicaBody
   id_caracteristica: number;
 }
 
+interface AsociarSolucionAmbitoSectorCaracteristicaBody 
+{
+  id_solucion: number;
+  id_ambito: number;
+  id_sector: number;
+  id_caracteristica: number;
+}
+
 /**
  * Controlador para gestionar las características asociadas a soluciones.
  */
@@ -183,6 +191,44 @@ class StoreCaracteristicasController
   }
 
   /**
+   * Asocia un caracteristica con una solución específica.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP que contiene los datos de asociación.
+   * @param {number} req.body.id_solucion - ID de la solución que se asociará con el caracteristica.
+   * @param {number} req.body.id_ambito - ID del caracteristica que se asociará con la solución.
+   * @param {number} req.body.id_caracteristica - ID del caracteristica que se asociará con la solución.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve la asociación exitosa entre la solución y el caracteristica.
+   * 
+   * @throws {400} Si faltan datos en la solicitud.
+   * @throws {500} Si ocurre un error interno al asociar el caracteristica con la solución.
+   */
+  async asociarSolucionAmbitoSectorCaracteristicas(req: Request<any, any, AsociarSolucionAmbitoSectorCaracteristicaBody>, res: Response): Promise<void> {
+    try {
+      const { id_solucion, id_ambito, id_sector, id_caracteristica } = req.body;
+
+      if (!id_solucion || !id_ambito || !id_sector || !id_caracteristica) {
+        res.status(400).json({ message: 'Faltan datos para la asociación' });
+        return;
+      }
+
+      const asociacion = await StoreCaracteristicasService.asociarSolucionAmbitoSectorCaracteristica(id_solucion, id_ambito, id_sector, id_caracteristica);
+      const caracteristica = await StoreCaracteristicasService.getCaracteristicaById(id_caracteristica);
+      const solucion = await storeSolucionesService.getById(id_solucion);
+
+      res.status(201).json({
+        message: 'Caracteristica asociado a la solución-ambito-sector con éxito',
+        asociacion,
+        caracteristica
+      });
+    } catch (error) {
+      console.error('Error asociando el caracteristica:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
+
+  /**
    * Lista todas las características existentes.
    * 
    * @param {Request} req - Objeto de solicitud HTTP.
@@ -282,6 +328,37 @@ class StoreCaracteristicasController
       res.status(500).json({ message: 'Error interno del servidor' });
     }
   }
+
+  /**
+   * Lista todas las características existentes.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve una lista de todas las características si es exitosa.
+   * 
+   * @throws {500} Error interno en el servidor en caso de fallos al obtener las características.
+   */
+  async listSolucionAmbitoSectorCaracteristica(req: Request, res: Response): Promise<void>
+  {
+    try
+    {
+      const listSolucionAmbitoSectorCaracteristica: AsociarSolucionAmbitoSectorCaracteristicaBody[] = await StoreCaracteristicasService.listSolucionAmbitoSectorCaracteristica();
+
+      if (!listSolucionAmbitoSectorCaracteristica.length)
+      {
+        res.status(404).json({ message: 'No existen relaciones de solucion x ambitos x sector x caracteristicas' });
+        return;
+      }
+
+      res.status(200).json(listSolucionAmbitoSectorCaracteristica);
+    } catch (error)
+    {
+      console.error('Error listando los caracteristicas:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
+  
 
   /**
    * Modifica una característica existente.
