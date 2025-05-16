@@ -12,6 +12,8 @@ import { SolucionSector } from '@modelos-shared/solucionSector';
 import { SolucionAmbitoSector } from '@modelos-shared/solucionAmbitoSector';
 import { SolucionAmbitoSectorCaracteristica } from '@modelos-shared/solucionAmbitoSectorCaracteristica';
 import { SolucionAmbitoSectorBeneficio } from '@modelos-shared/solucionAmbitoSectorBeneficio';
+import { SolucionAmbitoBeneficio } from '@modelos-shared/solucionAmbitoBeneficio';
+import { SolucionAmbitoCaracteristica } from '@modelos-shared/solucionAmbitoCaracteristica';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MenuComponent } from '../menu/menu.component';
@@ -158,6 +160,36 @@ export class ModificarSolucionComponent implements OnInit {
   }
 
   solucionesAmbitosSectoresBeneficios: SolucionAmbitoSectorBeneficio[] = [];
+
+  // --- SOLUCION AMBITOS BENEFICIOS ---
+  mostrarOpcionesSolucionAmbitoBeneficio: boolean = false;
+  solucionAmbitoBeneficioSeleccionado: SolucionAmbitoBeneficio | null = null;
+  solucionAmbitoBeneficioAEliminar: { idSolucion: number, idAmbito: number, idBeneficio: number } | null = null;
+  mostrarModificarSolucionAmbitoBeneficio: boolean = false;
+  mostrarBotonModificarSolucionAmbitoBeneficio: boolean = false;
+
+  nuevaSolucionAmbitoBeneficio: SolucionAmbitoBeneficio = {
+    id_solucion: 0,
+    id_ambito: 0,
+    id_beneficio: 0,
+  }
+
+  solucionesAmbitosBeneficios: SolucionAmbitoBeneficio[] = [];
+
+  // --- SOLUCION AMBITOS CARACTERISTICAS ---
+  mostrarOpcionesSolucionAmbitoCaracteristica: boolean = false;
+  solucionAmbitoCaracteristicaSeleccionado: SolucionAmbitoCaracteristica | null = null;
+  solucionAmbitoCaracteristicaAEliminar: { idSolucion: number, idAmbito: number, idCaracteristica: number } | null = null;
+  mostrarModificarSolucionAmbitoCaracteristica: boolean = false;
+  mostrarBotonModificarSolucionAmbitoCaracteristica: boolean = false;
+
+  nuevaSolucionAmbitoCaracteristica: SolucionAmbitoCaracteristica = {
+    id_solucion: 0,
+    id_ambito: 0,
+    id_caracteristica: 0,
+  }
+
+  solucionesAmbitosCaracteristicas: SolucionAmbitoCaracteristica[] = [];
 
 
   // --- PROBLEMAS ---
