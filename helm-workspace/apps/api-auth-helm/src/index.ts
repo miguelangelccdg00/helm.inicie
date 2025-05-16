@@ -82,6 +82,7 @@ app.get('/', (req: Request, res: Response): void =>
                         { method: 'GET', path: '/listCompleteBeneficios' },
                         { method: 'GET', path: '/listBeneficios/:id' },
                         { method: 'GET', path: '/listSolucionAmbitoBeneficio' },
+                        { method: 'GET', path: '/listSolucionAmbitoSectorBeneficio' },
                         { method: 'POST', path: '/createBeneficio/:idSolucion' },
                         { method: 'PUT', path: '/modifyBeneficio/:id' },
                         { method: 'DELETE', path: '/deleteBeneficio/:idBeneficio' }
@@ -95,7 +96,7 @@ app.get('/', (req: Request, res: Response): void =>
                     operations: [
                         { method: 'GET', path: '/listCompleteProblemas' },
                         { method: 'GET', path: '/listProblemas/:idSolucion' },
-                        { method: 'GET', path: '/listSolucionAmbitoProblema' },
+                        { method: 'GET', path: '/' },
                         { method: 'POST', path: '/createProblema/:idSolucion' },
                         { method: 'PUT', path: '/modifyProblema/:id' },
                         { method: 'DELETE', path: '/deleteProblema/:idProblema' }
@@ -109,7 +110,7 @@ app.get('/', (req: Request, res: Response): void =>
                     operations: [
                         { method: 'GET', path: '/listCompleteCaracteristicas' },
                         { method: 'GET', path: '/listCaracteristicas/:idSolucion' },
-                        { method: 'GET', path: '/listSolucionAmbitoCaracteristica' },
+                        { method: 'GET', path: '/' },
                         { method: 'POST', path: '/createCaracteristicas/:idSolucion' },
                         { method: 'PUT', path: '/modifyCaracteristicas/:id' },
                         { method: 'DELETE', path: '/deleteCaracteristicas/:idCaracteristicas' }

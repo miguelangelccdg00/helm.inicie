@@ -17,6 +17,14 @@ interface AsociarSolucionAmbitoBeneficioBody
   id_beneficio: number;
 }
 
+interface AsociarSolucionAmbitoSectorBeneficioBody 
+{
+  id_solucion: number;
+  id_ambito: number;
+  id_sector: number;
+  id_beneficio: number;
+}
+
 /**
  * Controlador para gestionar los beneficios asociados a soluciones.
  */
@@ -79,6 +87,82 @@ class StoreBeneficiosControllers
    * @throws {500} Si ocurre un error interno al asociar el caracteristica con la solución.
    */
   async asociarSolucionAmbitoBeneficio(req: Request<any, any, AsociarSolucionAmbitoBeneficioBody>, res: Response): Promise<void> {
+    try {
+      const { id_solucion, id_ambito, id_beneficio } = req.body;
+
+      if (!id_solucion || !id_ambito || !id_beneficio) {
+        res.status(400).json({ message: 'Faltan datos para la asociación' });
+        return;
+      }
+
+      const asociacion = await storeBeneficiosService.asociarSolucionAmbitoBeneficio(id_solucion, id_ambito, id_beneficio);
+      const beneficio = await storeBeneficiosService.getByIdBeneficio(id_beneficio);
+      const solucion = await storeSolucionesService.getById(id_solucion);
+
+      res.status(201).json({
+        message: 'Beneficio asociado a la solución-ambito con éxito',
+        asociacion,
+        beneficio
+      });
+    } catch (error) {
+      console.error('Error asociando el beneficio:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
+
+  /**
+   * Asocia un caracteristica con una solución específica.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP que contiene los datos de asociación.
+   * @param {number} req.body.id_solucion - ID de la solución que se asociará con el caracteristica.
+   * @param {number} req.body.id_ambito - ID del caracteristica que se asociará con la solución.
+   * @param {number} req.body.id_beneficio - ID del caracteristica que se asociará con la solución.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve la asociación exitosa entre la solución y el caracteristica.
+   * 
+   * @throws {400} Si faltan datos en la solicitud.
+   * @throws {500} Si ocurre un error interno al asociar el caracteristica con la solución.
+   */
+  async asociarSolucionAmbitoSectorBeneficios(req: Request<any, any, AsociarSolucionAmbitoSectorBeneficioBody>, res: Response): Promise<void> {
+    try {
+      const { id_solucion, id_ambito, id_sector, id_beneficio } = req.body;
+
+      if (!id_solucion || !id_ambito || !id_sector || !id_beneficio) {
+        res.status(400).json({ message: 'Faltan datos para la asociación' });
+        return;
+      }
+
+      const asociacion = await storeBeneficiosService.asociarSolucionAmbitoSectorBeneficio(id_solucion, id_ambito, id_sector, id_beneficio);
+      const beneficio = await storeBeneficiosService.getByIdBeneficio(id_beneficio);
+      const solucion = await storeSolucionesService.getById(id_solucion);
+
+      res.status(201).json({
+        message: 'Beneficio asociado a la solución-ambito-sector con éxito',
+        asociacion,
+        beneficio
+      });
+    } catch (error) {
+      console.error('Error asociando el beneficio:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
+
+  /**
+   * Asocia un caracteristica con una solución específica.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP que contiene los datos de asociación.
+   * @param {number} req.body.id_solucion - ID de la solución que se asociará con el caracteristica.
+   * @param {number} req.body.id_ambito - ID del caracteristica que se asociará con la solución.
+   * @param {number} req.body.id_beneficio - ID del caracteristica que se asociará con la solución.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve la asociación exitosa entre la solución y el caracteristica.
+   * 
+   * @throws {400} Si faltan datos en la solicitud.
+   * @throws {500} Si ocurre un error interno al asociar el caracteristica con la solución.
+   */
+  async asociarSolucionAmbitoSectorBeneficio(req: Request<any, any, AsociarSolucionAmbitoBeneficioBody>, res: Response): Promise<void> {
     try {
       const { id_solucion, id_ambito, id_beneficio } = req.body;
 
@@ -198,6 +282,36 @@ class StoreBeneficiosControllers
       }
 
       res.status(200).json(listSolucionAmbitoBeneficio);
+    } catch (error)
+    {
+      console.error('Error listando los beneficios:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
+
+  /**
+   * Lista todas las características existentes.
+   * 
+   * @param {Request} req - Objeto de solicitud HTTP.
+   * @param {Response} res - Objeto de respuesta HTTP utilizado para enviar una respuesta al cliente.
+   * 
+   * @returns {Promise<void>} Devuelve una lista de todas las características si es exitosa.
+   * 
+   * @throws {500} Error interno en el servidor en caso de fallos al obtener las características.
+   */
+  async listSolucionAmbitoSectorBeneficio(req: Request, res: Response): Promise<void>
+  {
+    try
+    {
+      const listSolucionAmbitoSectorBeneficio: AsociarSolucionAmbitoSectorBeneficioBody[] = await storeBeneficiosService.listSolucionAmbitoSectorBeneficio();
+
+      if (!listSolucionAmbitoSectorBeneficio.length)
+      {
+        res.status(404).json({ message: 'No existen relaciones de solucion x ambitos x sector x beneficios' });
+        return;
+      }
+
+      res.status(200).json(listSolucionAmbitoSectorBeneficio);
     } catch (error)
     {
       console.error('Error listando los beneficios:', error);

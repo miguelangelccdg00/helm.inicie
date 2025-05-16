@@ -18,6 +18,11 @@ router.get('/listBeneficios/:idSolucion', storeBeneficiosController.listBenefici
 router.get('/listSolucionAmbitoBeneficio', storeBeneficiosController.listSolucionAmbitoBeneficio);
 
 /**
+ * @description Obtencion de problemas por solución específica de su ID
+ */
+router.get('/listSolucionAmbitoSectorBeneficio', storeBeneficiosController.listSolucionAmbitoSectorBeneficio);
+
+/**
  * @description Insercion de beneficios por solución específica de su ID
  */
 router.post('/createBeneficio/:idSolucion', storeBeneficiosController.createBeneficio);
@@ -31,6 +36,11 @@ router.post('/asociarBeneficio', storeBeneficiosController.asociarBeneficio);
  * @description Asociar un problema existente a una solución
  */
 router.post('/asociarSolucionAmbitoBeneficio', storeBeneficiosController.asociarSolucionAmbitoBeneficio);
+
+/**
+ * @description Asociar un problema existente a una solución
+ */
+router.post('/asociarSolucionAmbitoSectorBeneficio', storeBeneficiosController.asociarSolucionAmbitoSectorBeneficio);
 
 /**
  * @description Modifica un beneficio específico por su ID
