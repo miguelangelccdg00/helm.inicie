@@ -1010,7 +1010,7 @@ export class StoreSolucionesService {
 
   /* Obtiene la tabla completa de storeSolucionesAmbitosSectoresCaracteristicas */
   getStoreSolucionAmbitosSectoresCaracteristicas(): Observable<SolucionAmbitoSectorCaracteristica[]> {
-    const url = `${this.caracteristicasUrl}/listSolucionAmbitoCaracteristica`;
+    const url = `${this.caracteristicasUrl}/listSolucionAmbitoSectorCaracteristica`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     console.info('ℹ️ Consultando tabla de storeSolucionesAmbitosSectoresCaracteristicas...');
@@ -1035,9 +1035,11 @@ export class StoreSolucionesService {
     );
   }
 
+  /* SolucionAmbitoSectorBeneficio */
+
   /* Obtiene la tabla completa de storeSolucionesAmbitosSectoresBeneficios */
   getStoreSolucionAmbitosSectoresBeneficios(): Observable<SolucionAmbitoSectorBeneficio[]> {
-    const url = `${this.beneficiosUrl}/listSolucionAmbitoBeneficio`;
+    const url = `${this.beneficiosUrl}/listSolucionAmbitoSectorBeneficio`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     console.info('ℹ️ Consultando tabla de storeSolucionesAmbitosSectoresBeneficios...');
