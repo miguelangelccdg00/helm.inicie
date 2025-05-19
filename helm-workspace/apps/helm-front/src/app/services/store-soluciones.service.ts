@@ -1040,7 +1040,7 @@ export class StoreSolucionesService {
 
   /* Creacion de la relacion solucionAmbitoSector con caracteristica */
   asociarSolucionAmbitoSectorCaracteristica(idSolucion: number, idAmbito: number, idSector: number, idCaracteristica: number): Observable<AsociarSolucionAmbitoSectorCaracteristicaResponse> {
-    const url = `${this.caracteristicasUrl}/asociarSolucionAmbitoBeneficio`;
+    const url = `${this.caracteristicasUrl}/asociarSolucionAmbitoSectorCaracteristicas`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     const relacion = {
@@ -1111,7 +1111,7 @@ export class StoreSolucionesService {
 
   /* Creacion de la relacion solucionAmbitoSector con problema */
   asociarSolucionAmbitoSectorProblema(idSolucion: number, idAmbito: number, idSector: number, idProblema: number): Observable<AsociarSolucionAmbitoSectorProblemaResponse> {
-    const url = `${this.problemasUrl}/asociarSolucionAmbitoBeneficio`;
+    const url = `${this.problemasUrl}/asociarSolucionAmbitoSectorProblemas`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     const relacion = {
