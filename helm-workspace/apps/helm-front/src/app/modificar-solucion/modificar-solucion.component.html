@@ -1375,6 +1375,46 @@
           </div>
         </div>
 
+        <!-- <div class="subseccion">
+          <h3 class="titulo-subseccion">solucionesAmbitosSectoresProblemas</h3>
+
+          <div *ngIf="solucionesAmbitosSectoresProblemas && solucionesAmbitosSectoresProblemas.length">
+            <p-table [value]="solucionesAmbitosSectoresProblemas" [paginator]="true" [rows]="5"
+              [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>ID solucion</th>
+                  <th>ID ambito</th>
+                  <th>ID sector</th>
+                  <th>ID problema</th>
+                 
+                  <th>Editar</th>
+                  <th>Eliminar</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-solucionAmbitoSectorProblema>
+                <tr>
+                  <td>{{ solucionAmbitoSectorProblema.id_solucionx }}</td>
+                  <td>{{ solucionAmbitoSectorProblema.id_ambito }}</td>
+                  <td>{{ solucionAmbitoSectorProblema.id_sector }}</td>
+                  <td>{{ solucionAmbitoSectorProblema.id_beneficio }}</td>
+                  <td>
+                    <span class="emojis">✏️</span>
+                  </td>
+                  <td>
+                    <span class="emojis">🗑️</span>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+
+          <div *ngIf="!solucionesAmbitosSectoresProblemas || solucionesAmbitosSectoresProblemas.length === 0">
+            <p>No hay contenido.</p>
+          </div>
+        </div> -->
+
         <div class="subseccion">
           <h3 class="titulo-subseccion">solucionesAmbitosBeneficios</h3>
 
@@ -1450,6 +1490,44 @@
             <p>No hay contenido.</p>
           </div>
         </div>
+
+        <!-- <div class="subseccion">
+          <h3 class="titulo-subseccion">solucionesAmbitosProblemas</h3>
+
+          <div *ngIf="solucionesAmbitosProblemas && solucionesAmbitosProblemas.length">
+            <p-table [value]="solucionesAmbitosProblemas" [paginator]="true" [rows]="5"
+              [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>ID solucion</th>
+                  <th>ID ambito</th>
+                  <th>ID problema</th>
+                 
+                  <th>Editar</th>
+                  <th>Eliminar</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-solucionAmbitoProblema>
+                <tr>
+                  <td>{{ solucionAmbitoProblema.id_solucionx }}</td>
+                  <td>{{ solucionAmbitoProblema.id_ambito }}</td>
+                  <td>{{ solucionAmbitoProblema.id_problema }}</td>
+                  <td>
+                    <span class="emojis">✏️</span>
+                  </td>
+                  <td>
+                    <span class="emojis">🗑️</span>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+
+          <div *ngIf="!solucionesAmbitosProblemas || solucionesAmbitosProblemas.length === 0">
+            <p>No hay contenido.</p>
+          </div>
+        </div> -->
       </div>
 
       <div class="botones-container2">
