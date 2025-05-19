@@ -15,6 +15,7 @@ import { SolucionAmbitoSectorCaracteristica } from '@modelos-shared/solucionAmbi
 import { SolucionAmbitoSectorBeneficio } from '@modelos-shared/solucionAmbitoSectorBeneficio';
 import { SolucionAmbitoBeneficio, AsociarSolucionAmbitoBeneficioResponse } from '@modelos-shared/solucionAmbitoBeneficio';
 import { SolucionAmbitoCaracteristica, AsociarSolucionAmbitoCaracteristicaResponse } from '@modelos-shared/solucionAmbitoCaracteristica';
+import { SolucionAmbitoProblema, AsociarSolucionAmbitoProblemaResponse } from '@modelos-shared/solucionAmbitoProblema';
 import { tap } from 'rxjs/operators';
 
 @Injectable({
@@ -1009,7 +1010,6 @@ export class StoreSolucionesService {
   }
 
   /* SolucionAmbitoSectorCaracteristica */
-
   /* Obtiene la tabla completa de storeSolucionesAmbitosSectoresCaracteristicas */
   getStoreSolucionAmbitosSectoresCaracteristicas(): Observable<SolucionAmbitoSectorCaracteristica[]> {
     const url = `${this.caracteristicasUrl}/listSolucionAmbitoSectorCaracteristica`;
@@ -1038,7 +1038,6 @@ export class StoreSolucionesService {
   }
 
   /* SolucionAmbitoSectorBeneficio */
-
   /* Obtiene la tabla completa de storeSolucionesAmbitosSectoresBeneficios */
   getStoreSolucionAmbitosSectoresBeneficios(): Observable<SolucionAmbitoSectorBeneficio[]> {
     const url = `${this.beneficiosUrl}/listSolucionAmbitoSectorBeneficio`;
@@ -1148,6 +1147,48 @@ export class StoreSolucionesService {
     };
 
     return this.https.post<AsociarSolucionAmbitoCaracteristicaResponse>(url, relacion, { headers });
+  }
+
+  /* SolucionAmbitoProblema */
+  /* Obtiene la tabla completa de storeSolucionesAmbitosProblemas */
+  getStoreSolucionAmbitosProblemas(): Observable<SolucionAmbitoProblema[]> {
+    const url = `${this.problemasUrl}/listSolucionAmbitoProblema`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    console.info('ℹ️ Consultando tabla de storeSolucionesAmbitosProblemas...');
+
+    return this.https.get<SolucionAmbitoProblema[]>(url, { headers }).pipe(
+      map(response => {
+        if (response && response.length > 0) {
+          console.log('✅ Tabla de storeSolucionesAmbitosProblemas recuperada correctamente');
+        } else {
+          console.info('ℹ️ No hay datos en la tabla de storeSolucionesAmbitosProblemas');
+        }
+        return response || [];
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          console.info('ℹ️ Sin datos para mostrar en la tabla de storeSolucionesAmbitosProblemas');
+        } else {
+          console.warn('⚠️ Error al consultar la tabla de storeSolucionesAmbitosProblemas:', error);
+        }
+        return of([]);
+      })
+    );
+  }
+
+  /* Creacion de la relacion solucionAmbito con problema */
+  asociarSolucionAmbitoProblema(idSolucion: number, idAmbito: number, idProblema: number): Observable<AsociarSolucionAmbitoProblemaResponse> {
+    const url = `${this.problemasUrl}/asociarSolucionAmbitoProblema`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    const relacion = {
+      id_solucion: idSolucion,
+      id_ambito: idAmbito,
+      id_problema: idProblema
+    };
+
+    return this.https.post<AsociarSolucionAmbitoProblemaResponse>(url, relacion, { headers });
   }
 
 }
