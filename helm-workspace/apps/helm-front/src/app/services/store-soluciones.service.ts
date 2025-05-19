@@ -11,9 +11,9 @@ import { SolucionAmbito, DeleteSolucionAmbitoResponse } from '@modelos-shared/so
 import { StoreSectores, CreateSectorResponse, DeleteSectorResponse, AsociarSectorResponse } from '@modelos-shared/storeSectores';
 import { SolucionSector, DeleteSolucionSectorResponse } from '@modelos-shared/solucionSector';
 import { SolucionAmbitoSector } from '@modelos-shared/solucionAmbitoSector';
-import { SolucionAmbitoSectorCaracteristica } from '@modelos-shared/solucionAmbitoSectorCaracteristica';
+import { SolucionAmbitoSectorCaracteristica, AsociarSolucionAmbitoSectorCaracteristicaResponse } from '@modelos-shared/solucionAmbitoSectorCaracteristica';
 import { SolucionAmbitoSectorBeneficio } from '@modelos-shared/solucionAmbitoSectorBeneficio';
-import { SolucionAmbitoSectorProblema } from '@modelos-shared/solucionAmbitoSectorProblema';
+import { SolucionAmbitoSectorProblema, AsociarSolucionAmbitoSectorProblemaResponse } from '@modelos-shared/solucionAmbitoSectorProblema';
 import { SolucionAmbitoBeneficio, AsociarSolucionAmbitoBeneficioResponse } from '@modelos-shared/solucionAmbitoBeneficio';
 import { SolucionAmbitoCaracteristica, AsociarSolucionAmbitoCaracteristicaResponse } from '@modelos-shared/solucionAmbitoCaracteristica';
 import { SolucionAmbitoProblema, AsociarSolucionAmbitoProblemaResponse } from '@modelos-shared/solucionAmbitoProblema';
@@ -1038,6 +1038,21 @@ export class StoreSolucionesService {
     );
   }
 
+  /* Creacion de la relacion solucionAmbitoSector con caracteristica */
+  asociarSolucionAmbitoSectorCaracteristica(idSolucion: number, idAmbito: number, idSector: number, idCaracteristica: number): Observable<AsociarSolucionAmbitoSectorCaracteristicaResponse> {
+    const url = `${this.caracteristicasUrl}/asociarSolucionAmbitoBeneficio`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    const relacion = {
+      id_solucion: idSolucion,
+      id_ambito: idAmbito,
+      id_sector: idSector,
+      id_caracteristica: idCaracteristica
+    };
+
+    return this.https.post<AsociarSolucionAmbitoSectorCaracteristicaResponse>(url, relacion, { headers });
+  }
+
   /* SolucionAmbitoSectorBeneficio */
   /* Obtiene la tabla completa de storeSolucionesAmbitosSectoresBeneficios */
   getStoreSolucionAmbitosSectoresBeneficios(): Observable<SolucionAmbitoSectorBeneficio[]> {
@@ -1092,6 +1107,21 @@ export class StoreSolucionesService {
         return of([]);
       })
     );
+  }
+
+  /* Creacion de la relacion solucionAmbitoSector con problema */
+  asociarSolucionAmbitoSectorProblema(idSolucion: number, idAmbito: number, idSector: number, idProblema: number): Observable<AsociarSolucionAmbitoSectorProblemaResponse> {
+    const url = `${this.problemasUrl}/asociarSolucionAmbitoBeneficio`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    const relacion = {
+      id_solucion: idSolucion,
+      id_ambito: idAmbito,
+      id_sector: idSector,
+      id_problema: idProblema
+    };
+
+    return this.https.post<AsociarSolucionAmbitoSectorProblemaResponse>(url, relacion, { headers });
   }
 
   /* SolucionAmbitoBeneficio */
