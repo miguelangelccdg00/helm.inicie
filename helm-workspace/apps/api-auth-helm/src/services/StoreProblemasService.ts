@@ -159,26 +159,20 @@ class StoreProblemasService
    * @param {number} idSolucion - ID de la solución.
    * @param {number} idProblema - ID del problema.
    * @param {string} [titulo] - Título opcional que se asignará a la relación.
-   * 
    * @returns {Promise<object>} Resultado de la operación, incluyendo mensaje si ya existía la relación.
-   * 
    * @throws {Error} Si el problema o solución no existen o hay error en la base de datos.
    */
-  async asociarProblema(idSolucion: number, idProblema: number, titulo?: string)
-  {
+  async asociarProblema(idSolucion: number, idProblema: number, titulo?: string) {
     const conn = await pool.promise().getConnection();
 
-    try
-    {
+    try {
       await conn.beginTransaction();
 
       const [solucionExiste]: any = await conn.query(
         `SELECT id_solucion FROM storeSoluciones WHERE id_solucion = ?`,
         [idSolucion]
       );
-
-      if (solucionExiste.length === 0)
-      {
+      if (solucionExiste.length === 0) {
         throw new Error(`La solución con id ${idSolucion} no existe.`);
       }
 
@@ -186,9 +180,7 @@ class StoreProblemasService
         `SELECT id_problema, description FROM storeProblemas WHERE id_problema = ?`,
         [idProblema]
       );
-
-      if (problemaExiste.length === 0)
-      {
+      if (problemaExiste.length === 0) {
         throw new Error(`El problema con id ${idProblema} no existe.`);
       }
 
@@ -196,9 +188,7 @@ class StoreProblemasService
         `SELECT id_solucion, id_problema FROM storeSolucionesProblemas WHERE id_solucion = ? AND id_problema = ?`,
         [idSolucion, idProblema]
       );
-
-      if (relacionExiste.length > 0)
-      {
+      if (relacionExiste.length > 0) {
         await conn.commit();
         return { idSolucion, idProblema, message: 'La relación ya existía' };
       }
@@ -216,62 +206,61 @@ class StoreProblemasService
       );
 
       await conn.commit();
-
       return { idSolucion, idProblema, titulo, message: 'Relación creada con éxito' };
     }
-    catch (error)
-    {
+    catch (error) {
       await conn.rollback();
       console.error('Error al asociar problema:', error);
       throw error;
     }
-    finally
-    {
+    finally {
       conn.release();
     }
   }
 
+
   /**
-   * Asocia un ámbito a una solución.
+   * Asocia un problema a una solución y un ámbito.
+   * 
    * @param {number} idSolucion - ID de la solución.
    * @param {number} idAmbito - ID del ámbito.
    * @param {number} idProblema - ID del problema.
+   * @throws {AppError} Si no existe la relación solución-problema o si ya existe la asociación con el ámbito.
    */
-  async asociarSolucionAmbitoProblema(idSolucion: number, idAmbito: number, idProblema: number): Promise<void> 
-  {
-    try 
-    {
-      const [solucionAmbitoExists] = await pool.promise().query(
-        `SELECT sa.id_solucion, sa.id_ambito FROM storeSolucionesAmbitos sa WHERE id_solucion = ?, id_ambito = ?`,
-        [idSolucion, idAmbito]);
-
-      const [problemaExists] = await pool.promise().query(
-        `SELECT b.id_problema FROM storeProblemas b WHERE b.id_problema = ?`,
-        [idProblema]
+  async asociarSolucionAmbitoProblema(idSolucion: number, idAmbito: number, idProblema: number): Promise<void> {
+    try {
+      // Verifica si ya está asociada la solución con el problema
+      const [relSolProb] = await pool.promise().query(
+        `SELECT * FROM storeSolucionesProblemas WHERE id_solucion = ? AND id_problema = ?`,
+        [idSolucion, idProblema]
       );
 
-      if (solucionAmbitoExists.affectedRows === 0) 
-      {
-        throw new AppError('Solucion o ambito no existe');
+      if ((relSolProb as any[]).length === 0) {
+        throw new AppError('La relación solución-problema no existe. Debe asociarse primero con asociarProblema().');
       }
 
-      if (problemaExists.affectedRows === 0) 
-      {
-        throw new AppError('Problema no existe');
+      // Verifica si ya existe la relación solución-ámbito-problema
+      const [relacionExistente] = await pool.promise().query(
+        `SELECT * FROM storeSolucionesAmbitosProblemas 
+        WHERE id_solucion = ? AND id_ambito = ? AND id_problema = ?`,
+        [idSolucion, idAmbito, idProblema]
+      );
+
+      if ((relacionExistente as any[]).length > 0) {
+        throw new AppError('La relación solución-ámbito-problema ya existe.');
       }
 
-      const [result] = await pool.promise().query(
+      await pool.promise().query(
         `INSERT INTO storeSolucionesAmbitosProblemas (id_solucion, id_ambito, id_problema) VALUES (?, ?, ?)`,
         [idSolucion, idAmbito, idProblema]
       );
 
-    } 
-    catch (error) 
-    {
-      console.error('Error al asociar el storeSolucionesAmbitosProblemas:', error);
-      throw new AppError('Error al asociar el storeSolucionesAmbitosProblemas');
+    } catch (error) {
+      console.error('Error al asociar solución-ámbito-problema:', error);
+      throw new AppError('Error al asociar solución-ámbito-problema');
     }
   }
+
 
   /**
    * Asocia un problema a una solución, ámbito y sector.
