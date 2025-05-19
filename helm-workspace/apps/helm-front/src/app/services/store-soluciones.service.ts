@@ -13,6 +13,7 @@ import { SolucionSector, DeleteSolucionSectorResponse } from '@modelos-shared/so
 import { SolucionAmbitoSector } from '@modelos-shared/solucionAmbitoSector';
 import { SolucionAmbitoSectorCaracteristica } from '@modelos-shared/solucionAmbitoSectorCaracteristica';
 import { SolucionAmbitoSectorBeneficio } from '@modelos-shared/solucionAmbitoSectorBeneficio';
+import { SolucionAmbitoSectorProblema } from '@modelos-shared/solucionAmbitoSectorProblema';
 import { SolucionAmbitoBeneficio, AsociarSolucionAmbitoBeneficioResponse } from '@modelos-shared/solucionAmbitoBeneficio';
 import { SolucionAmbitoCaracteristica, AsociarSolucionAmbitoCaracteristicaResponse } from '@modelos-shared/solucionAmbitoCaracteristica';
 import { SolucionAmbitoProblema, AsociarSolucionAmbitoProblemaResponse } from '@modelos-shared/solucionAmbitoProblema';
@@ -1059,6 +1060,34 @@ export class StoreSolucionesService {
           console.info('ℹ️ Sin datos para mostrar en la tabla de storeSolucionesAmbitosSectoresBeneficios');
         } else {
           console.warn('⚠️ Error al consultar la tabla de storeSolucionesAmbitosSectoresBeneficios:', error);
+        }
+        return of([]);
+      })
+    );
+  }
+
+  /* SolucionAmbitoSectorProblema */
+  /* Obtiene la tabla completa de storeSolucionesAmbitosSectoresProblemas */
+  getStoreSolucionAmbitosSectoresProblemas(): Observable<SolucionAmbitoSectorProblema[]> {
+    const url = `${this.problemasUrl}/listSolucionAmbitoSectorProblema`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    console.info('ℹ️ Consultando tabla de storeSolucionesAmbitosSectoresProblemas...');
+
+    return this.https.get<SolucionAmbitoSectorProblema[]>(url, { headers }).pipe(
+      map(response => {
+        if (response && response.length > 0) {
+          console.log('✅ Tabla de storeSolucionesAmbitosSectoresProblemas recuperada correctamente');
+        } else {
+          console.info('ℹ️ No hay datos en la tabla de storeSolucionesAmbitosSectoresProblemas');
+        }
+        return response || [];
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          console.info('ℹ️ Sin datos para mostrar en la tabla de storeSolucionesAmbitosSectoresProblemas');
+        } else {
+          console.warn('⚠️ Error al consultar la tabla de storeSolucionesAmbitosSectoresProblemas:', error);
         }
         return of([]);
       })
