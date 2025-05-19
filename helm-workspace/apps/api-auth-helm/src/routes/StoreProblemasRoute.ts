@@ -38,6 +38,11 @@ router.post('/asociarProblema', storeProblemasController.asociarProblema);
 router.post('/asociarSolucionAmbitoProblema', storeProblemasController.asociarSolucionAmbitoProblema);
 
 /**
+ * @description Asociar un problema existente a una solución
+ */
+router.post('/asociarSolucionAmbitoSectorProblemas', storeProblemasController.asociarSolucionAmbitoSectorProblemas);
+
+/**
  * @description Modifica un problema específico por su ID
  */
 router.put('/modifyStoreProblema/:id', storeProblemasController.modifyStoreProblemas);
