@@ -969,7 +969,7 @@
 
           <div class="subseccion">
             <h3 class="titulo-subseccion">Sectores asociados a la solución</h3>
-            <div>
+            <div *ngIf="solucionesSectores && solucionesSectores.length">
               <p-table [value]="solucion.sectores || []" [paginator]="true" [rows]="5"
                 [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
                 <ng-template pTemplate="header">
@@ -1002,13 +1002,13 @@
 
                   </tr>
                 </ng-template>
-                <ng-template pTemplate="emptymessage">
-                  <tr>
-                    <td colspan="9" style="text-align: center;">No hay sectores asociados a esta solución.</td>
-                  </tr>
-                </ng-template>
               </p-table>
             </div>
+
+            <div *ngIf="!solucionesSectores || solucionesSectores.length === 0">
+              <p>No hay sectores asociados a esta solución.</p>
+            </div>
+
           </div>
 
           <br>
