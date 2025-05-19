@@ -105,7 +105,9 @@
         <div class="seccion3" #scrollProblemas>
           <h2 class="titulo-seccion">Problema y Solución</h2>
 
-          <div *ngIf="mostrarModificarProblema === true" class="subseccion">
+          <div *ngIf="mostrarModificarProblema === true" class="modal">
+            <div class="modal-content">
+              <span class="close" (click)="mostrarModificarProblema = false">&times;</span>
             <h3 class="titulo-subseccion">Modificar problema</h3>
 
             <form (ngSubmit)="modificarProblema()">
@@ -124,9 +126,12 @@
                   (click)="mostrarModificarProblema = false; mostrarBotonModificarProblema = true">Cancelar</button>
               </div>
             </form>
+            </div>
           </div>
 
-          <div *ngIf="mostrarCrearProblema === true" class="subseccion">
+          <div *ngIf="mostrarCrearProblema === true" class="modal">
+            <div class="modal-content">
+              <span class="close" (click)="mostrarCrearProblema = false">&times;</span>
             <h3 class="titulo-subseccion">Crear y añadir problema</h3>
 
             <form (ngSubmit)="crearNuevoProblema()">
@@ -144,6 +149,7 @@
                   (click)="mostrarCrearProblema = false; mostrarBotonCrearProblema = true">Cancelar</button>
               </div>
             </form>
+            </div>
           </div>
 
           <div class="subseccion">
@@ -337,7 +343,9 @@
         <div class="seccion3" #scrollBeneficios>
           <h2 class="titulo-seccion">Beneficios</h2>
 
-          <div *ngIf="mostrarModificarBeneficio === true" class="subseccion">
+          <div *ngIf="mostrarModificarBeneficio === true" class="modal">
+            <div class="modal-content">
+              <span class="close" (click)="mostrarModificarBeneficio = false">&times;</span>
             <h3 class="titulo-subseccion">Modificar beneficio</h3>
 
             <form (ngSubmit)="modificarBeneficio()">
@@ -356,9 +364,12 @@
                   (click)="mostrarModificarBeneficio = false; mostrarBotonModificarBeneficio = true">Cancelar</button>
               </div>
             </form>
+            </div>
           </div>
 
-          <div *ngIf="mostrarCrearBeneficio === true" class="subseccion">
+          <div *ngIf="mostrarCrearBeneficio === true" class="modal">
+            <div class="modal-content">
+              <span class="close" (click)="mostrarCrearBeneficio = false">&times;</span>
             <h3 class="titulo-subseccion">Crear y añadir beneficio</h3>
 
             <form (ngSubmit)="crearNuevoBeneficio()">
@@ -373,6 +384,7 @@
                   (click)="mostrarCrearBeneficio = false; mostrarBotonCrear = true">Cancelar</button>
               </div>
             </form>
+            </div>
           </div>
 
           <div class="subseccion">
@@ -451,7 +463,9 @@
         <div class="seccion4" #scrollAmbitos>
           <h2 class="titulo-seccion">Ámbitos</h2>
 
-          <div *ngIf="mostrarModificarAmbito === true" class="subseccion">
+          <div *ngIf="mostrarModificarAmbito === true" class="modal">
+            <div class="modal-content">
+              <span class="close" (click)="mostrarModificarAmbito = false">&times;</span>
             <h3 class="titulo-subseccion">Modificar ámbito</h3>
 
             <form (ngSubmit)="modificarAmbito()">
@@ -484,9 +498,12 @@
                   (click)="mostrarModificarAmbito = false; mostrarBotonModificarAmbito = true">Cancelar</button>
               </div>
             </form>
+            </div>
           </div>
 
-          <div *ngIf="mostrarCrearAmbito === true" class="subseccion">
+          <div *ngIf="mostrarCrearAmbito === true" class="modal">
+            <div class="modal-content">
+              <span class="close" (click)="mostrarCrearAmbito = false">&times;</span>
             <h3 class="titulo-subseccion">Crear y añadir ámbito</h3>
 
             <form (ngSubmit)="crearNuevoAmbito()" #crearAmbForm="ngForm">
@@ -534,7 +551,7 @@
                 </button>
               </div>
             </form>
-
+            </div>
           </div>
 
           <div class="subseccion">
@@ -607,10 +624,12 @@
           </div>
 
           <div class="subseccion">
-            <h3 class="titulo-subseccion">Solución según cada ámbito</h3>
+            <h3 class="titulo-subseccion">Solución según cada ámbito</h3> 
 
             <!-- Formulario para modificar solución por ámbito -->
-            <div *ngIf="mostrarModificarSolucionAmbito" class="subseccion" #formularioSolucionAmbito>
+            <div *ngIf="mostrarModificarSolucionAmbito" class="modal" #formularioSolucionAmbito>
+              <div class="modal-content">
+              <span class="close" (click)="mostrarModificarSolucionAmbito = false">&times;</span>
               <h3 class="titulo-subseccion">Modificar solución por ámbito</h3>
 
               <form (ngSubmit)="modificarSolucionAmbito()">
@@ -728,6 +747,7 @@
                     (click)="mostrarModificarSolucionAmbito = false; mostrarBotonModificarSolucionAmbito = true">Cancelar</button>
                 </div>
               </form>
+              </div>
             </div>
 
             <div *ngIf="solucion?.ambitos && solucion.ambitos.length">
@@ -810,7 +830,9 @@
         <div class="seccion4" #scrollSectores>
           <h2 class="titulo-seccion">Sectores</h2>
 
-          <div *ngIf="mostrarModificarSector === true" class="subseccion">
+          <div *ngIf="mostrarModificarSector === true" class="modal">
+            <div class="modal-content">
+              <span class="close" (click)="mostrarModificarSector = false">&times;</span>
             <h3 class="titulo-subseccion">Modificar sector</h3>
 
             <form (ngSubmit)="modificarSector()">
@@ -858,6 +880,7 @@
                   (click)="mostrarModificarSector = false; mostrarBotonModificarSector = true">Cancelar</button>
               </div>
             </form>
+            </div>
           </div>
 
           <div *ngIf="mostrarCrearSector === true" class="subseccion">
@@ -1017,7 +1040,9 @@
             <h3 class="titulo-subseccion">Solución según cada sector</h3>
 
             <!-- Formulario para modificar solución por sector -->
-            <div *ngIf="mostrarModificarSolucionSector" class="subseccion" #formularioSolucionSector>
+            <div *ngIf="mostrarModificarSolucionSector" class="modal" #formularioSolucionSector>
+              <div class="modal-content">
+              <span class="close" (click)="mostrarModificarSolucionSector = false">&times;</span>
               <h3 class="titulo-subseccion">Modificar solución por sector</h3>
 
               <form (ngSubmit)="modificarSolucionSector()">
@@ -1039,6 +1064,7 @@
                     (click)="mostrarModificarSolucionSector = false; mostrarBotonModificarSolucionSector = true">Cancelar</button>
                 </div>
               </form>
+              </div>
             </div>
 
             <div *ngIf="solucionesSectores && solucionesSectores.length">
@@ -1088,7 +1114,9 @@
           <h3 class="titulo-subseccion">Solución según cada ámbito sector</h3>
 
           <!-- Formulario para modificar solución por ámbito y sector -->
-          <div *ngIf="mostrarModificarSolucionAmbitoSector" class="subseccion" #formularioSolucionAmbitoSector>
+          <div *ngIf="mostrarModificarSolucionAmbitoSector" class="modal" #formularioSolucionAmbitoSector>
+            <div class="modal-content">
+              <span class="close" (click)="mostrarModificarSolucionAmbitoSector = false">&times;</span>
             <h3 class="titulo-subseccion">Modificar solución por ámbito y sector</h3>
 
             <form (ngSubmit)="modificarSolucionAmbitoSector()">
@@ -1211,6 +1239,7 @@
                   (click)="mostrarModificarSolucionAmbitoSector = false; mostrarBotonModificarSolucionAmbitoSector = true">Cancelar</button>
               </div>
             </form>
+            </div>
           </div>
 
           <div *ngIf="solucionesAmbitosSectores && solucionesAmbitosSectores.length">
@@ -1315,7 +1344,7 @@
 
               <ng-template pTemplate="body" let-solucionAmbitoSectorCaracteristica>
                 <tr>
-                  <td>{{ solucionAmbitoSectorCaracteristica.id_solucionx }}</td>
+                  <td>{{ solucionAmbitoSectorCaracteristica.id_solucion }}</td>
                   <td>{{ solucionAmbitoSectorCaracteristica.id_ambito }}</td>
                   <td>{{ solucionAmbitoSectorCaracteristica.id_sector }}</td>
                   <td>{{ solucionAmbitoSectorCaracteristica.id_caracteristica }}</td>
@@ -1355,7 +1384,7 @@
 
               <ng-template pTemplate="body" let-solucionAmbitoSectorBeneficio>
                 <tr>
-                  <td>{{ solucionAmbitoSectorBeneficio.id_solucionx }}</td>
+                  <td>{{ solucionAmbitoSectorBeneficio.id_solucion }}</td>
                   <td>{{ solucionAmbitoSectorBeneficio.id_ambito }}</td>
                   <td>{{ solucionAmbitoSectorBeneficio.id_sector }}</td>
                   <td>{{ solucionAmbitoSectorBeneficio.id_beneficio }}</td>
@@ -1395,7 +1424,7 @@
 
               <ng-template pTemplate="body" let-solucionAmbitoSectorProblema>
                 <tr>
-                  <td>{{ solucionAmbitoSectorProblema.id_solucionx }}</td>
+                  <td>{{ solucionAmbitoSectorProblema.id_solucion }}</td>
                   <td>{{ solucionAmbitoSectorProblema.id_ambito }}</td>
                   <td>{{ solucionAmbitoSectorProblema.id_sector }}</td>
                   <td>{{ solucionAmbitoSectorProblema.id_beneficio }}</td>
@@ -1434,7 +1463,7 @@
 
               <ng-template pTemplate="body" let-solucionAmbitoBeneficio>
                 <tr>
-                  <td>{{ solucionAmbitoBeneficio.id_solucionx }}</td>
+                  <td>{{ solucionAmbitoBeneficio.id_solucion }}</td>
                   <td>{{ solucionAmbitoBeneficio.id_ambito }}</td>
                   <td>{{ solucionAmbitoBeneficio.id_beneficio }}</td>
                   <td>
@@ -1472,7 +1501,7 @@
 
               <ng-template pTemplate="body" let-solucionAmbitoCaracteristica>
                 <tr>
-                  <td>{{ solucionAmbitoCaracteristica.id_solucionx }}</td>
+                  <td>{{ solucionAmbitoCaracteristica.id_solucion }}</td>
                   <td>{{ solucionAmbitoCaracteristica.id_ambito }}</td>
                   <td>{{ solucionAmbitoCaracteristica.id_caracteristica }}</td>
                   <td>
@@ -1510,7 +1539,7 @@
 
               <ng-template pTemplate="body" let-solucionAmbitoProblema>
                 <tr>
-                  <td>{{ solucionAmbitoProblema.id_solucionx }}</td>
+                  <td>{{ solucionAmbitoProblema.id_solucion }}</td>
                   <td>{{ solucionAmbitoProblema.id_ambito }}</td>
                   <td>{{ solucionAmbitoProblema.id_problema }}</td>
                   <td>
