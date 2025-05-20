@@ -419,6 +419,32 @@ class StoreCaracteristicasService
       conn.release();
     }
   }
+
+  /**
+   * Selector de un caracteristica una solución y un ámbito por sector.
+   * 
+   * @param {number} idSector - ID del sector.
+   * @throws {AppError} Si ya existe la relación o si ocurre un error de base de datos.
+   */
+  async selectorSolucionAmbitoSectorCarateristicas(idSector: number): Promise<any[]> 
+  {
+    try {
+      const [rows] = await pool.promise().query(
+        ` SELECT 
+          a.description AS ambitoDescription, 
+          c.description AS caracteristicaDescription
+        FROM storeSolucionesAmbitosSectoresCaracteristicas sac
+        JOIN storeAmbitos a ON sac.id_ambito = a.id_ambito
+        JOIN storeCaracteristicas c ON sac.id_caracteristica = c.id_caracteristica
+        WHERE sac.id_sector = ? `,
+        [idSector]
+      );
+      return rows;
+    } catch (error) {
+      console.error('Error en el selector solución-ámbito-sector-caracteristica:', error);
+      throw new AppError('Error al asociar solución-ámbito-sector-caracteristica');
+    }
+  }
 }
 
 export default new StoreCaracteristicasService();

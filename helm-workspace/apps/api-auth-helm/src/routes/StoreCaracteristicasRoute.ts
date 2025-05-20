@@ -23,6 +23,11 @@ router.get('/listSolucionAmbitoCaracteristica', storeCaracteristicasController.l
 router.get('/listSolucionAmbitoSectorCaracteristica', storeCaracteristicasController.listSolucionAmbitoSectorCaracteristica);
 
 /**
+ * @description Selector de un beneficio existente a una solución
+ */
+router.get('/selectorSolucionAmbitoSectorCaracteristica/:idSector', storeCaracteristicasController.selectorSolucionAmbitoSectorCaracteristica);
+
+/**
  * @description Insercion de caracteristicas por solución específica de su ID
  */
 router.post('/createCaracteristicas/:idSolucion', storeCaracteristicasController.createCaracteristicas);
