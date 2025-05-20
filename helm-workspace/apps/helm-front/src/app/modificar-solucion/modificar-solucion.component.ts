@@ -310,6 +310,8 @@ export class ModificarSolucionComponent implements OnInit {
   mostrarModalSolucionSector: boolean = false;
   mostrarModalSolucionAmbitoSector: boolean = false;
 
+  /* filasRelacionSector: any[] = []; */
+
 
   // Diccionarios para ámbitos y sectores.
   ambitosDictionary: { [key: number]: StoreAmbitos } = {};
@@ -376,7 +378,7 @@ export class ModificarSolucionComponent implements OnInit {
           this.storeSolucionesService.getStoreSolucionAmbitosCaracteristicas(),
           this.storeSolucionesService.getStoreSolucionAmbitosProblemas()
         ]).subscribe({
-          next: ([problemas, beneficios, caracteristicas, ambitos, sectores, solucionesAmbitos, solucionesSectores, solucionesAmbitosSectores, storeSolucionesAmbitosSectoresBeneficios , storeSolucionesAmbitosSectoresCaracteristicas, storeSolucionesAmbitosSectoresProblemas, storeSolucionesAmbitosBeneficios, storeSolucionesAmbitosCaracteristicas, storeSolucionesAmbitosProblemas]) => {
+          next: ([problemas, beneficios, caracteristicas, ambitos, sectores, solucionesAmbitos, solucionesSectores, solucionesAmbitosSectores, storeSolucionesAmbitosSectoresBeneficios, storeSolucionesAmbitosSectoresCaracteristicas, storeSolucionesAmbitosSectoresProblemas, storeSolucionesAmbitosBeneficios, storeSolucionesAmbitosCaracteristicas, storeSolucionesAmbitosProblemas]) => {
             if (this.solucion) {
               this.problemas = this.solucion.problemas = problemas;
               this.beneficios = this.solucion.beneficios = beneficios;
@@ -1938,4 +1940,33 @@ export class ModificarSolucionComponent implements OnInit {
       }
     }, 100);
   }
+
+  /* filtrarPorSectorSeleccionado() {
+    if (!this.sectorSeleccionado) return;
+
+    const idSector = this.sectorSeleccionado.id_sector;
+    const sectorDescripcion = this.sectorSeleccionado.description;
+
+    forkJoin({
+      problemas: this.storeSolucionesService.selectorSolucionAmbitoSectorProblema(idSector),
+      beneficios: this.storeSolucionesService.selectorSolucionAmbitoSectorBeneficio(idSector),
+      caracteristicas: this.storeSolucionesService.selectorSolucionAmbitoSectorCaracteristica(idSector)
+    }).subscribe(({ problemas, beneficios, caracteristicas }) => {
+
+      const maxLength = Math.max(problemas.length, beneficios.length, caracteristicas.length);
+      const resultado: FilaRelacionSector[] = [];
+
+      for (let i = 0; i < maxLength; i++) {
+        resultado.push({
+          sectorDescripcion,
+          problemaDescripcion: problemas[i]?.description || '',
+          beneficioDescripcion: beneficios[i]?.description || '',
+          caracteristicaDescripcion: caracteristicas[i]?.description || '',
+        });
+      }
+
+      this.filasRelacionSector = resultado;
+    });
+  } */
+
 }

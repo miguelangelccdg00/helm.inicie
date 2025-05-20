@@ -11,7 +11,7 @@ import { SolucionAmbito, DeleteSolucionAmbitoResponse } from '@modelos-shared/so
 import { StoreSectores, CreateSectorResponse, DeleteSectorResponse, AsociarSectorResponse } from '@modelos-shared/storeSectores';
 import { SolucionSector, DeleteSolucionSectorResponse } from '@modelos-shared/solucionSector';
 import { SolucionAmbitoSector } from '@modelos-shared/solucionAmbitoSector';
-import { SolucionAmbitoSectorCaracteristica, AsociarSolucionAmbitoSectorCaracteristicaResponse } from '@modelos-shared/solucionAmbitoSectorCaracteristica';
+import { SolucionAmbitoSectorCaracteristica, AsociarSolucionAmbitoSectorCaracteristicaResponse, SelectorSolucionAmbitoSectorCaracteristicaResponse } from '@modelos-shared/solucionAmbitoSectorCaracteristica';
 import { SolucionAmbitoSectorBeneficio, SelectorSolucionAmbitoSectorBeneficioResponse } from '@modelos-shared/solucionAmbitoSectorBeneficio';
 import { SolucionAmbitoSectorProblema, AsociarSolucionAmbitoSectorProblemaResponse, SelectorSolucionAmbitoSectorProblemaResponse } from '@modelos-shared/solucionAmbitoSectorProblema';
 import { SolucionAmbitoBeneficio, AsociarSolucionAmbitoBeneficioResponse } from '@modelos-shared/solucionAmbitoBeneficio';
@@ -983,6 +983,32 @@ export class StoreSolucionesService {
           console.info('ℹ️ Sin beneficios del sector seleccionado para mostrar');
         } else {
           console.warn('⚠️ Error al consultar los beneficios del sector seleccionado:', error);
+        }
+        return of([]);
+      })
+    );
+
+  }
+
+  /* Obtiene las características de un sector */
+  selectorSolucionAmbitoSectorCaracteristica(idSector: number ): Observable<SelectorSolucionAmbitoSectorCaracteristicaResponse[]> {
+    const url = `${this.caracteristicasUrl}/selectorSolucionAmbitoSectorCaracteristica/${idSector}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    return this.https.get<SelectorSolucionAmbitoSectorCaracteristicaResponse[]>(url, { headers }).pipe(
+      map(response => {
+        if (response && response.length > 0) {
+          console.log('✅ Características del sector seleccionado recuperados correctamente');
+        } else {
+          console.info('ℹ️ No hay características en el sector seleccionado');
+        }
+        return response || [];
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          console.info('ℹ️ Sin características del sector seleccionado para mostrar');
+        } else {
+          console.warn('⚠️ Error al consultar las características del sector seleccionado:', error);
         }
         return of([]);
       })
