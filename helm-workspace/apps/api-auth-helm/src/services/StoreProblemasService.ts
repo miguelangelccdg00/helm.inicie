@@ -368,6 +368,32 @@ class StoreProblemasService
       conn.release();
     }
   }
+
+  /**
+   * Selector de un problema una solución y un ámbito por sector.
+   * 
+   * @param {number} idSector - ID del sector.
+   * @throws {AppError} Si ya existe la relación o si ocurre un error de base de datos.
+   */
+  async selectorSolucionAmbitoSectorProblema(idSector: number): Promise<any[]> 
+  {
+    try {
+      const [rows] = await pool.promise().query(
+        ` SELECT 
+          a.description AS ambitoDescription, 
+          p.description AS problemaDescription
+        FROM storeSolucionesAmbitosSectoresProblemas sap
+        JOIN storeAmbitos a ON sap.id_ambito = a.id_ambito
+        JOIN storeProblemas p ON sap.id_problema = b.id_problema
+        WHERE sap.id_sector = ? `, [idSector]
+      );
+      return rows;
+    } catch (error) {
+      console.error('Error en el selector solución-ámbito-sector-problema:', error);
+      throw new AppError('Error al asociar solución-ámbito-sector-problema');
+    }
+  }
+
 }
 
 export default new StoreProblemasService();
