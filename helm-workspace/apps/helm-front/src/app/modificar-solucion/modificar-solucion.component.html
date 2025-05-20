@@ -1339,14 +1339,14 @@
             <div class="form-group col-12">
               <label for="buscadorSector">Seleccionar Sector:</label>
               <div class="custom-select">
-                <input type="text" id="buscadorSector" [(ngModel)]="buscadorSector"
+                <input type="text" id="buscadorSector" [(ngModel)]="buscadorSector2"
                   name="buscadorSectorDeSolucion" (input)="filtrarSectores()"
-                  (focus)="mostrarOpcionesSectores = true" (click)="mostrarOpcionesSectores = true"
+                  (focus)="mostrarOpcionesSectores2 = true" (click)="mostrarOpcionesSectores2 = true"
                   placeholder="Buscar y seleccionar sector..." pInputText variant="filled" />
 
-                <div class="dropdown-menu" *ngIf="mostrarOpcionesSectores">
+                <div class="dropdown-menu" *ngIf="mostrarOpcionesSectores2">
                   <div *ngFor="let sector of sectoresFiltrados" class="dropdown-item"
-                    (click)="seleccionarSector(sector)">
+                    (click)="seleccionarSector2(sector)">  
                     {{ sector.description }}
                   </div>
                 </div>

@@ -12,7 +12,7 @@ import { StoreSectores, CreateSectorResponse, DeleteSectorResponse, AsociarSecto
 import { SolucionSector, DeleteSolucionSectorResponse } from '@modelos-shared/solucionSector';
 import { SolucionAmbitoSector } from '@modelos-shared/solucionAmbitoSector';
 import { SolucionAmbitoSectorCaracteristica, AsociarSolucionAmbitoSectorCaracteristicaResponse } from '@modelos-shared/solucionAmbitoSectorCaracteristica';
-import { SolucionAmbitoSectorBeneficio } from '@modelos-shared/solucionAmbitoSectorBeneficio';
+import { SolucionAmbitoSectorBeneficio, SelectorSolucionAmbitoSectorBeneficioResponse } from '@modelos-shared/solucionAmbitoSectorBeneficio';
 import { SolucionAmbitoSectorProblema, AsociarSolucionAmbitoSectorProblemaResponse, SelectorSolucionAmbitoSectorProblemaResponse } from '@modelos-shared/solucionAmbitoSectorProblema';
 import { SolucionAmbitoBeneficio, AsociarSolucionAmbitoBeneficioResponse } from '@modelos-shared/solucionAmbitoBeneficio';
 import { SolucionAmbitoCaracteristica, AsociarSolucionAmbitoCaracteristicaResponse } from '@modelos-shared/solucionAmbitoCaracteristica';
@@ -957,6 +957,32 @@ export class StoreSolucionesService {
           console.info('ℹ️ Sin problemas del sector seleccionado para mostrar');
         } else {
           console.warn('⚠️ Error al consultar los problemas del sector seleccionado:', error);
+        }
+        return of([]);
+      })
+    );
+
+  }
+
+  /* Obtiene los beneficios de un sector */
+  selectorSolucionAmbitoSectorBeneficio(idSector: number ): Observable<SelectorSolucionAmbitoSectorBeneficioResponse[]> {
+    const url = `${this.beneficiosUrl}/selectorSolucionAmbitoSectorBeneficio/${idSector}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    return this.https.get<SelectorSolucionAmbitoSectorBeneficioResponse[]>(url, { headers }).pipe(
+      map(response => {
+        if (response && response.length > 0) {
+          console.log('✅ Beneficios del sector seleccionado recuperados correctamente');
+        } else {
+          console.info('ℹ️ No hay beneficios en el sector seleccionado');
+        }
+        return response || [];
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          console.info('ℹ️ Sin beneficios del sector seleccionado para mostrar');
+        } else {
+          console.warn('⚠️ Error al consultar los beneficios del sector seleccionado:', error);
         }
         return of([]);
       })

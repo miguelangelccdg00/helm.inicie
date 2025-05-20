@@ -5,3 +5,8 @@ export interface SolucionAmbitoSectorBeneficio
     id_sector?: number;
     id_beneficio?: number;
 }
+
+export interface SelectorSolucionAmbitoSectorBeneficioResponse {
+    message: string;
+    selectorBeneficio: any[];
+}

@@ -288,6 +288,7 @@ export class ModificarSolucionComponent implements OnInit {
   // --- SECTORES ---
   nuevoSector: StoreSectores = { description: '', textoweb: '', prefijo: '', slug: '', descriptionweb: '', titleweb: '', backgroundImage: '' };
   buscadorSector: string = '';
+  buscadorSector2: string = '';
   sectores: StoreSectores[] = [];
   allSectores: StoreSectores[] = [];
   sectoresFiltrados: StoreSectores[] = [];
@@ -295,6 +296,7 @@ export class ModificarSolucionComponent implements OnInit {
   mostrarCrearSector: boolean = false;
   mostrarModificarSector: boolean = false;
   mostrarOpcionesSectores: boolean = false;
+  mostrarOpcionesSectores2: boolean = false;
   mostrarBotonCrearSector: boolean = true;
   mostrarBotonModificarSector: boolean = false;
   sectorAEliminar: number | null = null;
@@ -336,6 +338,7 @@ export class ModificarSolucionComponent implements OnInit {
       this.mostrarOpcionesCaracteristicas = false;
       this.mostrarOpcionesAmbitos = false;
       this.mostrarOpcionesSectores = false;
+      this.mostrarOpcionesSectores2 = false;
     }
   }
 
@@ -615,11 +618,12 @@ export class ModificarSolucionComponent implements OnInit {
     this.mostrarOpcionesSectores = false;
   }
 
-  seleccionarSolucionSector(solucionSector: SolucionSector) {
-    this.solucionSectorSeleccionado = solucionSector;
-    this.mostrarOpcionesSolucionSector = false;
+  seleccionarSector2(sector: StoreSectores) {
+    this.buscadorSector2 = sector.description;
+    this.sectorSeleccionado = sector;
+    this.nuevoSector = { ...sector };
+    this.mostrarOpcionesSectores2 = false;
   }
-
 
   //Función para agregar un beneficio a solución seleccionada.
   agregarBeneficio() {
