@@ -441,6 +441,32 @@ class StoreProblemasController
       res.status(500).json({ message: 'Error interno del servidor' });
     }
   }
+
+  async selectorSolucionAmbitoSectorProblema(req: Request, res: Response): Promise<void> 
+  {
+    try 
+    {
+      const { id_sector } = req.params;
+
+      if (!id_sector) 
+      {
+        res.status(401).json({ message: 'Faltan datos para la asociación en el id_sector' });
+        return;
+      }
+
+      const selectorProblema = await storeProblemasService.selectorSolucionAmbitoSectorProblema(Number(id_sector));
+
+      res.status(201).json({
+        message: 'Selector de problema con éxito',
+        selectorProblema
+      });
+    } 
+    catch (error) 
+    {
+      console.error('Error asociando el problema:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
 }
 
 export default new StoreProblemasController();

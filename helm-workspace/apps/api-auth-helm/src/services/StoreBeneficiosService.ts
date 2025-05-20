@@ -371,22 +371,20 @@ class StoreBeneficiosServices
   /**
    * Selector de un beneficio una solución y un ámbito por sector.
    * 
-   * @param {number} idSolucion - ID de la solución.
+   * @param {number} idSector - ID del sector.
    * @throws {AppError} Si ya existe la relación o si ocurre un error de base de datos.
    */
   async selectorSolucionAmbitoSectorBeneficio(idSector: number): Promise<any[]> 
   {
     try {
       const [rows] = await pool.promise().query(
-        `
-        SELECT 
+        ` SELECT 
           a.description AS ambitoDescription, 
           b.description AS beneficioDescription
         FROM storeSolucionesAmbitosSectoresBeneficios sab
         JOIN storeAmbitos a ON sab.id_ambito = a.id_ambito
         JOIN storeBeneficios b ON sab.id_beneficio = b.id_beneficio
-        WHERE sab.id_sector = ?
-        `,
+        WHERE sab.id_sector = ? `,
         [idSector]
       );
       return rows;

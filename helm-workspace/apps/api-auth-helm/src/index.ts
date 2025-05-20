@@ -99,6 +99,7 @@ app.get('/', (req: Request, res: Response): void =>
                         { method: 'GET', path: '/listProblemas/:idSolucion' },
                         { method: 'GET', path: '/listSolucionAmbitoProblema' },
                         { method: 'GET', path: '/listSolucionAmbitoSectorProblema' },
+                        { method: 'GET', path: '/selectorSolucionAmbitoSectorProblema/:idSector' },
                         { method: 'POST', path: '/createProblema/:idSolucion' },
                         { method: 'PUT', path: '/modifyProblema/:id' },
                         { method: 'DELETE', path: '/deleteProblema/:idProblema' }
