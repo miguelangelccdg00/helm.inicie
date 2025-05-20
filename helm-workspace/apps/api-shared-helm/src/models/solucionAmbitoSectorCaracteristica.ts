@@ -13,3 +13,8 @@ export interface AsociarSolucionAmbitoSectorCaracteristicaResponse {
     asociacion: Asociacion;
     caracteristica: StoreCaracteristicas;
 }
+
+export interface SelectorSolucionAmbitoSectorCaracteristicaResponse {
+    message: string;
+    selectorCaracteristica: any[];
+}

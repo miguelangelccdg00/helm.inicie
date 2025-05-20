@@ -1336,10 +1336,9 @@
           <h3 class="titulo-subseccion">Filtrar por sector</h3>
 
           <div class="buscador-selector-container">
-            <div class="form-group col-12">
               <label for="buscadorSector">Seleccionar Sector:</label>
-              <div class="custom-select">
-                <input type="text" id="buscadorSector" [(ngModel)]="buscadorSector2"
+              <div class="custom-select2">
+                <input type="text" id="buscadorSector " [(ngModel)]="buscadorSector2"
                   name="buscadorSectorDeSolucion" (input)="filtrarSectores()"
                   (focus)="mostrarOpcionesSectores2 = true" (click)="mostrarOpcionesSectores2 = true"
                   placeholder="Buscar y seleccionar sector..." pInputText variant="filled" />
@@ -1351,7 +1350,6 @@
                   </div>
                 </div>
               </div>    
-            </div>
           </div>
 
           <div class="botones-container">

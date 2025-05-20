@@ -101,6 +101,43 @@ h1
             &:hover
                 background-color: $azul-hover
 
+.custom-select2
+    position: relative
+    width: 40% !important
+    
+    input
+        width: 100% !important
+        border-radius: 7px
+        border: 1px solid #ccced7
+        padding: 9px
+        box-sizing: border-box !important
+        display: block !important
+        min-width: 100% !important
+        max-width: none !important
+        
+        &:focus
+            border: 2px solid $azul-focus !important
+            outline: none
+    
+    .dropdown-menu
+        position: absolute
+        width: 100%
+        max-height: 200px
+        overflow-y: auto
+        background-color: $blanco
+        border: 1px solid $gris-borde
+        border-radius: 0 0 7px 7px
+        z-index: 1000
+        margin-top: -1px
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1)
+        
+        .dropdown-item
+            padding: 8px 12px
+            cursor: pointer
+            
+            &:hover
+                background-color: $azul-hover
+
 #buscadorBeneficio #buscadorProblema #buscadorCaracteristica
     width: 100% !important
     border-radius: 7px
@@ -449,6 +486,10 @@ button
     flex-direction: column
     gap: 15px
     margin-bottom: 20px
+    color: $azul-principal
+    
+    label
+        font-weight: 500
 
 #descripciones:hover
     cursor: pointer
@@ -694,6 +735,7 @@ button
     flex-direction: column
     gap: 15px
     margin-bottom: 20px
+    align-items: center
 
 #descripciones:hover
     cursor: pointer
@@ -753,7 +795,7 @@ button
 #nuevoTextoweb, #nuevoPrefijo, #nuevoSlug, #nuevaDescripcionAmbito,
 #ambitoDescription, #solucionDescription, #problemaTitle, #problemaPragma,
 #solucionTitle, #solucionPragma, #caracteristicasTitle, #caracteristicasPragma,
-#casosdeusoTitle, #casosdeusoPragma, #beneficiosTitle, #beneficiosPragma, #nuevaDescripcionSector, #nuevaDescriptionWeb, #nuevoTitleWeb, #nuevaBackgroundImage, #buscadorSector, #descalternativa, #textoalternativo, #description 
+#casosdeusoTitle, #casosdeusoPragma, #beneficiosTitle, #beneficiosPragma, #nuevaDescripcionSector, #nuevaDescriptionWeb, #nuevoTitleWeb, #nuevaBackgroundImage, .custom-select2 , #buscadorSector, #descalternativa, #textoalternativo, #description 
   --p-inputtext-filled-background: white
   --p-inputtext-filled-focus-background:rgb(252, 252, 252)
   --p-inputtext-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
@@ -765,7 +807,7 @@ button
 #nuevoTextoweb:hover, #nuevoPrefijo:hover, #nuevoSlug:hover, #nuevaDescripcionAmbito:hover,
 #ambitoDescription:hover, #solucionDescription:hover, #problemaTitle:hover, #problemaPragma:hover,
 #solucionTitle:hover, #solucionPragma:hover, #caracteristicasTitle:hover, #caracteristicasPragma:hover,
-#casosdeusoTitle:hover, #casosdeusoPragma:hover, #beneficiosTitle:hover, #beneficiosPragma:hover, #nuevaDescripcionSector:hover, #nuevaDescriptionWeb:hover, #nuevoTitleWeb:hover, #nuevaBackgroundImage:hover, buscadorSector:hover, #descalternativa:hover, #textoalternativo:hover, #description:hover
+#casosdeusoTitle:hover, #casosdeusoPragma:hover, #beneficiosTitle:hover, #beneficiosPragma:hover, #nuevaDescripcionSector:hover, #nuevaDescriptionWeb:hover, .custom-select2:hover , #nuevoTitleWeb:hover, #nuevaBackgroundImage:hover, buscadorSector:hover, #descalternativa:hover, #textoalternativo:hover, #description:hover
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1)
 
 input::placeholder
