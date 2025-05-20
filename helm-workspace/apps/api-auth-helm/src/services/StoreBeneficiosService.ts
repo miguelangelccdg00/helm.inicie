@@ -122,7 +122,7 @@ class StoreBeneficiosServices
         throw new AppError('No existe la relación solución-ámbito-sector');
       }
 
-      // Opcional: verifica si ya existe la relación antes de insertar
+      // Verifica si ya existe la relación antes de insertar
       const [existing] = await pool.promise().query(
         `SELECT * FROM storeSolucionesAmbitosSectoresBeneficios
         WHERE id_solucion = ? AND id_ambito = ? AND id_sector = ? AND id_beneficio = ?`,
@@ -367,6 +367,35 @@ class StoreBeneficiosServices
       throw new AppError('Error al asociar solución-ámbito-beneficio');
     }
   }
+
+  /**
+   * Selector de un beneficio una solución y un ámbito por sector.
+   * 
+   * @param {number} idSolucion - ID de la solución.
+   * @throws {AppError} Si ya existe la relación o si ocurre un error de base de datos.
+   */
+  async selectorSolucionAmbitoSectorBeneficio(idSector: number): Promise<any[]> 
+  {
+    try {
+      const [rows] = await pool.promise().query(
+        `
+        SELECT 
+          a.description AS ambitoDescription, 
+          b.description AS beneficioDescription
+        FROM storeSolucionesAmbitosSectoresBeneficios sab
+        JOIN storeAmbitos a ON sab.id_ambito = a.id_ambito
+        JOIN storeBeneficios b ON sab.id_beneficio = b.id_beneficio
+        WHERE sab.id_sector = ?
+        `,
+        [idSector]
+      );
+      return rows;
+    } catch (error) {
+      console.error('Error en el selector solución-ámbito-sector-beneficio:', error);
+      throw new AppError('Error al asociar solución-ámbito-sector-beneficio');
+    }
+  }
+
 }
 
 

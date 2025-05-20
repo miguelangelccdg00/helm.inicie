@@ -43,6 +43,11 @@ router.post('/asociarSolucionAmbitoBeneficio', storeBeneficiosController.asociar
 router.post('/asociarSolucionAmbitoSectorBeneficio', storeBeneficiosController.asociarSolucionAmbitoSectorBeneficios);
 
 /**
+ * @description Selector de un beneficio existente a una solución
+ */
+router.post('/selectorSolucionAmbitoSectorBeneficio/:idSector', storeBeneficiosController.selectorSolucionAmbitoSectorBeneficio);
+
+/**
  * @description Modifica un beneficio específico por su ID
  */
 router.put('/modifyStoreBeneficio/:id', storeBeneficiosController.modifyStoreBeneficios);

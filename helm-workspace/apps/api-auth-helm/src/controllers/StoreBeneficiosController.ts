@@ -409,6 +409,32 @@ class StoreBeneficiosControllers
       res.status(500).json({ message: 'Error interno del servidor' });
     }
   }
+
+  async selectorSolucionAmbitoSectorBeneficio(req: Request, res: Response): Promise<void> 
+  {
+    try 
+    {
+      const { id_sector } = req.params;
+
+      if (!id_sector) 
+      {
+        res.status(401).json({ message: 'Faltan datos para la asociación en el id_sector' });
+        return;
+      }
+
+      const selectorBeneficio = await storeBeneficiosService.selectorSolucionAmbitoSectorBeneficio(Number(id_sector));
+
+      res.status(201).json({
+        message: 'Selector de beneficio con éxito',
+        selectorBeneficio
+      });
+    } 
+    catch (error) 
+    {
+      console.error('Error asociando el beneficio:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  }
 }
 
 export default new StoreBeneficiosControllers();

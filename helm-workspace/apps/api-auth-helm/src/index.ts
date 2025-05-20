@@ -83,6 +83,7 @@ app.get('/', (req: Request, res: Response): void =>
                         { method: 'GET', path: '/listBeneficios/:id' },
                         { method: 'GET', path: '/listSolucionAmbitoBeneficio' },
                         { method: 'GET', path: '/listSolucionAmbitoSectorBeneficio' },
+                        { method: 'GET', path: '/selectorSolucionAmbitoSectorBeneficio/:idSector' },
                         { method: 'POST', path: '/createBeneficio/:idSolucion' },
                         { method: 'PUT', path: '/modifyBeneficio/:id' },
                         { method: 'DELETE', path: '/deleteBeneficio/:idBeneficio' }
