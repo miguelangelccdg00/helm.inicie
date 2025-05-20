@@ -384,7 +384,7 @@ class StoreProblemasService
           p.description AS problemaDescription
         FROM storeSolucionesAmbitosSectoresProblemas sap
         JOIN storeAmbitos a ON sap.id_ambito = a.id_ambito
-        JOIN storeProblemas p ON sap.id_problema = b.id_problema
+        JOIN storeProblemas p ON sap.id_problema = p.id_problema
         WHERE sap.id_sector = ? `, [idSector]
       );
       return rows;

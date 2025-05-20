@@ -25,7 +25,7 @@ router.get('/listSolucionAmbitoSectorProblema', storeProblemasController.listSol
 /**
  * @description Selector de un beneficio existente a una solución
  */
-router.post('/selectorSolucionAmbitoSectorProblema/:idSector', storeProblemasController.selectorSolucionAmbitoSectorProblema);
+router.get('/selectorSolucionAmbitoSectorProblema/:idSector', storeProblemasController.selectorSolucionAmbitoSectorProblema);
 
 /**
  * @description Insercion de problemas por solución específica de su ID

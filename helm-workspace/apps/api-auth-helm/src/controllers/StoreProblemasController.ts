@@ -446,15 +446,15 @@ class StoreProblemasController
   {
     try 
     {
-      const { id_sector } = req.params;
+      const { idSector } = req.params;
 
-      if (!id_sector) 
+      if (!idSector) 
       {
         res.status(401).json({ message: 'Faltan datos para la asociación en el id_sector' });
         return;
       }
 
-      const selectorProblema = await storeProblemasService.selectorSolucionAmbitoSectorProblema(Number(id_sector));
+      const selectorProblema = await storeProblemasService.selectorSolucionAmbitoSectorProblema(Number(idSector));
 
       res.status(201).json({
         message: 'Selector de problema con éxito',

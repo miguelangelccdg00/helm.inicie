@@ -414,15 +414,15 @@ class StoreBeneficiosControllers
   {
     try 
     {
-      const { id_sector } = req.params;
+      const { idSector } = req.params;
 
-      if (!id_sector) 
+      if (!idSector) 
       {
-        res.status(401).json({ message: 'Faltan datos para la asociación en el id_sector' });
+        res.status(401).json({ message: 'Faltan datos para la asociación en el idSector' });
         return;
       }
 
-      const selectorBeneficio = await storeBeneficiosService.selectorSolucionAmbitoSectorBeneficio(Number(id_sector));
+      const selectorBeneficio = await storeBeneficiosService.selectorSolucionAmbitoSectorBeneficio(Number(idSector));
 
       res.status(201).json({
         message: 'Selector de beneficio con éxito',
