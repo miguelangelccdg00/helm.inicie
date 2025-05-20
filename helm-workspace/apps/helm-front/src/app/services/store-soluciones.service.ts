@@ -13,7 +13,7 @@ import { SolucionSector, DeleteSolucionSectorResponse } from '@modelos-shared/so
 import { SolucionAmbitoSector } from '@modelos-shared/solucionAmbitoSector';
 import { SolucionAmbitoSectorCaracteristica, AsociarSolucionAmbitoSectorCaracteristicaResponse } from '@modelos-shared/solucionAmbitoSectorCaracteristica';
 import { SolucionAmbitoSectorBeneficio } from '@modelos-shared/solucionAmbitoSectorBeneficio';
-import { SolucionAmbitoSectorProblema, AsociarSolucionAmbitoSectorProblemaResponse } from '@modelos-shared/solucionAmbitoSectorProblema';
+import { SolucionAmbitoSectorProblema, AsociarSolucionAmbitoSectorProblemaResponse, SelectorSolucionAmbitoSectorProblemaResponse } from '@modelos-shared/solucionAmbitoSectorProblema';
 import { SolucionAmbitoBeneficio, AsociarSolucionAmbitoBeneficioResponse } from '@modelos-shared/solucionAmbitoBeneficio';
 import { SolucionAmbitoCaracteristica, AsociarSolucionAmbitoCaracteristicaResponse } from '@modelos-shared/solucionAmbitoCaracteristica';
 import { SolucionAmbitoProblema, AsociarSolucionAmbitoProblemaResponse } from '@modelos-shared/solucionAmbitoProblema';
@@ -936,6 +936,32 @@ export class StoreSolucionesService {
         throw error;
       })
     );
+  }
+
+  /* Obtiene los problemas de un sector */
+  selectorSolucionAmbitoSectorProblema(idSector: number ): Observable<SelectorSolucionAmbitoSectorProblemaResponse[]> {
+    const url = `${this.problemasUrl}/selectorSolucionAmbitoSectorProblema/${idSector}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    return this.https.get<SelectorSolucionAmbitoSectorProblemaResponse[]>(url, { headers }).pipe(
+      map(response => {
+        if (response && response.length > 0) {
+          console.log('✅ Problemas del sector seleccionado recuperados correctamente');
+        } else {
+          console.info('ℹ️ No hay problemas en el sector seleccionado');
+        }
+        return response || [];
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          console.info('ℹ️ Sin problemas del sector seleccionado para mostrar');
+        } else {
+          console.warn('⚠️ Error al consultar los problemas del sector seleccionado:', error);
+        }
+        return of([]);
+      })
+    );
+
   }
 
   /* SolucionSectorAmbito */

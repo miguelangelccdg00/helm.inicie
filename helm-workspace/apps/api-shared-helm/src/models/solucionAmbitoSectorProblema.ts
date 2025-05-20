@@ -1,6 +1,5 @@
 import { StoreProblemas, Asociacion } from './storeProblemas';
 
-
 export interface SolucionAmbitoSectorProblema
 {
     id_solucion?: number;
@@ -13,4 +12,9 @@ export interface AsociarSolucionAmbitoSectorProblemaResponse {
     message: string;
     asociacion: Asociacion;
     problema: StoreProblemas;
+}
+
+export interface SelectorSolucionAmbitoSectorProblemaResponse {
+    message: string;
+    selectorProblema: any[];
 }
