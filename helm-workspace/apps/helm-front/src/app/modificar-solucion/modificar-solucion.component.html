@@ -228,7 +228,9 @@
         <div class="seccion3" #scrollCaracteristicas>
           <h2 class="titulo-seccion">Características</h2>
 
-          <div *ngIf="mostrarModificarCaracteristica === true" class="subseccion">
+          <div *ngIf="mostrarModificarCaracteristica === true" class="modal">
+            <div class="modal-content">
+              <span class="close" (click)="mostrarModificarCaracteristica = false">&times;</span>
             <h3 class="titulo-subseccion">Modificar característica</h3>
 
             <form (ngSubmit)="modificarCaracteristica()">
@@ -246,9 +248,12 @@
                   (click)="mostrarModificarCaracteristica = false; mostrarBotonModificarCaracteristica = true">Cancelar</button>
               </div>
             </form>
+            </div>
           </div>
 
-          <div *ngIf="mostrarCrearCaracteristica === true" class="subseccion">
+          <div *ngIf="mostrarCrearCaracteristica === true" class="modal">
+            <div class="modal-content">
+              <span class="close" (click)="mostrarCrearCaracteristica = false">&times;</span>
             <h3 class="titulo-subseccion">Crear y añadir característica</h3>
 
             <form (ngSubmit)="crearNuevaCaracteristica()">
@@ -267,6 +272,7 @@
                   (click)="mostrarCrearCaracteristica = false; mostrarBotonCrearCaracteristica = true">Cancelar</button>
               </div>
             </form>
+            </div>
           </div>
 
           <div class="subseccion">
@@ -883,7 +889,9 @@
             </div>
           </div>
 
-          <div *ngIf="mostrarCrearSector === true" class="subseccion">
+          <div *ngIf="mostrarCrearSector === true" class="modal">
+            <div class="modal-content">
+              <span class="close" (click)="mostrarCrearSector = false">&times;</span>
             <h3 class="titulo-subseccion">Crear y añadir sector</h3>
 
             <form (ngSubmit)="crearNuevoSector()" #crearSecForm="ngForm">
@@ -958,7 +966,7 @@
                   (click)="mostrarCrearSector = false; mostrarBotonCrearSector = true">Cancelar</button>
               </div>
             </form>
-
+            </div>
           </div>
 
           <div class="subseccion">
@@ -1324,7 +1332,7 @@
           </div>
         </div>
 
-        <div class="subseccion">
+        <!-- <div class="subseccion">
           <h3 class="titulo-subseccion">solucionesAmbitosSectoresCaracteristicas</h3>
 
           <div *ngIf="solucionesAmbitosSectoresCaracteristicas && solucionesAmbitosSectoresCaracteristicas.length">
@@ -1531,7 +1539,7 @@
                   <th>ID solucion</th>
                   <th>ID ambito</th>
                   <th>ID problema</th>
-                 
+                  
                   <th>Editar</th>
                   <th>Eliminar</th>
                 </tr>
@@ -1556,7 +1564,7 @@
           <div *ngIf="!solucionesAmbitosProblemas || solucionesAmbitosProblemas.length === 0">
             <p>No hay contenido.</p>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="botones-container2">

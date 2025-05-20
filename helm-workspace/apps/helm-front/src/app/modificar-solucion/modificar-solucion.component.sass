@@ -795,20 +795,20 @@ input::placeholder
   border-radius: 4px
 
 .modal
-  display: block
+  display: flex
+  align-items: center
+  justify-content: center
   position: fixed
   z-index: 1000
   left: 0
   top: 0
   width: 100%
   height: 100%
-  overflow: auto
   background-color: rgba(0,0,0,0.4)
-
+  animation: modal-appear 0.3s ease-out
 
 .modal-content
   background-color: #fefefe
-  margin: 5% auto
   padding: 2rem
   border: 1px solid #888
   width: 50%
@@ -816,6 +816,14 @@ input::placeholder
   max-height: 80vh
   overflow-y: auto
 
+
+  .titulo-subseccion
+        font-size: 19px
+        font-weight: 500
+        margin-bottom: 20px
+        padding-bottom: 6px
+        border-bottom: 2px solid $azul-principal
+        color: $azul-principal
 
 .close
   color: #aaa
