@@ -97,57 +97,34 @@ class StoreBeneficiosServices
     }
   }
 
-  /**
-   * Asocia un beneficio a una solución, ámbito y sector.
-   * 
-   * @param {number} idSolucion - ID de la solución.
-   * @param {number} idAmbito - ID del ámbito.
-   * @param {number} idSector - ID del sector.
-   * @param {number} idBeneficio - ID del beneficio.
-   * @throws {AppError} Si la relación solución-ámbito-sector no existe o si ya existe la asociación.
-   */
-  async asociarSolucionAmbitoSectorBeneficio(idSolucion: number,idAmbito: number,idSector: number,idBeneficio: number): Promise<void> 
-  {
-    try 
-    {
-      // Verifica que exista la relación solucion-ambito-sector
-      const [rows] = await pool.promise().query(
-        `SELECT * FROM storeSolucionesAmbitosSectores
-        WHERE id_solucion = ? AND id_ambito = ? AND id_sector = ?`,
-        [idSolucion, idAmbito, idSector]
+  async asociarTodasSolucionesAmbitosSectoresBeneficios(): Promise<void> {
+    try {
+      const [solAmbSec] = await pool.promise().query(
+        `SELECT id_solucion, id_ambito, id_sector FROM storeSolucionesAmbitosSectores`
       );
 
-      if ((rows as any[]).length === 0) 
-      {
-        throw new AppError('No existe la relación solución-ámbito-sector');
+      for (const { id_solucion, id_ambito, id_sector } of solAmbSec as any[]) {
+        const [beneficios] = await pool.promise().query(
+          `SELECT id_beneficio FROM storeSolucionesBeneficios WHERE id_solucion = ?`,
+          [id_solucion]
+        );
+
+        for (const { id_beneficio } of beneficios as any[]) {
+          await pool.promise().query(
+            `INSERT IGNORE INTO storeSolucionesAmbitosSectoresBeneficios
+            (id_solucion, id_ambito, id_sector, id_beneficio)
+            VALUES (?, ?, ?, ?)`,
+            [id_solucion, id_ambito, id_sector, id_beneficio]
+          );
+        }
       }
-
-      // Verifica si ya existe la relación antes de insertar
-      const [existing] = await pool.promise().query(
-        `SELECT * FROM storeSolucionesAmbitosSectoresBeneficios
-        WHERE id_solucion = ? AND id_ambito = ? AND id_sector = ? AND id_beneficio = ?`,
-        [idSolucion, idAmbito, idSector, idBeneficio]
-      );
-
-      if ((existing as any[]).length > 0) 
-      {
-        throw new AppError('La relación ya existe');
-      }
-
-      await pool.promise().query(
-        `INSERT INTO storeSolucionesAmbitosSectoresBeneficios 
-        (id_solucion, id_ambito, id_sector, id_beneficio)
-        VALUES (?, ?, ?, ?)`,
-        [idSolucion, idAmbito, idSector, idBeneficio]
-      );
-
-    } 
-    catch (error) 
-    {
-      console.error('Error al asociar solución-ámbito-sector-beneficio:', error);
-      throw new AppError('Error al asociar solución-ámbito-sector-beneficio');
+    } catch (error) {
+      console.error('Error asociando soluciones-ambitos-sectores-beneficios:', error);
+      throw new AppError('Error al asociar soluciones-ambitos-sectores-beneficios');
     }
   }
+
+
 
   /**
    * Obtiene todos los beneficios disponibles.
@@ -325,48 +302,42 @@ class StoreBeneficiosServices
     }
   }
 
-
-  /**
-   * Asocia un beneficio a una solución y un ámbito.
-   * 
-   * @param {number} idSolucion - ID de la solución.
-   * @param {number} idAmbito - ID del ámbito.
-   * @param {number} idBeneficio - ID del beneficio.
-   * @throws {AppError} Si ya existe la relación o si ocurre un error de base de datos.
-   */
-  async asociarSolucionAmbitoBeneficio(idSolucion: number, idAmbito: number, idBeneficio: number): Promise<void> {
+  async asociarSolucionesAmbitosBeneficios(): Promise<void> {
     try {
-      // Valida que exista relación solución-beneficio
-      const [relSolBen] = await pool.promise().query(
-        `SELECT * FROM storeSolucionesBeneficios WHERE id_solucion = ? AND id_beneficio = ?`,
-        [idSolucion, idBeneficio]
+      // 1. Obtener todas las combinaciones solución-ambito
+      const [solucionesAmbitos] = await pool.promise().query(
+        `SELECT id_solucion, id_ambito FROM storeSolucionesAmbitos`
       );
 
-      if ((relSolBen as any[]).length === 0) {
-        throw new AppError('La relación solución-beneficio no existe. Debe asociarse primero con asociarBeneficio().');
+      for (const { id_solucion, id_ambito } of solucionesAmbitos as any[]) {
+        // 2. Obtener todos los beneficios de esa solución
+        const [beneficios] = await pool.promise().query(
+          `SELECT id_beneficio FROM storeSolucionesBeneficios WHERE id_solucion = ?`,
+          [id_solucion]
+        );
+
+        for (const { id_beneficio } of beneficios as any[]) {
+          // 3. Verificar si ya existe la relación en storeSolucionesAmbitosBeneficios
+          const [existente] = await pool.promise().query(
+            `SELECT * FROM storeSolucionesAmbitosBeneficios WHERE id_solucion = ? AND id_ambito = ? AND id_beneficio = ?`,
+            [id_solucion, id_ambito, id_beneficio]
+          );
+
+          if ((existente as any[]).length === 0) {
+            // 4. Insertar la relación
+            await pool.promise().query(
+              `INSERT INTO storeSolucionesAmbitosBeneficios (id_solucion, id_ambito, id_beneficio) VALUES (?, ?, ?)`,
+              [id_solucion, id_ambito, id_beneficio]
+            );
+          }
+        }
       }
-
-      // Verificar si ya existe la relación solución-ámbito-beneficio
-      const [existing] = await pool.promise().query(
-        `SELECT * FROM storeSolucionesAmbitosBeneficios
-        WHERE id_solucion = ? AND id_ambito = ? AND id_beneficio = ?`,
-        [idSolucion, idAmbito, idBeneficio]
-      );
-
-      if ((existing as any[]).length > 0) {
-        throw new AppError('La relación solución-ámbito-beneficio ya existe');
-      }
-
-      await pool.promise().query(
-        `INSERT INTO storeSolucionesAmbitosBeneficios (id_solucion, id_ambito, id_beneficio)
-        VALUES (?, ?, ?)`,
-        [idSolucion, idAmbito, idBeneficio]
-      );
     } catch (error) {
-      console.error('Error al asociar solución-ámbito-beneficio:', error);
-      throw new AppError('Error al asociar solución-ámbito-beneficio');
+      console.error('Error asociando todas las soluciones con ámbitos y beneficios:', error);
+      throw error;
     }
   }
+
 
   /**
    * Selector de un beneficio una solución y un ámbito por sector.

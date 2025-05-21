@@ -86,23 +86,14 @@ class StoreBeneficiosControllers
    * @throws {400} Si faltan datos en la solicitud.
    * @throws {500} Si ocurre un error interno al asociar el caracteristica con la solución.
    */
-  async asociarSolucionAmbitoBeneficio(req: Request<any, any, AsociarSolucionAmbitoBeneficioBody>, res: Response): Promise<void> {
+  async asociarSolucionAmbitoBeneficio(req: Request, res: Response): Promise<void> {
     try {
-      const { id_solucion, id_ambito, id_beneficio } = req.body;
 
-      if (!id_solucion || !id_ambito || !id_beneficio) {
-        res.status(400).json({ message: 'Faltan datos para la asociación' });
-        return;
-      }
-
-      const asociacion = await storeBeneficiosService.asociarSolucionAmbitoBeneficio(id_solucion, id_ambito, id_beneficio);
-      const beneficio = await storeBeneficiosService.getByIdBeneficio(id_beneficio);
-      const solucion = await storeSolucionesService.getById(id_solucion);
+      const asociacion = await storeBeneficiosService.asociarSolucionesAmbitosBeneficios;
 
       res.status(201).json({
         message: 'Beneficio asociado a la solución-ambito con éxito',
-        asociacion,
-        beneficio
+        asociacion
       });
     } catch (error) {
       console.error('Error asociando el beneficio:', error);
@@ -124,29 +115,19 @@ class StoreBeneficiosControllers
    * @throws {400} Si faltan datos en la solicitud.
    * @throws {500} Si ocurre un error interno al asociar el caracteristica con la solución.
    */
-  async asociarSolucionAmbitoSectorBeneficios(req: Request<any, any, AsociarSolucionAmbitoSectorBeneficioBody>, res: Response): Promise<void> {
+  async asociarSolucionAmbitoSectorBeneficios(req: Request, res: Response): Promise<void> {
     try {
-      const { id_solucion, id_ambito, id_sector, id_beneficio } = req.body;
-
-      if (!id_solucion || !id_ambito || !id_sector || !id_beneficio) {
-        res.status(400).json({ message: 'Faltan datos para la asociación' });
-        return;
-      }
-
-      const asociacion = await storeBeneficiosService.asociarSolucionAmbitoSectorBeneficio(id_solucion, id_ambito, id_sector, id_beneficio);
-      const beneficio = await storeBeneficiosService.getByIdBeneficio(id_beneficio);
-      const solucion = await storeSolucionesService.getById(id_solucion);
+      await storeBeneficiosService.asociarTodasSolucionesAmbitosSectoresBeneficios();
 
       res.status(201).json({
-        message: 'Beneficio asociado a la solución-ambito-sector con éxito',
-        asociacion,
-        beneficio
+        message: 'Beneficios asociados automáticamente a todas las soluciones-ambitos-sectores con éxito',
       });
     } catch (error) {
-      console.error('Error asociando el beneficio:', error);
+      console.error('Error asociando beneficios automáticamente:', error);
       res.status(500).json({ message: 'Error interno del servidor' });
     }
   }
+
   
   /**
    * Lista los beneficios asociados a una solución.
