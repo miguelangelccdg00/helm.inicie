@@ -954,6 +954,20 @@
                   </div>
                 </div>
 
+                <div class="form-group margen">
+                  <label for="nuevaDescalternativa">Descripción alternativa </label>
+                  <textarea id="nuevaDescalternativa" [(ngModel)]="nuevoSector.descalternativa"
+                    placeholder="Descripción alternativa del sector" name="nuevaDescalternativa"
+                    #descalternativaCtrl="ngModel"></textarea>
+                </div>
+
+                <div class="form-group margen">
+                  <label for="nuevoTextoalternativo">Texto alternativo </label>
+                  <textarea id="nuevoTextoalternativo" [(ngModel)]="nuevoSector.textoalternativo"
+                    placeholder="Texto alternativo del sector" name="nuevoTextoalternativo"
+                    #textoalternativoCtrl="ngModel"></textarea>
+                </div>
+
                 <div class="botones-container5">
                   <button type="submit" [disabled]="crearSecForm.invalid">Crear y Añadir</button>
                   <button type="button"

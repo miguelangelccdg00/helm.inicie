@@ -733,6 +733,8 @@ export class StoreSolucionesService {
       descriptionweb: sector.descriptionweb,
       titleweb: sector.titleweb,
       backgroundImage: sector.backgroundImage,
+      descalternativa: sector.descalternativa,
+      textoalternativo: sector.textoalternativo
     };
 
     return this.https.post<CreateSectorResponse>(url, sectorToCreate, { headers });

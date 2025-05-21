@@ -287,7 +287,7 @@ export class ModificarSolucionComponent implements OnInit {
 
 
   // --- SECTORES ---
-  nuevoSector: StoreSectores = { description: '', textoweb: '', prefijo: '', slug: '', descriptionweb: '', titleweb: '', backgroundImage: '' };
+  nuevoSector: StoreSectores = { description: '', textoweb: '', prefijo: '', slug: '', descriptionweb: '', titleweb: '', backgroundImage: '', descalternativa: '', textoalternativo: '' };
   buscadorSector: string = '';
   buscadorSector2: string = '';
   sectores: StoreSectores[] = [];
@@ -1398,13 +1398,15 @@ export class ModificarSolucionComponent implements OnInit {
           slug: this.nuevoSector.slug,
           descriptionweb: this.nuevoSector.descriptionweb,
           titleweb: this.nuevoSector.titleweb,
-          backgroundImage: this.nuevoSector.backgroundImage
+          backgroundImage: this.nuevoSector.backgroundImage,
+          descalternativa: this.nuevoSector.descalternativa,
+          textoalternativo: this.nuevoSector.textoalternativo
         };
 
         this.allSectores.push(sectorCreado);
         this.filtrarSectores();
 
-        this.nuevoSector = { description: '', textoweb: '', prefijo: '', slug: '', descriptionweb: '', titleweb: '', backgroundImage: '' };
+        this.nuevoSector = { description: '', textoweb: '', prefijo: '', slug: '', descriptionweb: '', titleweb: '', backgroundImage: '', descalternativa: '', textoalternativo: '' };
 
         console.log('Sector creado y añadido al listado. Ahora puede seleccionarlo para asociarlo a la solución.');
       },
@@ -1952,7 +1954,7 @@ export class ModificarSolucionComponent implements OnInit {
       this.mostrarMensajeSinSector = true;
       this.mostrarMensajeSinRelaciones = false;
       return;
-    }
+    } 
 
     const id = sector.id_sector!;
     const descripcion = sector.description;
