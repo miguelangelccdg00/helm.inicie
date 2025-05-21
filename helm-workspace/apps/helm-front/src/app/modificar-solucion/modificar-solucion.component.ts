@@ -1942,37 +1942,33 @@ export class ModificarSolucionComponent implements OnInit {
     }, 100);
   }
 
+  /* Función para mostrar los problemas, beneficios, características y ámbitos asociados a un sector seleccionado */
   filtrarPorSectorSeleccionado() {
-    if (!this.sectorSeleccionado) return;
+    const sector = this.sectorSeleccionado;
+    if (!sector) return;
 
-    const idSector = this.sectorSeleccionado.id_sector!;
-    const sectorDescripcion = this.sectorSeleccionado.description;
+    const id = sector.id_sector!;
+    const descripcion = sector.description;
 
     forkJoin({
-      problemasResponse: this.storeSolucionesService.selectorSolucionAmbitoSectorProblema(idSector),
-      beneficiosResponse: this.storeSolucionesService.selectorSolucionAmbitoSectorBeneficio(idSector),
-      caracteristicasResponse: this.storeSolucionesService.selectorSolucionAmbitoSectorCaracteristica(idSector),
-    }).subscribe(({ problemasResponse, beneficiosResponse, caracteristicasResponse }) => {
+      problemas: this.storeSolucionesService.selectorSolucionAmbitoSectorProblema(id),
+      beneficios: this.storeSolucionesService.selectorSolucionAmbitoSectorBeneficio(id),
+      caracteristicas: this.storeSolucionesService.selectorSolucionAmbitoSectorCaracteristica(id),
+    }).subscribe(({ problemas, beneficios, caracteristicas }) => {
+      const p = problemas.selectorProblema || [];
+      const b = beneficios.selectorBeneficio || [];
+      const c = caracteristicas.selectorCaracteristica || [];
 
-      const beneficios = beneficiosResponse.selectorBeneficio || [];
-      const problemas = problemasResponse.selectorProblema || [];
-      const caracteristicas = caracteristicasResponse.selectorCaracteristica || [];
-
-      const maxLength = Math.max(beneficios.length, problemas.length, caracteristicas.length);
-      const resultado: FilaRelacionSector[] = [];
-
-      for (let i = 0; i < maxLength; i++) {
-        resultado.push({
-          sectorDescripcion,
-          ambitoDescripcion: beneficios[i]?.ambitoDescription || '',
-          problemaDescripcion: problemas[i]?.problemaDescription || '',
-          beneficioDescripcion: beneficios[i]?.beneficioDescription || '',
-          caracteristicaDescripcion: caracteristicas[i]?.caracteristicaDescription || '',
-        });
-      }
-
-      this.filasRelacionSector = resultado;
+      const max = Math.max(p.length, b.length, c.length);
+      this.filasRelacionSector = Array.from({ length: max }, (_, i) => ({
+        sectorDescripcion: descripcion,
+        ambitoDescripcion: b[i]?.ambitoDescription || '',
+        problemaDescripcion: p[i]?.problemaDescription || '',
+        beneficioDescripcion: b[i]?.beneficioDescription || '',
+        caracteristicaDescripcion: c[i]?.caracteristicaDescription || '',
+      }));
     });
   }
+
 
 }
