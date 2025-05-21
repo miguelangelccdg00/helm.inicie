@@ -313,6 +313,8 @@ export class ModificarSolucionComponent implements OnInit {
 
   filasRelacionSector: any[] = [];
 
+  mostrarMensajeSinRelaciones = false;
+  mostrarMensajeSinSector = false;
 
   // Diccionarios para ámbitos y sectores.
   ambitosDictionary: { [key: number]: StoreAmbitos } = {};
@@ -1945,7 +1947,12 @@ export class ModificarSolucionComponent implements OnInit {
   /* Función para mostrar los problemas, beneficios, características y ámbitos asociados a un sector seleccionado */
   filtrarPorSectorSeleccionado() {
     const sector = this.sectorSeleccionado;
-    if (!sector) return;
+    if (!sector) {
+      this.filasRelacionSector = [];
+      this.mostrarMensajeSinSector = true;
+      this.mostrarMensajeSinRelaciones = false;
+      return;
+    }
 
     const id = sector.id_sector!;
     const descripcion = sector.description;
@@ -1967,8 +1974,12 @@ export class ModificarSolucionComponent implements OnInit {
         beneficioDescripcion: b[i]?.beneficioDescription || '',
         caracteristicaDescripcion: c[i]?.caracteristicaDescription || '',
       }));
+
+      this.mostrarMensajeSinRelaciones = this.filasRelacionSector.length === 0;
+      this.mostrarMensajeSinSector = false;
     });
   }
 
 
-}
+
+} 

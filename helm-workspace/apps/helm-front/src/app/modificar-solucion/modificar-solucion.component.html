@@ -1372,6 +1372,14 @@
             </ng-template>
           </p-table>
 
+          <div *ngIf="mostrarMensajeSinRelaciones">
+            <p class="error">No hay problemas, beneficios, características ni ámbitos asociados al sector seleccionado.</p>
+          </div>
+
+          <div *ngIf="mostrarMensajeSinSector">
+            <p class="error">No ha seleccionado ningún sector.</p>
+          </div>
+
         </div>
 
         <!-- <div class="subseccion">
