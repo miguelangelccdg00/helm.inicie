@@ -8,6 +8,9 @@ export interface StoreSectores
     descriptionweb: string;
     titleweb: string;
     backgroundImage: string;
+    descalternativa?: string;
+    textoalternativo?: string;
+
 }
 
 export interface SolucionSector {

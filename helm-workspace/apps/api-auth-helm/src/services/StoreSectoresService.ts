@@ -13,6 +13,8 @@ interface CreateSectorParams {
     descriptionweb: string;
     titleweb: string;
     backgroundImage: string;
+    descalternativa?: string;
+    textoalternativo?: string;
 }
 
 interface SectorParams {
@@ -34,66 +36,7 @@ class StoreSectoresService
      * @returns {Promise<StoreSectores>} Sector creado con su ID.
      * @throws {Error} Si ocurre un error al insertar o asociar registros en la base de datos.
      */
-    async createSectoresSolucion({ description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage }: Omit<CreateSectorParams, 'idSoluciones'>): Promise<StoreSectores> {
-        try {
-            const [result]: any = await pool.promise().query(
-                `INSERT INTO storeSectores (description, textoWeb, prefijo, slug, descriptionweb, titleweb, backgroundImage)
-                 VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                [description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage]
-            );
-        
-            const idSector = result.insertId;
-        
-            await pool.promise().query(`
-                INSERT INTO storeSolucionesSectores (id_solucion, id_sector, descalternativa, textoalternativo)
-                SELECT s.id_solucion, ?, '', ''
-                FROM storeSoluciones s
-                WHERE NOT EXISTS (
-                    SELECT 1 FROM storeSolucionesSectores sa
-                    WHERE sa.id_solucion = s.id_solucion AND sa.id_sector = ?
-                )`, [idSector, idSector]
-            );
-        
-            await pool.promise().query(`
-                INSERT INTO storeSolucionesAmbitosSectores (id_solucion, id_ambito, id_sector)
-                SELECT sa.id_solucion, sa.id_ambito, ?
-                FROM storeSolucionesAmbitos sa
-                CROSS JOIN (SELECT ? AS id_sector) AS sec
-                WHERE NOT EXISTS (
-                    SELECT 1
-                    FROM storeSolucionesAmbitosSectores sas
-                    WHERE sas.id_solucion = sa.id_solucion
-                    AND sas.id_ambito = sa.id_ambito
-                    AND sas.id_sector = ?
-                )`, [idSector, idSector, idSector]
-            );     
-
-            return {
-                id_sector: idSector,
-                description,
-                textoweb,
-                prefijo,
-                slug,
-                descriptionweb,
-                titleweb,
-                backgroundImage
-            };
-        } 
-        catch (error) 
-        {
-            console.error('Error al crear el sector:', error);
-            throw new Error('Error al crear el sector');
-        }
-    }
-
-    /** 
-     * Crea un nuevo sector por una solucion determinada.
-     * 
-     * @param {CreateSectorParams} data - Información necesaria para crear un sector.
-     * @returns {Promise<StoreSectores>} Sector creado con su ID.
-     * @throws {Error} Si ocurre un error al insertar o asociar registros en la base de datos.
-     */
-    async createSectores({idSolucion, description,textoweb,prefijo,slug,descriptionweb,titleweb,backgroundImage}: CreateSectorParams): Promise<StoreSectores> {
+    async createSectoresSolucion({description,textoweb,prefijo,slug,descriptionweb,titleweb,backgroundImage,descalternativa,textoalternativo  }: Omit<CreateSectorParams, 'idSolucion'>): Promise<StoreSectores> {
         try {
             const [result]: any = await pool.promise().query(
             `INSERT INTO storeSectores (description, textoWeb, prefijo, slug, descriptionweb, titleweb, backgroundImage)
@@ -103,11 +46,30 @@ class StoreSectoresService
 
             const idSector = result.insertId;
 
-            // Asociar con UNA solución
+            // Asociar con todas las soluciones existentes
             await pool.promise().query(
             `INSERT INTO storeSolucionesSectores (id_solucion, id_sector, descalternativa, textoalternativo)
-            VALUES (?, ?, '', '')`,
-            [idSolucion, idSector]
+            SELECT s.id_solucion, ?, ?, ?
+            FROM storeSoluciones s
+            WHERE NOT EXISTS (
+                SELECT 1 FROM storeSolucionesSectores sa
+                WHERE sa.id_solucion = s.id_solucion AND sa.id_sector = ?
+            )`,
+            [idSector, descalternativa ?? null, textoalternativo ?? null, idSector]
+            );
+
+            // Asociar con todos los ámbitos existentes para esas soluciones
+            await pool.promise().query(
+            `INSERT INTO storeSolucionesAmbitosSectores (id_solucion, id_ambito, id_sector)
+            SELECT sa.id_solucion, sa.id_ambito, ?
+            FROM storeSolucionesAmbitos sa
+            WHERE NOT EXISTS (
+                SELECT 1 FROM storeSolucionesAmbitosSectores sas
+                WHERE sas.id_solucion = sa.id_solucion
+                AND sas.id_ambito = sa.id_ambito
+                AND sas.id_sector = ?
+            )`,
+            [idSector, idSector]
             );
 
             return {
@@ -118,13 +80,54 @@ class StoreSectoresService
             slug,
             descriptionweb,
             titleweb,
-            backgroundImage
+            backgroundImage,
+            descalternativa,
+            textoalternativo
             };
         } catch (error) {
             console.error('Error al crear el sector:', error);
             throw new Error('Error al crear el sector');
         }
     }
+
+
+    async createSectores({ idSolucion,description,textoweb,prefijo,slug,descriptionweb,titleweb,backgroundImage, descalternativa,textoalternativo}: CreateSectorParams): Promise<StoreSectores> {
+        try {
+            const [result]: any = await pool.promise().query(
+            `INSERT INTO storeSectores (description, textoWeb, prefijo, slug, descriptionweb, titleweb, backgroundImage)
+            VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage]
+            );
+
+            const idSector = result.insertId;
+
+            // Asociar con una solución (si existe idSolucion)
+            if (idSolucion) {
+            await pool.promise().query(
+                `INSERT INTO storeSolucionesSectores (id_solucion, id_sector, descalternativa, textoalternativo)
+                VALUES (?, ?, ?, ?)`,
+                [idSolucion, idSector, descalternativa ?? null, textoalternativo ?? null]
+            );
+            }
+
+            return {
+            id_sector: idSector,
+            description,
+            textoweb,
+            prefijo,
+            slug,
+            descriptionweb,
+            titleweb,
+            backgroundImage,
+            descalternativa,
+            textoalternativo
+            };
+        } catch (error) {
+            console.error('Error al crear el sector:', error);
+            throw new Error('Error al crear el sector');
+        }
+    }
+
 
     /** 
      * Crea un nuevo sector sin asociaciones adicionales.

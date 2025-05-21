@@ -26,14 +26,11 @@ class storeSectoresControllers
    * @throws {400} Si faltan datos requeridos en la solicitud.
    * @throws {500} Error interno del servidor si ocurre un fallo al crear el sector.
    */
-  async createSectoresSolucion(req: Request<{ idSolucion: string }, any, CreateSectorBody>, res: Response): Promise<void>
-  {
-    try
-    {
-      const { description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage } = req.body;
+  async createSectoresSolucion(req: Request<any, any, CreateSectorBody>, res: Response): Promise<void> {
+    try {
+      const {description,textoweb,prefijo,slug,descriptionweb,titleweb,backgroundImage,descalternativa,textoalternativo} = req.body;
 
-      if (!description || !textoweb || !prefijo || !slug || !descriptionweb || !titleweb || !backgroundImage)
-      {
+      if (!description || !textoweb || !prefijo || !slug || !descriptionweb || !titleweb || !backgroundImage) {
         res.status(400).json({ message: 'Faltan datos requeridos para crear el sector.' });
         return;
       }
@@ -46,6 +43,8 @@ class storeSectoresControllers
         descriptionweb,
         titleweb,
         backgroundImage,
+        descalternativa,
+        textoalternativo
       });
 
       const sectorCreado = await StoreSectoresService.getSectorById(resultado.id_sector);
@@ -54,13 +53,12 @@ class storeSectoresControllers
         ...resultado,
         sector: sectorCreado,
       });
-    }
-    catch (error)
-    {
-      console.warn('⚠️ Error en createSectores:', error);
+    } catch (error) {
+      console.warn('⚠️ Error en createSectoresSolucion:', error);
       res.status(500).json({ message: 'Error interno del servidor al crear el sector.' });
     }
   }
+
 
   /** 
    * Crea un nuevo sector y lo asocia a una solución.
@@ -83,29 +81,40 @@ class storeSectoresControllers
         return;
       }
 
-      const { description, textoweb, prefijo, slug, descriptionweb, titleweb, backgroundImage } = req.body;
-
-      if (!description || !textoweb || !prefijo || !slug || !descriptionweb || !titleweb || !backgroundImage) {
-        res.status(400).json({ message: 'Faltan datos requeridos para crear el sector.' });
-        return;
-      }
-
-      const solucionExits = await StoreSolucionesService.checkSolucionExists(idSolucion);
-
-      if (!solucionExits) {
-        res.status(400).json({ message: 'Id de la solución no existe' });
-        return;
-      }
-
-      const resultado = await StoreSectoresService.createSectores({
-        idSolucion: idSolucion, 
+      const {
         description,
         textoweb,
         prefijo,
         slug,
         descriptionweb,
         titleweb,
-        backgroundImage        
+        backgroundImage,
+        descalternativa,
+        textoalternativo
+      } = req.body;
+
+      if (!description || !textoweb || !prefijo || !slug || !descriptionweb || !titleweb || !backgroundImage) {
+        res.status(400).json({ message: 'Faltan datos requeridos para crear el sector.' });
+        return;
+      }
+
+      const solucionExists = await StoreSolucionesService.checkSolucionExists(idSolucion);
+      if (!solucionExists) {
+        res.status(400).json({ message: 'ID de solución no existe.' });
+        return;
+      }
+
+      const resultado = await StoreSectoresService.createSectores({
+        idSolucion,
+        description,
+        textoweb,
+        prefijo,
+        slug,
+        descriptionweb,
+        titleweb,
+        backgroundImage,
+        descalternativa,
+        textoalternativo
       });
 
       const sectorCreado = await StoreSectoresService.getSectorById(resultado.id_sector);
@@ -119,6 +128,7 @@ class storeSectoresControllers
       res.status(500).json({ message: 'Error interno del servidor al crear el sector.' });
     }
   }
+
 
 
   /** 
