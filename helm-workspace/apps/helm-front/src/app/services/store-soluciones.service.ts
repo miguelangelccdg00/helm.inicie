@@ -939,18 +939,18 @@ export class StoreSolucionesService {
   }
 
   /* Obtiene los problemas de un sector */
-  selectorSolucionAmbitoSectorProblema(idSector: number ): Observable<SelectorSolucionAmbitoSectorProblemaResponse[]> {
+  selectorSolucionAmbitoSectorProblema(idSector: number): Observable<SelectorSolucionAmbitoSectorProblemaResponse> {
     const url = `${this.problemasUrl}/selectorSolucionAmbitoSectorProblema/${idSector}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    return this.https.get<SelectorSolucionAmbitoSectorProblemaResponse[]>(url, { headers }).pipe(
+    return this.https.get<SelectorSolucionAmbitoSectorProblemaResponse>(url, { headers }).pipe(
       map(response => {
-        if (response && response.length > 0) {
+        if (response && response.selectorProblema?.length > 0) {
           console.log('✅ Problemas del sector seleccionado recuperados correctamente');
         } else {
           console.info('ℹ️ No hay problemas en el sector seleccionado');
         }
-        return response || [];
+        return response;
       }),
       catchError(error => {
         if (error.status === 404) {
@@ -958,25 +958,24 @@ export class StoreSolucionesService {
         } else {
           console.warn('⚠️ Error al consultar los problemas del sector seleccionado:', error);
         }
-        return of([]);
+        return of({ message: '', selectorProblema: [] });
       })
     );
-
   }
 
   /* Obtiene los beneficios de un sector */
-  selectorSolucionAmbitoSectorBeneficio(idSector: number ): Observable<SelectorSolucionAmbitoSectorBeneficioResponse[]> {
+  selectorSolucionAmbitoSectorBeneficio(idSector: number): Observable<SelectorSolucionAmbitoSectorBeneficioResponse> {
     const url = `${this.beneficiosUrl}/selectorSolucionAmbitoSectorBeneficio/${idSector}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    return this.https.get<SelectorSolucionAmbitoSectorBeneficioResponse[]>(url, { headers }).pipe(
+    return this.https.get<SelectorSolucionAmbitoSectorBeneficioResponse>(url, { headers }).pipe(
       map(response => {
-        if (response && response.length > 0) {
+        if (response && response.selectorBeneficio?.length > 0) {
           console.log('✅ Beneficios del sector seleccionado recuperados correctamente');
         } else {
           console.info('ℹ️ No hay beneficios en el sector seleccionado');
         }
-        return response || [];
+        return response;
       }),
       catchError(error => {
         if (error.status === 404) {
@@ -984,25 +983,25 @@ export class StoreSolucionesService {
         } else {
           console.warn('⚠️ Error al consultar los beneficios del sector seleccionado:', error);
         }
-        return of([]);
+        return of({ message: '', selectorBeneficio: [] });
       })
     );
-
   }
 
+
   /* Obtiene las características de un sector */
-  selectorSolucionAmbitoSectorCaracteristica(idSector: number ): Observable<SelectorSolucionAmbitoSectorCaracteristicaResponse[]> {
+  selectorSolucionAmbitoSectorCaracteristica(idSector: number): Observable<SelectorSolucionAmbitoSectorCaracteristicaResponse> {
     const url = `${this.caracteristicasUrl}/selectorSolucionAmbitoSectorCaracteristica/${idSector}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    return this.https.get<SelectorSolucionAmbitoSectorCaracteristicaResponse[]>(url, { headers }).pipe(
+    return this.https.get<SelectorSolucionAmbitoSectorCaracteristicaResponse>(url, { headers }).pipe(
       map(response => {
-        if (response && response.length > 0) {
-          console.log('✅ Características del sector seleccionado recuperados correctamente');
+        if (response && response.selectorCaracteristica?.length > 0) {
+          console.log('✅ Características del sector seleccionado recuperadas correctamente');
         } else {
           console.info('ℹ️ No hay características en el sector seleccionado');
         }
-        return response || [];
+        return response;
       }),
       catchError(error => {
         if (error.status === 404) {
@@ -1010,11 +1009,11 @@ export class StoreSolucionesService {
         } else {
           console.warn('⚠️ Error al consultar las características del sector seleccionado:', error);
         }
-        return of([]);
+        return of({ message: '', selectorCaracteristica: [] });
       })
     );
-
   }
+
 
   /* SolucionSectorAmbito */
 

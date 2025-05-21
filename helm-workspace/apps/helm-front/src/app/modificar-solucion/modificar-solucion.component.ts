@@ -16,6 +16,7 @@ import { SolucionAmbitoSectorProblema } from '@modelos-shared/solucionAmbitoSect
 import { SolucionAmbitoBeneficio } from '@modelos-shared/solucionAmbitoBeneficio';
 import { SolucionAmbitoCaracteristica } from '@modelos-shared/solucionAmbitoCaracteristica';
 import { SolucionAmbitoProblema } from '@modelos-shared/solucionAmbitoProblema';
+import { FilaRelacionSector } from '@modelos-shared/filaRelacionSector';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MenuComponent } from '../menu/menu.component';
@@ -310,7 +311,7 @@ export class ModificarSolucionComponent implements OnInit {
   mostrarModalSolucionSector: boolean = false;
   mostrarModalSolucionAmbitoSector: boolean = false;
 
-  /* filasRelacionSector: any[] = []; */
+  filasRelacionSector: any[] = [];
 
 
   // Diccionarios para ámbitos y sectores.
@@ -1941,17 +1942,20 @@ export class ModificarSolucionComponent implements OnInit {
     }, 100);
   }
 
-  /* filtrarPorSectorSeleccionado() {
+  filtrarPorSectorSeleccionado() {
     if (!this.sectorSeleccionado) return;
 
-    const idSector = this.sectorSeleccionado.id_sector;
+    const idSector = this.sectorSeleccionado.id_sector!;
     const sectorDescripcion = this.sectorSeleccionado.description;
 
     forkJoin({
-      problemas: this.storeSolucionesService.selectorSolucionAmbitoSectorProblema(idSector),
-      beneficios: this.storeSolucionesService.selectorSolucionAmbitoSectorBeneficio(idSector),
-      caracteristicas: this.storeSolucionesService.selectorSolucionAmbitoSectorCaracteristica(idSector)
-    }).subscribe(({ problemas, beneficios, caracteristicas }) => {
+      problemasResponse: this.storeSolucionesService.selectorSolucionAmbitoSectorProblema(idSector),
+      beneficiosResponse: this.storeSolucionesService.selectorSolucionAmbitoSectorBeneficio(idSector),
+      caracteristicasResponse: this.storeSolucionesService.selectorSolucionAmbitoSectorCaracteristica(idSector)
+    }).subscribe(({ problemasResponse, beneficiosResponse, caracteristicasResponse }) => {
+      const problemas = problemasResponse.selectorProblema || [];
+      const beneficios = beneficiosResponse.selectorBeneficio || [];
+      const caracteristicas = caracteristicasResponse.selectorCaracteristica || [];
 
       const maxLength = Math.max(problemas.length, beneficios.length, caracteristicas.length);
       const resultado: FilaRelacionSector[] = [];
@@ -1959,14 +1963,14 @@ export class ModificarSolucionComponent implements OnInit {
       for (let i = 0; i < maxLength; i++) {
         resultado.push({
           sectorDescripcion,
-          problemaDescripcion: problemas[i]?.description || '',
-          beneficioDescripcion: beneficios[i]?.description || '',
-          caracteristicaDescripcion: caracteristicas[i]?.description || '',
+          problemaDescripcion: problemas[i]?.problemaDescription || '',
+          beneficioDescripcion: beneficios[i]?.beneficioDescription || '',
+          caracteristicaDescripcion: caracteristicas[i]?.caracteristicaDescription || '',
         });
       }
 
       this.filasRelacionSector = resultado;
     });
-  } */
+  }
 
 }

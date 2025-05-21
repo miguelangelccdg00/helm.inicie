@@ -1347,11 +1347,11 @@
           </div>
 
           <div class="botones-container">
-            <button type="button">Filtrar</button>
+            <button type="button" (click)="filtrarPorSectorSeleccionado()">Filtrar</button>
           </div>
 
-          <!-- <p-table *ngIf="filasRelacionSector?.length > 0" [value]="filasRelacionSector" [paginator]="true" [rows]="5"
-            [tableStyle]="{ 'min-width': '80%' }">
+          <p-table *ngIf="filasRelacionSector && filasRelacionSector.length > 0" [value]="filasRelacionSector" [paginator]="true" [rows]="5"
+            [tableStyle]="{ 'min-width': '80%' }" styleClass="mi-tabla">
             <ng-template pTemplate="header">
               <tr>
                 <th>Sector seleccionado</th>
@@ -1368,7 +1368,7 @@
                 <td>{{ fila.caracteristicaDescripcion }}</td>
               </tr>
             </ng-template>
-          </p-table> -->
+          </p-table>
 
         </div>
 
