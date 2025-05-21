@@ -218,40 +218,34 @@ class StoreCaracteristicasService
    * @param {number} idCaracteristica - ID de la característica.
    * @throws {AppError} Si ya existe la relación o si ocurre un error de base de datos.
    */
-  async asociarSolucionAmbitoCaracteristica(idSolucion: number, idAmbito: number, idCaracteristica: number): Promise<void> {
+  async asociarSolucionesAmbitosCaracteristicas(): Promise<void> {
     try {
-      // Verificar si existe la relación solución-característica
-      const [relSolCar] = await pool.promise().query(
-        `SELECT * FROM storeSolucionesCaracteristicas WHERE id_solucion = ? AND id_caracteristica = ?`,
-        [idSolucion, idCaracteristica]
+
+      const [solAmb] = await pool.promise().query(
+        `SELECT id_solucion, id_ambito FROM storeSolucionesAmbitos`
       );
 
-      if ((relSolCar as any[]).length === 0) {
-        throw new AppError('La relación solución-característica no existe. Debe asociarse primero con asociarCaracteristica().');
+      for (const { id_solucion, id_ambito } of solAmb as any[]) {
+        const [caracteristicas] = await pool.promise().query(
+          `SELECT id_caracteristica FROM storeSolucionesCaracteristicas WHERE id_solucion = ?`,
+          [id_solucion]
+        );
+
+        for (const { id_caracteristica } of caracteristicas as any[]) {
+          await pool.promise().query(
+            `INSERT IGNORE INTO storeSolucionesAmbitosCaracteristicas
+            (id_solucion, id_ambito, id_caracteristica)
+            VALUES (?, ?, ?)`,
+            [id_solucion, id_ambito, id_caracteristica]
+          );
+        }
       }
-
-      // Verificar si ya existe la relación solución-ámbito-característica
-      const [existing] = await pool.promise().query(
-        `SELECT * FROM storeSolucionesAmbitosCaracteristicas
-        WHERE id_solucion = ? AND id_ambito = ? AND id_caracteristica = ?`,
-        [idSolucion, idAmbito, idCaracteristica]
-      );
-
-      if ((existing as any[]).length > 0) {
-        throw new AppError('La relación solución-ámbito-característica ya existe');
-      }
-
-      await pool.promise().query(
-        `INSERT INTO storeSolucionesAmbitosCaracteristicas (id_solucion, id_ambito, id_caracteristica)
-        VALUES (?, ?, ?)`,
-        [idSolucion, idAmbito, idCaracteristica]
-      );
-
     } catch (error) {
-      console.error('Error al asociar solución-ámbito-característica:', error);
-      throw new AppError('Error al asociar solución-ámbito-característica');
+      console.error('Error asociando soluciones-ámbitos-características:', error);
+      throw new AppError('Error al asociar soluciones-ámbitos-características');
     }
   }
+
 
 
   /**
@@ -263,48 +257,33 @@ class StoreCaracteristicasService
    * @param {number} idCaracteristica - ID del caracteristica.
    * @throws {AppError} Si la relación solución-ámbito-sector no existe o si ya existe la asociación.
    */
-  async asociarSolucionAmbitoSectorCaracteristica(idSolucion: number,idAmbito: number,idSector: number,idCaracteristica: number): Promise<void> 
-  {
-    try 
-    {
-      // Verifica que exista la relación solucion-ambito-sector
-      const [rows] = await pool.promise().query(
-        `SELECT * FROM storeSolucionesAmbitosSectores
-        WHERE id_solucion = ? AND id_ambito = ? AND id_sector = ?`,
-        [idSolucion, idAmbito, idSector]
+  async asociarSolucionesAmbitosSectoresCaracteristicas(): Promise<void> {
+    try {
+      const [solAmbSec] = await pool.promise().query(
+        `SELECT id_solucion, id_ambito, id_sector FROM storeSolucionesAmbitosSectores`
       );
 
-      if ((rows as any[]).length === 0) 
-      {
-        throw new AppError('No existe la relación solución-ámbito-sector');
+      for (const { id_solucion, id_ambito, id_sector } of solAmbSec as any[]) {
+        const [caracteristicas] = await pool.promise().query(
+          `SELECT id_caracteristica FROM storeSolucionesCaracteristicas WHERE id_solucion = ?`,
+          [id_solucion]
+        );
+
+        for (const { id_caracteristica } of caracteristicas as any[]) {
+          await pool.promise().query(
+            `INSERT IGNORE INTO storeSolucionesAmbitosSectoresCaracteristicas
+            (id_solucion, id_ambito, id_sector, id_caracteristica)
+            VALUES (?, ?, ?, ?)`,
+            [id_solucion, id_ambito, id_sector, id_caracteristica]
+          );
+        }
       }
-
-      // Verifica si ya existe la relación antes de insertar
-      const [existing] = await pool.promise().query(
-        `SELECT * FROM storeSolucionesAmbitosSectoresCaracteristicas
-        WHERE id_solucion = ? AND id_ambito = ? AND id_sector = ? AND id_caracteristica = ?`,
-        [idSolucion, idAmbito, idSector, idCaracteristica]
-      );
-
-      if ((existing as any[]).length > 0) 
-      {
-        throw new AppError('La relación ya existe');
-      }
-
-      await pool.promise().query(
-        `INSERT INTO storeSolucionesAmbitosSectoresCaracteristicas 
-        (id_solucion, id_ambito, id_sector, id_caracteristica)
-        VALUES (?, ?, ?, ?)`,
-        [idSolucion, idAmbito, idSector, idCaracteristica]
-      );
-
-    } 
-    catch (error) 
-    {
-      console.error('Error al asociar solución-ámbito-sector-caracteristica:', error);
-      throw new AppError('Error al asociar solución-ámbito-sector-caracteristica');
+    } catch (error) {
+      console.error('Error asociando soluciones-ámbitos-sectores-características:', error);
+      throw new AppError('Error al asociar soluciones-ámbitos-sectores-características');
     }
   }
+
   
   /**
    * Lista todas las características registradas.

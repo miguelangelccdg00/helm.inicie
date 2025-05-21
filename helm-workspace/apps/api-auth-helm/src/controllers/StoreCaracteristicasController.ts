@@ -166,23 +166,12 @@ class StoreCaracteristicasController
    * @throws {400} Si faltan datos en la solicitud.
    * @throws {500} Si ocurre un error interno al asociar el caracteristica con la solución.
    */
-  async asociarSolucionAmbitoCaracteristica(req: Request<any, any, AsociarSolucionAmbitoCaracteristicaBody>, res: Response): Promise<void> {
+  async asociarSolucionAmbitoCaracteristica(req: Request, res: Response): Promise<void> {
     try {
-      const { id_solucion, id_ambito, id_caracteristica } = req.body;
-
-      if (!id_solucion || !id_ambito || !id_caracteristica) {
-        res.status(400).json({ message: 'Faltan datos para la asociación' });
-        return;
-      }
-
-      const asociacion = await StoreCaracteristicasService.asociarSolucionAmbitoCaracteristica(id_solucion, id_ambito, id_caracteristica);
-      const caracteristica = await StoreCaracteristicasService.getCaracteristicaById(id_caracteristica);
-      const solucion = await storeSolucionesService.getById(id_solucion);
-
+      const asociacion = await StoreCaracteristicasService.asociarSolucionesAmbitosCaracteristicas();
+            
       res.status(201).json({
-        message: 'caracteristica asociado a la solución con éxito',
-        asociacion,
-        caracteristica
+        message: 'caracteristica asociado a la solución con éxito'
       });
     } catch (error) {
       console.error('Error asociando el caracteristica:', error);
@@ -204,23 +193,13 @@ class StoreCaracteristicasController
    * @throws {400} Si faltan datos en la solicitud.
    * @throws {500} Si ocurre un error interno al asociar el caracteristica con la solución.
    */
-  async asociarSolucionAmbitoSectorCaracteristicas(req: Request<any, any, AsociarSolucionAmbitoSectorCaracteristicaBody>, res: Response): Promise<void> {
+  async asociarSolucionAmbitoSectorCaracteristicas(req: Request, res: Response): Promise<void> {
     try {
-      const { id_solucion, id_ambito, id_sector, id_caracteristica } = req.body;
 
-      if (!id_solucion || !id_ambito || !id_sector || !id_caracteristica) {
-        res.status(400).json({ message: 'Faltan datos para la asociación' });
-        return;
-      }
-
-      const asociacion = await StoreCaracteristicasService.asociarSolucionAmbitoSectorCaracteristica(id_solucion, id_ambito, id_sector, id_caracteristica);
-      const caracteristica = await StoreCaracteristicasService.getCaracteristicaById(id_caracteristica);
-      const solucion = await storeSolucionesService.getById(id_solucion);
+      await StoreCaracteristicasService.asociarSolucionesAmbitosSectoresCaracteristicas();      
 
       res.status(201).json({
-        message: 'Caracteristica asociado a la solución-ambito-sector con éxito',
-        asociacion,
-        caracteristica
+        message: 'Caracteristica asociado a la solución-ambito-sector con éxito'
       });
     } catch (error) {
       console.error('Error asociando el caracteristica:', error);

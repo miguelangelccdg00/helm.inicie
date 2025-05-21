@@ -97,35 +97,6 @@ class StoreBeneficiosServices
     }
   }
 
-  async asociarTodasSolucionesAmbitosSectoresBeneficios(): Promise<void> {
-    try {
-      const [solAmbSec] = await pool.promise().query(
-        `SELECT id_solucion, id_ambito, id_sector FROM storeSolucionesAmbitosSectores`
-      );
-
-      for (const { id_solucion, id_ambito, id_sector } of solAmbSec as any[]) {
-        const [beneficios] = await pool.promise().query(
-          `SELECT id_beneficio FROM storeSolucionesBeneficios WHERE id_solucion = ?`,
-          [id_solucion]
-        );
-
-        for (const { id_beneficio } of beneficios as any[]) {
-          await pool.promise().query(
-            `INSERT IGNORE INTO storeSolucionesAmbitosSectoresBeneficios
-            (id_solucion, id_ambito, id_sector, id_beneficio)
-            VALUES (?, ?, ?, ?)`,
-            [id_solucion, id_ambito, id_sector, id_beneficio]
-          );
-        }
-      }
-    } catch (error) {
-      console.error('Error asociando soluciones-ambitos-sectores-beneficios:', error);
-      throw new AppError('Error al asociar soluciones-ambitos-sectores-beneficios');
-    }
-  }
-
-
-
   /**
    * Obtiene todos los beneficios disponibles.
    * 
@@ -335,6 +306,33 @@ class StoreBeneficiosServices
     } catch (error) {
       console.error('Error asociando todas las soluciones con ámbitos y beneficios:', error);
       throw error;
+    }
+  }
+
+  async asociarTodasSolucionesAmbitosSectoresBeneficios(): Promise<void> {
+    try {
+      const [solAmbSec] = await pool.promise().query(
+        `SELECT id_solucion, id_ambito, id_sector FROM storeSolucionesAmbitosSectores`
+      );
+
+      for (const { id_solucion, id_ambito, id_sector } of solAmbSec as any[]) {
+        const [beneficios] = await pool.promise().query(
+          `SELECT id_beneficio FROM storeSolucionesBeneficios WHERE id_solucion = ?`,
+          [id_solucion]
+        );
+
+        for (const { id_beneficio } of beneficios as any[]) {
+          await pool.promise().query(
+            `INSERT IGNORE INTO storeSolucionesAmbitosSectoresBeneficios
+            (id_solucion, id_ambito, id_sector, id_beneficio)
+            VALUES (?, ?, ?, ?)`,
+            [id_solucion, id_ambito, id_sector, id_beneficio]
+          );
+        }
+      }
+    } catch (error) {
+      console.error('Error asociando soluciones-ambitos-sectores-beneficios:', error);
+      throw new AppError('Error al asociar soluciones-ambitos-sectores-beneficios');
     }
   }
 
