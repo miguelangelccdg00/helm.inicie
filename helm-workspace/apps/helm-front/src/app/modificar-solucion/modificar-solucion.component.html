@@ -185,7 +185,7 @@
 
           <div class="subseccion">
             <h3 class="titulo-subseccion">Problemas asociados a la solución</h3>
-            <div>
+            <div *ngIf="solucion.problemas && solucion.problemas.length">
               <p-table [value]="solucion.problemas || []" [paginator]="true" [rows]="5"
                 [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
 
@@ -213,12 +213,10 @@
                     </td>
                   </tr>
                 </ng-template>
-                <ng-template pTemplate="emptymessage">
-                  <tr>
-                    <td colspan="3" style="text-align: center;">No hay problemas asociados a esta solución.</td>
-                  </tr>
-                </ng-template>
               </p-table>
+            </div>
+            <div *ngIf="!solucion.problemas || solucion.problemas.length === 0">
+              <p class="error">No hay problemas asociados a esta solución.</p>
             </div>
           </div>
 
@@ -307,7 +305,7 @@
 
           <div class="subseccion">
             <h3 class="titulo-subseccion">Características asociadas a la solución</h3>
-            <div>
+            <div *ngIf="solucion.caracteristicas && solucion.caracteristicas.length">
               <p-table [value]="solucion.caracteristicas || []" [paginator]="true" [rows]="5"
                 [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
                 <ng-template pTemplate="header">
@@ -335,12 +333,10 @@
                     </td>
                   </tr>
                 </ng-template>
-                <ng-template pTemplate="emptymessage">
-                  <tr>
-                    <td colspan="3" style="text-align: center;">No hay características asociadas a esta solución.</td>
-                  </tr>
-                </ng-template>
               </p-table>
+            </div>
+            <div *ngIf="!solucion.caracteristicas || solucion.caracteristicas.length === 0">
+              <p class="error">No hay características asociadas a esta solución.</p>
             </div>
           </div>
         </div>
@@ -424,7 +420,7 @@
 
           <div class="subseccion">
             <h3 class="titulo-subseccion">Beneficios asociados a la solución</h3>
-            <div>
+            <div *ngIf="solucion.beneficios && solucion.beneficios.length">
               <p-table [value]="solucion.beneficios || []" [paginator]="true" [rows]="5"
                 [tableStyle]="{ 'min-width': '90%', 'margin': '0 auto' }" styleClass="mi-tabla">
                 <ng-template pTemplate="header">
@@ -451,12 +447,10 @@
                     </td>
                   </tr>
                 </ng-template>
-                <ng-template pTemplate="emptymessage">
-                  <tr>
-                    <td colspan="3" style="text-align: center;">No hay beneficios asociados a esta solución.</td>
-                  </tr>
-                </ng-template>
               </p-table>
+            </div>
+            <div *ngIf="!solucion.beneficios || solucion.beneficios.length === 0">
+              <p class="error">No hay beneficios asociados a esta solución.</p>
             </div>
           </div>
         </div>
@@ -625,7 +619,7 @@
               </p-table>
             </div>
             <div *ngIf="!ambitos || ambitos.length === 0">
-              <p>No hay ámbitos asociados a esta solución.</p>
+              <p class="error">No hay ámbitos asociados a esta solución.</p>
             </div>
           </div>
 
@@ -826,7 +820,7 @@
 
             </div>
             <div *ngIf="!solucion?.ambitos || solucion.ambitos.length === 0">
-              <p>No hay ámbitos asociados a esta solución.</p>
+              <p class="error">No hay ámbitos asociados a esta solución.</p>
             </div>
           </div>
 
@@ -1037,7 +1031,7 @@
             </div>
 
             <div *ngIf="!solucionesSectores || solucionesSectores.length === 0">
-              <p>No hay sectores asociados a esta solución.</p>
+              <p class="error">No hay sectores asociados a esta solución.</p>
             </div>
 
           </div>
@@ -1109,7 +1103,7 @@
             </div>
 
             <div *ngIf="!solucionesSectores || solucionesSectores.length === 0">
-              <p>No hay sectores asociados a esta solución.</p>
+              <p class="error">No hay sectores asociados a esta solución.</p>
             </div>
           </div>
 
@@ -1328,7 +1322,7 @@
           </div>
 
           <div *ngIf="!solucionesAmbitosSectores || solucionesAmbitosSectores.length === 0">
-            <p>No hay sectores o ámbitos asociados a esta solución.</p>
+            <p class="error">No hay sectores o ámbitos asociados a esta solución.</p>
           </div>
         </div>
 
@@ -1414,7 +1408,7 @@
           </div>
 
           <div *ngIf="!solucionesAmbitosSectoresCaracteristicas || solucionesAmbitosSectoresCaracteristicas.length === 0">
-            <p>No hay contenido.</p>
+            <p class="error">No hay contenido.</p>
           </div>
         </div>
 
@@ -1454,7 +1448,7 @@
           </div>
 
           <div *ngIf="!solucionesAmbitosSectoresBeneficios || solucionesAmbitosSectoresBeneficios.length === 0">
-            <p>No hay contenido.</p>
+            <p class="error">No hay contenido.</p>
           </div>
         </div>
 
@@ -1494,7 +1488,7 @@
           </div>
 
           <div *ngIf="!solucionesAmbitosSectoresProblemas || solucionesAmbitosSectoresProblemas.length === 0">
-            <p>No hay contenido.</p>
+            <p class="error">No hay contenido.</p>
           </div>
         </div>
 
@@ -1532,7 +1526,7 @@
           </div>
 
           <div *ngIf="!solucionesAmbitosBeneficios || solucionesAmbitosBeneficios.length === 0">
-            <p>No hay contenido.</p>
+            <p class="error">No hay contenido.</p>
           </div>
         </div>
 
@@ -1570,7 +1564,7 @@
           </div>
 
           <div *ngIf="!solucionesAmbitosCaracteristicas || solucionesAmbitosCaracteristicas.length === 0">
-            <p>No hay contenido.</p>
+            <p class="error">No hay contenido.</p>
           </div>
         </div>
 
@@ -1608,7 +1602,7 @@
           </div>
 
           <div *ngIf="!solucionesAmbitosProblemas || solucionesAmbitosProblemas.length === 0">
-            <p>No hay contenido.</p>
+            <p class="error">No hay contenido.</p>
           </div>
         </div> -->
       </div>
