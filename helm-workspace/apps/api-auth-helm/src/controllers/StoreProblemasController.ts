@@ -342,23 +342,13 @@ class StoreProblemasController
    * @throws {400} Si faltan datos en la solicitud.
    * @throws {500} Si ocurre un error interno al asociar el problema con la solución.
    */
-  async asociarSolucionAmbitoProblema(req: Request<any, any, AsociarSolucionAmbitoProblemaBody>, res: Response): Promise<void> {
-    try {
-      const { id_solucion, id_ambito, id_problema } = req.body;
+  async asociarSolucionAmbitoProblema(req: Request, res: Response): Promise<void> {
+    try {      
 
-      if (!id_solucion || !id_ambito || !id_problema) {
-        res.status(400).json({ message: 'Faltan datos para la asociación' });
-        return;
-      }
-
-      const asociacion = await storeProblemasService.asociarSolucionAmbitoProblema(id_solucion, id_ambito, id_problema);
-      const problema = await storeProblemasService.getProblemaById(id_problema);
-      const solucion = await storeSolucionesService.getById(id_solucion);
+      await storeProblemasService.asociarSolucionesAmbitosProblemas();
 
       res.status(201).json({
-        message: 'Problema asociado a la solución con éxito',
-        asociacion,
-        problema
+        message: 'Problema asociado a la solución con éxito'
       });
     } catch (error) {
       console.error('Error asociando el problema:', error);
@@ -380,23 +370,13 @@ class StoreProblemasController
    * @throws {400} Si faltan datos en la solicitud.
    * @throws {500} Si ocurre un error interno al asociar el problema con la solución.
    */
-  async asociarSolucionAmbitoSectorProblemas(req: Request<any, any, AsociarSolucionAmbitoSectorProblemaBody>, res: Response): Promise<void> {
+  async asociarSolucionAmbitoSectorProblemas(req: Request, res: Response): Promise<void> {
     try {
-      const { id_solucion, id_ambito, id_sector, id_problema } = req.body;
 
-      if (!id_solucion || !id_ambito || !id_sector || !id_problema) {
-        res.status(400).json({ message: 'Faltan datos para la asociación' });
-        return;
-      }
-
-      const asociacion = await storeProblemasService.asociarSolucionAmbitoSectorProblema(id_solucion, id_ambito, id_sector, id_problema);
-      const problema = await storeProblemasService.getProblemaById(id_problema);
-      const solucion = await storeSolucionesService.getById(id_solucion);
-
+      await storeProblemasService.asociarSolucionesAmbitosSectoresProblemas;
+      
       res.status(201).json({
-        message: 'Problema asociado a la solución-ambito-sector con éxito',
-        asociacion,
-        problema
+        message: 'Problema asociado a la solución-ambito-sector con éxito'
       });
     } catch (error) {
       console.error('Error asociando el problema:', error);
