@@ -1,5 +1,4 @@
-export interface SolucionAmbitoSectorBeneficio
-{
+export interface SolucionAmbitoSectorBeneficio {
     id_solucion?: number;
     id_ambito?: number;
     id_sector?: number;
@@ -8,5 +7,8 @@ export interface SolucionAmbitoSectorBeneficio
 
 export interface SelectorSolucionAmbitoSectorBeneficioResponse {
     message: string;
-    selectorBeneficio: any[];
+    selectorBeneficio: {
+        ambitoDescription: string;
+        beneficioDescription: string;
+    }[];
 }

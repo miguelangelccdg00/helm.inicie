@@ -1951,18 +1951,20 @@ export class ModificarSolucionComponent implements OnInit {
     forkJoin({
       problemasResponse: this.storeSolucionesService.selectorSolucionAmbitoSectorProblema(idSector),
       beneficiosResponse: this.storeSolucionesService.selectorSolucionAmbitoSectorBeneficio(idSector),
-      caracteristicasResponse: this.storeSolucionesService.selectorSolucionAmbitoSectorCaracteristica(idSector)
+      caracteristicasResponse: this.storeSolucionesService.selectorSolucionAmbitoSectorCaracteristica(idSector),
     }).subscribe(({ problemasResponse, beneficiosResponse, caracteristicasResponse }) => {
-      const problemas = problemasResponse.selectorProblema || [];
+
       const beneficios = beneficiosResponse.selectorBeneficio || [];
+      const problemas = problemasResponse.selectorProblema || [];
       const caracteristicas = caracteristicasResponse.selectorCaracteristica || [];
 
-      const maxLength = Math.max(problemas.length, beneficios.length, caracteristicas.length);
+      const maxLength = Math.max(beneficios.length, problemas.length, caracteristicas.length);
       const resultado: FilaRelacionSector[] = [];
 
       for (let i = 0; i < maxLength; i++) {
         resultado.push({
           sectorDescripcion,
+          ambitoDescripcion: beneficios[i]?.ambitoDescription || '',
           problemaDescripcion: problemas[i]?.problemaDescription || '',
           beneficioDescripcion: beneficios[i]?.beneficioDescription || '',
           caracteristicaDescripcion: caracteristicas[i]?.caracteristicaDescription || '',
